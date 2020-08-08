@@ -1,0 +1,32 @@
+name: CyclingEscape
+description: A Cycling game by WiVe
+
+version: 1.0.1+2
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^0.1.3
+  flame: ^0.24.0
+
+dev_dependencies:
+  flutter_launcher_icons: "^0.7.5"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/fonts/
+    - assets/icon/
+  fonts:
+    - family: SaranaiGame
+      fonts:
+        - asset: assets/fonts/SaranaiGame-Bold.ttf

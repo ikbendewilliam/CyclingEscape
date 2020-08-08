@@ -82,6 +82,8 @@ class MapUtils {
             i * 1.0,
             i / length * 100,
             jAccent + jOffset,
+            0,
+            0,
             false,
             currentPositionType,
             fieldValue: fieldValue,
@@ -136,20 +138,25 @@ class MapUtils {
     Offset centerOfCorner;
     centerOfCorner =
         start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
-    int imax = (numberOfPositions / 2).ceil();
+    double imax = (numberOfPositions / 2);
     for (double i = istart; i < imax; i++) {
       for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
+        double startAngle2 =
+            centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
         double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
-        Offset center;
-        center =
+        Offset center =
             centerOfCorner + Offset(radius * sin(angle), -radius * cos(angle));
-        Offset offset = Offset(cos(angle), sin(angle));
-        Offset p1 = center + offset;
-        Offset p2 = center - offset;
+        Offset offset = Offset(cos(angle), sin(angle)) *
+            length /
+            2 /
+            numberOfPositions.toDouble();
+        Offset p1 = center + offset * k.toDouble();
+        Offset p2 = center - offset * k.toDouble();
+
         if (!clockwise) {
           // For text purposes
-          p1 = center - offset;
-          p2 = center + offset;
+          p1 = center + offset * k.toDouble();
+          p2 = center - offset * k.toDouble();
         }
         int iAccent;
         if (istart == 0.5) {
@@ -188,6 +195,8 @@ class MapUtils {
             iAccent * 1.0,
             iAccent / numberOfPositions * 100,
             j,
+            (startAngle2 + pi * 2) % (pi * 2),
+            radius,
             true,
             currentPositionType,
             curvature: numberOfPositions,
@@ -549,27 +558,13 @@ class MapUtils {
 
   static GameMap generateFlatMap(listener) {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
+    newMap.addCorner(pi / 4, 4, 8);
     newMap.addStraight(4, 4);
     newMap.addSprint(4, SprintType.START);
-    newMap.addStraight(5, 4);
-    newMap.addCorner(pi / 2, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(pi, 4, 8);
-    newMap.addSprint(4, SprintType.SPRINT);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi / 4, 4, 10);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addSprint(4, SprintType.SPRINT);
-    newMap.addCorner(pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi / 4, 4, 10);
-    newMap.addStraight(4, 4);
+    newMap.addCorner(-pi / 2, 4, 8);
+    newMap.addCorner(pi / 3, 4, 8);
+    newMap.addCorner(-pi / 2, 4, 8);
+    newMap.addCorner(pi / 3, 4, 8);
     newMap.addSprint(4, SprintType.FINISH);
     newMap.addStraight(8, 4);
 

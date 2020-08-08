@@ -55,7 +55,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
     if (playSettings != null) {
-      this.map = MapUtils.generateMap(playSettings, this);
+      // this.map = MapUtils.generateMap(playSettings, this);
+      this.map = MapUtils.generateFlatMap(this);
       this.mapSize = this.map.mapSize;
       teams = [];
       for (int i = 0; i < playSettings.teams; i++) {

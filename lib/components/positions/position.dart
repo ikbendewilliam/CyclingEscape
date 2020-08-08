@@ -19,6 +19,8 @@ class Position {
   final double i;
   final double iValue;
   final double j;
+  final double startAngle;
+  final double radius;
   final Sprint sprint;
   final PositionType positionType;
   final PositionListener listener;
@@ -31,40 +33,108 @@ class Position {
   Cyclist cyclist;
   PositionState state = PositionState.NORMAL;
 
-  Position(this.p1, this.p2, this.listener, this.isLast, this.segment, this.i,
-      this.iValue, this.j, this.isCurved, this.positionType,
-      {this.curvature, this.fieldValue, this.sprint, this.id}) {
+  Position(
+      this.p1,
+      this.p2,
+      this.listener,
+      this.isLast,
+      this.segment,
+      this.i,
+      this.iValue,
+      this.j,
+      this.startAngle,
+      this.radius,
+      this.isCurved,
+      this.positionType,
+      {this.curvature,
+      this.fieldValue,
+      this.sprint,
+      this.id}) {
     this.id = UniqueKey().toString();
   }
 
-  void render(Canvas c, double tileSize) {
+  void render(Canvas canvas, double tileSize) {
     Paint paint = Paint()
       ..color = getColor()
       ..style = PaintingStyle.stroke
       ..strokeWidth = tileSize * (1 - BORDER_WIDTH);
+    Paint paint2 = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
     Paint blackPaint = Paint()
       ..color = Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = tileSize;
     double angle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);
-    c.drawLine(Offset((p1.dx) * tileSize, (p1.dy) * tileSize),
-        Offset((p2.dx) * tileSize, (p2.dy) * tileSize), blackPaint);
-    c.drawLine(
-        Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
-            (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize),
-        Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
-            (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize),
-        paint);
+
+    if (radius > 0) {
+      canvas.drawLine(Offset((p1.dx) * tileSize, (p1.dy) * tileSize),
+          Offset((p2.dx) * tileSize, (p2.dy) * tileSize), blackPaint);
+
+      canvas.save();
+      canvas.translate(
+          (p1.dx - (1 - cos(startAngle + pi / 2)) * radius) * tileSize,
+          (p1.dy - (1 - sin(startAngle + pi / 2)) * radius) * tileSize);
+
+      double deltaAngle = (angle - startAngle) * 2;
+      if (deltaAngle > pi * 2) {
+        deltaAngle -= pi * 2;
+      }
+      if (deltaAngle < -pi * 2) {
+        deltaAngle += pi * 2;
+      }
+      if (deltaAngle < -pi) {
+        deltaAngle = pi * 2 + deltaAngle;
+      }
+      if (deltaAngle > pi) {
+        deltaAngle = -pi * 2 + deltaAngle;
+      }
+      canvas.drawArc(
+          Rect.fromLTRB(0, 0, 2 * radius * tileSize, 2 * radius * tileSize),
+          startAngle - pi / 2,
+          deltaAngle,
+          false,
+          paint);
+      canvas.drawArc(
+          Rect.fromLTRB(0, 0, 2 * radius * tileSize, 2 * radius * tileSize),
+          0,
+          pi * 2,
+          false,
+          paint2);
+
+      canvas.restore();
+    }
+
+    // double left = min((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
+    //     (p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize);
+    // double right = max((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
+    //     (p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize);
+    // double top = min((p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize,
+    //     (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize);
+    // double bottom = max((p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize,
+    //     (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize);
+    // canvas.drawArc(Rect.fromLTRB(left, top, right, bottom), -startAngle,
+    //     -startAngle + angle, false, paint);
+    else {
+      canvas.drawLine(
+          Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
+              (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize),
+          Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
+              (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize),
+          paint);
+    }
 
     if (cyclist != null) {
       cyclist.render(
-          c,
+          canvas,
           (Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
                       (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize) +
                   Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
                       (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize)) /
               2,
-          tileSize / 3);
+          tileSize / 3,
+          angle);
     }
   }
 

@@ -8,7 +8,7 @@ class Team {
 
   Team(this.isPlayer, this.numberStart);
 
-  static getColorFromId(id) {
+  static Color getColorFromId(id) {
     switch (id) {
       case 0:
         return Colors.red;
@@ -37,7 +37,7 @@ class Team {
     }
   }
 
-  getColor() {
+  Color getColor() {
     return getColorFromId(numberStart);
   }
 }

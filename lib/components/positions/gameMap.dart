@@ -39,11 +39,12 @@ class GameMap {
         mapSize.width - minMapSize.width, mapSize.height - minMapSize.height);
   }
 
-  void render(Canvas c, double tileSize) {
-    positions.forEach((element) => element.render(c, tileSize));
+  void render(Canvas c, double tileSize, Offset center, double screenRange) {
+    positions
+        .forEach((element) => element.render(c, tileSize, center, screenRange));
     sprints.forEach((element) => element.render(c, tileSize));
-    positions.forEach((element) =>
-        element.renderText(c, tileSize)); // Later so it is above the rest
+    positions.forEach((element) => element.renderText(
+        c, tileSize, center, screenRange)); // Later so it is above the rest
   }
 
   void update(double t) {

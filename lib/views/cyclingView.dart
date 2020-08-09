@@ -3,10 +3,12 @@ import 'dart:ui';
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/cyclistPlace.dart';
 import 'package:CyclingEscape/components/data/playSettings.dart';
+import 'package:CyclingEscape/components/data/resultData.dart';
 import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:flame/position.dart' as flamePosition;
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +27,20 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   int currentTurn = -1;
   bool grid = false;
   bool ended = false;
+  bool loading = true;
   bool autoFollow = false;
   Dice dice, dice2;
   Size worldSize = Size(1, 1);
   Size mapSize = Size(1, 1);
   Sprite backgroundNotification;
+  Sprite grass;
+  Sprite grass2;
   Offset offsetStart = Offset(0, 0);
   Offset offset = Offset(0, 0);
   double zoom = 0.5;
   double zoomStart;
   double maxZoom = 1.5;
-  double minZoom = 0.1;
+  double minZoom = 0.2;
   double tileSize = 1;
   double cyclistMoved;
   GameMap map;
@@ -54,8 +59,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   CyclingView(this.cyclingEnded, this.navigate);
 
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
+    loading = true;
     if (playSettings != null) {
       this.map = MapUtils.generateMap(playSettings, this);
+      // this.map = MapUtils.generateFlatMap(this);
       this.mapSize = this.map.mapSize;
       teams = [];
       for (int i = 0; i < playSettings.teams; i++) {
@@ -103,12 +110,33 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         }
         activeTour.teams = teams;
       }
+      int greenJersey;
+      int bouledJersey;
+      int whiteJersey;
+      if (activeTour.currentResults.data != null &&
+          activeTour.currentResults.data.length > 0) {
+        greenJersey = activeTour.currentResults.greenJersey;
+        bouledJersey = activeTour.currentResults.bouledJersey;
+        whiteJersey = activeTour.currentResults.whiteJersey;
+        activeTour.currentResults.data
+            .asMap()
+            .forEach((key, value) => {value.rank = key});
+      }
       activeTour.cyclists.forEach((cyclist) {
-        cyclist.rank = activeTour.currentResults.data
-            .firstWhere((element) => element.number == cyclist.number)
-            .rank;
+        if (activeTour.currentResults.data.length > 0) {
+          cyclist.rank = activeTour.currentResults.data
+              .firstWhere((element) => element.number == cyclist.number)
+              .rank;
+        }
         cyclist.lastPosition = null;
         cyclist.lastUsedOnTurn = 0;
+        cyclist.wearsYellowJersey = (cyclist.rank == 0);
+        cyclist.wearsWhiteJersey =
+            whiteJersey != null && whiteJersey == cyclist.number;
+        cyclist.wearsGreenJersey =
+            greenJersey != null && greenJersey == cyclist.number;
+        cyclist.wearsBouledJersey =
+            bouledJersey != null && bouledJersey == cyclist.number;
       });
       activeTour.cyclists.sort((a, b) => b.rank - a.rank);
       for (int i = 0;
@@ -129,7 +157,11 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           activeTour.cyclists.add(cyclist);
           teams[teamIndex].cyclists.add(cyclist);
         }
+        if (this.map.positions.length < i) {
+          throw Error(); // Out of bounds
+        }
         this.map.positions[i].addCyclist(cyclist);
+        cyclist.lastPosition = this.map.positions[i];
       }
     }
     if (playSettings != null || activeTour != null) {
@@ -140,20 +172,47 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       offset = Offset(0, 0);
       zoom = 0.5;
       notifications = [];
+      minZoom = 0.2;
       this.handleInBetweenTurns();
       this.processGameState(GameState.GAME_SELECT_NEXT);
-      backgroundNotification = Sprite('back_text_04.png');
+      if (backgroundNotification == null) {
+        backgroundNotification = Sprite('back_text_04.png');
+      }
       createButtons(screenSize != null ? screenSize.height / 7 : 10);
+    }
+    if (grass == null) {
+      grass = Sprite('environment/grass.png');
+    }
+    if (grass2 == null) {
+      grass2 = Sprite('environment/grass2.png');
     }
   }
 
   void render(Canvas canvas) {
     canvas.save();
-    Paint bgPaint = Paint()..color = Colors.green[200];
-    canvas.drawRect(
-        Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), bgPaint);
     canvas.translate(offset.dx * zoom, offset.dy * zoom);
     canvas.scale(zoom);
+    if (grass != null && grass2 != null && grass.loaded() && grass2.loaded()) {
+      for (int i = -(offset.dx / tileSize).ceil();
+          i <
+              -(offset.dx / tileSize).floor() +
+                  screenSize.width / tileSize / zoom;
+          i++) {
+        for (int j = -(offset.dy / tileSize).ceil();
+            j <
+                -(offset.dy / tileSize).floor() +
+                    screenSize.height / tileSize / zoom;
+            j++) {
+          Sprite g = grass;
+          if ((i * j + i + j) % 5 == 0 || (i * j + i + j) % 7 == 0) {
+            g = grass2;
+          }
+          g.renderPosition(
+              canvas, flamePosition.Position(i * tileSize, j * tileSize),
+              size: flamePosition.Position(tileSize * 1.05, tileSize * 1.05));
+        }
+      }
+    }
 
     if (grid) {
       for (int i = 0; i < worldSize.width; i++) {
@@ -175,7 +234,13 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       }
     }
 
-    this.map.render(canvas, tileSize);
+    Offset center = Offset(
+        -(offset.dx / tileSize).ceil() + screenSize.width / tileSize / zoom / 2,
+        -(offset.dy / tileSize).ceil() +
+            screenSize.height / tileSize / zoom / 2);
+
+    double screenRange = screenSize.width * 1.2 / zoom;
+    this.map.render(canvas, tileSize, center, screenRange);
     canvas.restore();
 
     if (dice != null) {
@@ -209,6 +274,29 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           Offset(screenSize.width - tileSize * 1.7, tileSize * (i / 2 + 0.1));
       CanvasUtils.drawText(canvas, position, 0, span);
     });
+
+    if (loading) {
+      if (teams != null &&
+          teams.length > 0 &&
+          teams.first.sprites != null &&
+          teams.first.sprites.length > 0) {
+        loading = false;
+        teams.first.sprites.forEach((element) {
+          if (!element.loaded()) {
+            loading = true;
+          }
+        });
+      }
+      Paint bgPaint = Paint()..color = Colors.green[200];
+      canvas.drawRect(
+          Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), bgPaint);
+      TextSpan span = new TextSpan(
+          style: new TextStyle(
+              color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
+          text: 'Loading...');
+      Offset position = Offset(screenSize.width / 2, screenSize.height / 2);
+      CanvasUtils.drawText(canvas, position, 0, span);
+    }
   }
 
   void update(double t) {
@@ -226,6 +314,12 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     screenSize = size;
     tileSize = screenSize.height / 9;
     worldSize = Size(tileSize * mapSize.width, tileSize * mapSize.height);
+    if (screenSize.width / worldSize.width > minZoom) {
+      minZoom = screenSize.width / worldSize.width;
+    }
+    if (screenSize.height / worldSize.height > minZoom) {
+      minZoom = screenSize.height / worldSize.height;
+    }
     if (followSelect != null) {
       followSelect.resize(size);
     }
@@ -310,14 +404,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
                   this.autoFollow = true;
                   if (minThrow >= 7) {
                     follow();
-                    processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
+                    processGameState(GameState.GAME_SELECT_NEXT);
                   } else {
                     processGameState(GameState.GAME_SELECT_NEXT);
                   }
                   break;
                 case FollowType.FOLLOW:
                   follow();
-                  processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
+                  processGameState(GameState.GAME_SELECT_NEXT);
                   break;
                 case FollowType.LEAVE:
                 default:
@@ -377,6 +471,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         cyclistSelected, cyclistMoved, true,
         startPosition: placeBefore);
     if (placeBeforeEnd == null) {
+      return -1;
+    }
+    if (cyclistLastSelected.positionType == PositionType.DOWNHILL &&
+        placeBefore.positionType == PositionType.UPHILL) {
       return -1;
     }
     return max(
@@ -583,6 +681,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   void diceStopped(int diceValue) {
     if (gameState == GameState.USER_WAIT_DICE_ROLLING2) {
       this.diceValue += diceValue;
+      print(this.diceValue);
       processGameState(GameState.USER_INPUT_DICE_DONE);
     } else {
       this.diceValue = diceValue;

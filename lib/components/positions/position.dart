@@ -9,16 +9,20 @@ import 'package:flutter/material.dart';
 
 import '../moveable/cyclist.dart';
 
-const BORDER_WIDTH = 0.1;
+const BORDER_WIDTH = 0.05;
 
 class Position {
-  final int curvature;
+  final int k;
   final int segment;
-  final bool isCurved;
+  final int curvature;
   final bool isLast;
+  final bool isCurved;
+  final bool clockwise;
   final double i;
-  final double iValue;
   final double j;
+  final double radius;
+  final double iValue;
+  final double startAngle;
   final Sprint sprint;
   final PositionType positionType;
   final PositionListener listener;
@@ -31,46 +35,137 @@ class Position {
   Cyclist cyclist;
   PositionState state = PositionState.NORMAL;
 
-  Position(this.p1, this.p2, this.listener, this.isLast, this.segment, this.i,
-      this.iValue, this.j, this.isCurved, this.positionType,
-      {this.curvature, this.fieldValue, this.sprint, this.id}) {
+  Position(
+      this.p1,
+      this.p2,
+      this.listener,
+      this.isLast,
+      this.segment,
+      this.i,
+      this.iValue,
+      this.j,
+      this.k,
+      this.clockwise,
+      this.startAngle,
+      this.radius,
+      this.isCurved,
+      this.positionType,
+      {this.curvature,
+      this.fieldValue,
+      this.sprint,
+      this.id}) {
     this.id = UniqueKey().toString();
   }
 
-  void render(Canvas c, double tileSize) {
+  void render(
+      Canvas canvas, double tileSize, Offset center, double screenRange) {
+    if (pow(center.dx - p1.dx, 2) + pow(center.dy - p1.dy, 2) > screenRange) {
+      return;
+    }
     Paint paint = Paint()
-      ..color = getColor()
+      ..color = getColor(false)
       ..style = PaintingStyle.stroke
       ..strokeWidth = tileSize * (1 - BORDER_WIDTH);
-    Paint blackPaint = Paint()
-      ..color = Colors.black
+    Paint darkPaint = Paint()
+      ..color = getColor(true)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = tileSize;
+      ..strokeWidth = tileSize * (1 + BORDER_WIDTH);
+    Paint darkPaintSmall = Paint()
+      ..color = getColor(true)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = tileSize * BORDER_WIDTH;
+
     double angle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);
-    c.drawLine(Offset((p1.dx) * tileSize, (p1.dy) * tileSize),
-        Offset((p2.dx) * tileSize, (p2.dy) * tileSize), blackPaint);
-    c.drawLine(
-        Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
-            (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize),
-        Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
-            (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize),
-        paint);
+
+    if (radius > 0) {
+      canvas.save();
+      canvas.translate(
+          (p1.dx - (1 - cos(startAngle + pi / 2)) * radius) * tileSize,
+          (p1.dy - (1 - sin(startAngle + pi / 2)) * radius) * tileSize);
+
+      double deltaAngle = (angle - startAngle) * 2;
+      if (deltaAngle > pi * 2) {
+        deltaAngle -= pi * 2;
+      }
+      if (deltaAngle < -pi * 2) {
+        deltaAngle += pi * 2;
+      }
+      if (deltaAngle < -pi) {
+        deltaAngle = pi * 2 + deltaAngle;
+      }
+      if (deltaAngle > pi) {
+        deltaAngle = -pi * 2 + deltaAngle;
+      }
+      canvas.drawArc(
+          Rect.fromLTRB(0, 0, 2 * radius * tileSize, 2 * radius * tileSize),
+          startAngle - pi / 2,
+          deltaAngle * 1.01,
+          false,
+          darkPaint);
+      canvas.drawArc(
+          Rect.fromLTRB(0, 0, 2 * radius * tileSize, 2 * radius * tileSize),
+          startAngle - pi / 2,
+          deltaAngle,
+          false,
+          paint);
+      canvas.restore();
+      canvas.drawLine(
+          Offset(p1.dx + sin(startAngle) / 2, p1.dy - cos(startAngle) / 2) *
+              tileSize,
+          Offset(p1.dx - sin(startAngle) / 2, p1.dy + cos(startAngle) / 2) *
+              tileSize,
+          darkPaintSmall);
+      canvas.drawLine(
+          Offset(p2.dx + sin(angle * 2 - startAngle) / 2,
+                  p2.dy - cos(angle * 2 - startAngle) / 2) *
+              tileSize,
+          Offset(p2.dx - sin(angle * 2 - startAngle) / 2,
+                  p2.dy + cos(angle * 2 - startAngle) / 2) *
+              tileSize,
+          darkPaintSmall);
+    } else {
+      canvas.drawLine(Offset(p1.dx * tileSize, p1.dy * tileSize),
+          Offset(p2.dx * tileSize, p2.dy * tileSize), darkPaint);
+      canvas.drawLine(
+          Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
+              (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize),
+          Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
+              (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize),
+          paint);
+    }
 
     if (cyclist != null) {
       cyclist.render(
-          c,
+          canvas,
           (Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
                       (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize) +
                   Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
                       (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize)) /
               2,
-          tileSize / 3);
+          tileSize / 3,
+          angle + (k == -1 ? pi : 0));
     }
   }
 
-  void renderText(Canvas c, double tileSize) {
+  void renderText(
+      Canvas c, double tileSize, Offset center, double screenRange) {
     if (fieldValue != null && fieldValue != 0) {
-      double angle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);
+      if (pow(center.dx - p1.dx, 2) + pow(center.dy - p1.dy, 2) > screenRange) {
+        return;
+      }
+      double angle;
+      if (radius == 0) {
+        angle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);
+      } else {
+        angle = startAngle;
+        if (k == -1) {
+          double deltaAngle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);
+          angle = deltaAngle * 2 - startAngle;
+        }
+        if (clockwise) {
+          angle += pi;
+        }
+      }
       TextSpan span = new TextSpan(
           style: new TextStyle(
               color: Colors.black, fontSize: 20.0, fontFamily: 'Roboto'),
@@ -78,8 +173,8 @@ class Position {
 
       CanvasUtils.drawText(
           c,
-          Offset((p1.dx + cos(angle) * BORDER_WIDTH * 6) * tileSize,
-              (p1.dy + sin(angle) * BORDER_WIDTH * 6) * tileSize),
+          Offset(((k == -1 ? p2 : p1).dx + cos(angle) * 0.6) * tileSize,
+              ((k == -1 ? p2 : p1).dy + sin(angle) * 0.6) * tileSize),
           angle + pi / 2,
           span);
     }
@@ -87,7 +182,7 @@ class Position {
 
   void update(double t) {}
 
-  Color getColor() {
+  Color getColor(bool darker) {
     MaterialColor color;
     switch (positionType) {
       case PositionType.COBBLE:
@@ -100,9 +195,12 @@ class Position {
         color = Colors.yellow;
         break;
       default:
-        color = Colors.orange;
+        color = Colors.amber;
     }
 
+    if (darker) {
+      return color[700];
+    }
     switch (state) {
       case PositionState.NOT_SELECTABLE:
         return color[50];

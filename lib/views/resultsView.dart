@@ -97,11 +97,11 @@ class ResultsView implements BaseView {
         currentResult.mountain += result.mountain;
       });
     }
+    previousResults.data.sort((a, b) => a.time - b.time);
 
     Results timeResults = Results(ResultsType.TIME);
     timeResults.data =
         (previousResults != null) ? previousResults.data : raceResults.data;
-    timeResults.data.sort((a, b) => a.time - b.time);
     this.results.add(timeResults);
 
     Results youngResults = Results(ResultsType.YOUNG);
@@ -110,6 +110,9 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     youngResults.data.sort((a, b) => a.time - b.time);
+    if (youngResults.data.length > 0) {
+      previousResults.whiteJersey = youngResults.data.first.number;
+    }
     this.results.add(youngResults);
 
     Results pointsResults = Results(ResultsType.POINTS);
@@ -118,6 +121,9 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     pointsResults.data.sort((a, b) => b.points - a.points);
+    if (youngResults.data.length > 0) {
+      previousResults.greenJersey = pointsResults.data.first.number;
+    }
     this.results.add(pointsResults);
 
     Results mountainResults = Results(ResultsType.MOUNTAIN);
@@ -126,6 +132,9 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     mountainResults.data.sort((a, b) => b.mountain - a.mountain);
+    if (mountainResults.data.length > 0) {
+      previousResults.bouledJersey = mountainResults.data.first.number;
+    }
     this.results.add(mountainResults);
 
     Results teamResults = Results(ResultsType.TEAM);

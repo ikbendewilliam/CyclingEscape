@@ -82,6 +82,10 @@ class MapUtils {
             i * 1.0,
             i / length * 100,
             jAccent + jOffset,
+            0,
+            false,
+            0,
+            0,
             false,
             currentPositionType,
             fieldValue: fieldValue,
@@ -133,23 +137,31 @@ class MapUtils {
     double centerAngle = (startAngle + endAngle) / 2;
     double maxAngle = (startAngle - centerAngle).abs();
     double istart = -(numberOfPositions % 2) / 2 + 0.5;
-    Offset centerOfCorner;
-    centerOfCorner =
+    Offset centerOfCorner =
         start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
     int imax = (numberOfPositions / 2).ceil();
     for (double i = istart; i < imax; i++) {
       for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
+        double startAngle2 =
+            centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
         double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
-        Offset center;
-        center =
-            centerOfCorner + Offset(radius * sin(angle), -radius * cos(angle));
-        Offset offset = Offset(cos(angle), sin(angle));
-        Offset p1 = center + offset;
-        Offset p2 = center - offset;
+        Offset offset = Offset(cos(angle), sin(angle)) *
+            length /
+            2 /
+            numberOfPositions.toDouble();
+
+        double radiusPart = pow(
+            pow(radius, 2) - (pow(offset.dx, 2) + pow(offset.dy, 2)), 1 / 2);
+
+        Offset center = centerOfCorner +
+            Offset(radiusPart * sin(angle), -radiusPart * cos(angle));
+        Offset p1 = center + offset * k.toDouble();
+        Offset p2 = center - offset * k.toDouble();
+
         if (!clockwise) {
           // For text purposes
-          p1 = center - offset;
-          p2 = center + offset;
+          p1 = center + offset * k.toDouble();
+          p2 = center - offset * k.toDouble();
         }
         int iAccent;
         if (istart == 0.5) {
@@ -186,13 +198,17 @@ class MapUtils {
             iAccent == numberOfPositions - 1,
             segment,
             iAccent * 1.0,
-            iAccent / numberOfPositions * 100,
+            (pi * 2 - (angle - centerAngle) / maxAngle * (clockwise ? 1 : -1)),
             j,
+            clockwise ? k : -k,
+            clockwise,
+            (startAngle2 + pi * 2) % (pi * 2),
+            radius,
             true,
             currentPositionType,
             curvature: numberOfPositions,
             fieldValue: fieldValue,
-            sprint: i < 1 ? nextSprint : null));
+            sprint: iAccent < 1 ? nextSprint : null));
       }
     }
     return positions;
@@ -234,12 +250,17 @@ class MapUtils {
       List<Position> nextSegment = segments.firstWhere(
           (a) =>
               a.first.segment == segmentId + 1 ||
-              (a.first.segment == segmentId + 2 && a.first.sprint != null),
+              (a.firstWhere(
+                      (element) =>
+                          element.segment == segmentId + 2 &&
+                          element.sprint != null,
+                      orElse: () => null) !=
+                  null),
           orElse: () => null);
       List<Position> nextSegmentPositions = new List();
       if (nextSegment != null) {
         nextSegmentPositions =
-            nextSegment.where((position) => position.i == 0).toList();
+            nextSegment.where((position) => position.i < 1).toList();
       }
       segment.forEach((position) {
         if (position.isLast) {
@@ -297,7 +318,7 @@ class MapUtils {
     if (from.sprint != null && currentSprints.indexOf(from.sprint) == -1) {
       currentSprints.add(from.sprint);
     }
-    if (to.segment - from.segment >= 2) {
+    if (to.segment - from.segment >= 1) {
       return getSprintsBetween(from.connections.first, to, currentSprints);
     }
     return currentSprints;
@@ -551,25 +572,13 @@ class MapUtils {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
     newMap.addStraight(4, 4);
     newMap.addSprint(4, SprintType.START);
-    newMap.addStraight(5, 4);
-    newMap.addCorner(pi / 2, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(pi, 4, 8);
-    newMap.addSprint(4, SprintType.SPRINT);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi / 4, 4, 10);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addSprint(4, SprintType.SPRINT);
-    newMap.addCorner(pi, 4, 8);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi / 4, 4, 10);
-    newMap.addStraight(4, 4);
+    newMap.addCorner(-pi / 2, 4, 8);
+    newMap.addCorner(pi / 3, 4, 8);
+    newMap.addCorner(-pi / 2, 4, 8);
+    newMap.addCorner(pi / 2, 4, 10);
+    newMap.addCorner(pi / 2, 4, 12);
+    newMap.addCorner(pi / 2, 4, 14);
+    newMap.addCorner(pi / 2, 4, 16);
     newMap.addSprint(4, SprintType.FINISH);
     newMap.addStraight(8, 4);
 

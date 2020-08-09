@@ -21,8 +21,11 @@ class Dice {
   Dice(this.listener) {
     for (int j = 0; j < 9; j++) {
       for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
-        sprites.add(Sprite('dice.png',
-            x: 37.5 * i, y: 37.5 * j, height: 37, width: 37));
+        sprites.add(Sprite('dice2.png',
+            x: 37.5 * i * 4,
+            y: 37.5 * j * 4,
+            height: 37 * 4.0,
+            width: 37 * 4.0));
       }
     }
     List<int> indexes = [0, 49, 53, 57, 61, 113];
@@ -38,7 +41,7 @@ class Dice {
       canvas.save();
       canvas.translate((xOffset + 1) * 100.0, 100);
       canvas.rotate(angle);
-      canvas.scale(scale);
+      canvas.scale(scale / 4);
       sprites[currentIndex].renderCentered(canvas, Position(0, 0));
       canvas.restore();
     }

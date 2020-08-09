@@ -1,3 +1,4 @@
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
@@ -13,13 +14,16 @@ import '../gameManager.dart';
 class MainMenu implements BaseView {
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
+
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundHeader;
 
   final Function navigate;
 
-  MainMenu(this.navigate);
+  MainMenu(this.spriteManager, this.navigate);
 
   void onAttach() {
     buttons = [];
@@ -29,25 +33,28 @@ class MainMenu implements BaseView {
     double dy = 54;
     createButtons(dy);
 
-    buttonBackground = Sprite('options_back_01.png');
-    backgroundHeader = Sprite('back_text_01.png');
+    buttonBackground = spriteManager.getSprite('options_back_01.png');
+    backgroundHeader = spriteManager.getSprite('back_text_01.png');
   }
 
   createButtons(double buttonSize) {
     buttons = [];
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
       'Career',
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
       'Single race',
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.TOUR_SELECT_MENU)},

@@ -1,5 +1,6 @@
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/playSettings.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/mapUtils.dart';
@@ -16,6 +17,8 @@ import '../gameManager.dart';
 class TourInBetweenRacesMenu implements BaseView {
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundHeader;
@@ -24,7 +27,7 @@ class TourInBetweenRacesMenu implements BaseView {
 
   final Function navigate;
 
-  TourInBetweenRacesMenu(this.navigate);
+  TourInBetweenRacesMenu(this.spriteManager, this.navigate);
 
   void onAttach({ActiveTour activeTour}) {
     if (activeTour != null) {
@@ -36,24 +39,27 @@ class TourInBetweenRacesMenu implements BaseView {
     double dy = 54;
     createButtons(dy);
 
-    buttonBackground = Sprite('back_results.png');
-    backgroundHeader = Sprite('back_text_02.png');
-    backText = Sprite('yellow_button_01.png');
+    buttonBackground = spriteManager.getSprite('back_results.png');
+    backgroundHeader = spriteManager.getSprite('back_text_02.png');
+    backText = spriteManager.getSprite('yellow_button_01.png');
   }
 
   createButtons(double buttonSize) {
     buttons = [];
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 9 * 3.5, 4.7 * buttonSize),
       ButtonType.ICON_TRASH,
       () => {navigate(GameManagerState.MAIN_MENU, deleteActiveTour: true)},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 9 * 4.5, 4.7 * buttonSize),
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 9 * 5.5, 4.7 * buttonSize),
       ButtonType.ICON_PLAY,
       () => {navigate(GameManagerState.PLAYING)},

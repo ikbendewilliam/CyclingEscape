@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/playSettings.dart';
 import 'package:CyclingEscape/components/data/results.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
+import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:CyclingEscape/views/menus/pauseMenu.dart';
 import 'package:CyclingEscape/views/menus/tourInBetweenRaces.dart';
@@ -12,6 +14,7 @@ import 'package:CyclingEscape/views/resultsView.dart';
 import 'package:flame/game/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'baseView.dart';
 import 'cyclingView.dart';
@@ -20,27 +23,32 @@ import 'menus/mainMenu.dart';
 
 class GameManager extends Game with ScaleDetector, TapDetector {
   int playerTeam;
+  bool loading = true;
   Size currentSize;
+  double loadingPercentage = 0;
   MainMenu mainmenu;
   BaseView currentView;
   PauseMenu pauseMenu;
+  ActiveTour activeTour;
   CyclingView cyclingView;
   ResultsView resultsView;
+  SpriteManager spriteManager;
   MenuBackground menuBackground;
+  TourSelectMenu tourSelectMenu;
   GameManagerState state;
   CourseSelectMenu courseSelectMenu;
   TourInBetweenRacesMenu tourInBetweenRacesMenu;
-  TourSelectMenu tourSelectMenu;
-  ActiveTour activeTour;
 
   GameManager() {
-    cyclingView = new CyclingView(cyclingEnded, menuPressed);
-    resultsView = new ResultsView(menuPressed);
-    mainmenu = new MainMenu(menuPressed);
-    pauseMenu = new PauseMenu(menuPressed);
-    courseSelectMenu = new CourseSelectMenu(menuPressed);
-    tourInBetweenRacesMenu = new TourInBetweenRacesMenu(menuPressed);
-    tourSelectMenu = new TourSelectMenu(menuPressed);
+    spriteManager = new SpriteManager();
+    cyclingView = new CyclingView(spriteManager, cyclingEnded, menuPressed);
+    resultsView = new ResultsView(spriteManager, menuPressed);
+    mainmenu = new MainMenu(spriteManager, menuPressed);
+    pauseMenu = new PauseMenu(spriteManager, menuPressed);
+    courseSelectMenu = new CourseSelectMenu(spriteManager, menuPressed);
+    tourInBetweenRacesMenu =
+        new TourInBetweenRacesMenu(spriteManager, menuPressed);
+    tourSelectMenu = new TourSelectMenu(spriteManager, menuPressed);
     currentView = mainmenu;
     state = GameManagerState.MAIN_MENU;
   }
@@ -48,6 +56,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   @override
   void onAttach() {
     super.onAttach();
+    spriteManager.loadSprites();
     cyclingView.onAttach();
     resultsView.onAttach();
     mainmenu.onAttach();
@@ -62,42 +71,72 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   @override
   void render(Canvas canvas) {
-    switch (state) {
-      case GameManagerState.MAIN_MENU:
-      case GameManagerState.RESULTS:
-      case GameManagerState.COURSE_SELECT_MENU:
-      case GameManagerState.TOUR_SELECT_MENU:
-      case GameManagerState.TOUR_BETWEEN_RACES:
-        menuBackground.render(canvas, currentSize);
-        break;
-      case GameManagerState.PAUSED:
-        cyclingView.render(canvas);
-        break;
-      default:
-      // No special rendering
+    if (loading) {
+      Paint bgPaint = Paint()..color = Colors.green[200];
+      canvas.drawRect(
+          Rect.fromLTRB(0, 0, currentSize.width, currentSize.height), bgPaint);
+      TextSpan span = new TextSpan(
+          style: new TextStyle(
+              color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
+          text: 'Loading... ${loadingPercentage.toStringAsFixed(2)}%');
+      Offset position = Offset(currentSize.width / 2, currentSize.height / 2);
+      CanvasUtils.drawText(canvas, position, 0, span);
+    } else {
+      switch (state) {
+        case GameManagerState.MAIN_MENU:
+        case GameManagerState.RESULTS:
+        case GameManagerState.COURSE_SELECT_MENU:
+        case GameManagerState.TOUR_SELECT_MENU:
+        case GameManagerState.TOUR_BETWEEN_RACES:
+          menuBackground.render(canvas, currentSize);
+          break;
+        case GameManagerState.PAUSED:
+          cyclingView.render(canvas);
+          break;
+        default:
+        // No special rendering
+      }
+      currentView.render(canvas);
     }
-    currentView.render(canvas);
+  }
+
+  loadingCheck() {
+    loadingPercentage = this.spriteManager.checkLoadingPercentage();
+    if (loadingPercentage >= 99.999) {
+      loading = false;
+    }
   }
 
   @override
   void update(double t) {
-    currentView.update(t);
-    if (state == GameManagerState.MAIN_MENU ||
-        state == GameManagerState.COURSE_SELECT_MENU ||
-        state == GameManagerState.TOUR_SELECT_MENU ||
-        state == GameManagerState.TOUR_BETWEEN_RACES ||
-        state == GameManagerState.RESULTS) {
-      menuBackground.update(t);
+    if (loading) {
+      loadingCheck();
+      return;
+    } else {
+      currentView.update(t);
+      if (state == GameManagerState.MAIN_MENU ||
+          state == GameManagerState.COURSE_SELECT_MENU ||
+          state == GameManagerState.TOUR_SELECT_MENU ||
+          state == GameManagerState.TOUR_BETWEEN_RACES ||
+          state == GameManagerState.RESULTS) {
+        menuBackground.update(t);
+      }
     }
   }
 
   @override
   void onTapUp(TapUpDetails details) {
+    if (loading) {
+      return;
+    }
     currentView.onTapUp(details);
   }
 
   @override
   void onTapDown(TapDownDetails details) {
+    if (loading) {
+      return;
+    }
     currentView.onTapDown(details);
   }
 
@@ -109,11 +148,17 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   @override
   void onScaleStart(ScaleStartDetails details) {
+    if (loading) {
+      return;
+    }
     currentView.onScaleStart(details);
   }
 
   @override
   void onScaleUpdate(ScaleUpdateDetails details) {
+    if (loading) {
+      return;
+    }
     currentView.onScaleUpdate(details);
   }
 

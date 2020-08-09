@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
@@ -14,9 +15,12 @@ import '../baseView.dart';
 import '../gameManager.dart';
 
 class TourSelectMenu implements BaseView {
-  int selectedColor = 0;
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
+
+  int selectedColor = 0;
   Tour selectedTour;
   List<Tour> tours = [];
   List<Button> buttons = [];
@@ -27,7 +31,7 @@ class TourSelectMenu implements BaseView {
 
   final Function navigate;
 
-  TourSelectMenu(this.navigate);
+  TourSelectMenu(this.spriteManager, this.navigate);
 
   void onAttach() {
     buttons = [];
@@ -37,10 +41,10 @@ class TourSelectMenu implements BaseView {
     double dy = 54;
     createButtons(dy);
 
-    buttonBackground = Sprite('back_tour.png');
-    backgroundHeader = Sprite('back_text_01.png');
-    backText = Sprite('yellow_button_01.png');
-    backgroundTour = Sprite('options_back_01.png');
+    buttonBackground = spriteManager.getSprite('back_tour.png');
+    backgroundHeader = spriteManager.getSprite('back_text_01.png');
+    backText = spriteManager.getSprite('yellow_button_01.png');
+    backgroundTour = spriteManager.getSprite('options_back_01.png');
 
     generateTours();
   }
@@ -75,16 +79,19 @@ class TourSelectMenu implements BaseView {
 
   createButtons(double buttonSize) {
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 7 * 3, 5.25 * buttonSize),
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 5.25 * buttonSize),
       ButtonType.ICON_RELOAD,
       () => {generateTours()},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 7 * 4, 5.25 * buttonSize),
       ButtonType.ICON_PLAY,
       () => {
@@ -95,11 +102,13 @@ class TourSelectMenu implements BaseView {
       },
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 7 * 3, 4.3 * buttonSize),
       ButtonType.ICON_SMALL_LEFT,
       () => {selectedColor = (selectedColor - 1 + 8) % 8},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 7 * 4, 4.3 * buttonSize),
       ButtonType.ICON_SMALL_RIGHT,
       () => {selectedColor = (selectedColor + 1) % 8},

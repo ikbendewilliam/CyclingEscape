@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/resultData.dart';
 import 'package:CyclingEscape/components/data/results.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
@@ -16,9 +17,12 @@ import 'gameManager.dart';
 class ResultsView implements BaseView {
   final Function closeCallback;
 
-  int cyclistNumber;
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
+
+  int cyclistNumber;
   bool lastResultsAdded = false;
   Sprite background;
   Sprite backgroundHeader;
@@ -40,7 +44,7 @@ class ResultsView implements BaseView {
   List<Sprint> sprints = [];
   List<Results> results = [];
 
-  ResultsView(this.closeCallback);
+  ResultsView(this.spriteManager, this.closeCallback);
 
   calculateResults() {
     if (lastResultsAdded) {
@@ -112,7 +116,7 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     youngResults.data.sort((a, b) => a.time - b.time);
-    if (youngResults.data.length > 0) {
+    if (youngResults.data.length > 0 && previousResults != null) {
       previousResults.whiteJersey = youngResults.data.first.number;
     }
     this.results.add(youngResults);
@@ -123,7 +127,7 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     pointsResults.data.sort((a, b) => b.points - a.points);
-    if (youngResults.data.length > 0) {
+    if (youngResults.data.length > 0 && previousResults != null) {
       previousResults.greenJersey = pointsResults.data.first.number;
     }
     this.results.add(pointsResults);
@@ -134,7 +138,7 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     mountainResults.data.sort((a, b) => b.mountain - a.mountain);
-    if (mountainResults.data.length > 0) {
+    if (mountainResults.data.length > 0 && previousResults != null) {
       previousResults.bouledJersey = mountainResults.data.first.number;
     }
     this.results.add(mountainResults);
@@ -166,18 +170,18 @@ class ResultsView implements BaseView {
     if (screenSize == null) {
       screenSize = Size(1, 1);
     }
-    background = Sprite('back_results.png');
-    backgroundHeader = Sprite('back_text_01.png');
-    backgroundCyclist = Sprite('back_text_04.png');
-    backgroundSlider = Sprite('back_slider.png');
-    sliderFront = Sprite('slider_front.png');
-    iconMountain = Sprite('icon_mountain.png');
-    iconTeam = Sprite('icon_team.png');
-    iconTime = Sprite('icon_time.png');
-    iconPoints = Sprite('icon_points.png');
-    iconRank = Sprite('icon_rank.png');
-    iconNumber = Sprite('icon_number.png');
-    iconYoung = Sprite('icon_young.png');
+    background = this.spriteManager.getSprite('back_results.png');
+    backgroundHeader = this.spriteManager.getSprite('back_text_01.png');
+    backgroundCyclist = this.spriteManager.getSprite('back_text_04.png');
+    backgroundSlider = this.spriteManager.getSprite('back_slider.png');
+    sliderFront = this.spriteManager.getSprite('slider_front.png');
+    iconMountain = this.spriteManager.getSprite('icon_mountain.png');
+    iconTeam = this.spriteManager.getSprite('icon_team.png');
+    iconTime = this.spriteManager.getSprite('icon_time.png');
+    iconPoints = this.spriteManager.getSprite('icon_points.png');
+    iconRank = this.spriteManager.getSprite('icon_rank.png');
+    iconNumber = this.spriteManager.getSprite('icon_number.png');
+    iconYoung = this.spriteManager.getSprite('icon_young.png');
     type = ResultsType.RACE;
 
     calculateResults();
@@ -252,11 +256,18 @@ class ResultsView implements BaseView {
 
   createButtons() {
     buttons = [];
-    buttons.add(Button(Offset(screenSize.width / 5, screenSize.height / 2),
-        ButtonType.ICON_LEFT, () => {decreaseResultType()}));
-    buttons.add(Button(Offset(screenSize.width * 4 / 5, screenSize.height / 2),
-        ButtonType.ICON_RIGHT, () => {increaseResultType()}));
     buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width / 5, screenSize.height / 2),
+        ButtonType.ICON_LEFT,
+        () => {decreaseResultType()}));
+    buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width * 4 / 5, screenSize.height / 2),
+        ButtonType.ICON_RIGHT,
+        () => {increaseResultType()}));
+    buttons.add(Button(
+        this.spriteManager,
         Offset(screenSize.width * 3.1 / 4, screenSize.height / 6),
         ButtonType.ICON_NO,
         () => closeCallback(GameManagerState.MAIN_MENU,

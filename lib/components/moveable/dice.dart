@@ -1,11 +1,14 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
 class Dice {
-  final List<Sprite> sprites = [];
+  List<Sprite> sprites = [];
+  final SpriteManager spriteManager;
+
   int diceValue;
   int direction = 1;
   int currentIndex;
@@ -18,16 +21,8 @@ class Dice {
 
   final DiceListener listener;
 
-  Dice(this.listener) {
-    for (int j = 0; j < 9; j++) {
-      for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
-        sprites.add(Sprite('dice2.png',
-            x: 37.5 * i * 4,
-            y: 37.5 * j * 4,
-            height: 37 * 4.0,
-            width: 37 * 4.0));
-      }
-    }
+  Dice(this.spriteManager, this.listener) {
+    sprites = this.spriteManager.getDiceSprites();
     List<int> indexes = [0, 49, 53, 57, 61, 113];
     currentIndex = indexes[Random().nextInt(indexes.length)];
   }

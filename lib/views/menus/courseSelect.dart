@@ -1,4 +1,5 @@
 import 'package:CyclingEscape/components/data/playSettings.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
@@ -15,6 +16,9 @@ import '../gameManager.dart';
 class CourseSelectMenu implements BaseView {
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
+
   int teams = 4;
   int ridersPerTeam = 4;
   int selectedColor = 0;
@@ -27,7 +31,7 @@ class CourseSelectMenu implements BaseView {
 
   final Function navigate;
 
-  CourseSelectMenu(this.navigate);
+  CourseSelectMenu(this.spriteManager, this.navigate);
 
   void onAttach() {
     buttons = [];
@@ -37,13 +41,14 @@ class CourseSelectMenu implements BaseView {
     double dy = 54;
     createButtons(dy);
 
-    buttonBackground = Sprite('options_back_01.png');
-    backgroundHeader = Sprite('back_text_01.png');
-    backText = Sprite('yellow_button_01.png');
+    buttonBackground = spriteManager.getSprite('options_back_01.png');
+    backgroundHeader = spriteManager.getSprite('back_text_01.png');
+    backText = spriteManager.getSprite('yellow_button_01.png');
   }
 
   createButtons(double buttonSize) {
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 - buttonSize * 2.25,
           2.7 * buttonSize - buttonSize * 1.1),
       ButtonType.ICON_MINUS,
@@ -53,6 +58,7 @@ class CourseSelectMenu implements BaseView {
       },
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 + buttonSize * 2.25,
           2.7 * buttonSize - buttonSize * 1.1),
       ButtonType.ICON_PLUS,
@@ -62,6 +68,7 @@ class CourseSelectMenu implements BaseView {
       },
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize),
       ButtonType.ICON_MINUS,
       () {
@@ -70,6 +77,7 @@ class CourseSelectMenu implements BaseView {
       },
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize),
       ButtonType.ICON_PLUS,
       () {
@@ -78,35 +86,41 @@ class CourseSelectMenu implements BaseView {
       },
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 - buttonSize * 2.25,
           2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_MINUS,
       () => {decreaseType()},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 + buttonSize * 2.25,
           2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_PLUS,
       () => {increaseType()},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 - buttonSize * 2.25,
           2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_MINUS,
       () => {decreaseLength()},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2 + buttonSize * 2.25,
           2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_PLUS,
       () => {increaseLength()},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 9 * 3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 9 * 6, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_PLAY,
       () => {
@@ -117,11 +131,13 @@ class CourseSelectMenu implements BaseView {
       },
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 7 * 3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_SMALL_LEFT,
       () => {selectedColor = (selectedColor - 1 + 8) % 8},
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 7 * 4, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_SMALL_RIGHT,
       () => {selectedColor = (selectedColor + 1) % 8},

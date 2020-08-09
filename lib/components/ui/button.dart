@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/mapUtils.dart';
 import 'package:flame/position.dart';
@@ -11,6 +12,7 @@ class Button {
   final String text;
   final ButtonType type;
   final Function onPress;
+  final SpriteManager spriteManager;
 
   bool isPressed = false;
   Offset center;
@@ -19,96 +21,97 @@ class Button {
   Sprite spritePressed;
   double buttonSize = 1;
 
-  Button(this.center, this.type, this.onPress, [this.text]) {
+  Button(this.spriteManager, this.center, this.type, this.onPress,
+      [this.text]) {
     switch (this.type) {
       case ButtonType.BAR_GREEN:
-        sprite = Sprite('green_button_01.png');
-        spritePressed = Sprite('green_button_02.png');
+        sprite = this.spriteManager.getSprite('green_button_01.png');
+        spritePressed = this.spriteManager.getSprite('green_button_02.png');
         break;
       case ButtonType.BAR_YELLOW:
-        sprite = Sprite('yellow_button_01.png');
-        spritePressed = Sprite('yellow_button_02.png');
+        sprite = this.spriteManager.getSprite('yellow_button_01.png');
+        spritePressed = this.spriteManager.getSprite('yellow_button_02.png');
         break;
       case ButtonType.BAR_BLACK:
-        sprite = Sprite('black_button_01.png');
-        spritePressed = Sprite('black_button_02.png');
+        sprite = this.spriteManager.getSprite('black_button_01.png');
+        spritePressed = this.spriteManager.getSprite('black_button_02.png');
         break;
       case ButtonType.BAR_BLUE:
-        sprite = Sprite('blue_button_01.png');
-        spritePressed = Sprite('blue_button_02.png');
+        sprite = this.spriteManager.getSprite('blue_button_01.png');
+        spritePressed = this.spriteManager.getSprite('blue_button_02.png');
         break;
       case ButtonType.BAR_RED:
-        sprite = Sprite('red_button_01.png');
-        spritePressed = Sprite('red_button_02.png');
+        sprite = this.spriteManager.getSprite('red_button_01.png');
+        spritePressed = this.spriteManager.getSprite('red_button_02.png');
         break;
       case ButtonType.ICON_LEFT:
-        spriteBackground = Sprite('left_arrow_01.png');
-        sprite = Sprite('left_arrow_02.png');
+        spriteBackground = this.spriteManager.getSprite('left_arrow_01.png');
+        sprite = this.spriteManager.getSprite('left_arrow_02.png');
         spritePressed = sprite;
         break;
       case ButtonType.ICON_RIGHT:
-        spriteBackground = Sprite('right_arrow_01.png');
-        sprite = Sprite('right_arrow_02.png');
+        spriteBackground = this.spriteManager.getSprite('right_arrow_01.png');
+        sprite = this.spriteManager.getSprite('right_arrow_02.png');
         spritePressed = sprite;
         break;
       case ButtonType.ICON_SMALL_LEFT:
-        sprite = Sprite('left_arrow_02.png');
+        sprite = this.spriteManager.getSprite('left_arrow_02.png');
         spritePressed = sprite;
         break;
       case ButtonType.ICON_SMALL_RIGHT:
-        sprite = Sprite('right_arrow_02.png');
+        sprite = this.spriteManager.getSprite('right_arrow_02.png');
         spritePressed = sprite;
         break;
       case ButtonType.ICON_PAUSE:
-        sprite = Sprite('icon_pause.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_pause.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_PLAY:
-        sprite = Sprite('icon_play.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_play.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_PLUS:
-        sprite = Sprite('icon_plus.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_plus.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_PLUS_DISABLED:
-        sprite = Sprite('icon_plus_disabled.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_plus_disabled.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_MINUS:
-        sprite = Sprite('icon_minus.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_minus.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_MINUS_DISABLED:
-        sprite = Sprite('icon_minus_disabled.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_minus_disabled.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_SETTINGS:
-        sprite = Sprite('icon_settings.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_settings.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_YES:
-        sprite = Sprite('icon_yes.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_yes.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_NO:
-        sprite = Sprite('icon_no.png');
-        spritePressed = Sprite('icon_pressed.png');
+        sprite = this.spriteManager.getSprite('icon_no.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
       case ButtonType.ICON_RELOAD:
-        sprite = Sprite('icon_reload.png');
+        sprite = this.spriteManager.getSprite('icon_reload.png');
         spritePressed = sprite;
         break;
       case ButtonType.ICON_TRASH:
-        sprite = Sprite('icon_trash.png');
+        sprite = this.spriteManager.getSprite('icon_trash.png');
         spritePressed = sprite;
         break;
       case ButtonType.SWITCH_BUTTON_OFF:
-        sprite = Sprite('switch_button_off.png');
+        sprite = this.spriteManager.getSprite('switch_button_off.png');
         spritePressed = sprite;
         break;
       case ButtonType.SWITCH_BUTTON_ON:
-        sprite = Sprite('switch_button_on.png');
+        sprite = this.spriteManager.getSprite('switch_button_on.png');
         spritePressed = sprite;
         break;
     }

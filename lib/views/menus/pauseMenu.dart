@@ -1,3 +1,4 @@
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:flame/position.dart';
@@ -12,13 +13,16 @@ import '../gameManager.dart';
 class PauseMenu implements BaseView {
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
+
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundHeader;
 
   final Function navigate;
 
-  PauseMenu(this.navigate);
+  PauseMenu(this.spriteManager, this.navigate);
 
   void onAttach() {
     buttons = [];
@@ -28,24 +32,27 @@ class PauseMenu implements BaseView {
     double dy = 54;
     createButtons(dy);
 
-    buttonBackground = Sprite('options_back_01.png');
-    backgroundHeader = Sprite('back_text_01.png');
+    buttonBackground = spriteManager.getSprite('options_back_01.png');
+    backgroundHeader = spriteManager.getSprite('back_text_01.png');
   }
 
   createButtons(double buttonSize) {
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.PLAYING, continueing: true)},
       'Continue',
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.PLAYING)},
       'Save',
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.MAIN_MENU)},

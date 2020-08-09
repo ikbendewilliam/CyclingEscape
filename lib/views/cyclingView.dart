@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/cyclistPlace.dart';
 import 'package:CyclingEscape/components/data/playSettings.dart';
-import 'package:CyclingEscape/components/data/resultData.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
@@ -27,7 +27,6 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   int currentTurn = -1;
   bool grid = false;
   bool ended = false;
-  bool loading = true;
   bool autoFollow = false;
   Dice dice, dice2;
   Size worldSize = Size(1, 1);
@@ -53,13 +52,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   List<Notification> notifications = [];
   @override
   Size screenSize = Size(1, 1);
+  @override
+  final SpriteManager spriteManager;
 
   final Function cyclingEnded;
   final Function navigate;
-  CyclingView(this.cyclingEnded, this.navigate);
+  CyclingView(this.spriteManager, this.cyclingEnded, this.navigate);
 
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
-    loading = true;
     if (playSettings != null) {
       this.map = MapUtils.generateMap(playSettings, this);
       // this.map = MapUtils.generateFlatMap(this);
@@ -176,15 +176,16 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       this.handleInBetweenTurns();
       this.processGameState(GameState.GAME_SELECT_NEXT);
       if (backgroundNotification == null) {
-        backgroundNotification = Sprite('back_text_04.png');
+        backgroundNotification =
+            this.spriteManager.getSprite('back_text_04.png');
       }
       createButtons(screenSize != null ? screenSize.height / 7 : 10);
     }
     if (grass == null) {
-      grass = Sprite('environment/grass.png');
+      grass = this.spriteManager.getSprite('environment/grass.png');
     }
     if (grass2 == null) {
-      grass2 = Sprite('environment/grass2.png');
+      grass2 = this.spriteManager.getSprite('environment/grass2.png');
     }
   }
 
@@ -274,29 +275,6 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           Offset(screenSize.width - tileSize * 1.7, tileSize * (i / 2 + 0.1));
       CanvasUtils.drawText(canvas, position, 0, span);
     });
-
-    if (loading) {
-      if (teams != null &&
-          teams.length > 0 &&
-          teams.first.sprites != null &&
-          teams.first.sprites.length > 0) {
-        loading = false;
-        teams.first.sprites.forEach((element) {
-          if (!element.loaded()) {
-            loading = true;
-          }
-        });
-      }
-      Paint bgPaint = Paint()..color = Colors.green[200];
-      canvas.drawRect(
-          Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), bgPaint);
-      TextSpan span = new TextSpan(
-          style: new TextStyle(
-              color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-          text: 'Loading...');
-      Offset position = Offset(screenSize.width / 2, screenSize.height / 2);
-      CanvasUtils.drawText(canvas, position, 0, span);
-    }
   }
 
   void update(double t) {
@@ -336,7 +314,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   createButtons(double buttonSize) {
     buttons = [];
-    buttons.add(Button(Offset(buttonSize, buttonSize) / 2,
+    buttons.add(Button(this.spriteManager, Offset(buttonSize, buttonSize) / 2,
         ButtonType.ICON_PAUSE, () => {navigate(GameManagerState.PAUSED)}));
   }
 
@@ -398,7 +376,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             follow();
             processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
           } else if (placeBefore.cyclist.team.isPlayer) {
-            followSelect = FollowSelect((FollowType returnValue) {
+            followSelect =
+                FollowSelect(this.spriteManager, (FollowType returnValue) {
               switch (returnValue) {
                 case FollowType.AUTO_FOLLOW:
                   this.autoFollow = true;
@@ -599,8 +578,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           this.selectNextCyclist();
         }
       }
-      this.dice = Dice(this);
-      this.dice2 = Dice(this);
+      this.dice = Dice(this.spriteManager, this);
+      this.dice2 = Dice(this.spriteManager, this);
       if (screenSize != null) {
         offset = -((cyclistSelected.p1 + cyclistSelected.p2) / 2 * tileSize -
             Offset(screenSize.width, screenSize.height) / 2 / zoom);

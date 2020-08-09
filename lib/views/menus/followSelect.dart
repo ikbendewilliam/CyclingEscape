@@ -1,3 +1,4 @@
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:flame/position.dart';
@@ -11,6 +12,9 @@ import '../baseView.dart';
 class FollowSelect implements BaseView {
   @override
   Size screenSize;
+  @override
+  final SpriteManager spriteManager;
+
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundText;
@@ -18,7 +22,7 @@ class FollowSelect implements BaseView {
   final Function returnValue;
   final int minThrow;
 
-  FollowSelect(this.returnValue, this.minThrow);
+  FollowSelect(this.spriteManager, this.returnValue, this.minThrow);
 
   void onAttach() {
     buttons = [];
@@ -28,24 +32,27 @@ class FollowSelect implements BaseView {
     double dy = 54;
     createButtons(dy);
 
-    buttonBackground = Sprite('options_back_01.png');
-    backgroundText = Sprite('back_text_04.png');
+    buttonBackground = this.spriteManager.getSprite('options_back_01.png');
+    backgroundText = this.spriteManager.getSprite('back_text_04.png');
   }
 
   createButtons(double buttonSize) {
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {returnValue(FollowType.FOLLOW)},
       'Follow',
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.LEAVE)},
       'Leave',
     ));
     buttons.add(Button(
+      this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.AUTO_FOLLOW)},

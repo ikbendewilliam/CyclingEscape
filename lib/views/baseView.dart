@@ -1,9 +1,13 @@
 import 'dart:ui';
 
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class BaseView {
   Size screenSize;
+  final SpriteManager spriteManager;
+
+  BaseView(this.spriteManager);
 
   void onAttach();
   void render(Canvas canvas);

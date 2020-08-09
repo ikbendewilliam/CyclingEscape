@@ -198,7 +198,7 @@ class MapUtils {
             iAccent == numberOfPositions - 1,
             segment,
             iAccent * 1.0,
-            iAccent / numberOfPositions * 100,
+            (pi * 2 - (angle - centerAngle) / maxAngle * (clockwise ? 1 : -1)),
             j,
             clockwise ? k : -k,
             clockwise,
@@ -208,7 +208,7 @@ class MapUtils {
             currentPositionType,
             curvature: numberOfPositions,
             fieldValue: fieldValue,
-            sprint: i < 1 ? nextSprint : null));
+            sprint: iAccent < 1 ? nextSprint : null));
       }
     }
     return positions;
@@ -250,12 +250,17 @@ class MapUtils {
       List<Position> nextSegment = segments.firstWhere(
           (a) =>
               a.first.segment == segmentId + 1 ||
-              (a.first.segment == segmentId + 2 && a.first.sprint != null),
+              (a.firstWhere(
+                      (element) =>
+                          element.segment == segmentId + 2 &&
+                          element.sprint != null,
+                      orElse: () => null) !=
+                  null),
           orElse: () => null);
       List<Position> nextSegmentPositions = new List();
       if (nextSegment != null) {
         nextSegmentPositions =
-            nextSegment.where((position) => position.i == 0).toList();
+            nextSegment.where((position) => position.i < 1).toList();
       }
       segment.forEach((position) {
         if (position.isLast) {
@@ -313,7 +318,7 @@ class MapUtils {
     if (from.sprint != null && currentSprints.indexOf(from.sprint) == -1) {
       currentSprints.add(from.sprint);
     }
-    if (to.segment - from.segment >= 2) {
+    if (to.segment - from.segment >= 1) {
       return getSprintsBetween(from.connections.first, to, currentSprints);
     }
     return currentSprints;

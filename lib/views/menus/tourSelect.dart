@@ -48,6 +48,7 @@ class TourSelectMenu implements BaseView {
   generateTours() {
     tours = [];
     generateTour();
+    // tours.add(Tour(3, 3, 5, MapType.HILLS, MapLength.SHORT));
     generateTour();
     generateTour();
     generateTour();

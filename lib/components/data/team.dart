@@ -6,35 +6,48 @@ class Team {
   final bool isPlayer;
   final int numberStart;
   List<Cyclist> cyclists = [];
+  List<Sprite> sprites = [];
 
-  Team(this.isPlayer, this.numberStart);
+  Team(this.isPlayer, this.numberStart) {
+    if (sprites.length == 0) {
+      sprites.add(Sprite('cyclists/rood.png'));
+      sprites.add(Sprite('cyclists/rood2.png'));
+      sprites.add(Sprite('cyclists/blauw.png'));
+      sprites.add(Sprite('cyclists/blauw2.png'));
+      sprites.add(Sprite('cyclists/zwart.png'));
+      sprites.add(Sprite('cyclists/zwart2.png'));
+      sprites.add(Sprite('cyclists/groen.png'));
+      sprites.add(Sprite('cyclists/groen2.png'));
+      sprites.add(Sprite('cyclists/bruin.png'));
+      sprites.add(Sprite('cyclists/bruin2.png'));
+      sprites.add(Sprite('cyclists/paars.png'));
+      sprites.add(Sprite('cyclists/paars2.png'));
+      sprites.add(Sprite('cyclists/grijs.png'));
+      sprites.add(Sprite('cyclists/grijs2.png'));
+      sprites.add(Sprite('cyclists/limoen.png'));
+      sprites.add(Sprite('cyclists/limoen2.png'));
+    }
+  }
 
   static Color getColorFromId(id) {
     switch (id) {
-      case 0:
-        return Colors.red;
-        break;
       case 1:
         return Colors.blue;
-        break;
       case 2:
         return Colors.black;
-        break;
       case 3:
         return Colors.green;
-        break;
       case 4:
         return Colors.brown;
-        break;
       case 5:
         return Colors.purple;
-        break;
       case 6:
         return Colors.grey;
-        break;
       case 7:
         return Colors.lime;
-        break;
+      case 0:
+      default:
+        return Colors.red;
     }
   }
 
@@ -42,34 +55,24 @@ class Team {
     return getColorFromId(numberStart);
   }
 
-  Sprite getSprite(versie2) {
+  Color getTextColor() {
     switch (numberStart) {
       case 0:
-        return Sprite('cyclists/rood${versie2 ? '2' : ''}.png');
-        break;
       case 1:
-        return Sprite('cyclists/blauw${versie2 ? '2' : ''}.png');
-        break;
       case 2:
-        return Sprite('cyclists/zwart${versie2 ? '2' : ''}.png');
-        break;
       case 3:
-        return Sprite('cyclists/groen${versie2 ? '2' : ''}.png');
-        break;
       case 4:
-        return Sprite('cyclists/bruin${versie2 ? '2' : ''}.png');
-        break;
       case 5:
-        return Sprite('cyclists/paars${versie2 ? '2' : ''}.png');
-        break;
+        return Colors.white;
       case 6:
-        return Sprite('cyclists/grijs${versie2 ? '2' : ''}.png');
-        break;
       case 7:
-        return Sprite('cyclists/limoen${versie2 ? '2' : ''}.png');
-        break;
       default:
-        return null;
+        return Colors.black;
     }
+  }
+
+  Sprite getSprite(versie2) {
+    print({numberStart, numberStart * 2, numberStart * 2 + (versie2 ? 1 : 0)});
+    return sprites[numberStart * 2 + (versie2 ? 1 : 0)];
   }
 }

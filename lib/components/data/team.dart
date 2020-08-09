@@ -1,4 +1,5 @@
 import 'package:CyclingEscape/components/moveable/cyclist.dart';
+import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 class Team {
@@ -39,5 +40,36 @@ class Team {
 
   Color getColor() {
     return getColorFromId(numberStart);
+  }
+
+  Sprite getSprite(versie2) {
+    switch (numberStart) {
+      case 0:
+        return Sprite('cyclists/rood${versie2 ? '2' : ''}.png');
+        break;
+      case 1:
+        return Sprite('cyclists/blauw${versie2 ? '2' : ''}.png');
+        break;
+      case 2:
+        return Sprite('cyclists/zwart${versie2 ? '2' : ''}.png');
+        break;
+      case 3:
+        return Sprite('cyclists/groen${versie2 ? '2' : ''}.png');
+        break;
+      case 4:
+        return Sprite('cyclists/bruin${versie2 ? '2' : ''}.png');
+        break;
+      case 5:
+        return Sprite('cyclists/paars${versie2 ? '2' : ''}.png');
+        break;
+      case 6:
+        return Sprite('cyclists/grijs${versie2 ? '2' : ''}.png');
+        break;
+      case 7:
+        return Sprite('cyclists/limoen${versie2 ? '2' : ''}.png');
+        break;
+      default:
+        return null;
+    }
   }
 }

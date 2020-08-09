@@ -17,9 +17,7 @@ class Cyclist {
   Sprite cyclistSprite;
 
   Cyclist(this.team, this.number, this.rank) {
-    if (this.team.getColor() == Colors.red) {
-      cyclistSprite = Sprite('cyclists/geel.png');
-    }
+    cyclistSprite = this.team.getSprite(this.number % 2 == 0);
   }
 
   void render(Canvas canvas, Offset offset, double size, double angle) {
@@ -38,23 +36,23 @@ class Cyclist {
       CanvasUtils.drawText(canvas, Offset(0, -size / 3), 0, span);
 
       canvas.restore();
-    } else {
-      if (rank == 0) {
-        Paint paintJersey = Paint()
-          ..color = Colors.yellow
-          ..style = PaintingStyle.fill;
-        canvas.drawCircle(offset, size * 1.5, paintJersey);
-      }
-      Paint paintCyclist = Paint()
-        ..color = color
-        ..style = PaintingStyle.fill;
-      canvas.drawCircle(offset, size, paintCyclist);
+      // } else {
+      //   if (rank == 0) {
+      //     Paint paintJersey = Paint()
+      //       ..color = Colors.yellow
+      //       ..style = PaintingStyle.fill;
+      //     canvas.drawCircle(offset, size * 1.5, paintJersey);
+      //   }
+      //   Paint paintCyclist = Paint()
+      //     ..color = color
+      //     ..style = PaintingStyle.fill;
+      //   canvas.drawCircle(offset, size, paintCyclist);
 
-      TextSpan span = new TextSpan(
-          style: new TextStyle(
-              color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
-          text: number.toString());
-      CanvasUtils.drawText(canvas, offset - Offset(0, size / 2), 0, span);
+      //   TextSpan span = new TextSpan(
+      //       style: new TextStyle(
+      //           color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
+      //       text: number.toString());
+      //   CanvasUtils.drawText(canvas, offset - Offset(0, size / 2), 0, span);
     }
   }
 }

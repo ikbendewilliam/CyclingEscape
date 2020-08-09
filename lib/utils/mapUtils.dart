@@ -83,6 +83,8 @@ class MapUtils {
             i / length * 100,
             jAccent + jOffset,
             0,
+            false,
+            0,
             0,
             false,
             currentPositionType,
@@ -135,21 +137,24 @@ class MapUtils {
     double centerAngle = (startAngle + endAngle) / 2;
     double maxAngle = (startAngle - centerAngle).abs();
     double istart = -(numberOfPositions % 2) / 2 + 0.5;
-    Offset centerOfCorner;
-    centerOfCorner =
+    Offset centerOfCorner =
         start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
-    double imax = (numberOfPositions / 2);
+    int imax = (numberOfPositions / 2).ceil();
     for (double i = istart; i < imax; i++) {
       for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
         double startAngle2 =
             centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
         double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
-        Offset center =
-            centerOfCorner + Offset(radius * sin(angle), -radius * cos(angle));
         Offset offset = Offset(cos(angle), sin(angle)) *
             length /
             2 /
             numberOfPositions.toDouble();
+
+        double radiusPart = pow(
+            pow(radius, 2) - (pow(offset.dx, 2) + pow(offset.dy, 2)), 1 / 2);
+
+        Offset center = centerOfCorner +
+            Offset(radiusPart * sin(angle), -radiusPart * cos(angle));
         Offset p1 = center + offset * k.toDouble();
         Offset p2 = center - offset * k.toDouble();
 
@@ -195,6 +200,8 @@ class MapUtils {
             iAccent * 1.0,
             iAccent / numberOfPositions * 100,
             j,
+            clockwise ? k : -k,
+            clockwise,
             (startAngle2 + pi * 2) % (pi * 2),
             radius,
             true,
@@ -558,13 +565,15 @@ class MapUtils {
 
   static GameMap generateFlatMap(listener) {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
-    newMap.addCorner(pi / 4, 4, 8);
     newMap.addStraight(4, 4);
     newMap.addSprint(4, SprintType.START);
     newMap.addCorner(-pi / 2, 4, 8);
     newMap.addCorner(pi / 3, 4, 8);
     newMap.addCorner(-pi / 2, 4, 8);
-    newMap.addCorner(pi / 3, 4, 8);
+    newMap.addCorner(pi / 2, 4, 10);
+    newMap.addCorner(pi / 2, 4, 12);
+    newMap.addCorner(pi / 2, 4, 14);
+    newMap.addCorner(pi / 2, 4, 16);
     newMap.addSprint(4, SprintType.FINISH);
     newMap.addStraight(8, 4);
 

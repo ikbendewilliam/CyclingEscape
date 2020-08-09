@@ -97,7 +97,9 @@ class ResultsView implements BaseView {
         currentResult.mountain += result.mountain;
       });
     }
-    previousResults.data.sort((a, b) => a.time - b.time);
+    if (previousResults != null) {
+      previousResults.data.sort((a, b) => a.time - b.time);
+    }
 
     Results timeResults = Results(ResultsType.TIME);
     timeResults.data =

@@ -36,7 +36,7 @@ class Sprint {
 
   addCyclistPlace(CyclistPlace cyclistPlace) {
     cyclistPlaces.add(cyclistPlace);
-    print('$type (${cyclistPlaces.length})');
+    // print('$type (${cyclistPlaces.length})');
   }
 
   Color getColor() {

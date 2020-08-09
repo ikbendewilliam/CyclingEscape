@@ -72,7 +72,7 @@ class Team {
   }
 
   Sprite getSprite(versie2) {
-    print({numberStart, numberStart * 2, numberStart * 2 + (versie2 ? 1 : 0)});
+    // print({numberStart, numberStart * 2, numberStart * 2 + (versie2 ? 1 : 0)});
     return sprites[numberStart * 2 + (versie2 ? 1 : 0)];
   }
 }

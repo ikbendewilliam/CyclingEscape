@@ -8,3 +8,8 @@ icons: https://www.kenney.nl/assets/game-icons
 icon: https://icons8.com/iconizer/en/search/1/collection:Olympic_Games
 Better cyclists: BART BARTO!
 environment: https://kenney.nl/assets/racing-pack
+
+## Build release
+```
+flutter build appbundle
+```

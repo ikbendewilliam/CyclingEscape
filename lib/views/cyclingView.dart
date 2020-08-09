@@ -509,7 +509,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   addNotification(String text, Color color) {
     notifications.add(Notification(text, color));
-    print(text);
+    // print(text);
   }
 
   handleInBetweenTurns() {
@@ -681,7 +681,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   void diceStopped(int diceValue) {
     if (gameState == GameState.USER_WAIT_DICE_ROLLING2) {
       this.diceValue += diceValue;
-      print(this.diceValue);
+      // print(this.diceValue);
       processGameState(GameState.USER_INPUT_DICE_DONE);
     } else {
       this.diceValue = diceValue;

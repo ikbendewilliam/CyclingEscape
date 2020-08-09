@@ -25,6 +25,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/cyclists/
+    - assets/images/environment/
     - assets/fonts/
     - assets/icon/
   fonts:

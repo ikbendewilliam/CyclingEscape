@@ -7,6 +7,7 @@ import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:flame/position.dart' as flamePosition;
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +31,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   Size worldSize = Size(1, 1);
   Size mapSize = Size(1, 1);
   Sprite backgroundNotification;
+  Sprite grass;
+  Sprite grass2;
   Offset offsetStart = Offset(0, 0);
   Offset offset = Offset(0, 0);
   double zoom = 0.5;
   double zoomStart;
   double maxZoom = 1.5;
-  double minZoom = 0.1;
+  double minZoom = 0.2;
   double tileSize = 1;
   double cyclistMoved;
   GameMap map;
@@ -141,20 +144,50 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       offset = Offset(0, 0);
       zoom = 0.5;
       notifications = [];
+      minZoom = 0.2;
       this.handleInBetweenTurns();
       this.processGameState(GameState.GAME_SELECT_NEXT);
-      backgroundNotification = Sprite('back_text_04.png');
+      if (backgroundNotification == null) {
+        backgroundNotification = Sprite('back_text_04.png');
+      }
       createButtons(screenSize != null ? screenSize.height / 7 : 10);
+      if (grass == null) {
+        grass = Sprite('environment/grass.png');
+      }
+      if (grass2 == null) {
+        grass2 = Sprite('environment/grass2.png');
+      }
     }
   }
 
   void render(Canvas canvas) {
     canvas.save();
-    Paint bgPaint = Paint()..color = Colors.green[200];
-    canvas.drawRect(
-        Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), bgPaint);
+    // Paint bgPaint = Paint()..color = Colors.green[200];
+    // canvas.drawRect(
+    //     Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), bgPaint);
     canvas.translate(offset.dx * zoom, offset.dy * zoom);
     canvas.scale(zoom);
+    if (grass.loaded() && grass2.loaded()) {
+      for (int i = -(offset.dx / tileSize).ceil();
+          i <
+              -(offset.dx / tileSize).floor() +
+                  screenSize.width / tileSize / zoom;
+          i++) {
+        for (int j = -(offset.dy / tileSize).ceil();
+            j <
+                -(offset.dy / tileSize).floor() +
+                    screenSize.height / tileSize / zoom;
+            j++) {
+          Sprite g = grass;
+          if ((i * j + i + j) % 5 == 0 || (i * j + i + j) % 7 == 0) {
+            g = grass2;
+          }
+          g.renderPosition(
+              canvas, flamePosition.Position(i * tileSize, j * tileSize),
+              size: flamePosition.Position(tileSize * 1.05, tileSize * 1.05));
+        }
+      }
+    }
 
     if (grid) {
       for (int i = 0; i < worldSize.width; i++) {
@@ -176,7 +209,13 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       }
     }
 
-    this.map.render(canvas, tileSize);
+    Offset center = Offset(
+        -(offset.dx / tileSize).ceil() + screenSize.width / tileSize / zoom / 2,
+        -(offset.dy / tileSize).ceil() +
+            screenSize.height / tileSize / zoom / 2);
+
+    double screenRange = screenSize.width * 1.2 / zoom;
+    this.map.render(canvas, tileSize, center, screenRange);
     canvas.restore();
 
     if (dice != null) {
@@ -227,6 +266,12 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     screenSize = size;
     tileSize = screenSize.height / 9;
     worldSize = Size(tileSize * mapSize.width, tileSize * mapSize.height);
+    if (screenSize.width / worldSize.width > minZoom) {
+      minZoom = screenSize.width / worldSize.width;
+    }
+    if (screenSize.height / worldSize.height > minZoom) {
+      minZoom = screenSize.height / worldSize.height;
+    }
     if (followSelect != null) {
       followSelect.resize(size);
     }

@@ -57,7 +57,11 @@ class Position {
     this.id = UniqueKey().toString();
   }
 
-  void render(Canvas canvas, double tileSize) {
+  void render(
+      Canvas canvas, double tileSize, Offset center, double screenRange) {
+    if (pow(center.dx - p1.dx, 2) + pow(center.dy - p1.dy, 2) > screenRange) {
+      return;
+    }
     Paint paint = Paint()
       ..color = getColor(false)
       ..style = PaintingStyle.stroke
@@ -143,8 +147,12 @@ class Position {
     }
   }
 
-  void renderText(Canvas c, double tileSize) {
+  void renderText(
+      Canvas c, double tileSize, Offset center, double screenRange) {
     if (fieldValue != null && fieldValue != 0) {
+      if (pow(center.dx - p1.dx, 2) + pow(center.dy - p1.dy, 2) > screenRange) {
+        return;
+      }
       double angle;
       if (radius == 0) {
         angle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);

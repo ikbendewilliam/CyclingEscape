@@ -23,6 +23,10 @@ class Button {
 
   Button(this.spriteManager, this.center, this.type, this.onPress,
       [this.text]) {
+    getSprite();
+  }
+
+  getSprite() {
     switch (this.type) {
       case ButtonType.BAR_GREEN:
         sprite = this.spriteManager.getSprite('green_button_01.png');
@@ -118,6 +122,9 @@ class Button {
   }
 
   void render(Canvas canvas) {
+    if (sprite == null && spriteBackground == null && spritePressed == null) {
+      getSprite();
+    }
     double aspectRatio = (this.text != null) ? 3.5 : 1;
     double scale = 1;
 

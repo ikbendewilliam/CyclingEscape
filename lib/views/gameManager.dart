@@ -53,32 +53,33 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     state = GameManagerState.MAIN_MENU;
   }
 
-  @override
-  void onAttach() {
-    super.onAttach();
-    spriteManager.loadSprites();
-    cyclingView.onAttach();
-    resultsView.onAttach();
-    mainmenu.onAttach();
-    pauseMenu.onAttach();
-    courseSelectMenu.onAttach();
-    tourInBetweenRacesMenu.onAttach();
-    tourSelectMenu.onAttach();
-    if (menuBackground == null) {
-      menuBackground = MenuBackground();
-    }
+  void load() {
+    spriteManager.loadSprites().whenComplete(() {
+      cyclingView.onAttach();
+      resultsView.onAttach();
+      mainmenu.onAttach();
+      pauseMenu.onAttach();
+      courseSelectMenu.onAttach();
+      tourInBetweenRacesMenu.onAttach();
+      tourSelectMenu.onAttach();
+      if (menuBackground == null) {
+        menuBackground = MenuBackground();
+      }
+      loading = false;
+    });
   }
 
   @override
   void render(Canvas canvas) {
     if (loading) {
+      // print(loadingPercentage);
       Paint bgPaint = Paint()..color = Colors.green[200];
       canvas.drawRect(
           Rect.fromLTRB(0, 0, currentSize.width, currentSize.height), bgPaint);
       TextSpan span = new TextSpan(
           style: new TextStyle(
               color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-          text: 'Loading... ${loadingPercentage.toStringAsFixed(2)}%');
+          text: 'Loading... '); // ${loadingPercentage.toStringAsFixed(2)}%
       Offset position = Offset(currentSize.width / 2, currentSize.height / 2);
       CanvasUtils.drawText(canvas, position, 0, span);
     } else {
@@ -101,9 +102,14 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   }
 
   loadingCheck() {
-    loadingPercentage = this.spriteManager.checkLoadingPercentage();
-    if (loadingPercentage >= 99.999) {
-      loading = false;
+    if (loading) {
+      loadingPercentage = this.spriteManager.checkLoadingPercentage();
+      if (loadingPercentage.isNaN) {
+        loadingPercentage = 0;
+      }
+      if (loadingPercentage >= 99.999) {
+        loadingPercentage = 100;
+      }
     }
   }
 

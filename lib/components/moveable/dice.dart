@@ -12,73 +12,102 @@ class Dice {
   int diceValue;
   int direction = 1;
   int currentIndex;
+  int endIndex;
   int directionCountDown = 0;
   bool rolling = false;
   double angle = 0;
   double scale = 3;
   double countdown = 0.1;
-  double minCountDown = 1;
+  List<int> diceAnimation = [];
 
   final DiceListener listener;
 
   Dice(this.spriteManager, this.listener) {
     sprites = this.spriteManager.getDiceSprites();
     List<int> indexes = [0, 49, 53, 57, 61, 113];
+    endIndex = indexes[Random().nextInt(indexes.length)];
     currentIndex = indexes[Random().nextInt(indexes.length)];
+    diceAnimation = getDiceAnimation(indexes);
+    currentIndex = 0;
+  }
+
+  getDiceAnimation(indexes, {again: true}) {
+    int index = endIndex;
+    int counter = 1;
+    List<int> animation = [index];
+    while ((indexes.indexOf(index) == -1 || counter < 40) && counter < 1000) {
+      index = getNewIndex(index);
+      animation.add(index);
+      counter++;
+    }
+    if (animation.length > 500 && again) {
+      List<int> animation2 = getDiceAnimation(indexes, again: false);
+      if (animation.length > animation2.length) {
+        return animation2;
+      }
+    }
+    return animation.reversed.toList();
   }
 
   start() {
     rolling = true;
   }
 
-  render(Canvas canvas, int xOffset) {
-    if (sprites.length > 0 && currentIndex >= 0) {
+  render(Canvas canvas, int xOffset, double tileSize) {
+    if (sprites.length > 0 && currentIndex >= 0 && diceAnimation.length > 0) {
       canvas.save();
-      canvas.translate((xOffset + 1) * 100.0, 100);
+      canvas.translate((xOffset + 0.5) * tileSize * 3, 100);
       canvas.rotate(angle);
-      canvas.scale(scale / 4);
-      sprites[currentIndex].renderCentered(canvas, Position(0, 0));
+      if (currentIndex < diceAnimation.length) {
+        sprites[diceAnimation[currentIndex]].renderCentered(
+            canvas, Position(0, 0),
+            size: Position(tileSize * scale, tileSize * scale));
+      } else {
+        sprites[diceAnimation.last].renderCentered(canvas, Position(0, 0));
+      }
       canvas.restore();
     }
   }
 
   update(double t) {
     if (rolling) {
-      minCountDown -= t;
       countdown -= t;
       if (countdown <= 0) {
-        currentIndex = getNewIndex(t);
+        angle += (Random().nextDouble() - 0.5) * t * 10;
+        currentIndex++;
         countdown += 0.02;
+        if (currentIndex >= diceAnimation.length) {
+          diceValue = getValue();
+          rolling = false;
+          listener.diceStopped(diceValue);
+        }
       }
-      diceValue = checkIndex();
-      if (diceValue != 0 && minCountDown <= 0) {
-        rolling = false;
-        listener.diceStopped(diceValue);
-      }
-      scale -= t * 3;
-      if (scale < 1) {
-        scale = 1;
+      if (scale > 1) {
+        scale -= t * 3;
+        if (scale < 1) {
+          scale = 1;
+        }
       }
     }
   }
 
-  getIJ() {
+  getIJ(int current) {
     int i = 0;
     int j = 0;
-    if (currentIndex == 0) {
+    if (current == 0) {
       // i and j are already correct
-    } else if (currentIndex == sprites.length - 1) {
+    } else if (current == sprites.length - 1) {
       i = 0;
-      j = 9;
+      j = 8;
     } else {
-      i = (currentIndex + 15) % 16;
-      j = ((currentIndex + 15) / 16).floor();
+      i = (current + 15) % 16;
+      j = ((current + 15) / 16).floor();
     }
     return [i, j];
   }
 
-  checkIndex() {
-    final ij = getIJ();
+  int getValue() {
+    final ij = getIJ(endIndex);
     int i = ij[0], j = ij[1];
     if (j == 0) {
       return 4;
@@ -99,9 +128,8 @@ class Dice {
     return 0;
   }
 
-  getNewIndex(double t) {
-    angle += (Random().nextDouble() - 0.5) * t * 10;
-    final ij = getIJ();
+  getNewIndex(int current) {
+    final ij = getIJ(current);
     int i = ij[0], j = ij[1];
     directionCountDown--;
     if (directionCountDown <= 0) {

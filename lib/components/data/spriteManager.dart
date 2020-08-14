@@ -65,27 +65,29 @@ class SpriteManager {
     spriteNames.add('back_tour.png');
   }
 
-  loadSprites() {
-    if (!loaded) {
-      loaded = true;
-      spriteNames.forEach((spriteName) {
-        sprites.add(SpriteName(spriteName, Sprite(spriteName)));
-      });
+  Future loadSprites() {
+    return Future(() {
+      if (!loaded) {
+        loaded = true;
+        spriteNames.forEach((spriteName) {
+          sprites.add(SpriteName(spriteName, Sprite(spriteName)));
+        });
 
-      for (int j = 0; j < 9; j++) {
-        for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
-          diceSprites.add(Sprite('dice2.png',
-              x: 37.5 * i * 4,
-              y: 37.5 * j * 4,
-              height: 37 * 4.0,
-              width: 37 * 4.0));
+        for (int j = 0; j < 9; j++) {
+          for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
+            diceSprites.add(Sprite('dice.png',
+                x: 37.5 * i * 1,
+                y: 37.5 * j * 1,
+                height: 37 * 1.0,
+                width: 37 * 1.0));
+          }
         }
       }
-    }
+    });
   }
 
   double checkLoadingPercentage() {
-    if (loading) {
+    if (!loading) {
       return 100;
     }
     loading = false;
@@ -97,7 +99,7 @@ class SpriteManager {
         loading = true;
       }
     });
-    if (loading) {
+    if (!loading) {
       return 100;
     }
     return 1 / (sprites.length + diceSprites.length) * spritesLoaded;
@@ -108,8 +110,9 @@ class SpriteManager {
   }
 
   Sprite getSprite(spriteName) {
-    SpriteName name =
-        sprites.firstWhere((element) => element.name == spriteName);
+    SpriteName name = sprites.firstWhere(
+        (element) => element.name == spriteName,
+        orElse: () => null);
     if (name == null) {
       return null;
     }

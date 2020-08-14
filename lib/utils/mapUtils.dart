@@ -144,6 +144,8 @@ class MapUtils {
       for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
         double startAngle2 =
             centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
+        double endAngle =
+            centerAngle + maxAngle * (i - 0.5) * k / (numberOfPositions / 2);
         double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
         Offset offset = Offset(cos(angle), sin(angle)) *
             length /
@@ -198,7 +200,7 @@ class MapUtils {
             iAccent == numberOfPositions - 1,
             segment,
             iAccent * 1.0,
-            (pi * 2 - (angle - centerAngle) / maxAngle * (clockwise ? 1 : -1)),
+            ((iAccent + 1) * 100.0 / (numberOfPositions)).roundToDouble(),
             j,
             clockwise ? k : -k,
             clockwise,
@@ -324,12 +326,13 @@ class MapUtils {
     return currentSprints;
   }
 
-  static findPlaceBefore(Position position, double maxDepth, bool emptyPosition,
+  static List<Position> findPlaceBefore(
+      Position position, double maxDepth, bool emptyPosition,
       {List<Position> positions, Position startPosition, int currentDepth}) {
     if (currentDepth == null) {
       currentDepth = 0;
     } else if (currentDepth > maxDepth) {
-      return null;
+      return [];
     }
     if (startPosition == null) {
       Position positionFound;
@@ -340,31 +343,36 @@ class MapUtils {
           positionFound = element;
         }
       });
-      return positionFound;
+      return [positionFound];
     } else {
       Position currentPosition = startPosition;
       if (currentPosition.connections.length > 0 &&
           currentPosition.getValue(false) < position.getValue(false)) {
         if (currentPosition.connections.indexOf(position) >= 0 &&
             currentPosition.j == position.j) {
-          return currentPosition;
+          List<Position> route = [currentPosition];
+          return route;
         } else {
           for (int i = 0; i < currentPosition.connections.length; i++) {
             if (currentPosition.connections[i].cyclist == null ||
                 !emptyPosition) {
-              Position placeBefore = findPlaceBefore(
-                  position, maxDepth, emptyPosition,
-                  startPosition: currentPosition.connections[i],
-                  currentDepth: currentDepth + 1);
-              if (placeBefore != null) {
-                return placeBefore;
+              List<Position> routeFound = findPlaceBefore(
+                position,
+                maxDepth,
+                emptyPosition,
+                startPosition: currentPosition.connections[i],
+                currentDepth: currentDepth + 1,
+              );
+              if (routeFound != null && routeFound.length > 0) {
+                routeFound.insert(0, currentPosition);
+                return routeFound;
               }
             }
           }
         }
       }
     }
-    return null;
+    return [];
   }
 
   static Position findMaxValue(Position currentPosition, double maxValue,
@@ -374,6 +382,7 @@ class MapUtils {
     } else if (currentValue > maxValue) {
       return null;
     }
+    currentValue++;
     if (currentPosition.connections.length > 0) {
       if (currentValue >= maxValue) {
         double bestValue = 0;
@@ -392,7 +401,7 @@ class MapUtils {
         for (int i = 0; i < currentPosition.connections.length; i++) {
           if (currentPosition.connections[i].cyclist == null) {
             Position maxValuePosition = findMaxValue(
-                currentPosition.connections[i], maxValue, currentValue + 1);
+                currentPosition.connections[i], maxValue, currentValue);
             if (maxValuePosition != null &&
                 (bestPosition == null ||
                     maxValuePosition.getValue(false) > bestValue)) {
@@ -454,10 +463,10 @@ class MapUtils {
         segmentLength = 15;
         break;
       case MapLength.MEDIUM:
-        segmentLength = 30;
+        segmentLength = 20;
         break;
       case MapLength.LONG:
-        segmentLength = 45;
+        segmentLength = 30;
         break;
       case MapLength.VERY_LONG:
         segmentLength = 60;

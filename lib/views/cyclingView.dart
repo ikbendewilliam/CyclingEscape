@@ -245,10 +245,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     canvas.restore();
 
     if (dice != null) {
-      dice.render(canvas, 0);
+      dice.render(canvas, 0, tileSize);
     }
     if (dice2 != null) {
-      dice2.render(canvas, 1);
+      dice2.render(canvas, 1, tileSize);
     }
     if (followSelect != null) {
       followSelect.render(canvas);
@@ -378,25 +378,25 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           } else if (placeBefore.cyclist.team.isPlayer) {
             followSelect =
                 FollowSelect(this.spriteManager, (FollowType returnValue) {
+              followSelect = null;
               switch (returnValue) {
                 case FollowType.AUTO_FOLLOW:
                   this.autoFollow = true;
                   if (minThrow >= 7) {
                     follow();
-                    processGameState(GameState.GAME_SELECT_NEXT);
+                    processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
                   } else {
                     processGameState(GameState.GAME_SELECT_NEXT);
                   }
                   break;
                 case FollowType.FOLLOW:
                   follow();
-                  processGameState(GameState.GAME_SELECT_NEXT);
+                  processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
                   break;
                 case FollowType.LEAVE:
                 default:
                   processGameState(GameState.GAME_SELECT_NEXT);
               }
-              followSelect = null;
             }, minThrow);
             followSelect.onAttach();
             followSelect.resize(screenSize);
@@ -440,15 +440,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   // -1 if you cannot follow, int for min to throw to follow
   int canFollow() {
-    Position placeBefore = MapUtils.findPlaceBefore(
-        cyclistLastSelected, 9999, false,
-        positions: map.positions);
+    Position placeBefore = getPlaceBefore();
     if (placeBefore == null || placeBefore.cyclist == null) {
       return -1;
     }
     Position placeBeforeEnd = MapUtils.findPlaceBefore(
-        cyclistSelected, cyclistMoved, true,
-        startPosition: placeBefore);
+            cyclistSelected, cyclistMoved, true,
+            startPosition: placeBefore)
+        .lastWhere((element) => true, orElse: () => null);
     if (placeBeforeEnd == null) {
       return -1;
     }
@@ -463,21 +462,21 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         0);
   }
 
-  getPlaceBefore() {
+  Position getPlaceBefore() {
     return MapUtils.findPlaceBefore(cyclistLastSelected, 9999, false,
-        positions: map.positions);
+            positions: map.positions)
+        .lastWhere((element) => true, orElse: () => null);
   }
 
   follow() {
-    Position lastSelectedAccent = MapUtils.findPlaceBefore(
-        cyclistLastSelected, 9999, false,
-        positions: map.positions);
+    Position lastSelectedAccent = getPlaceBefore();
     if (lastSelectedAccent == null || lastSelectedAccent.cyclist == null) {
       return null;
     }
     Position selectedAccent = MapUtils.findPlaceBefore(
-        cyclistSelected, cyclistMoved, true,
-        startPosition: lastSelectedAccent);
+            cyclistSelected, cyclistMoved, true,
+            startPosition: lastSelectedAccent)
+        .lastWhere((element) => true, orElse: () => null);
     if (selectedAccent != null && lastSelectedAccent != null) {
       cyclistSelected = selectedAccent;
       cyclistLastSelected = lastSelectedAccent;
@@ -498,6 +497,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         if (position.cyclist.lastPosition != null) {
           List<Sprint> sprints = MapUtils.getSprintsBetween(
               position.cyclist.lastPosition, position);
+          sprints = sprints
+              .where((element) =>
+                  element.cyclistPlaces.firstWhere(
+                      (CyclistPlace x) =>
+                          x.cyclist.number == position.cyclist.number,
+                      orElse: () => null) ==
+                  null)
+              .toList();
           sprints.forEach((sprint) => sprint.addCyclistPlace(
               CyclistPlace(position.cyclist, position.getValue(true))));
           if (sprints.length > 0) {
@@ -658,12 +665,11 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   @override
   void diceStopped(int diceValue) {
+    this.diceValue = 10;
+    //(this.dice.getValue() + this.dice2.getValue());
     if (gameState == GameState.USER_WAIT_DICE_ROLLING2) {
-      this.diceValue += diceValue;
-      // print(this.diceValue);
       processGameState(GameState.USER_INPUT_DICE_DONE);
     } else {
-      this.diceValue = diceValue;
       processGameState(GameState.USER_WAIT_DICE_ROLLING2);
     }
   }

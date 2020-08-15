@@ -353,6 +353,15 @@ class MapUtils {
           List<Position> route = [currentPosition];
           return route;
         } else {
+          // priorityPosition is for nicer animation/movement of cyclists
+          Position priorityPosition = currentPosition.connections.firstWhere(
+              (element) => element.j == currentPosition.j,
+              orElse: () => null);
+          if (priorityPosition != null) {
+            currentPosition.connections.insert(0, priorityPosition);
+            currentPosition.connections.removeAt(
+                currentPosition.connections.lastIndexOf(priorityPosition));
+          }
           for (int i = 0; i < currentPosition.connections.length; i++) {
             if (currentPosition.connections[i].cyclist == null ||
                 !emptyPosition) {
@@ -375,16 +384,16 @@ class MapUtils {
     return [];
   }
 
-  static Position findMaxValue(Position currentPosition, double maxValue,
-      [int currentValue]) {
-    if (currentValue == null) {
-      currentValue = 0;
-    } else if (currentValue > maxValue) {
+  static List<Position> findMaxValue(Position currentPosition, double maxValue,
+      [List<Position> route]) {
+    if (route == null) {
+      route = [];
+    } else if (route.length > maxValue) {
       return null;
     }
-    currentValue++;
+    route.add(currentPosition);
     if (currentPosition.connections.length > 0) {
-      if (currentValue >= maxValue) {
+      if (route.length - 1 > maxValue) {
         double bestValue = 0;
         Position bestPosition;
         currentPosition.connections.forEach((element) {
@@ -394,26 +403,38 @@ class MapUtils {
             bestPosition = element;
           }
         });
-        return (bestPosition != null) ? bestPosition : currentPosition;
+        if (bestPosition != null) {
+          route.add(bestPosition);
+        }
+        return route;
       } else {
         double bestValue = 0;
-        Position bestPosition;
+        List<Position> bestRoute;
+        // priorityPosition is for nicer animation/movement of cyclists
+        Position priorityPosition = currentPosition.connections.firstWhere(
+            (element) => element.j == currentPosition.j,
+            orElse: () => null);
+        if (priorityPosition != null) {
+          currentPosition.connections.insert(0, priorityPosition);
+          currentPosition.connections.removeAt(
+              currentPosition.connections.lastIndexOf(priorityPosition));
+        }
         for (int i = 0; i < currentPosition.connections.length; i++) {
           if (currentPosition.connections[i].cyclist == null) {
-            Position maxValuePosition = findMaxValue(
-                currentPosition.connections[i], maxValue, currentValue);
-            if (maxValuePosition != null &&
-                (bestPosition == null ||
-                    maxValuePosition.getValue(false) > bestValue)) {
-              bestValue = maxValuePosition.getValue(false);
-              bestPosition = maxValuePosition;
+            List<Position> maxValueRoute = findMaxValue(
+                currentPosition.connections[i], maxValue, route.toList());
+            if (maxValueRoute != null &&
+                (bestRoute == null ||
+                    maxValueRoute.last.getValue(false) > bestValue)) {
+              bestValue = maxValueRoute.last.getValue(false);
+              bestRoute = maxValueRoute;
             }
           }
         }
-        return (bestPosition != null) ? bestPosition : currentPosition;
+        return (bestRoute != null && bestRoute.length > 0) ? bestRoute : route;
       }
     }
-    return currentPosition;
+    return route;
   }
 
   // minDistance is used for when you don't move your max potential (for example taking the outer edge of a corner) so more riders can follow

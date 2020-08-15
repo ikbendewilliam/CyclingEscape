@@ -77,9 +77,9 @@ class Dice {
         currentIndex++;
         countdown += 0.02;
         if (currentIndex >= diceAnimation.length) {
-          diceValue = getValue();
+          // diceValue = getValue();
           rolling = false;
-          listener.diceStopped(diceValue);
+          listener.diceStopped();
         }
       }
       if (scale > 1) {
@@ -165,5 +165,5 @@ class Dice {
 }
 
 abstract class DiceListener {
-  void diceStopped(int diceValue);
+  void diceStopped();
 }

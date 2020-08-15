@@ -27,6 +27,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   int currentTurn = -1;
   bool grid = false;
   bool ended = false;
+  bool moving = false;
   bool autoFollow = false;
   Dice dice, dice2;
   Size worldSize = Size(1, 1);
@@ -38,17 +39,20 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   Offset offset = Offset(0, 0);
   double zoom = 0.5;
   double zoomStart;
+  double movingTimer = 0;
   double maxZoom = 1.5;
   double minZoom = 0.2;
   double tileSize = 1;
   double cyclistMoved;
   GameMap map;
+  Cyclist movingCyclist;
   Position cyclistSelected;
   Position cyclistLastSelected;
   GameState gameState = GameState.GAME_SELECT_NEXT;
   FollowSelect followSelect;
   List<Team> teams = [];
   List<Button> buttons = [];
+  List<Position> moveAnimation = [];
   List<Notification> notifications = [];
   @override
   Size screenSize = Size(1, 1);
@@ -62,7 +66,6 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
     if (playSettings != null) {
       this.map = MapUtils.generateMap(playSettings, this);
-      // this.map = MapUtils.generateFlatMap(this);
       this.mapSize = this.map.mapSize;
       teams = [];
       for (int i = 0; i < playSettings.teams; i++) {
@@ -242,6 +245,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
     double screenRange = screenSize.width * 1.2 / zoom;
     this.map.render(canvas, tileSize, center, screenRange);
+    if (movingCyclist != null) {
+      movingCyclist.render(canvas, movingCyclist.movingOffset * tileSize,
+          tileSize / 3, movingCyclist.movingAngle);
+    }
     canvas.restore();
 
     if (dice != null) {
@@ -285,6 +292,21 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     }
     if (dice2 != null) {
       dice2.update(t);
+    }
+    if (moving) {
+      if (movingTimer == -1) {
+        movingTimer = 1;
+      } else {
+        movingTimer -= t;
+      }
+      movingCyclist.moveTo(1 - movingTimer, moveAnimation);
+      if (movingCyclist.movingOffset.isFinite) {
+        offset = -(movingCyclist.movingOffset * tileSize -
+            Offset(screenSize.width, screenSize.height) / 2 / zoom);
+      }
+      if (movingTimer <= 0) {
+        this.processGameState(GameState.USER_WAIT_CYCLIST_MOVING_FINISHED);
+      }
     }
   }
 
@@ -344,10 +366,9 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
                 (-offset + details.globalPosition / zoom) / tileSize);
           }
           break;
-        case GameState.USER_INPUT_CYCLIST_FOLLOW:
-          processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
-          break;
         case GameState.USER_WAIT_CYCLIST_MOVING:
+        case GameState.USER_WAIT_CYCLIST_MOVING_FINISHED:
+        case GameState.USER_INPUT_CYCLIST_FOLLOW:
         case GameState.USER_WAIT_DICE_ROLLING:
         case GameState.USER_WAIT_DICE_ROLLING2:
         default:
@@ -363,7 +384,19 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     gameState = newState;
     switch (gameState) {
       case GameState.USER_WAIT_CYCLIST_MOVING:
-        // TODO: Special effects :-D
+        moving = true;
+        movingTimer = -1;
+        movingCyclist = moveAnimation.first.removeCyclist();
+        movingCyclist.moveTo(0, moveAnimation);
+        break;
+      case GameState.USER_WAIT_CYCLIST_MOVING_FINISHED:
+        moving = false;
+        cyclistLastSelected = moveAnimation.first;
+        cyclistSelected = moveAnimation.last;
+        cyclistSelected.addCyclist(movingCyclist);
+        cyclistSelected.cyclist.lastUsedOnTurn++;
+        movingCyclist = null;
+        this.processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
         break;
       case GameState.USER_INPUT_CYCLIST_FOLLOW:
         bool following = false;
@@ -374,7 +407,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
               (this.autoFollow || !placeBefore.cyclist.team.isPlayer)) {
             following = true;
             follow();
-            processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
+            processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
           } else if (placeBefore.cyclist.team.isPlayer) {
             followSelect =
                 FollowSelect(this.spriteManager, (FollowType returnValue) {
@@ -384,14 +417,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
                   this.autoFollow = true;
                   if (minThrow >= 7) {
                     follow();
-                    processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
+                    processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
                   } else {
                     processGameState(GameState.GAME_SELECT_NEXT);
                   }
                   break;
                 case FollowType.FOLLOW:
                   follow();
-                  processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
+                  processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
                   break;
                 case FollowType.LEAVE:
                 default:
@@ -415,6 +448,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         cyclistSelected.setState(
             PositionState.SELECTABLE,
             max(0, diceValue + cyclistSelected.fieldValue),
+            [],
             cyclistSelected.cyclist);
         if (!cyclistSelected.cyclist.team.isPlayer) {
           selectPosition(MapUtils.findMaxValue(
@@ -444,22 +478,17 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     if (placeBefore == null || placeBefore.cyclist == null) {
       return -1;
     }
-    Position placeBeforeEnd = MapUtils.findPlaceBefore(
-            cyclistSelected, cyclistMoved, true,
-            startPosition: placeBefore)
-        .lastWhere((element) => true, orElse: () => null);
-    if (placeBeforeEnd == null) {
+    List<Position> routeBeforeEnd = MapUtils.findPlaceBefore(
+        cyclistSelected, cyclistMoved, true,
+        startPosition: placeBefore);
+    if (routeBeforeEnd == null || routeBeforeEnd.length == 0) {
       return -1;
     }
     if (cyclistLastSelected.positionType == PositionType.DOWNHILL &&
         placeBefore.positionType == PositionType.UPHILL) {
       return -1;
     }
-    return max(
-        (MapUtils.calculateDistance(placeBefore, placeBeforeEnd) -
-                placeBefore.fieldValue)
-            .ceil(),
-        0);
+    return max(routeBeforeEnd.length - 1, 0);
   }
 
   Position getPlaceBefore() {
@@ -473,21 +502,13 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     if (lastSelectedAccent == null || lastSelectedAccent.cyclist == null) {
       return null;
     }
-    Position selectedAccent = MapUtils.findPlaceBefore(
-            cyclistSelected, cyclistMoved, true,
-            startPosition: lastSelectedAccent)
-        .lastWhere((element) => true, orElse: () => null);
-    if (selectedAccent != null && lastSelectedAccent != null) {
-      cyclistSelected = selectedAccent;
-      cyclistLastSelected = lastSelectedAccent;
-      cyclistSelected.addCyclist(lastSelectedAccent.removeCyclist());
-      cyclistSelected.cyclist.lastUsedOnTurn++;
-    }
+    moveAnimation = MapUtils.findPlaceBefore(
+        cyclistSelected, cyclistMoved, true,
+        startPosition: lastSelectedAccent);
   }
 
   addNotification(String text, Color color) {
     notifications.add(Notification(text, color));
-    // print(text);
   }
 
   handleInBetweenTurns() {
@@ -648,25 +669,20 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   }
 
   @override
-  void selectPosition(Position position) {
+  void selectPosition(List<Position> route) {
+    print(
+        'canMove: ${diceValue + cyclistSelected.fieldValue}, willMove: ${route.length - 1}');
     if (cyclistSelected != null) {
-      position.addCyclist(cyclistSelected.removeCyclist());
-      position.cyclist.lastUsedOnTurn++;
-      if (position != cyclistSelected) {
-        cyclistMoved = MapUtils.calculateDistance(cyclistSelected, position,
-            minDistance: max(0, diceValue + cyclistSelected.fieldValue));
-      }
-      cyclistLastSelected = cyclistSelected;
+      moveAnimation = route;
+      cyclistMoved = route.length.toDouble() - 1;
       map.setState(PositionState.NORMAL);
-      cyclistSelected = position;
-      processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
+      processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
     }
   }
 
   @override
-  void diceStopped(int diceValue) {
-    this.diceValue = 10;
-    //(this.dice.getValue() + this.dice2.getValue());
+  void diceStopped() {
+    this.diceValue = this.dice.getValue() + this.dice2.getValue();
     if (gameState == GameState.USER_WAIT_DICE_ROLLING2) {
       processGameState(GameState.USER_INPUT_DICE_DONE);
     } else {
@@ -689,6 +705,7 @@ enum GameState {
   USER_INPUT_DICE_DONE,
   USER_INPUT_POSITION_CHOICE,
   USER_WAIT_CYCLIST_MOVING,
+  USER_WAIT_CYCLIST_MOVING_FINISHED,
   USER_INPUT_CYCLIST_FOLLOW,
   GAME_SELECT_NEXT,
 }

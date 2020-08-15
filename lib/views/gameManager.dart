@@ -248,6 +248,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
     resultsView.onAttach();
     resize(currentSize);
+    cyclingView = new CyclingView(spriteManager, cyclingEnded,
+        menuPressed); // Clean the CyclingView to be safe
   }
 }
 

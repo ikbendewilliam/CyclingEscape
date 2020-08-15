@@ -10,19 +10,21 @@ import 'package:flutter/material.dart';
 
 class Cyclist {
   final int number;
-  int rank;
   final Team team;
+  int rank;
   int lastUsedOnTurn = 0;
-  Position lastPosition;
+  bool wearsYellowJersey = false;
+  bool wearsWhiteJersey = false;
+  bool wearsGreenJersey = false;
+  bool wearsBouledJersey = false;
+  double movingAngle;
+  Offset movingOffset;
   Sprite cyclistSprite;
   Sprite cyclistYellowJerseySprite;
   Sprite cyclistWhiteJerseySprite;
   Sprite cyclistGreenJerseySprite;
   Sprite cyclistBouledJerseySprite;
-  bool wearsYellowJersey = false;
-  bool wearsWhiteJersey = false;
-  bool wearsGreenJersey = false;
-  bool wearsBouledJersey = false;
+  Position lastPosition;
 
   Cyclist(this.team, this.number, this.rank) {
     cyclistSprite = this.team.getSprite(this.number % 2 == 0);
@@ -34,6 +36,23 @@ class Cyclist {
         Sprite('cyclists/lichtgroen${this.number % 2 == 0 ? '2' : ''}.png');
     cyclistBouledJerseySprite =
         Sprite('cyclists/bollekes${this.number % 2 == 0 ? '2' : ''}.png');
+  }
+
+  moveTo(double percentage, List<Position> route) {
+    if (percentage >= 0.99) {
+      movingOffset = (route.last.p1 + route.last.p2) / 2;
+      movingAngle = route.last.getCyclistAngle();
+    } else {
+      double routePercentage = percentage * (route.length - 1);
+      int index = (routePercentage).floor();
+      double deltaPercentage = routePercentage % 1;
+      movingOffset =
+          (route[index].p1 + route[index].p2) * (1 - deltaPercentage) +
+              (route[index + 1].p1 + route[index + 1].p2) * deltaPercentage;
+      movingOffset = movingOffset / 2;
+      movingAngle = route[index].getCyclistAngle() * (1 - deltaPercentage) +
+          route[index + 1].getCyclistAngle() * deltaPercentage;
+    }
   }
 
   void render(Canvas canvas, Offset offset, double size, double angle) {

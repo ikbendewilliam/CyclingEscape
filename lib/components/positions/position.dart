@@ -31,8 +31,9 @@ class Position {
   Offset p1;
   Offset p2;
   double fieldValue = 0;
-  List<Position> connections = [];
   Cyclist cyclist;
+  List<Position> connections = [];
+  List<Position> route = [];
   PositionState state = PositionState.NORMAL;
 
   Position(
@@ -136,15 +137,14 @@ class Position {
 
     if (cyclist != null) {
       cyclist.render(
-          canvas,
-          (Offset((p1.dx + cos(angle) * BORDER_WIDTH / 2) * tileSize,
-                      (p1.dy + sin(angle) * BORDER_WIDTH / 2) * tileSize) +
-                  Offset((p2.dx - cos(angle) * BORDER_WIDTH / 2) * tileSize,
-                      (p2.dy - sin(angle) * BORDER_WIDTH / 2) * tileSize)) /
-              2,
-          tileSize / 3,
-          angle + (k == -1 ? pi : 0));
+          canvas, (p1 + p2) / 2 * tileSize, tileSize / 3, getCyclistAngle());
     }
+  }
+
+  getCyclistAngle() {
+    return (atan2(p2.dy - p1.dy, p2.dx - p1.dx) + (k == -1 ? pi : 0) + pi * 5) %
+            (pi * 2) -
+        pi;
   }
 
   void renderText(
@@ -210,17 +210,33 @@ class Position {
     }
   }
 
-  void setState(newState, [range, cyclist]) {
+  void setState(newState,
+      [double maxValue, List<Position> currentRoute, Cyclist cyclist]) {
     if (newState == PositionState.SELECTABLE) {
       if (this.cyclist != null && cyclist != null && this.cyclist != cyclist) {
         return;
       }
     }
+    if (state == newState) {
+      return;
+    }
     state = newState;
-    if (range != null && range > 0) {
-      this
-          .connections
-          .forEach((pos) => pos.setState(newState, range - 1, cyclist));
+    if (currentRoute != null) {
+      currentRoute.add(this);
+      route = currentRoute;
+      if (maxValue != null && currentRoute.length - 1 < maxValue) {
+        // priorityPosition is for nicer animation/movement of cyclists
+        Position priorityPosition = connections
+            .firstWhere((element) => element.j == j, orElse: () => null);
+        if (priorityPosition != null) {
+          connections.insert(0, priorityPosition);
+          connections.removeAt(connections.lastIndexOf(priorityPosition));
+        }
+
+        // -1 since start is also in list
+        this.connections.forEach((pos) =>
+            pos.setState(newState, maxValue, currentRoute.toList(), cyclist));
+      }
     }
   }
 
@@ -250,7 +266,7 @@ class Position {
     double angle = atan2(p2.dy - p1.dy, p2.dx - p1.dx);
     if (MapUtils.isInside(clickedEvent, p1, p2, 1, angle)) {
       if (this.state != PositionState.NOT_SELECTABLE) {
-        this.listener.selectPosition(this);
+        this.listener.selectPosition(route);
       }
     }
   }
@@ -304,7 +320,7 @@ class Position {
 }
 
 abstract class PositionListener {
-  void selectPosition(Position position);
+  void selectPosition(List<Position> position);
 }
 
 enum PositionState { NORMAL, SELECTABLE, NOT_SELECTABLE }

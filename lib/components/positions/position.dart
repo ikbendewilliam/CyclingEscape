@@ -210,34 +210,36 @@ class Position {
     }
   }
 
-  void setState(newState,
+  void setState(PositionState newState,
       [double maxValue, List<Position> currentRoute, Cyclist cyclist]) {
     if (newState == PositionState.SELECTABLE) {
       if (this.cyclist != null && cyclist != null && this.cyclist != cyclist) {
         return;
       }
     }
-    if (state == newState) {
-      return;
-    }
-    state = newState;
     if (currentRoute != null) {
       currentRoute.add(this);
+      if (state == newState &&
+          route != null &&
+          currentRoute.length >= route.length) {
+        return;
+      }
       route = currentRoute;
+      // -1 since start is also in list
       if (maxValue != null && currentRoute.length - 1 < maxValue) {
         // priorityPosition is for nicer animation/movement of cyclists
         Position priorityPosition = connections
             .firstWhere((element) => element.j == j, orElse: () => null);
         if (priorityPosition != null) {
-          connections.insert(0, priorityPosition);
-          connections.removeAt(connections.lastIndexOf(priorityPosition));
+          priorityPosition.setState(
+              newState, maxValue, currentRoute.toList(), cyclist);
         }
 
-        // -1 since start is also in list
         this.connections.forEach((pos) =>
             pos.setState(newState, maxValue, currentRoute.toList(), cyclist));
       }
     }
+    state = newState;
   }
 
   double getValue(bool includingTurnUsed) {

@@ -23,6 +23,7 @@ class ResultsView implements BaseView {
   final SpriteManager spriteManager;
 
   int cyclistNumber;
+  bool isPaused = false;
   bool lastResultsAdded = false;
   Sprite background;
   Sprite backgroundHeader;
@@ -266,13 +267,20 @@ class ResultsView implements BaseView {
         Offset(screenSize.width * 4 / 5, screenSize.height / 2),
         ButtonType.ICON_RIGHT,
         () => {increaseResultType()}));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width * 3.1 / 4, screenSize.height / 6),
-        ButtonType.ICON_NO,
-        () => closeCallback(GameManagerState.MAIN_MENU,
-            currentResults: previousResults)));
-
+    if (isPaused) {
+      buttons.add(Button(
+          this.spriteManager,
+          Offset(screenSize.width * 3.1 / 4, screenSize.height / 6),
+          ButtonType.ICON_NO,
+          () => closeCallback(GameManagerState.PLAYING, continueing: true)));
+    } else {
+      buttons.add(Button(
+          this.spriteManager,
+          Offset(screenSize.width * 3.1 / 4, screenSize.height / 6),
+          ButtonType.ICON_NO,
+          () => closeCallback(GameManagerState.MAIN_MENU,
+              currentResults: previousResults)));
+    }
     buttons.forEach((element) {
       element.setScreenSize(screenSize);
     });

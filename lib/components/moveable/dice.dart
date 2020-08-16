@@ -53,10 +53,10 @@ class Dice {
     rolling = true;
   }
 
-  render(Canvas canvas, int xOffset, double tileSize) {
+  render(Canvas canvas, Offset offset, double tileSize) {
     if (sprites.length > 0 && currentIndex >= 0 && diceAnimation.length > 0) {
       canvas.save();
-      canvas.translate((xOffset + 0.5) * tileSize * 3, 100);
+      canvas.translate(offset.dx, offset.dy);
       canvas.rotate(angle);
       if (currentIndex < diceAnimation.length) {
         sprites[diceAnimation[currentIndex]].renderCentered(

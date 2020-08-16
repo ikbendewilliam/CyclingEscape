@@ -70,6 +70,10 @@ class Button {
         sprite = this.spriteManager.getSprite('icon_pause.png');
         spritePressed = this.spriteManager.getSprite('icon_pressed.png');
         break;
+      case ButtonType.ICON_RESULTS:
+        sprite = this.spriteManager.getSprite('icon_results.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
+        break;
       case ButtonType.ICON_PLAY:
         sprite = this.spriteManager.getSprite('icon_play.png');
         spritePressed = this.spriteManager.getSprite('icon_pressed.png');
@@ -195,6 +199,7 @@ enum ButtonType {
   ICON_SMALL_LEFT,
   ICON_SMALL_RIGHT,
   ICON_PAUSE,
+  ICON_RESULTS,
   ICON_PLAY,
   ICON_PLUS,
   ICON_PLUS_DISABLED,

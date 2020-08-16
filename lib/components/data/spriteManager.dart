@@ -28,6 +28,7 @@ class SpriteManager {
     spriteNames.add('left_arrow_02.png');
     spriteNames.add('right_arrow_02.png');
     spriteNames.add('icon_pause.png');
+    spriteNames.add('icon_results.png');
     spriteNames.add('icon_pressed.png');
     spriteNames.add('icon_play.png');
     spriteNames.add('icon_pressed.png');
@@ -62,6 +63,7 @@ class SpriteManager {
     spriteNames.add('icon_young.png');
     spriteNames.add('options_back_01.png');
     spriteNames.add('back_text_02.png');
+    spriteNames.add('back_text_05.png');
     spriteNames.add('back_tour.png');
   }
 

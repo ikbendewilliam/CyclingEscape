@@ -73,7 +73,7 @@ class TourSelectMenu implements BaseView {
     ][Random().nextInt(4)];
     int teams = Random().nextInt(7) + 2;
     int riders = Random().nextInt(5) + 2;
-    int races = Random().nextInt(4) + 2;
+    int races = (Random().nextInt(4) + 1) * 2;
     tours.add(Tour(teams, riders, races, mapType, mapLength));
   }
 

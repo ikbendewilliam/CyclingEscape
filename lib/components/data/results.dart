@@ -8,5 +8,14 @@ class Results {
   int greenJersey;
   int bouledJersey;
 
-  Results(this.type);
+  Results(this.type,
+      [data, this.whiteJersey, this.greenJersey, this.bouledJersey]) {
+    if (data != null) {
+      this.data = data;
+    }
+  }
+
+  Results copy() {
+    return Results(type, data.toList(), whiteJersey, greenJersey, bouledJersey);
+  }
 }

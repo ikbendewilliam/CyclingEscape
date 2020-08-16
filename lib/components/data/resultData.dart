@@ -7,6 +7,7 @@ class ResultData {
   Team team;
   int points = 0;
   int mountain = 0;
+  double value;
 
   ResultData(
       [this.rank,

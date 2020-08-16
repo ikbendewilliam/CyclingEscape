@@ -24,6 +24,7 @@ import 'menus/mainMenu.dart';
 class GameManager extends Game with ScaleDetector, TapDetector {
   int playerTeam;
   bool loading = true;
+  bool resultsViewEndsRace = true;
   Size currentSize;
   double loadingPercentage = 0;
   MainMenu mainmenu;
@@ -92,6 +93,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
           menuBackground.render(canvas, currentSize);
           break;
         case GameManagerState.PAUSED:
+        case GameManagerState.PAUSED_RESULTS:
           cyclingView.render(canvas);
           break;
         default:
@@ -184,17 +186,19 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       playerTeam = team;
     }
     if (this.activeTour != null && currentResults != null) {
-      activeTour.currentResults = currentResults;
-      activeTour.racesDone++;
-      if (activeTour.racesDone < activeTour.tour.races) {
-        newState = GameManagerState.TOUR_BETWEEN_RACES;
-      } else {
-        activeTour = null;
+      if (resultsViewEndsRace) {
+        activeTour.currentResults = currentResults;
+        activeTour.racesDone++;
       }
+      newState = GameManagerState.TOUR_BETWEEN_RACES;
     }
     this.state = newState;
     switch (newState) {
       case GameManagerState.MAIN_MENU:
+        if (activeTour != null &&
+            activeTour.racesDone >= activeTour.tour.races) {
+          activeTour = null;
+        }
         currentView = mainmenu;
         mainmenu.onAttach();
         break;
@@ -212,6 +216,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         break;
       case GameManagerState.PLAYING:
         currentView = cyclingView;
+        resultsViewEndsRace = true;
         if (continueing != true) {
           if (tourSettings != null) {
             activeTour = ActiveTour(tourSettings);
@@ -228,9 +233,19 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = tourInBetweenRacesMenu;
         tourInBetweenRacesMenu.onAttach(activeTour: activeTour);
         break;
+      case GameManagerState.RESULTS:
+        currentView = resultsView;
+        resultsViewEndsRace = false;
+        resultsView.onAttach();
+        break;
       case GameManagerState.PAUSED:
         currentView = pauseMenu;
         pauseMenu.onAttach();
+        break;
+      case GameManagerState.PAUSED_RESULTS:
+        currentView = resultsView;
+        resultsView.isPaused = true;
+        resultsView.onAttach();
         break;
       default:
       // Do nothing
@@ -241,6 +256,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   void cyclingEnded(List<Sprint> sprints) {
     this.state = GameManagerState.RESULTS;
     currentView = resultsView;
+    resultsView.isPaused = false;
     resultsView.sprints = sprints;
     resultsView.lastResultsAdded = false;
     if (activeTour != null) {
@@ -260,5 +276,6 @@ enum GameManagerState {
   TOUR_BETWEEN_RACES,
   PLAYING,
   PAUSED,
+  PAUSED_RESULTS,
   RESULTS
 }

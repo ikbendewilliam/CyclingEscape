@@ -39,7 +39,7 @@ class Cyclist {
   }
 
   moveTo(double percentage, List<Position> route) {
-    if (percentage >= 0.99) {
+    if (percentage >= 0.99 || route.length == 1) {
       movingOffset = (route.last.p1 + route.last.p2) / 2;
       movingAngle = route.last.getCyclistAngle();
     } else {

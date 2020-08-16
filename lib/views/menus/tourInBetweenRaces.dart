@@ -1,10 +1,7 @@
 import 'package:CyclingEscape/components/data/activeTour.dart';
-import 'package:CyclingEscape/components/data/playSettings.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/mapUtils.dart';
-import 'package:CyclingEscape/views/menus/tourSelect.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +16,7 @@ class TourInBetweenRacesMenu implements BaseView {
   Size screenSize;
   @override
   final SpriteManager spriteManager;
+
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundHeader;
@@ -48,22 +46,30 @@ class TourInBetweenRacesMenu implements BaseView {
     buttons = [];
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 9 * 3.5, 4.7 * buttonSize),
+      Offset(screenSize.width / 13 * 5, 4.7 * buttonSize),
+      ButtonType.ICON_RESULTS,
+      () => {navigate(GameManagerState.RESULTS)},
+    ));
+    buttons.add(Button(
+      this.spriteManager,
+      Offset(screenSize.width / 13 * 6, 4.7 * buttonSize),
       ButtonType.ICON_TRASH,
       () => {navigate(GameManagerState.MAIN_MENU, deleteActiveTour: true)},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 9 * 4.5, 4.7 * buttonSize),
+      Offset(screenSize.width / 13 * 7, 4.7 * buttonSize),
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 9 * 5.5, 4.7 * buttonSize),
-      ButtonType.ICON_PLAY,
-      () => {navigate(GameManagerState.PLAYING)},
-    ));
+    if (activeTour.racesDone < activeTour.tour.races) {
+      buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width / 13 * 8, 4.7 * buttonSize),
+        ButtonType.ICON_PLAY,
+        () => {navigate(GameManagerState.PLAYING)},
+      ));
+    }
   }
 
   @override

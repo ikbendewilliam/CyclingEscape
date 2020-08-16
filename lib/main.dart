@@ -8,6 +8,6 @@ void main() async {
   runApp(gameManager.widget);
   Util flameUtil = Util();
   await flameUtil.fullScreen();
-  await flameUtil.setOrientation(DeviceOrientation.landscapeLeft);
+  await flameUtil.setLandscape();
   gameManager.load();
 }

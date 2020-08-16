@@ -62,7 +62,7 @@ class TourInBetweenRacesMenu implements BaseView {
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
-    if (activeTour.racesDone < activeTour.tour.races) {
+    if (activeTour != null && activeTour.racesDone < activeTour.tour.races) {
       buttons.add(Button(
         this.spriteManager,
         Offset(screenSize.width / 13 * 8, 4.7 * buttonSize),

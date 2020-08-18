@@ -60,6 +60,11 @@ class MainMenu implements BaseView {
       () => {navigate(GameManagerState.TOUR_SELECT_MENU)},
       'Tour',
     ));
+    buttons.add(Button(
+        this.spriteManager,
+        Offset(buttonSize / 2 + 5, screenSize.height - buttonSize / 2 - 5),
+        ButtonType.ICON_CREDITS,
+        () => {navigate(GameManagerState.CREDITS)}));
   }
 
   @override

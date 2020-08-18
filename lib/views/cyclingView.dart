@@ -80,7 +80,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
     if (playSettings != null) {
       this.hasResults = false;
-      this.map = MapUtils.generateMap(playSettings, this);
+      this.map = MapUtils.generateMap(playSettings, this, this.spriteManager);
       this.mapSize = this.map.mapSize;
       teams = [];
       for (int i = 0; i < playSettings.teams; i++) {
@@ -123,8 +123,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       } else {
         this.hasResults = false;
       }
-      this.map =
-          MapUtils.generateMap(PlaySettings.fromTour(activeTour.tour), this);
+      this.map = MapUtils.generateMap(
+          PlaySettings.fromTour(activeTour.tour), this, this.spriteManager);
       this.mapSize = this.map.mapSize;
       if (activeTour.teams != null) {
         teams = activeTour.teams;
@@ -348,10 +348,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         movingTimer -= t;
       }
       movingCyclist.moveTo(1 - movingTimer, moveAnimation);
-      if (movingCyclist.movingOffset.isFinite) {
-        offset = -(movingCyclist.movingOffset * tileSize -
-            Offset(screenSize.width, screenSize.height) / 2 / zoom);
-      }
+      // if (movingCyclist.movingOffset.isFinite) {
+      //   offset = -(movingCyclist.movingOffset * tileSize -
+      //       Offset(screenSize.width, screenSize.height) / 2 / zoom);
+      // }
       if (movingTimer <= 0) {
         this.processGameState(GameState.USER_WAIT_CYCLIST_MOVING_FINISHED);
       }
@@ -553,7 +553,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             cyclistSelected.cyclist);
         if (!cyclistSelected.cyclist.team.isPlayer) {
           selectPosition(MapUtils.findMaxValue(
-              cyclistSelected, diceValue + cyclistSelected.fieldValue));
+              cyclistSelected, max(0, diceValue + cyclistSelected.fieldValue)));
         }
         break;
       case GameState.USER_INPUT_DICE_START:

@@ -11,8 +11,6 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'cyclingView.dart';
-
 class CyclingViewUI {
   static render(
       Canvas canvas,

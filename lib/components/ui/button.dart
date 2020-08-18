@@ -53,6 +53,10 @@ class Button {
         sprite = this.spriteManager.getSprite('left_arrow_02.png');
         spritePressed = sprite;
         break;
+      case ButtonType.ICON_CREDITS:
+        sprite = this.spriteManager.getSprite('icon_credits.png');
+        spritePressed = sprite;
+        break;
       case ButtonType.ICON_RIGHT:
         spriteBackground = this.spriteManager.getSprite('right_arrow_01.png');
         sprite = this.spriteManager.getSprite('right_arrow_02.png');
@@ -194,6 +198,7 @@ enum ButtonType {
   BAR_BLACK,
   BAR_BLUE,
   BAR_RED,
+  ICON_CREDITS,
   ICON_LEFT,
   ICON_RIGHT,
   ICON_SMALL_LEFT,

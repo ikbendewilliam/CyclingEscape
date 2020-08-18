@@ -65,6 +65,17 @@ class SpriteManager {
     spriteNames.add('back_text_02.png');
     spriteNames.add('back_text_05.png');
     spriteNames.add('back_tour.png');
+    spriteNames.add('icon_credits.png');
+    spriteNames.add('environment/rock1.png');
+    spriteNames.add('environment/rock2.png');
+    spriteNames.add('environment/rock3.png');
+    spriteNames.add('environment/tent_blue.png');
+    spriteNames.add('environment/tent_blue_large.png');
+    spriteNames.add('environment/tent_red.png');
+    spriteNames.add('environment/tent_red_large.png');
+    spriteNames.add('environment/tree_large.png');
+    spriteNames.add('environment/tree_small.png');
+    spriteNames.add('environment/tribune_full.png');
   }
 
   Future loadSprites() {

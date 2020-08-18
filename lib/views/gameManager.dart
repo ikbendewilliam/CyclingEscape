@@ -6,6 +6,7 @@ import 'package:CyclingEscape/components/data/results.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/views/menus/creditsView.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:CyclingEscape/views/menus/pauseMenu.dart';
 import 'package:CyclingEscape/views/menus/tourInBetweenRaces.dart';
@@ -31,6 +32,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   BaseView currentView;
   PauseMenu pauseMenu;
   ActiveTour activeTour;
+  CreditsView credits;
   CyclingView cyclingView;
   ResultsView resultsView;
   SpriteManager spriteManager;
@@ -45,6 +47,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     cyclingView = new CyclingView(spriteManager, cyclingEnded, menuPressed);
     resultsView = new ResultsView(spriteManager, menuPressed);
     mainmenu = new MainMenu(spriteManager, menuPressed);
+    credits = new CreditsView(spriteManager, menuPressed);
     pauseMenu = new PauseMenu(spriteManager, menuPressed);
     courseSelectMenu = new CourseSelectMenu(spriteManager, menuPressed);
     tourInBetweenRacesMenu =
@@ -59,6 +62,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       cyclingView.onAttach();
       resultsView.onAttach();
       mainmenu.onAttach();
+      credits.onAttach();
       pauseMenu.onAttach();
       courseSelectMenu.onAttach();
       tourInBetweenRacesMenu.onAttach();
@@ -86,6 +90,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     } else {
       switch (state) {
         case GameManagerState.MAIN_MENU:
+        case GameManagerState.CREDITS:
         case GameManagerState.RESULTS:
         case GameManagerState.COURSE_SELECT_MENU:
         case GameManagerState.TOUR_SELECT_MENU:
@@ -123,6 +128,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     } else {
       currentView.update(t);
       if (state == GameManagerState.MAIN_MENU ||
+          state == GameManagerState.CREDITS ||
           state == GameManagerState.COURSE_SELECT_MENU ||
           state == GameManagerState.TOUR_SELECT_MENU ||
           state == GameManagerState.TOUR_BETWEEN_RACES ||
@@ -202,6 +208,10 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = mainmenu;
         mainmenu.onAttach();
         break;
+      case GameManagerState.CREDITS:
+        currentView = credits;
+        credits.onAttach();
+        break;
       case GameManagerState.COURSE_SELECT_MENU:
         currentView = courseSelectMenu;
         courseSelectMenu.onAttach();
@@ -277,5 +287,6 @@ enum GameManagerState {
   PLAYING,
   PAUSED,
   PAUSED_RESULTS,
-  RESULTS
+  RESULTS,
+  CREDITS
 }

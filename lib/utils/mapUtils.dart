@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/playSettings.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 
@@ -386,7 +387,9 @@ class MapUtils {
 
   static List<Position> findMaxValue(Position currentPosition, double maxValue,
       [List<Position> route]) {
-    if (route == null) {
+    if (maxValue == 0) {
+      return [currentPosition];
+    } else if (route == null) {
       route = [];
     } else if (route.length > maxValue) {
       return null;
@@ -463,7 +466,9 @@ class MapUtils {
     }
   }
 
-  static GameMap generateMap(PlaySettings playSettings, listener) {
+  static GameMap generateMap(PlaySettings playSettings,
+      PositionListener listener, SpriteManager spriteManager) {
+    // return generateMountainMap(listener); // Used for debugging
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
 
     newMap.addStraight(playSettings.ridersPerTeam, max(playSettings.teams, 3));
@@ -593,12 +598,13 @@ class MapUtils {
     newMap.addSprint(width, SprintType.FINISH);
     newMap.addStraight(12, width);
     List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints);
+    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
 
     return map;
   }
 
-  static GameMap generateFlatMap(listener) {
+  static GameMap generateFlatMap(
+      PositionListener listener, SpriteManager spriteManager) {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
     newMap.addStraight(4, 4);
     newMap.addSprint(4, SprintType.START);
@@ -613,12 +619,13 @@ class MapUtils {
     newMap.addStraight(8, 4);
 
     List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints);
+    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
 
     return map;
   }
 
-  static GameMap generateCobbleMap(listener) {
+  static GameMap generateCobbleMap(
+      PositionListener listener, SpriteManager spriteManager) {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
     newMap.addStraight(4, 4);
     newMap.addSprint(4, SprintType.START);
@@ -648,62 +655,63 @@ class MapUtils {
     newMap.addStraight(8, 4);
 
     List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints);
+    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
 
     return map;
   }
 
-  static GameMap generateMountainMap(listener) {
+  static GameMap generateMountainMap(
+      PositionListener listener, SpriteManager spriteManager) {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
     newMap.addStraight(4, 4);
     newMap.addSprint(4, SprintType.START);
-    newMap.addCorner(pi / 2, 4, 8);
-    newMap.addStraight(3, 4);
-    newMap.moveWithoutAdding(Offset(-0.5, 0), 0.5);
-    newMap.setPositionType(PositionType.UPHILL, 1);
-    newMap.addStraight(3, 3);
-    newMap.addCorner(pi / 4, 3, 6);
-    newMap.addCorner(-pi / 2, 3, 9);
-    newMap.setPositionType(PositionType.UPHILL, 2);
-    newMap.addCorner(-pi / 2, 3, 9);
-    newMap.addStraight(2, 3);
-    newMap.moveWithoutAdding(Offset(0.5, 0.5), 0.5);
-    newMap.setPositionType(PositionType.UPHILL, 3);
-    newMap.addCorner(pi / 2, 2, 6);
-    newMap.setPositionType(PositionType.UPHILL, 4);
-    newMap.addStraight(3, 2);
-    newMap.addCorner(-pi, 2, 6);
-    newMap.setPositionType(PositionType.UPHILL, 5);
-    newMap.addCorner(pi * 3 / 4, 2, 4);
-    newMap.addStraight(1, 2);
-    newMap.addSprint(2, SprintType.MOUNTAIN_SPRINT);
-    newMap.setPositionType(PositionType.DOWNHILL, 5);
-    newMap.addStraight(2, 2);
-    newMap.addCorner(-pi, 2, 4);
-    newMap.setPositionType(PositionType.DOWNHILL, 4);
-    newMap.addStraight(8, 3);
-    newMap.addCorner(pi / 2, 3, 6);
-    newMap.setPositionType(PositionType.DOWNHILL, 3);
-    newMap.addCorner(pi / 2, 3, 8);
-    newMap.addStraight(5, 3);
-    newMap.setPositionType(PositionType.DOWNHILL, 2);
-    newMap.addStraight(8, 4);
-    newMap.addCorner(pi / 2, 4, 10);
-    newMap.setPositionType(PositionType.DOWNHILL, 1);
-    newMap.addStraight(10, 4);
+    // newMap.addCorner(pi / 2, 4, 8);
+    // newMap.addStraight(3, 4);
+    // newMap.moveWithoutAdding(Offset(-0.5, 0), 0.5);
+    newMap.setPositionType(PositionType.UPHILL, 10);
+    newMap.addStraight(20, 4);
+    // newMap.addCorner(pi / 4, 3, 6);
+    // newMap.addCorner(-pi / 2, 3, 9);
+    // newMap.setPositionType(PositionType.UPHILL, 2);
+    // newMap.addCorner(-pi / 2, 3, 9);
+    // newMap.addStraight(2, 3);
+    // newMap.moveWithoutAdding(Offset(0.5, 0.5), 0.5);
+    // newMap.setPositionType(PositionType.UPHILL, 3);
+    // newMap.addCorner(pi / 2, 2, 6);
+    // newMap.setPositionType(PositionType.UPHILL, 4);
+    // newMap.addStraight(3, 2);
+    // newMap.addCorner(-pi, 2, 6);
+    // newMap.setPositionType(PositionType.UPHILL, 5);
+    // newMap.addCorner(pi * 3 / 4, 2, 4);
+    // newMap.addStraight(1, 2);
+    // newMap.addSprint(2, SprintType.MOUNTAIN_SPRINT);
+    // newMap.setPositionType(PositionType.DOWNHILL, 5);
+    // newMap.addStraight(2, 2);
+    // newMap.addCorner(-pi, 2, 4);
+    // newMap.setPositionType(PositionType.DOWNHILL, 4);
+    // newMap.addStraight(8, 3);
+    // newMap.addCorner(pi / 2, 3, 6);
+    // newMap.setPositionType(PositionType.DOWNHILL, 3);
+    // newMap.addCorner(pi / 2, 3, 8);
+    // newMap.addStraight(5, 3);
+    // newMap.setPositionType(PositionType.DOWNHILL, 2);
+    // newMap.addStraight(8, 4);
+    // newMap.addCorner(pi / 2, 4, 10);
+    // newMap.setPositionType(PositionType.DOWNHILL, 1);
+    // newMap.addStraight(10, 4);
     newMap.setPositionType(PositionType.FLAT);
-    newMap.addCorner(-pi / 2, 4, 10);
-    newMap.addStraight(4, 4);
-    newMap.addStraight(6, 4);
-    newMap.addCorner(-pi / 4, 4, 10);
-    newMap.addStraight(8, 4);
-    newMap.addCorner(pi / 4, 4, 10);
-    newMap.addStraight(18, 4);
+    // newMap.addCorner(-pi / 2, 4, 10);
+    // newMap.addStraight(4, 4);
+    // newMap.addStraight(6, 4);
+    // newMap.addCorner(-pi / 4, 4, 10);
+    // newMap.addStraight(8, 4);
+    // newMap.addCorner(pi / 4, 4, 10);
+    // newMap.addStraight(18, 4);
     newMap.addSprint(4, SprintType.FINISH);
     newMap.addStraight(12, 4);
 
     List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints);
+    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
 
     return map;
   }

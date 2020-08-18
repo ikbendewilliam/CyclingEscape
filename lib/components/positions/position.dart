@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/storage.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/mapUtils.dart';

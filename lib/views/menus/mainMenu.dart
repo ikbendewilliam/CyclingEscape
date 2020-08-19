@@ -1,6 +1,7 @@
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
@@ -43,7 +44,7 @@ class MainMenu implements BaseView {
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
-      () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
+      () => {navigate(GameManagerState.TOUR_SELECT_MENU, load: true)},
       'Career',
     ));
     buttons.add(Button(

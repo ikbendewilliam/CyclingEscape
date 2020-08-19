@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
@@ -30,6 +32,8 @@ class TourInBetweenRacesMenu implements BaseView {
   void onAttach({ActiveTour activeTour}) {
     if (activeTour != null) {
       this.activeTour = activeTour;
+    } else {
+      print('isnull');
     }
     if (screenSize == null) {
       screenSize = Size(1, 1);

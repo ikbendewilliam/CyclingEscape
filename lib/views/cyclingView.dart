@@ -86,12 +86,12 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       for (int i = 0; i < playSettings.teams; i++) {
         if (team != null) {
           if (i == 0) {
-            teams.add(Team(true, team));
+            teams.add(Team(true, team, spriteManager));
           } else {
-            teams.add(Team(false, i == team ? 0 : i));
+            teams.add(Team(false, i == team ? 0 : i, spriteManager));
           }
         } else {
-          teams.add(Team(i == 0, i));
+          teams.add(Team(i == 0, i, spriteManager));
         }
       }
       tempResults = Results(ResultsType.RACE);
@@ -104,7 +104,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             teams[teamIndex],
             (2 + teams[teamIndex].numberStart) * 10 +
                 (teams[teamIndex].cyclists.length + 1),
-            1);
+            1,
+            spriteManager);
         tempResults.data.add(ResultData(
             playSettings.teams * playSettings.ridersPerTeam - i,
             0,
@@ -133,12 +134,12 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         for (int i = 0; i < activeTour.tour.teams; i++) {
           if (team != null) {
             if (i == 0) {
-              teams.add(Team(true, team));
+              teams.add(Team(true, team, spriteManager));
             } else {
-              teams.add(Team(false, i == team ? 0 : i));
+              teams.add(Team(false, i == team ? 0 : i, spriteManager));
             }
           } else {
-            teams.add(Team(i == 0, i));
+            teams.add(Team(i == 0, i, spriteManager));
           }
         }
         activeTour.teams = teams;
@@ -187,7 +188,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
               teams[teamIndex],
               (2 + teams[teamIndex].numberStart) * 10 +
                   (teams[teamIndex].cyclists.length + 1),
-              1);
+              1,
+              spriteManager);
           activeTour.cyclists.add(cyclist);
           teams[teamIndex].cyclists.add(cyclist);
         }
@@ -214,6 +216,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       zoom = 0.5;
       notifications = [];
       minZoom = 0.2;
+      followSelect = null;
       this.handleInBetweenTurns();
       this.processGameState(GameState.GAME_SELECT_NEXT);
       if (backgroundNotification == null) {

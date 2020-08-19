@@ -6,6 +6,7 @@ import 'package:CyclingEscape/components/data/results.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/menus/creditsView.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:CyclingEscape/views/menus/pauseMenu.dart';
@@ -179,17 +180,30 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   void menuPressed(GameManagerState newState,
       {PlaySettings playSettings,
       Tour tourSettings,
-      bool deleteActiveTour,
+      bool deleteActiveTour: false,
       Results currentResults,
       int team,
-      bool continueing}) {
-    // Can be null
-    if (deleteActiveTour == true) {
+      bool continueing: false,
+      bool save: false,
+      bool load: false}) async {
+    if (deleteActiveTour) {
       this.activeTour = null;
       this.tourSelectMenu.selectedTour = null;
     }
     if (team != null) {
       playerTeam = team;
+    }
+    if (save) {
+      if (this.activeTour != null) {
+        SaveUtil.saveTour(activeTour);
+      }
+      continueing = true;
+    }
+    if (load) {
+      this.tourSelectMenu.selectedTour = null;
+      this.activeTour = await SaveUtil.loadTour(spriteManager);
+      print('loaded tour');
+      newState = GameManagerState.TOUR_BETWEEN_RACES;
     }
     if (this.activeTour != null && currentResults != null) {
       if (resultsViewEndsRace) {
@@ -227,7 +241,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       case GameManagerState.PLAYING:
         currentView = cyclingView;
         resultsViewEndsRace = true;
-        if (continueing != true) {
+        if (!continueing) {
           if (tourSettings != null) {
             activeTour = ActiveTour(tourSettings);
           }

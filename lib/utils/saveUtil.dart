@@ -1,7 +1,69 @@
-import 'package:CyclingEscape/views/gameManager.dart';
+import 'dart:convert';
+import 'dart:ui';
+
+import 'package:CyclingEscape/components/data/activeTour.dart';
+import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:flame/position.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveUtil {
-  final GameManager gameManager;
+  static void saveTour(ActiveTour activeTour) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String activeTourEncoded = jsonEncode(activeTour.toJson());
+    print(activeTourEncoded);
+    await prefs.setString('activeTour', activeTourEncoded);
+  }
 
-  SaveUtil(this.gameManager);
+  static Future<bool> hasTour() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('activeTour')) {
+      print(prefs.getString('activeTour'));
+    }
+    return prefs.containsKey('activeTour');
+  }
+
+  static Future<ActiveTour> loadTour(SpriteManager spriteManager) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return ActiveTour.fromJson(
+        jsonDecode(prefs.getString('activeTour')), spriteManager);
+  }
+
+  static Future<void> clearTour() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('activeTour');
+  }
+
+  static Offset offsetFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return Offset(json['dx'], json['dy']);
+  }
+
+  static Map<String, dynamic> offsetToJson(Offset offset) {
+    if (offset == null) {
+      return null;
+    }
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['dx'] = offset.dx;
+    data['dy'] = offset.dy;
+    return data;
+  }
+
+  static Position positionFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return Position(json['x'], json['y']);
+  }
+
+  static Map<String, dynamic> positionToJson(Position position) {
+    if (position == null) {
+      return null;
+    }
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['x'] = position.x;
+    data['y'] = position.y;
+    return data;
+  }
 }

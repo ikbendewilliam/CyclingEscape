@@ -272,7 +272,8 @@ class Position {
     }
   }
 
-//   static Position fromJson(Map<String, dynamic> json) {
+  static Position fromJson(Map<String, dynamic> json) {
+    return null;
 //     return new Position(
 
 //            json['p1'] != null ? OffsetFromJSON.fromJson(json['p1']) : null
@@ -292,11 +293,13 @@ class Position {
 //      , json['cyclist'].cast<String>()
 //      , json['state']
 // ,json['id']
-//   }
+  }
 
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
+  Map<String, dynamic> toJson(bool idOnly) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    return data;
+  }
 //     data['curvature'] = this.curvature;
 //     data['segment'] = this.segment;
 //     data['isCurved'] = this.isCurved;

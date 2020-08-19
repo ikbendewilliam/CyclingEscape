@@ -285,7 +285,31 @@ class Tour {
   final int races;
   final MapType mapType;
   final MapLength mapLength;
+  String id = UniqueKey().toString();
 
   Tour(
       this.teams, this.ridersPerTeam, this.races, this.mapType, this.mapLength);
+
+  static Tour fromJson(Map<String, dynamic> json) {
+    Tour tour = Tour(
+      json['teams'],
+      json['ridersPerTeam'],
+      json['races'],
+      getMapTypeFromString(json['mapType']),
+      getMapLengthFromString(json['mapLength']),
+    );
+    tour.id = json['id'];
+    return tour;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['teams'] = this.teams;
+    data['ridersPerTeam'] = this.ridersPerTeam;
+    data['races'] = this.races;
+    data['mapType'] = this.mapType.toString();
+    data['mapLength'] = this.mapLength.toString();
+    return data;
+  }
 }

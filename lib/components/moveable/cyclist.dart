@@ -1,18 +1,21 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/positions/position.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:flame/position.dart' as flamePosition;
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 class Cyclist {
   final int number;
-  final Team team;
+  Team team;
   int rank;
   int lastUsedOnTurn = 0;
+  bool isPlaceHolder = false;
   bool wearsYellowJersey = false;
   bool wearsWhiteJersey = false;
   bool wearsGreenJersey = false;
@@ -25,17 +28,22 @@ class Cyclist {
   Sprite cyclistGreenJerseySprite;
   Sprite cyclistBouledJerseySprite;
   Position lastPosition;
+  String id = UniqueKey().toString();
 
-  Cyclist(this.team, this.number, this.rank) {
+  Cyclist(this.team, this.number, this.rank, SpriteManager spriteManager,
+      {this.isPlaceHolder: false}) {
+    if (isPlaceHolder) {
+      return;
+    }
     cyclistSprite = this.team.getSprite(this.number % 2 == 0);
-    cyclistYellowJerseySprite =
-        Sprite('cyclists/geel${this.number % 2 == 0 ? '2' : ''}.png');
-    cyclistWhiteJerseySprite =
-        Sprite('cyclists/wit${this.number % 2 == 0 ? '2' : ''}.png');
-    cyclistGreenJerseySprite =
-        Sprite('cyclists/lichtgroen${this.number % 2 == 0 ? '2' : ''}.png');
-    cyclistBouledJerseySprite =
-        Sprite('cyclists/bollekes${this.number % 2 == 0 ? '2' : ''}.png');
+    cyclistYellowJerseySprite = spriteManager
+        .getSprite('cyclists/geel${this.number % 2 == 0 ? '2' : ''}.png');
+    cyclistWhiteJerseySprite = spriteManager
+        .getSprite('cyclists/wit${this.number % 2 == 0 ? '2' : ''}.png');
+    cyclistGreenJerseySprite = spriteManager
+        .getSprite('cyclists/lichtgroen${this.number % 2 == 0 ? '2' : ''}.png');
+    cyclistBouledJerseySprite = spriteManager
+        .getSprite('cyclists/bollekes${this.number % 2 == 0 ? '2' : ''}.png');
   }
 
   moveTo(double percentage, List<Position> route) {
@@ -88,5 +96,65 @@ class Cyclist {
         canvas.restore();
       }
     }
+  }
+
+  static Cyclist fromJson(
+      Map<String, dynamic> json,
+      List<Cyclist> existingCyclists,
+      List<Team> existingTeams,
+      SpriteManager spriteManager) {
+    if (existingCyclists != null && existingCyclists.length > 0) {
+      Cyclist c = existingCyclists.firstWhere(
+          (element) => element.id == json['id'],
+          orElse: () => null);
+      if (c != null) {
+        return c;
+      }
+    }
+    if (json['id'] != null && json['number'] == null) {
+      Cyclist placeholder =
+          Cyclist(null, 0, 0, spriteManager, isPlaceHolder: true);
+      placeholder.id = json['id'];
+      return placeholder;
+    }
+
+    Cyclist cyclist = Cyclist(
+      Team.fromJson(
+          json['team'], existingCyclists, existingTeams, spriteManager),
+      json['number'],
+      json['rank'],
+      spriteManager,
+    );
+    cyclist.id = json['id'];
+    existingCyclists.add(cyclist);
+
+    cyclist.lastUsedOnTurn = json['lastUsedOnTurn'];
+    cyclist.wearsYellowJersey = json['wearsYellowJersey'];
+    cyclist.wearsWhiteJersey = json['wearsWhiteJersey'];
+    cyclist.wearsGreenJersey = json['wearsGreenJersey'];
+    cyclist.wearsBouledJersey = json['wearsBouledJersey'];
+    cyclist.movingAngle = json['movingAngle'];
+    cyclist.movingOffset = SaveUtil.offsetFromJson(json['movingOffset']);
+    cyclist.lastPosition = Position.fromJson(json['lastPosition']);
+    return cyclist;
+  }
+
+  Map<String, dynamic> toJson(bool idOnly) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (!idOnly) {
+      data['number'] = this.number;
+      data['team'] = this.team.toJson(true);
+      data['rank'] = this.rank;
+      data['lastUsedOnTurn'] = this.lastUsedOnTurn;
+      data['wearsYellowJersey'] = this.wearsYellowJersey;
+      data['wearsWhiteJersey'] = this.wearsWhiteJersey;
+      data['wearsGreenJersey'] = this.wearsGreenJersey;
+      data['wearsBouledJersey'] = this.wearsBouledJersey;
+      data['movingAngle'] = this.movingAngle;
+      data['movingOffset'] = SaveUtil.offsetToJson(this.movingOffset);
+      data['lastPosition'] = this.lastPosition.toJson(true);
+    }
+    return data;
   }
 }

@@ -76,6 +76,30 @@ class SpriteManager {
     spriteNames.add('environment/tree_large.png');
     spriteNames.add('environment/tree_small.png');
     spriteNames.add('environment/tribune_full.png');
+    spriteNames.add('cyclists/rood.png');
+    spriteNames.add('cyclists/rood2.png');
+    spriteNames.add('cyclists/blauw.png');
+    spriteNames.add('cyclists/blauw2.png');
+    spriteNames.add('cyclists/zwart.png');
+    spriteNames.add('cyclists/zwart2.png');
+    spriteNames.add('cyclists/groen.png');
+    spriteNames.add('cyclists/groen2.png');
+    spriteNames.add('cyclists/bruin.png');
+    spriteNames.add('cyclists/bruin2.png');
+    spriteNames.add('cyclists/paars.png');
+    spriteNames.add('cyclists/paars2.png');
+    spriteNames.add('cyclists/grijs.png');
+    spriteNames.add('cyclists/grijs2.png');
+    spriteNames.add('cyclists/limoen.png');
+    spriteNames.add('cyclists/limoen2.png');
+    spriteNames.add('cyclists/geel.png');
+    spriteNames.add('cyclists/geel2.png');
+    spriteNames.add('cyclists/wit.png');
+    spriteNames.add('cyclists/wit2.png');
+    spriteNames.add('cyclists/lichtgroen.png');
+    spriteNames.add('cyclists/lichtgroen2.png');
+    spriteNames.add('cyclists/bollekes.png');
+    spriteNames.add('cyclists/bollekes2.png');
   }
 
   Future loadSprites() {

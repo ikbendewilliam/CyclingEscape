@@ -717,5 +717,24 @@ class MapUtils {
   }
 }
 
+MapType getMapTypeFromString(String mapTypeAsString) {
+  for (MapType element in MapType.values) {
+    if (element.toString() == mapTypeAsString) {
+      return element;
+    }
+  }
+  return null;
+}
+
 enum MapType { FLAT, COBBLE, HILLS, HEAVY }
+
+MapLength getMapLengthFromString(String mapLengthAsString) {
+  for (MapLength element in MapLength.values) {
+    if (element.toString() == mapLengthAsString) {
+      return element;
+    }
+  }
+  return null;
+}
+
 enum MapLength { SHORT, MEDIUM, LONG, VERY_LONG }

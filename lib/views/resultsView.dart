@@ -493,4 +493,13 @@ class ResultsView implements BaseView {
   }
 }
 
+ResultsType getResultsTypeFromString(String resultsTypeAsString) {
+  for (ResultsType element in ResultsType.values) {
+    if (element.toString() == resultsTypeAsString) {
+      return element;
+    }
+  }
+  return null;
+}
+
 enum ResultsType { RACE, TOUR, TIME, YOUNG, POINTS, MOUNTAIN, TEAM }

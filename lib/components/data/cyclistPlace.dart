@@ -10,4 +10,19 @@ class CyclistPlace {
   int getTurns() {
     return (-value / 1000 / 1000 / 1000 + 1).floor();
   }
+
+  static CyclistPlace fromJson(Map<String, dynamic> json) {
+    CyclistPlace cyclistPlace = CyclistPlace(
+        Cyclist.fromJson(json['cyclist'], [], [], null), json['value']);
+    cyclistPlace.displayed = json['displayed'];
+    return cyclistPlace;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['cyclist'] = this.cyclist.toJson(true);
+    data['value'] = this.value;
+    data['displayed'] = this.displayed;
+    return data;
+  }
 }

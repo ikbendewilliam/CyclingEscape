@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/mapUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:flutter/material.dart';
 
 import '../moveable/cyclist.dart';
@@ -26,7 +30,7 @@ class Position {
   final PositionType positionType;
   final PositionListener listener;
 
-  String id;
+  String id = UniqueKey().toString();
   Offset p1;
   Offset p2;
   double fieldValue = 0;
@@ -34,6 +38,7 @@ class Position {
   List<Position> connections = [];
   List<Position> route = [];
   PositionState state = PositionState.NORMAL;
+  bool isPlaceHolder;
 
   Position(
       this.p1,
@@ -53,9 +58,7 @@ class Position {
       {this.curvature,
       this.fieldValue,
       this.sprint,
-      this.id}) {
-    this.id = UniqueKey().toString();
-  }
+      this.isPlaceHolder: false});
 
   void render(
       Canvas canvas, double tileSize, Offset center, double screenRange) {
@@ -272,59 +275,140 @@ class Position {
     }
   }
 
-  static Position fromJson(Map<String, dynamic> json) {
-    return null;
-//     return new Position(
+  static Position fromJson(
+      Map<String, dynamic> json,
+      List<Position> existingPositions,
+      List<Sprint> existingSprints,
+      List<Cyclist> existingCyclists,
+      List<Team> existingTeams,
+      SpriteManager spriteManager,
+      PositionListener listener) {
+    if (json == null) {
+      return null;
+    }
+    if (existingPositions != null && existingPositions.length > 0) {
+      Position c = existingPositions.firstWhere(
+          (element) => element.id == json['id'],
+          orElse: () => null);
+      if (c != null) {
+        return c;
+      }
+    }
+    if (json['id'] != null && json['number'] == null) {
+      Position placeholder = Position(Offset(0, 0), Offset(0, 0), listener,
+          false, 0, 0, 0, 0, 0, false, 0, 0, false, PositionType.FLAT,
+          isPlaceHolder: true);
+      placeholder.id = json['id'];
+      return placeholder;
+    }
+    Position position = Position(
+      SaveUtil.offsetFromJson(json['p1']),
+      SaveUtil.offsetFromJson(json['p2']),
+      listener,
+      json['isLast'],
+      json['segment'],
+      json['i'],
+      json['iValue'],
+      json['j'],
+      json['k'],
+      json['clockwise'],
+      json['startAngle'],
+      json['radius'],
+      json['isCurved'],
+      getPositionTypeFromString(json['positionType']),
+      curvature: json['curvature'],
+      fieldValue: json['fieldValue'],
+      sprint: Sprint.fromJson(json['sprint'], existingSprints),
+      isPlaceHolder: true,
+    );
+    position.id = json['id'];
+    existingPositions.add(position);
 
-//            json['p1'] != null ? OffsetFromJSON.fromJson(json['p1']) : null
-//      , json['p2'] != null ? OffsetFromJSON.fromJson(json['p2']) : null
-//      ,null
-//      , json['isLast']
-//      , json['segment']
-//      , json['i']
-//      , json['iValue']
-//      , json['j']
-//      , json['isCurved']
-//      , json['positionType']
-//      , curvature: json['curvature']
-//      , sprint: json['sprint']
-//      , fieldValue: json['fieldValue']
-//      , json['connections'].cast<String>()
-//      , json['cyclist'].cast<String>()
-//      , json['state']
-// ,json['id']
+    position.cyclist = Cyclist.fromJson(
+        json['cyclist'], existingCyclists, existingTeams, spriteManager);
+    position.connections = json['connections']?.map((e) => Position.fromJson(
+        e,
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        listener));
+    position.route = json['route']?.map((e) => Position.fromJson(
+        e,
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        listener));
+    position.state = getPositionStateFromString(json['state']);
+
+    return position;
   }
 
   Map<String, dynamic> toJson(bool idOnly) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    if (!idOnly) {
+      data['k'] = this.k;
+      data['segment'] = this.segment;
+      data['curvature'] = this.curvature;
+      data['isLast'] = this.isLast;
+      data['isCurved'] = this.isCurved;
+      data['clockwise'] = this.clockwise;
+      data['i'] = this.i;
+      data['j'] = this.j;
+      data['radius'] = this.radius;
+      data['iValue'] = this.iValue;
+      data['startAngle'] = this.startAngle;
+      data['fieldValue'] = this.fieldValue;
+
+      data['sprint'] = this.sprint?.toJson(true);
+      data['cyclist'] = this.cyclist?.toJson(false);
+
+      data['p1'] = SaveUtil.offsetToJson(this.p1);
+      data['p2'] = SaveUtil.offsetToJson(this.p2);
+
+      data['positionType'] = this.positionType.toString();
+      data['state'] = this.state.toString();
+
+      data['connections'] = [];
+      if (this.connections != null) {
+        this
+            .connections
+            .forEach((v) => data['connections'].add(v.toJson(true)));
+      }
+
+      data['route'] = [];
+      if (this.route != null) {
+        this.route.forEach((v) => data['route'].add(v.toJson(true)));
+      }
+    }
     return data;
   }
-//     data['curvature'] = this.curvature;
-//     data['segment'] = this.segment;
-//     data['isCurved'] = this.isCurved;
-//     data['isLast'] = this.isLast;
-//     data['i'] = this.i;
-//     data['iValue'] = this.iValue;
-//     data['j'] = this.j;
-//     data['sprint'] = this.sprint;
-//     data['positionType'] = this.positionType;
-//     if (this.p1 != null) {
-//       data['p1'] = this.p1.toJson();
-//     }
-//     if (this.p2 != null) {
-//       data['p2'] = this.p2.toJson();
-//     }
-//     data['fieldValue'] = this.fieldValue;
-//     data['connections'] = this.connections;
-//     data['cyclist'] = this.cyclist;
-//     data['state'] = this.state;
-//     return data;
-//   }
 }
 
 abstract class PositionListener {
   void selectPosition(List<Position> position);
+}
+
+PositionState getPositionStateFromString(String positionStateAsString) {
+  for (PositionState element in PositionState.values) {
+    if (element.toString() == positionStateAsString) {
+      return element;
+    }
+  }
+  return null;
+}
+
+PositionType getPositionTypeFromString(String positionTypeAsString) {
+  for (PositionType element in PositionType.values) {
+    if (element.toString() == positionTypeAsString) {
+      return element;
+    }
+  }
+  return null;
 }
 
 enum PositionState { NORMAL, SELECTABLE, NOT_SELECTABLE }

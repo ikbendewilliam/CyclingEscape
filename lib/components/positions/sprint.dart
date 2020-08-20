@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/cyclistPlace.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:flutter/material.dart';
 
 class Sprint {
@@ -10,13 +11,13 @@ class Sprint {
   final int segment;
   final int width;
   final List<CyclistPlace> cyclistPlaces = [];
+  bool isPlaceHolder;
+  String id = UniqueKey().toString();
 
   Offset offset;
-  String id;
 
-  Sprint(this.type, this.offset, this.width, this.angle, this.segment) {
-    this.id = UniqueKey().toString();
-  }
+  Sprint(this.type, this.offset, this.width, this.angle, this.segment,
+      {this.isPlaceHolder: false});
 
   void render(Canvas canvas, tileSize) {
     Paint paint = Paint()
@@ -83,6 +84,61 @@ class Sprint {
         return '';
     }
   }
+
+  static Sprint fromJson(
+      Map<String, dynamic> json, List<Sprint> existingSprints) {
+    if (existingSprints != null && existingSprints.length > 0) {
+      Sprint c = existingSprints.firstWhere(
+          (element) => element.id == json['id'],
+          orElse: () => null);
+      if (c != null) {
+        return c;
+      }
+    }
+    if (json['id'] != null && json['number'] == null) {
+      Sprint placeholder =
+          Sprint(SprintType.START, Offset(0, 0), 1, 0, 0, isPlaceHolder: true);
+      placeholder.id = json['id'];
+      return placeholder;
+    }
+    Sprint sprint = Sprint(
+      getSprintTypeFromString(json['type']),
+      SaveUtil.offsetFromJson(json['offset']),
+      json['width'],
+      json['angle'],
+      json['segment'],
+    );
+    sprint.id = json['id'];
+    existingSprints.add(sprint);
+    sprint.offset = SaveUtil.offsetFromJson(json['offset']);
+    json['cyclistPlaces']
+        .forEach((p) => sprint.cyclistPlaces.add(CyclistPlace.fromJson(p)));
+    return sprint;
+  }
+
+  Map<String, dynamic> toJson(bool idOnly) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (!idOnly) {
+      data['type'] = this.type.toString();
+      data['offset'] = SaveUtil.offsetToJson(this.offset);
+      data['width'] = this.width;
+      data['angle'] = this.angle;
+      data['segment'] = this.segment;
+      data['offset'] = SaveUtil.offsetToJson(this.offset);
+      data['cyclistPlaces'] = this.cyclistPlaces?.map((v) => v.toJson());
+    }
+    return data;
+  }
+}
+
+SprintType getSprintTypeFromString(String sprintTypeAsString) {
+  for (SprintType element in SprintType.values) {
+    if (element.toString() == sprintTypeAsString) {
+      return element;
+    }
+  }
+  return null;
 }
 
 enum SprintType { START, SPRINT, MOUNTAIN_SPRINT, FINISH }

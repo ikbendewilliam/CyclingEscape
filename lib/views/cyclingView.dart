@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 import 'package:CyclingEscape/components/data/activeTour.dart';
@@ -9,7 +10,7 @@ import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
 import 'package:flame/position.dart' as flamePosition;
 import 'package:flame/sprite.dart';
@@ -34,6 +35,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   bool moving = false;
   bool autoFollow = false;
   bool hasResults = false;
+  bool openFollowSelect = false;
   Dice dice, dice2;
   Size worldSize = Size(1, 1);
   Size mapSize = Size(1, 1);
@@ -239,6 +241,9 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         iconMountain = this.spriteManager.getSprite('icon_mountain.png');
       }
       createButtons(screenSize != null ? screenSize.height / 7 : 10);
+    }
+    if (openFollowSelect) {
+      this.processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
     }
     if (grass == null) {
       grass = this.spriteManager.getSprite('environment/grass.png');
@@ -815,6 +820,182 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       button.onTapDown(details.globalPosition);
     });
   }
+
+  static CyclingView fromJson(Map<String, dynamic> json,
+      SpriteManager spriteManager, Function cyclingEnded, Function navigate) {
+    List<Position> existingPositions = [];
+    List<Sprint> existingSprints = [];
+    List<Cyclist> existingCyclists = [];
+    List<Team> existingTeams = [];
+
+    CyclingView cyclingView =
+        CyclingView(spriteManager, cyclingEnded, navigate);
+    if (json['teams'] != null) {
+      cyclingView.teams = [];
+      json['teams'].forEach((j) {
+        cyclingView.teams.add(
+            Team.fromJson(j, existingCyclists, existingTeams, spriteManager));
+      });
+    }
+    cyclingView.diceValue = json['diceValue'];
+    cyclingView.currentTurn = json['currentTurn'];
+    cyclingView.grid = json['grid'];
+    cyclingView.ended = json['ended'];
+    cyclingView.moving = json['moving'];
+    cyclingView.autoFollow = json['autoFollow'];
+    cyclingView.hasResults = json['hasResults'];
+    cyclingView.openFollowSelect = json['openFollowSelect'];
+    cyclingView.dice = Dice.fromJson(json['dice'], cyclingView, spriteManager);
+    cyclingView.dice2 =
+        Dice.fromJson(json['dice2'], cyclingView, spriteManager);
+    cyclingView.worldSize = SaveUtil.sizeFromJson(json['worldSize']);
+    cyclingView.mapSize = SaveUtil.sizeFromJson(json['mapSize']);
+    cyclingView.offset = SaveUtil.offsetFromJson(json['offset']);
+    cyclingView.zoom = json['zoom'];
+    cyclingView.movingTimer = json['movingTimer'];
+    cyclingView.tileSize = json['tileSize'];
+    cyclingView.cyclistMoved = json['cyclistMoved'];
+    cyclingView.diceValueCooldown = json['diceValueCooldown'];
+    cyclingView.map = GameMap.fromJson(
+        json['map'],
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        cyclingView);
+    cyclingView.movingCyclist = Cyclist.fromJson(
+        json['movingCyclist'], existingCyclists, existingTeams, spriteManager);
+    cyclingView.tempResults = Results.fromJson(
+        json['tempResults'], existingCyclists, existingTeams, spriteManager);
+    cyclingView.startResults = Results.fromJson(
+        json['startResults'], existingCyclists, existingTeams, spriteManager);
+    cyclingView.cyclistSelected = Position.fromJson(
+        json['cyclistSelected'],
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        cyclingView);
+    cyclingView.cyclistLastSelected = Position.fromJson(
+        json['cyclistLastSelected'],
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        cyclingView);
+    cyclingView.gameState = getGameStateFromString(json['gameState']);
+    cyclingView.followSelect = json['followSelect'];
+
+    if (json['moveAnimation'] != null) {
+      cyclingView.moveAnimation = [];
+      json['moveAnimation'].forEach((j) {
+        cyclingView.moveAnimation.add(Position.fromJson(
+            j,
+            existingPositions,
+            existingSprints,
+            existingCyclists,
+            existingTeams,
+            spriteManager,
+            cyclingView));
+      });
+    }
+
+    if (json['notifications'] != null) {
+      cyclingView.notifications = [];
+      json['notifications'].forEach((j) {
+        cyclingView.notifications.add(Notification.fromJson(j));
+      });
+    }
+
+    // activeTour.currentResults.data.forEach((element) {
+    //   if (element.team.isPlaceHolder) {
+    //     element.team = existingTeams.firstWhere(
+    //         (existing) => existing.id == element.team.id,
+    //         orElse: () => element.team);
+    //   }
+    // });
+    // existingCyclists.forEach((element) {
+    //   if (element.team.isPlaceHolder) {
+    //     element.team = existingTeams.firstWhere(
+    //         (existing) => existing.id == element.team.id,
+    //         orElse: () => element.team);
+    //   }
+    // });
+    existingTeams.forEach((team) {
+      for (int i = 0; i < team.cyclists.length; i++) {
+        if (team.cyclists[i].isPlaceHolder) {
+          team.cyclists[i] = existingCyclists.firstWhere(
+              (existing) => existing.id == team.cyclists[i].id,
+              orElse: () => team.cyclists[i]);
+        }
+      }
+    });
+
+    print({
+      'existingPositions': existingPositions,
+      'existingSprints': existingSprints,
+      'existingCyclists': existingCyclists,
+      'existingTeams': existingTeams,
+    });
+
+    return cyclingView;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['diceValue'] = this.diceValue;
+    data['currentTurn'] = this.currentTurn;
+    data['ended'] = this.ended;
+    data['moving'] = this.moving;
+    data['autoFollow'] = this.autoFollow;
+    data['hasResults'] = this.hasResults;
+    data['openFollowSelect'] = this.openFollowSelect;
+    data['zoom'] = this.zoom;
+    data['movingTimer'] = this.movingTimer;
+    data['cyclistMoved'] = this.cyclistMoved;
+    data['diceValueCooldown'] = this.diceValueCooldown;
+
+    data['offset'] = SaveUtil.offsetToJson(this.offset);
+    data['worldSize'] = SaveUtil.sizeToJson(this.worldSize);
+    data['mapSize'] = SaveUtil.sizeToJson(this.mapSize);
+
+    data['gameState'] = this.gameState.toString();
+
+    data['dice'] = this.dice?.toJson();
+    data['dice2'] = this.dice2?.toJson();
+    data['map'] = this.map?.toJson();
+    print('movingCyclist: ${jsonEncode(data)}');
+    data['movingCyclist'] = this.movingCyclist?.toJson(true);
+    print('tempResults: ${jsonEncode(data)}');
+    data['tempResults'] = this.tempResults?.toJson();
+    print('startResults: ${jsonEncode(data)}');
+    data['startResults'] = this.startResults?.toJson();
+    print('cyclistSelected: ${jsonEncode(data)}');
+    data['cyclistSelected'] = this.cyclistSelected?.toJson(true);
+    print('cyclistLastSelected: ${jsonEncode(data)}');
+    data['cyclistLastSelected'] = this.cyclistLastSelected?.toJson(true);
+    print('teams: ${jsonEncode(data)}');
+
+    data['teams'] = this.teams?.map((i) => i.toJson(false));
+    print('moveAnimation: ${jsonEncode(data)}');
+    data['moveAnimation'] = this.moveAnimation?.map((i) => i.toJson(true));
+    print('notifications: ${jsonEncode(data)}');
+    data['notifications'] = this.notifications?.map((i) => i.toJson());
+
+    return data;
+  }
+}
+
+GameState getGameStateFromString(String gameStateAsString) {
+  for (GameState element in GameState.values) {
+    if (element.toString() == gameStateAsString) {
+      return element;
+    }
+  }
+  return null;
 }
 
 enum GameState {
@@ -830,8 +1011,19 @@ enum GameState {
 }
 
 class Notification {
-  final String text;
-  final Color color;
+  String text;
+  Color color;
 
   Notification(this.text, this.color);
+
+  static Notification fromJson(Map<String, dynamic> json) {
+    return Notification(json['text'], SaveUtil.colorFromJson(json['color']));
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['text'] = this.text;
+    data['color'] = SaveUtil.colorToJson(this.color);
+    return data;
+  }
 }

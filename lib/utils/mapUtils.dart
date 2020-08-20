@@ -145,8 +145,6 @@ class MapUtils {
       for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
         double startAngle2 =
             centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
-        double endAngle =
-            centerAngle + maxAngle * (i - 0.5) * k / (numberOfPositions / 2);
         double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
         Offset offset = Offset(cos(angle), sin(angle)) *
             length /

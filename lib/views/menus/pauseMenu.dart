@@ -68,9 +68,7 @@ class PauseMenu implements BaseView {
   }
 
   @override
-  void onScaleStart(ScaleStartDetails details) {
-    // TODO: implement onScaleStart
-  }
+  void onScaleStart(ScaleStartDetails details) {}
 
   @override
   void onTapUp(TapUpDetails details) {

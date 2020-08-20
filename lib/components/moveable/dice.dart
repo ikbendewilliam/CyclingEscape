@@ -162,6 +162,40 @@ class Dice {
       return i + (j - 1) * 16 + 1;
     }
   }
+
+  static Dice fromJson(Map<String, dynamic> json, DiceListener listener,
+      SpriteManager spriteManager) {
+    if (json == null) {
+      return null;
+    }
+    Dice dice = Dice(spriteManager, listener);
+    dice.diceValue = json['diceValue'];
+    dice.direction = json['direction'];
+    dice.currentIndex = json['currentIndex'];
+    dice.endIndex = json['endIndex'];
+    dice.directionCountDown = json['directionCountDown'];
+    dice.rolling = json['rolling'];
+    dice.angle = json['angle'];
+    dice.scale = json['scale'];
+    dice.countdown = json['countdown'];
+    dice.diceAnimation = json['diceAnimation'];
+    return dice;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['diceValue'] = this.diceValue;
+    data['direction'] = this.direction;
+    data['currentIndex'] = this.currentIndex;
+    data['endIndex'] = this.endIndex;
+    data['directionCountDown'] = this.directionCountDown;
+    data['rolling'] = this.rolling;
+    data['angle'] = this.angle;
+    data['scale'] = this.scale;
+    data['countdown'] = this.countdown;
+    data['diceAnimation'] = this.diceAnimation;
+    return data;
+  }
 }
 
 abstract class DiceListener {

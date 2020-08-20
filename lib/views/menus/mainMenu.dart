@@ -1,8 +1,6 @@
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -76,9 +74,7 @@ class MainMenu implements BaseView {
   }
 
   @override
-  void onScaleStart(ScaleStartDetails details) {
-    // TODO: implement onScaleStart
-  }
+  void onScaleStart(ScaleStartDetails details) {}
 
   @override
   void onTapUp(TapUpDetails details) {

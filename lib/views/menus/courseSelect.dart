@@ -246,9 +246,7 @@ class CourseSelectMenu implements BaseView {
   }
 
   @override
-  void onScaleStart(ScaleStartDetails details) {
-    // TODO: implement onScaleStart
-  }
+  void onScaleStart(ScaleStartDetails details) {}
 
   @override
   void onTapUp(TapUpDetails details) {
@@ -361,7 +359,5 @@ class CourseSelectMenu implements BaseView {
   }
 
   @override
-  void update(double t) {
-    // TODO: implement update
-  }
+  void update(double t) {}
 }

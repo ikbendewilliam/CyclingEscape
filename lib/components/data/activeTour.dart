@@ -1,4 +1,3 @@
-import 'package:CyclingEscape/components/data/resultData.dart';
 import 'package:CyclingEscape/components/data/results.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';
@@ -77,12 +76,8 @@ class ActiveTour {
     data['tour'] = this.tour.toJson();
     data['racesDone'] = this.racesDone;
     data['currentResults'] = this.currentResults.toJson();
-    data['teams'] = this.teams != null
-        ? this.teams.map((i) => i.toJson(false)).toList()
-        : null;
-    data['cyclists'] = this.cyclists != null
-        ? this.cyclists.map((i) => i.toJson(false)).toList()
-        : null;
+    data['teams'] = this.teams?.map((i) => i.toJson(false));
+    data['cyclists'] = this.cyclists?.map((i) => i.toJson(false));
     return data;
   }
 }

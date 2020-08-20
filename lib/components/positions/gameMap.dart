@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:CyclingEscape/components/data/team.dart';
+import 'package:CyclingEscape/components/moveable/cyclist.dart';
 
 import 'foiliage.dart';
 import 'position.dart';
@@ -14,7 +17,8 @@ class GameMap {
   Size mapSize;
   Size minMapSize;
 
-  GameMap(this.positions, this.sprints, SpriteManager spriteManager) {
+  GameMap(this.positions, this.sprints, SpriteManager spriteManager,
+      {createFoiliage: true}) {
     mapSize = Size(0, 0);
     positions.forEach((position) {
       if (mapSize.width < position.p1.dx) {
@@ -46,10 +50,12 @@ class GameMap {
     mapSize = Size(
         mapSize.width - minMapSize.width, mapSize.height - minMapSize.height);
 
-    createFoiliage(spriteManager);
+    if (createFoiliage) {
+      doCreateFoiliage(spriteManager);
+    }
   }
 
-  createFoiliage(SpriteManager spriteManager) {
+  doCreateFoiliage(SpriteManager spriteManager) {
     int foiliageCount = (mapSize.width * mapSize.height / 100).floor();
     List<FoiliageType> types = [
       FoiliageType.ROCK_1,
@@ -168,30 +174,36 @@ class GameMap {
     });
   }
 
-  // static GameMap fromJson(Map<String, dynamic> json) {
-  //   var positions = new List<Position>();
-  //   if (json['positions'] != null) {
-  //     json['positions'].forEach((v) {
-  //       positions.add(new Position.fromJson(v));
-  //     });
-  //   }
-  //   var sprints = new List<Sprint>();
-  //   if (json['sprints'] != null) {
-  //     json['sprints'].forEach((v) {
-  //       sprints.add(new Sprint.fromJson(v));
-  //     });
-  //   }
-  //   return GameMap(positions, sprints);
-  // }
+  static GameMap fromJson(
+      Map<String, dynamic> json,
+      List<Position> existingPositions,
+      List<Sprint> existingSprints,
+      List<Cyclist> existingCyclists,
+      List<Team> existingTeams,
+      SpriteManager spriteManager,
+      PositionListener listener) {
+    var positions = json['positions']?.map((v) => Position.fromJson(
+        v,
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        listener));
+    var sprints =
+        json['sprints']?.map((v) => Sprint.fromJson(v, existingSprints));
+    return GameMap(positions, sprints, spriteManager, createFoiliage: false);
+  }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   if (this.positions != null) {
-  //     data['positions'] = this.positions.map((v) => v.toJson()).toList();
-  //   }
-  //   if (this.sprints != null) {
-  //     data['sprints'] = this.sprints.map((v) => v.toJson()).toList();
-  //   }
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['positions'] = [];
+    if (this.positions != null) {
+      this.positions.forEach((v) => data['positions'].add(v.toJson(false)));
+    }
+    data['sprints'] = this.sprints?.map((v) => v.toJson(true));
+    data['foiliage'] = this.foiliage?.map((v) => v.toJson());
+    return data;
+  }
 }

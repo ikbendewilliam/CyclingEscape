@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
@@ -83,6 +84,30 @@ class Foiliage {
         size: Position(aspectRatio, 1) * size * tileSize);
     canvas.restore();
   }
+
+  static Foiliage fromJson(
+      Map<String, dynamic> json, SpriteManager spriteManager) {
+    return Foiliage(SaveUtil.offsetFromJson(json['offset']), json['size'],
+        getFoiliageTypeFromString(json['type']), spriteManager, json['angle']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['offset'] = SaveUtil.offsetToJson(this.offset);
+    data['size'] = this.size;
+    data['type'] = this.type.toString();
+    data['angle'] = this.angle;
+    return data;
+  }
+}
+
+FoiliageType getFoiliageTypeFromString(String foiliageTypeAsString) {
+  for (FoiliageType element in FoiliageType.values) {
+    if (element.toString() == foiliageTypeAsString) {
+      return element;
+    }
+  }
+  return null;
 }
 
 enum FoiliageType {

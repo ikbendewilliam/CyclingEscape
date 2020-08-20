@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
@@ -84,9 +82,7 @@ class TourInBetweenRacesMenu implements BaseView {
   }
 
   @override
-  void onScaleStart(ScaleStartDetails details) {
-    // TODO: implement onScaleStart
-  }
+  void onScaleStart(ScaleStartDetails details) {}
 
   @override
   void onTapUp(TapUpDetails details) {
@@ -179,7 +175,5 @@ class TourInBetweenRacesMenu implements BaseView {
   }
 
   @override
-  void update(double t) {
-    // TODO: implement update
-  }
+  void update(double t) {}
 }

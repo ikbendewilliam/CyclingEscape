@@ -195,6 +195,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       if (this.activeTour != null) {
         SaveUtil.saveTour(activeTour);
       }
+      if (this.cyclingView != null && !this.cyclingView.ended) {
+        SaveUtil.saveCyclingView(this.cyclingView);
+      }
       continueing = true;
     }
     if (load) {

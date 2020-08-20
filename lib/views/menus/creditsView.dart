@@ -1,9 +1,6 @@
-import 'package:CyclingEscape/components/data/playSettings.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/mapUtils.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
@@ -57,9 +54,7 @@ class CreditsView implements BaseView {
   }
 
   @override
-  void onScaleStart(ScaleStartDetails details) {
-    // TODO: implement onScaleStart
-  }
+  void onScaleStart(ScaleStartDetails details) {}
 
   @override
   void onTapUp(TapUpDetails details) {
@@ -166,7 +161,5 @@ class CreditsView implements BaseView {
   }
 
   @override
-  void update(double t) {
-    // TODO: implement update
-  }
+  void update(double t) {}
 }

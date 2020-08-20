@@ -29,10 +29,11 @@ class SaveUtil {
     await prefs.setString('activeGame', jsonEncode(cyclingView.toJson()));
   }
 
-  static Future<CyclingView> loadGame(SpriteManager spriteManager) async {
+  static Future<CyclingView> loadGame(SpriteManager spriteManager,
+      Function cyclingEnded, Function navigate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return CyclingView.fromJson(
-        jsonDecode(prefs.getString('activeGame')), spriteManager);
+    return CyclingView.fromJson(jsonDecode(prefs.getString('activeGame')),
+        spriteManager, cyclingEnded, navigate);
   }
 
   static Future<void> clearGame() async {
@@ -54,6 +55,39 @@ class SaveUtil {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dx'] = offset.dx;
     data['dy'] = offset.dy;
+    return data;
+  }
+
+  static Size sizeFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return Size(json['width'], json['height']);
+  }
+
+  static Map<String, dynamic> sizeToJson(Size size) {
+    if (size == null) {
+      return null;
+    }
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['width'] = size.width;
+    data['height'] = size.height;
+    return data;
+  }
+
+  static Color colorFromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return Color(json['color']);
+  }
+
+  static Map<String, dynamic> colorToJson(Color color) {
+    if (color == null) {
+      return null;
+    }
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['color'] = color.value;
     return data;
   }
 

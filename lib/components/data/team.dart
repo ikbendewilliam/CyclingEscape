@@ -17,22 +17,22 @@ class Team {
       return;
     }
     if (sprites.length == 0) {
-      sprites.add(spriteManager.getSprite('cyclists/rood.png'));
-      sprites.add(spriteManager.getSprite('cyclists/rood2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/blauw.png'));
-      sprites.add(spriteManager.getSprite('cyclists/blauw2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/zwart.png'));
-      sprites.add(spriteManager.getSprite('cyclists/zwart2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/groen.png'));
-      sprites.add(spriteManager.getSprite('cyclists/groen2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/bruin.png'));
-      sprites.add(spriteManager.getSprite('cyclists/bruin2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/paars.png'));
-      sprites.add(spriteManager.getSprite('cyclists/paars2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/grijs.png'));
-      sprites.add(spriteManager.getSprite('cyclists/grijs2.png'));
-      sprites.add(spriteManager.getSprite('cyclists/limoen.png'));
-      sprites.add(spriteManager.getSprite('cyclists/limoen2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/rood.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/rood2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/blauw.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/blauw2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/zwart.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/zwart2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/groen.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/groen2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/bruin.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/bruin2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/paars.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/paars2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/grijs.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/grijs2.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/limoen.png'));
+      sprites.add(spriteManager?.getSprite('cyclists/limoen2.png'));
     }
   }
 
@@ -88,6 +88,9 @@ class Team {
       List<Cyclist> existingCyclists,
       List<Team> existingTeams,
       SpriteManager spriteManager) {
+    if (json == null) {
+      return null;
+    }
     if (existingTeams != null && existingTeams.length > 0) {
       Team t = existingTeams.firstWhere((element) => element.id == json['id'],
           orElse: () => null);
@@ -96,7 +99,7 @@ class Team {
       }
     }
     if (json['id'] != null && json['numberStart'] == null) {
-      Team placeholder = Team(false, 0, spriteManager, isPlaceHolder: true);
+      Team placeholder = Team(false, 0, null, isPlaceHolder: true);
       placeholder.id = json['id'];
       return placeholder;
     }
@@ -119,9 +122,7 @@ class Team {
     if (!idOnly) {
       data['isPlayer'] = this.isPlayer;
       data['numberStart'] = this.numberStart;
-      data['cyclists'] = this.cyclists != null
-          ? this.cyclists.map((i) => i.toJson(true)).toList()
-          : null;
+      data['cyclists'] = this.cyclists?.map((i) => i.toJson(true));
     }
     return data;
   }

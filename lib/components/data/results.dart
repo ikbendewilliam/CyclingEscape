@@ -29,6 +29,9 @@ class Results {
       List<Cyclist> existingCyclists,
       List<Team> existingTeams,
       SpriteManager spriteManager) {
+    if (json == null) {
+      return null;
+    }
     Results results = Results(
       getResultsTypeFromString(json['type']),
       List<ResultData>(),

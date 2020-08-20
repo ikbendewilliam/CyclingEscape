@@ -37,13 +37,13 @@ class Cyclist {
     }
     cyclistSprite = this.team.getSprite(this.number % 2 == 0);
     cyclistYellowJerseySprite = spriteManager
-        .getSprite('cyclists/geel${this.number % 2 == 0 ? '2' : ''}.png');
+        ?.getSprite('cyclists/geel${this.number % 2 == 0 ? '2' : ''}.png');
     cyclistWhiteJerseySprite = spriteManager
-        .getSprite('cyclists/wit${this.number % 2 == 0 ? '2' : ''}.png');
-    cyclistGreenJerseySprite = spriteManager
-        .getSprite('cyclists/lichtgroen${this.number % 2 == 0 ? '2' : ''}.png');
+        ?.getSprite('cyclists/wit${this.number % 2 == 0 ? '2' : ''}.png');
+    cyclistGreenJerseySprite = spriteManager?.getSprite(
+        'cyclists/lichtgroen${this.number % 2 == 0 ? '2' : ''}.png');
     cyclistBouledJerseySprite = spriteManager
-        .getSprite('cyclists/bollekes${this.number % 2 == 0 ? '2' : ''}.png');
+        ?.getSprite('cyclists/bollekes${this.number % 2 == 0 ? '2' : ''}.png');
   }
 
   moveTo(double percentage, List<Position> route) {
@@ -103,6 +103,9 @@ class Cyclist {
       List<Cyclist> existingCyclists,
       List<Team> existingTeams,
       SpriteManager spriteManager) {
+    if (json == null) {
+      return null;
+    }
     if (existingCyclists != null && existingCyclists.length > 0) {
       Cyclist c = existingCyclists.firstWhere(
           (element) => element.id == json['id'],
@@ -112,8 +115,7 @@ class Cyclist {
       }
     }
     if (json['id'] != null && json['number'] == null) {
-      Cyclist placeholder =
-          Cyclist(null, 0, 0, spriteManager, isPlaceHolder: true);
+      Cyclist placeholder = Cyclist(null, 0, 0, null, isPlaceHolder: true);
       placeholder.id = json['id'];
       return placeholder;
     }
@@ -135,7 +137,8 @@ class Cyclist {
     cyclist.wearsBouledJersey = json['wearsBouledJersey'];
     cyclist.movingAngle = json['movingAngle'];
     cyclist.movingOffset = SaveUtil.offsetFromJson(json['movingOffset']);
-    cyclist.lastPosition = Position.fromJson(json['lastPosition']);
+    cyclist.lastPosition = Position.fromJson(
+        json['lastPosition'], [], [], [], [], spriteManager, null);
     return cyclist;
   }
 
@@ -153,7 +156,7 @@ class Cyclist {
       data['wearsBouledJersey'] = this.wearsBouledJersey;
       data['movingAngle'] = this.movingAngle;
       data['movingOffset'] = SaveUtil.offsetToJson(this.movingOffset);
-      data['lastPosition'] = this.lastPosition.toJson(true);
+      data['lastPosition'] = this.lastPosition?.toJson(true);
     }
     return data;
   }

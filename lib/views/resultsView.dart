@@ -503,9 +503,7 @@ class ResultsView implements BaseView {
   }
 
   @override
-  void update(double t) {
-    // TODO: implement update
-  }
+  void update(double t) {}
 }
 
 ResultsType getResultsTypeFromString(String resultsTypeAsString) {

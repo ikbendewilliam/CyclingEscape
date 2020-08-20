@@ -3,23 +3,14 @@ import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:CyclingEscape/views/cyclingView.dart';
 import 'package:flame/position.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveUtil {
   static void saveTour(ActiveTour activeTour) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String activeTourEncoded = jsonEncode(activeTour.toJson());
-    print(activeTourEncoded);
-    await prefs.setString('activeTour', activeTourEncoded);
-  }
-
-  static Future<bool> hasTour() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey('activeTour')) {
-      print(prefs.getString('activeTour'));
-    }
-    return prefs.containsKey('activeTour');
+    await prefs.setString('activeTour', jsonEncode(activeTour.toJson()));
   }
 
   static Future<ActiveTour> loadTour(SpriteManager spriteManager) async {
@@ -31,6 +22,22 @@ class SaveUtil {
   static Future<void> clearTour() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('activeTour');
+  }
+
+  static void saveCyclingView(CyclingView cyclingView) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('activeGame', jsonEncode(cyclingView.toJson()));
+  }
+
+  static Future<CyclingView> loadGame(SpriteManager spriteManager) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return CyclingView.fromJson(
+        jsonDecode(prefs.getString('activeGame')), spriteManager);
+  }
+
+  static Future<void> clearGame() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('activeGame');
   }
 
   static Offset offsetFromJson(Map<String, dynamic> json) {

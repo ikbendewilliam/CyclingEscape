@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/resultData.dart';
 import 'package:CyclingEscape/components/data/results.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
@@ -7,6 +8,7 @@ import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/baseView.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
@@ -39,7 +41,7 @@ class ResultsView implements BaseView {
   Sprite iconYoung;
   double scroll = 0;
   double scrollStart = 0;
-  Results previousResults;
+  ActiveTour activeTour;
   ResultsType type = ResultsType.RACE;
   List<Button> buttons = [];
   List<Sprint> sprints = [];
@@ -87,28 +89,27 @@ class ResultsView implements BaseView {
     });
     this.results = [raceResults];
 
-    if (previousResults != null) {
+    if (activeTour != null && activeTour.currentResults != null) {
       raceResults.data.forEach((result) {
-        var currentResult = previousResults.data.firstWhere(
+        var currentResult = activeTour.currentResults.data.firstWhere(
             (element) => element.number == result.number,
             orElse: () => null);
         if (currentResult == null) {
           currentResult =
               ResultData(result.rank, 0, 0, 0, result.number, result.team);
-          previousResults.data.add(currentResult);
+          activeTour.currentResults.data.add(currentResult);
         }
         currentResult.time += result.time;
         currentResult.points += result.points;
         currentResult.mountain += result.mountain;
       });
-    }
-    if (previousResults != null) {
-      previousResults.data.sort((a, b) => a.time - b.time);
+      activeTour.currentResults.data.sort((a, b) => a.time - b.time);
     }
 
     Results timeResults = Results(ResultsType.TIME);
-    timeResults.data =
-        (previousResults != null) ? previousResults.data : raceResults.data;
+    timeResults.data = (activeTour != null && activeTour.currentResults != null)
+        ? activeTour.currentResults.data
+        : raceResults.data;
     this.results.add(timeResults);
 
     Results youngResults = Results(ResultsType.YOUNG);
@@ -117,8 +118,10 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     youngResults.data.sort((a, b) => a.time - b.time);
-    if (youngResults.data.length > 0 && previousResults != null) {
-      previousResults.whiteJersey = youngResults.data.first.number;
+    if (youngResults.data.length > 0 &&
+        activeTour != null &&
+        activeTour.currentResults != null) {
+      activeTour.currentResults.whiteJersey = youngResults.data.first.number;
     }
     this.results.add(youngResults);
 
@@ -128,8 +131,10 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     pointsResults.data.sort((a, b) => b.points - a.points);
-    if (youngResults.data.length > 0 && previousResults != null) {
-      previousResults.greenJersey = pointsResults.data.first.number;
+    if (youngResults.data.length > 0 &&
+        activeTour != null &&
+        activeTour.currentResults != null) {
+      activeTour.currentResults.greenJersey = pointsResults.data.first.number;
     }
     this.results.add(pointsResults);
 
@@ -139,8 +144,11 @@ class ResultsView implements BaseView {
         .map((e) => e.copy())
         .toList();
     mountainResults.data.sort((a, b) => b.mountain - a.mountain);
-    if (mountainResults.data.length > 0 && previousResults != null) {
-      previousResults.bouledJersey = mountainResults.data.first.number;
+    if (mountainResults.data.length > 0 &&
+        activeTour != null &&
+        activeTour.currentResults != null) {
+      activeTour.currentResults.bouledJersey =
+          mountainResults.data.first.number;
     }
     this.results.add(mountainResults);
 
@@ -164,6 +172,10 @@ class ResultsView implements BaseView {
       result.data.asMap().forEach((rank, value) => value = ResultData(rank,
           value.time, value.points, value.mountain, value.number, value.team));
     });
+
+    if (activeTour != null) {
+      SaveUtil.saveTour(activeTour);
+    }
   }
 
   @override
@@ -277,9 +289,12 @@ class ResultsView implements BaseView {
       buttons.add(Button(
           this.spriteManager,
           Offset(screenSize.width * 3.1 / 4, screenSize.height / 6),
-          ButtonType.ICON_NO,
-          () => closeCallback(GameManagerState.MAIN_MENU,
-              currentResults: previousResults)));
+          ButtonType.ICON_NO, () {
+        closeCallback(activeTour != null
+            ? GameManagerState.TOUR_BETWEEN_RACES
+            : GameManagerState.MAIN_MENU);
+        activeTour = null;
+      }));
     }
     buttons.forEach((element) {
       element.setScreenSize(screenSize);

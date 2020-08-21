@@ -351,25 +351,28 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       dice2.update(t);
     }
     if (moving) {
+      double startTimer = 0;
+      switch (this.settings.cyclistMovement) {
+        case CyclistMovementType.FAST:
+          startTimer = 0.5;
+          break;
+        case CyclistMovementType.SLOW:
+          startTimer = 2;
+          break;
+        case CyclistMovementType.SKIP:
+          startTimer = 0.01;
+          break;
+        default:
+          startTimer = 1;
+          break;
+      }
+
       if (movingTimer == -1) {
-        switch (this.settings.cyclistMovement) {
-          case CyclistMovementType.FAST:
-            movingTimer = 0.5;
-            break;
-          case CyclistMovementType.SLOW:
-            movingTimer = 2;
-            break;
-          case CyclistMovementType.SKIP:
-            movingTimer = 0.01;
-            break;
-          default:
-            movingTimer = 1;
-            break;
-        }
+        movingTimer = startTimer;
       } else {
         movingTimer -= t;
       }
-      movingCyclist.moveTo(1 - movingTimer, moveAnimation);
+      movingCyclist.moveTo(max(0, 1 - movingTimer / startTimer), moveAnimation);
       if (movingCyclist.movingOffset.isFinite &&
           this.settings.cameraMovement == CameraMovementType.AUTO) {
         offset = -(movingCyclist.movingOffset * tileSize -
@@ -529,7 +532,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           Position placeBefore = getPlaceBefore();
           if ((minThrow >= 7 && !placeBefore.cyclist.team.isPlayer) ||
               (minThrow >= this.settings.autofollowThreshold &&
-                  this.autoFollow)) {
+                  this.autoFollow &&
+                  placeBefore.cyclist.team.isPlayer)) {
             following = true;
             follow();
             processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
@@ -856,6 +860,9 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     List<Cyclist> existingCyclists = [];
     List<Team> existingTeams = [];
 
+    if (json == null || json['map'] == null) {
+      return null;
+    }
     CyclingView cyclingView =
         CyclingView(spriteManager, cyclingEnded, navigate, settings);
     if (json['teams'] != null) {

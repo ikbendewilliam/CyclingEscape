@@ -118,6 +118,10 @@ class Button {
         sprite = this.spriteManager.getSprite('icon_trash.png');
         spritePressed = sprite;
         break;
+      case ButtonType.ICON_HELP:
+        sprite = this.spriteManager.getSprite('icon_help.png');
+        spritePressed = this.spriteManager.getSprite('icon_pressed.png');
+        break;
       case ButtonType.SWITCH_BUTTON_OFF:
         sprite = this.spriteManager.getSprite('switch_button_off.png');
         spritePressed = sprite;
@@ -230,6 +234,7 @@ enum ButtonType {
   ICON_NO,
   ICON_RELOAD,
   ICON_TRASH,
+  ICON_HELP,
   SWITCH_BUTTON_OFF,
   SWITCH_BUTTON_ON
 }

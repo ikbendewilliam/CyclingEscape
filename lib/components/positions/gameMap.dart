@@ -182,6 +182,9 @@ class GameMap {
       List<Team> existingTeams,
       SpriteManager spriteManager,
       PositionListener listener) {
+    if (json == null) {
+      return null;
+    }
     List<Position> positions = json['positions']
         ?.map<Position>((v) => Position.fromJson(
             v,

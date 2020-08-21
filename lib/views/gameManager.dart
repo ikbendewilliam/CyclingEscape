@@ -7,6 +7,7 @@ import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/menus/creditsView.dart';
+import 'package:CyclingEscape/views/menus/helpMenu.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:CyclingEscape/views/menus/pauseMenu.dart';
 import 'package:CyclingEscape/views/menus/settingsMenu.dart';
@@ -30,6 +31,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   Size currentSize;
   double loadingPercentage = 0;
   MainMenu mainmenu;
+  HelpMenu helpMenu;
   BaseView currentView;
   Settings settings = Settings();
   PauseMenu pauseMenu;
@@ -51,6 +53,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         new CyclingView(spriteManager, cyclingEnded, navigate, settings);
     resultsView = new ResultsView(spriteManager, navigate);
     mainmenu = new MainMenu(spriteManager, navigate);
+    helpMenu = new HelpMenu(spriteManager, navigate);
     credits = new CreditsView(spriteManager, navigate);
     pauseMenu = new PauseMenu(spriteManager, navigate);
     courseSelectMenu = new CourseSelectMenu(spriteManager, navigate);
@@ -114,6 +117,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         case GameManagerState.RESULTS:
         case GameManagerState.COURSE_SELECT_MENU:
         case GameManagerState.SETTINGS_MENU:
+        case GameManagerState.HELP_MENU:
         case GameManagerState.TOUR_SELECT_MENU:
         case GameManagerState.TOUR_BETWEEN_RACES:
           menuBackground.render(canvas, currentSize);
@@ -147,7 +151,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       if (this.activeTour != null) {
         SaveUtil.saveTour(activeTour);
       }
-      if (cyclingView != null && !cyclingView.ended) {
+      if (cyclingView != null &&
+          !cyclingView.ended &&
+          cyclingView.map != null) {
         SaveUtil.saveCyclingView(cyclingView);
       }
     }
@@ -164,6 +170,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
           state == GameManagerState.CREDITS ||
           state == GameManagerState.COURSE_SELECT_MENU ||
           state == GameManagerState.SETTINGS_MENU ||
+          state == GameManagerState.HELP_MENU ||
           state == GameManagerState.TOUR_SELECT_MENU ||
           state == GameManagerState.TOUR_BETWEEN_RACES ||
           state == GameManagerState.RESULTS) {
@@ -232,10 +239,10 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     if (this.activeTour != null) {
       SaveUtil.saveTour(activeTour);
     }
-    if (this.cyclingView != null && !this.cyclingView.ended) {
+    if (this.cyclingView != null &&
+        !this.cyclingView.ended &&
+        cyclingView.map != null) {
       SaveUtil.saveCyclingView(this.cyclingView);
-      // } else { -> Think newly opened (so no cyclingView) and not loaded yet
-      //   SaveUtil.clearCyclingView();
     }
     if (load) {
       CyclingView newCyclingView = await SaveUtil.loadCyclingView(
@@ -270,6 +277,10 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       case GameManagerState.SETTINGS_MENU:
         currentView = settingsMenu;
         settingsMenu.onAttach();
+        break;
+      case GameManagerState.HELP_MENU:
+        currentView = helpMenu;
+        helpMenu.onAttach();
         break;
       case GameManagerState.TOUR_SELECT_MENU:
         this.activeTour = await SaveUtil.loadTour(spriteManager);
@@ -344,6 +355,7 @@ enum GameManagerState {
   MAIN_MENU,
   COURSE_SELECT_MENU,
   SETTINGS_MENU,
+  HELP_MENU,
   TOUR_SELECT_MENU,
   TOUR_BETWEEN_RACES,
   PLAYING,

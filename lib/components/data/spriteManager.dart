@@ -66,6 +66,7 @@ class SpriteManager {
     spriteNames.add('back_text_05.png');
     spriteNames.add('back_tour.png');
     spriteNames.add('icon_credits.png');
+    spriteNames.add('icon_help.png');
     spriteNames.add('environment/rock1.png');
     spriteNames.add('environment/rock2.png');
     spriteNames.add('environment/rock3.png');

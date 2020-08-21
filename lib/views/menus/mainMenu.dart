@@ -73,9 +73,15 @@ class MainMenu implements BaseView {
         () => {navigate(GameManagerState.CREDITS)}));
     buttons.add(Button(
         this.spriteManager,
-        Offset(buttonSize / 2 * 3 + 5, screenSize.height - buttonSize / 2 - 5),
+        Offset(screenSize.width - buttonSize / 2 - 5, buttonSize / 2 + 5),
         ButtonType.ICON_SETTINGS,
         () => {navigate(GameManagerState.SETTINGS_MENU)}));
+    buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width - buttonSize / 2 - 5,
+            screenSize.height - buttonSize / 2 - 5),
+        ButtonType.ICON_HELP,
+        () => {navigate(GameManagerState.HELP_MENU)}));
   }
 
   @override

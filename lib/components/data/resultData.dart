@@ -72,7 +72,7 @@ class ResultData {
     data['points'] = this.points;
     data['mountain'] = this.mountain;
     data['number'] = this.number;
-    data['team'] = this.team != null ? this.team.toJson(true) : null;
+    data['team'] = this.team?.toJson(true);
     data['value'] = this.value;
     return data;
   }

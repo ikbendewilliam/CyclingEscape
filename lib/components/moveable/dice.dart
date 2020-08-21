@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:CyclingEscape/views/menus/settingsMenu.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
@@ -22,12 +23,21 @@ class Dice {
 
   final DiceListener listener;
 
-  Dice(this.spriteManager, this.listener) {
+  Dice(this.spriteManager, this.listener,
+      {bool generate: true, DifficultyType difficulty, bool isPlayer}) {
     sprites = this.spriteManager.getDiceSprites();
-    List<int> indexes = [0, 49, 53, 57, 61, 113];
-    endIndex = indexes[Random().nextInt(indexes.length)];
-    currentIndex = indexes[Random().nextInt(indexes.length)];
-    diceAnimation = getDiceAnimation(indexes);
+    if (generate) {
+      // 1, 2, 3, 4, 5, 6 respectivly
+      List<int> indexes = [49, 53, 113, 0, 61, 57];
+      endIndex = indexes[Random().nextInt(indexes.length)];
+      if (isPlayer && difficulty == DifficultyType.EASY) {
+        increaseValue();
+      } else if (!isPlayer && difficulty == DifficultyType.HARD) {
+        increaseValue();
+      }
+      currentIndex = indexes[Random().nextInt(indexes.length)];
+      diceAnimation = getDiceAnimation(indexes);
+    }
     currentIndex = 0;
   }
 
@@ -128,6 +138,14 @@ class Dice {
     return 0;
   }
 
+  void increaseValue() {
+    List<int> indexes = [49, 53, 113, 0, 61, 57];
+    int newIndex = indexes.indexOf(endIndex) + 1;
+    if (newIndex < indexes.length) {
+      endIndex = indexes[newIndex];
+    }
+  }
+
   getNewIndex(int current) {
     final ij = getIJ(current);
     int i = ij[0], j = ij[1];
@@ -168,7 +186,7 @@ class Dice {
     if (json == null) {
       return null;
     }
-    Dice dice = Dice(spriteManager, listener);
+    Dice dice = Dice(spriteManager, listener, generate: false);
     dice.diceValue = json['diceValue'];
     dice.direction = json['direction'];
     dice.currentIndex = json['currentIndex'];
@@ -178,7 +196,9 @@ class Dice {
     dice.angle = json['angle'];
     dice.scale = json['scale'];
     dice.countdown = json['countdown'];
-    dice.diceAnimation = json['diceAnimation'];
+    dice.diceAnimation = json['diceAnimation'] != null
+        ? new List<int>.from(json['diceAnimation'])
+        : [];
     return dice;
   }
 

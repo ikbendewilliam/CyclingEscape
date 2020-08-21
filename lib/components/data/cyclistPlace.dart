@@ -1,7 +1,7 @@
 import 'package:CyclingEscape/components/moveable/cyclist.dart';
 
 class CyclistPlace {
-  final Cyclist cyclist;
+  Cyclist cyclist;
   final double value;
   bool displayed = false;
 

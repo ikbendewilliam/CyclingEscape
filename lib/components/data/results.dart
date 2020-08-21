@@ -53,8 +53,7 @@ class Results {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['teams'] = this.type.toString();
-    data['data'] =
-        this.data != null ? this.data.map((i) => i.toJson()).toList() : null;
+    data['data'] = this.data?.map((i) => i.toJson())?.toList();
     data['whiteJersey'] = this.whiteJersey;
     data['greenJersey'] = this.greenJersey;
     data['bouledJersey'] = this.bouledJersey;

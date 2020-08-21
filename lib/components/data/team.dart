@@ -122,7 +122,7 @@ class Team {
     if (!idOnly) {
       data['isPlayer'] = this.isPlayer;
       data['numberStart'] = this.numberStart;
-      data['cyclists'] = this.cyclists?.map((i) => i.toJson(true));
+      data['cyclists'] = this.cyclists?.map((i) => i.toJson(false))?.toList();
     }
     return data;
   }

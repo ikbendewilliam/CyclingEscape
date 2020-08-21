@@ -13,7 +13,7 @@ import 'sprint.dart';
 class GameMap {
   final List<Position> positions;
   final List<Sprint> sprints;
-  final List<Foiliage> foiliage = [];
+  List<Foiliage> foiliage = [];
   Size mapSize;
   Size minMapSize;
 
@@ -133,7 +133,7 @@ class GameMap {
   }
 
   bool isFree(Offset offset) {
-    for (var element in this.positions) {
+    for (Position element in this.positions) {
       if (distanceSquaredTo(offset, element.p1) < 20) {
         return false;
       }
@@ -182,28 +182,33 @@ class GameMap {
       List<Team> existingTeams,
       SpriteManager spriteManager,
       PositionListener listener) {
-    var positions = json['positions']?.map((v) => Position.fromJson(
-        v,
-        existingPositions,
-        existingSprints,
-        existingCyclists,
-        existingTeams,
-        spriteManager,
-        listener));
-    var sprints =
-        json['sprints']?.map((v) => Sprint.fromJson(v, existingSprints));
-    return GameMap(positions, sprints, spriteManager, createFoiliage: false);
+    List<Position> positions = json['positions']
+        ?.map<Position>((v) => Position.fromJson(
+            v,
+            existingPositions,
+            existingSprints,
+            existingCyclists,
+            existingTeams,
+            spriteManager,
+            listener))
+        ?.toList();
+    List<Sprint> sprints = json['sprints']
+        ?.map<Sprint>((v) => Sprint.fromJson(v, existingSprints))
+        ?.toList();
+    GameMap gameMap =
+        GameMap(positions, sprints, spriteManager, createFoiliage: false);
+    gameMap.foiliage = json['foiliage']
+        ?.map<Foiliage>((v) => Foiliage.fromJson(v, spriteManager))
+        ?.toList();
+
+    return gameMap;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-
-    data['positions'] = [];
-    if (this.positions != null) {
-      this.positions.forEach((v) => data['positions'].add(v.toJson(false)));
-    }
-    data['sprints'] = this.sprints?.map((v) => v.toJson(true));
-    data['foiliage'] = this.foiliage?.map((v) => v.toJson());
+    data['positions'] = this.positions?.map((i) => i.toJson(false))?.toList();
+    data['sprints'] = this.sprints?.map((i) => i.toJson(false))?.toList();
+    data['foiliage'] = this.foiliage?.map((i) => i.toJson())?.toList();
     return data;
   }
 }

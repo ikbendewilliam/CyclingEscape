@@ -91,7 +91,7 @@ class ResultsView implements BaseView {
 
     if (activeTour != null && activeTour.currentResults != null) {
       raceResults.data.forEach((result) {
-        var currentResult = activeTour.currentResults.data.firstWhere(
+        ResultData currentResult = activeTour.currentResults.data.firstWhere(
             (element) => element.number == result.number,
             orElse: () => null);
         if (currentResult == null) {

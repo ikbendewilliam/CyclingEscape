@@ -9,6 +9,7 @@ import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/menus/creditsView.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
 import 'package:CyclingEscape/views/menus/pauseMenu.dart';
+import 'package:CyclingEscape/views/menus/settingsMenu.dart';
 import 'package:CyclingEscape/views/menus/tourInBetweenRaces.dart';
 import 'package:CyclingEscape/views/menus/tourSelect.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
@@ -30,11 +31,13 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   double loadingPercentage = 0;
   MainMenu mainmenu;
   BaseView currentView;
+  Settings settings = Settings();
   PauseMenu pauseMenu;
   ActiveTour activeTour;
   CreditsView credits;
   CyclingView cyclingView;
   ResultsView resultsView;
+  SettingsMenu settingsMenu;
   SpriteManager spriteManager;
   MenuBackground menuBackground;
   TourSelectMenu tourSelectMenu;
@@ -44,29 +47,46 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   GameManager() {
     spriteManager = new SpriteManager();
-    cyclingView = new CyclingView(spriteManager, cyclingEnded, menuPressed);
-    resultsView = new ResultsView(spriteManager, menuPressed);
-    mainmenu = new MainMenu(spriteManager, menuPressed);
-    credits = new CreditsView(spriteManager, menuPressed);
-    pauseMenu = new PauseMenu(spriteManager, menuPressed);
-    courseSelectMenu = new CourseSelectMenu(spriteManager, menuPressed);
+    cyclingView =
+        new CyclingView(spriteManager, cyclingEnded, navigate, settings);
+    resultsView = new ResultsView(spriteManager, navigate);
+    mainmenu = new MainMenu(spriteManager, navigate);
+    credits = new CreditsView(spriteManager, navigate);
+    pauseMenu = new PauseMenu(spriteManager, navigate);
+    courseSelectMenu = new CourseSelectMenu(spriteManager, navigate);
+    settingsMenu = new SettingsMenu(spriteManager, navigate, settings);
     tourInBetweenRacesMenu =
-        new TourInBetweenRacesMenu(spriteManager, menuPressed);
-    tourSelectMenu = new TourSelectMenu(spriteManager, menuPressed);
+        new TourInBetweenRacesMenu(spriteManager, navigate);
+    tourSelectMenu = new TourSelectMenu(spriteManager, navigate);
     currentView = mainmenu;
     state = GameManagerState.MAIN_MENU;
   }
 
+  Future<void> loadSettings() async {
+    // get settings
+    Settings _settings = await SaveUtil.loadSettings();
+    if (_settings != null) {
+      settings.autofollowAsk = _settings.autofollowAsk;
+      settings.autofollowThreshold = _settings.autofollowThreshold;
+      settings.cameraMovement = _settings.cameraMovement;
+      settings.cyclistMovement = _settings.cyclistMovement;
+      settings.difficulty = _settings.difficulty;
+    }
+  }
+
   void load() {
+    loadSettings();
     spriteManager.loadSprites().whenComplete(() {
-      cyclingView.onAttach();
-      resultsView.onAttach();
-      mainmenu.onAttach();
-      credits.onAttach();
-      pauseMenu.onAttach();
-      courseSelectMenu.onAttach();
-      tourInBetweenRacesMenu.onAttach();
-      tourSelectMenu.onAttach();
+      currentView.onAttach();
+      // cyclingView.onAttach();
+      // resultsView.onAttach();
+      // mainmenu.onAttach();
+      // credits.onAttach();
+      // pauseMenu.onAttach();
+      // courseSelectMenu.onAttach();
+      // settingsMenu.onAttach();
+      // tourInBetweenRacesMenu.onAttach();
+      // tourSelectMenu.onAttach();
       if (menuBackground == null) {
         menuBackground = MenuBackground();
       }
@@ -93,6 +113,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         case GameManagerState.CREDITS:
         case GameManagerState.RESULTS:
         case GameManagerState.COURSE_SELECT_MENU:
+        case GameManagerState.SETTINGS_MENU:
         case GameManagerState.TOUR_SELECT_MENU:
         case GameManagerState.TOUR_BETWEEN_RACES:
           menuBackground.render(canvas, currentSize);
@@ -121,6 +142,18 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   }
 
   @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive) {
+      if (this.activeTour != null) {
+        SaveUtil.saveTour(activeTour);
+      }
+      if (cyclingView != null && !cyclingView.ended) {
+        SaveUtil.saveCyclingView(cyclingView);
+      }
+    }
+  }
+
+  @override
   void update(double t) {
     if (loading) {
       loadingCheck();
@@ -130,6 +163,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       if (state == GameManagerState.MAIN_MENU ||
           state == GameManagerState.CREDITS ||
           state == GameManagerState.COURSE_SELECT_MENU ||
+          state == GameManagerState.SETTINGS_MENU ||
           state == GameManagerState.TOUR_SELECT_MENU ||
           state == GameManagerState.TOUR_BETWEEN_RACES ||
           state == GameManagerState.RESULTS) {
@@ -176,7 +210,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     currentView.onScaleUpdate(details);
   }
 
-  void menuPressed(GameManagerState newState,
+  void navigate(GameManagerState newState,
       {PlaySettings playSettings,
       Tour tourSettings,
       bool deleteActiveTour: false,
@@ -187,24 +221,33 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     if (deleteActiveTour) {
       this.activeTour = null;
       this.tourSelectMenu.selectedTour = null;
+      SaveUtil.clearTour();
     }
     if (team != null) {
       playerTeam = team;
     }
     if (save) {
-      if (this.activeTour != null) {
-        SaveUtil.saveTour(activeTour);
-      }
-      if (this.cyclingView != null && !this.cyclingView.ended) {
-        SaveUtil.saveCyclingView(this.cyclingView);
-      }
       continueing = true;
     }
+    if (this.activeTour != null) {
+      SaveUtil.saveTour(activeTour);
+    }
+    if (this.cyclingView != null && !this.cyclingView.ended) {
+      SaveUtil.saveCyclingView(this.cyclingView);
+      // } else { -> Think newly opened (so no cyclingView) and not loaded yet
+      //   SaveUtil.clearCyclingView();
+    }
     if (load) {
-      this.tourSelectMenu.selectedTour = null;
-      this.activeTour = await SaveUtil.loadTour(spriteManager);
-      print('loaded tour');
-      newState = GameManagerState.TOUR_BETWEEN_RACES;
+      CyclingView newCyclingView = await SaveUtil.loadCyclingView(
+          spriteManager, cyclingEnded, navigate, settings);
+      if (newCyclingView != null) {
+        print('load successful');
+        this.cyclingView = newCyclingView;
+        newState = GameManagerState.PLAYING;
+        continueing = true;
+      } else {
+        return;
+      }
     }
     this.state = newState;
     switch (newState) {
@@ -224,9 +267,14 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = courseSelectMenu;
         courseSelectMenu.onAttach();
         break;
+      case GameManagerState.SETTINGS_MENU:
+        currentView = settingsMenu;
+        settingsMenu.onAttach();
+        break;
       case GameManagerState.TOUR_SELECT_MENU:
+        this.activeTour = await SaveUtil.loadTour(spriteManager);
         if (activeTour != null) {
-          menuPressed(GameManagerState.TOUR_BETWEEN_RACES);
+          navigate(GameManagerState.TOUR_BETWEEN_RACES);
         } else {
           currentView = tourSelectMenu;
           tourSelectMenu.onAttach();
@@ -245,6 +293,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
           } else if (activeTour != null) {
             cyclingView.onAttach(activeTour: activeTour, team: playerTeam);
           }
+        } else {
+          cyclingView.onAttach();
         }
         break;
       case GameManagerState.TOUR_BETWEEN_RACES:
@@ -284,14 +334,16 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
     resultsView.onAttach();
     resize(currentSize);
-    cyclingView = new CyclingView(spriteManager, cyclingEnded,
-        menuPressed); // Clean the CyclingView to be safe
+    cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate,
+        settings); // Clean the CyclingView to be safe
+    SaveUtil.clearCyclingView();
   }
 }
 
 enum GameManagerState {
   MAIN_MENU,
   COURSE_SELECT_MENU,
+  SETTINGS_MENU,
   TOUR_SELECT_MENU,
   TOUR_BETWEEN_RACES,
   PLAYING,

@@ -26,7 +26,7 @@ class Position {
   final double radius;
   final double iValue;
   final double startAngle;
-  final Sprint sprint;
+  Sprint sprint;
   final PositionType positionType;
   final PositionListener listener;
 
@@ -294,7 +294,7 @@ class Position {
         return c;
       }
     }
-    if (json['id'] != null && json['number'] == null) {
+    if (json['id'] != null && json['segment'] == null) {
       Position placeholder = Position(Offset(0, 0), Offset(0, 0), listener,
           false, 0, 0, 0, 0, 0, false, 0, 0, false, PositionType.FLAT,
           isPlaceHolder: true);
@@ -326,22 +326,26 @@ class Position {
 
     position.cyclist = Cyclist.fromJson(
         json['cyclist'], existingCyclists, existingTeams, spriteManager);
-    position.connections = json['connections']?.map((e) => Position.fromJson(
-        e,
-        existingPositions,
-        existingSprints,
-        existingCyclists,
-        existingTeams,
-        spriteManager,
-        listener));
-    position.route = json['route']?.map((e) => Position.fromJson(
-        e,
-        existingPositions,
-        existingSprints,
-        existingCyclists,
-        existingTeams,
-        spriteManager,
-        listener));
+    position.connections = json['connections']
+        ?.map<Position>((e) => Position.fromJson(
+            e,
+            existingPositions,
+            existingSprints,
+            existingCyclists,
+            existingTeams,
+            spriteManager,
+            listener))
+        ?.toList();
+    position.route = json['route']
+        ?.map<Position>((e) => Position.fromJson(
+            e,
+            existingPositions,
+            existingSprints,
+            existingCyclists,
+            existingTeams,
+            spriteManager,
+            listener))
+        ?.toList();
     position.state = getPositionStateFromString(json['state']);
 
     return position;
@@ -373,17 +377,9 @@ class Position {
       data['positionType'] = this.positionType.toString();
       data['state'] = this.state.toString();
 
-      data['connections'] = [];
-      if (this.connections != null) {
-        this
-            .connections
-            .forEach((v) => data['connections'].add(v.toJson(true)));
-      }
-
-      data['route'] = [];
-      if (this.route != null) {
-        this.route.forEach((v) => data['route'].add(v.toJson(true)));
-      }
+      data['connections'] =
+          this.connections?.map((v) => v.toJson(true))?.toList();
+      data['route'] = this.route?.map((v) => v.toJson(true))?.toList();
     }
     return data;
   }

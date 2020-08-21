@@ -87,6 +87,9 @@ class Sprint {
 
   static Sprint fromJson(
       Map<String, dynamic> json, List<Sprint> existingSprints) {
+    if (json == null) {
+      return null;
+    }
     if (existingSprints != null && existingSprints.length > 0) {
       Sprint c = existingSprints.firstWhere(
           (element) => element.id == json['id'],
@@ -95,7 +98,7 @@ class Sprint {
         return c;
       }
     }
-    if (json['id'] != null && json['number'] == null) {
+    if (json['id'] != null && json['segment'] == null) {
       Sprint placeholder =
           Sprint(SprintType.START, Offset(0, 0), 1, 0, 0, isPlaceHolder: true);
       placeholder.id = json['id'];
@@ -126,7 +129,12 @@ class Sprint {
       data['angle'] = this.angle;
       data['segment'] = this.segment;
       data['offset'] = SaveUtil.offsetToJson(this.offset);
-      data['cyclistPlaces'] = this.cyclistPlaces?.map((v) => v.toJson());
+      data['cyclistPlaces'] = [];
+      if (this.cyclistPlaces != null) {
+        this
+            .cyclistPlaces
+            .forEach((v) => data['cyclistPlaces'].add(v.toJson()));
+      }
     }
     return data;
   }

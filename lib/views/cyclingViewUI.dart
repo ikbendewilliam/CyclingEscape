@@ -65,7 +65,7 @@ class CyclingViewUI {
           Offset(screenSize.width - tileSize * 1.7, tileSize * (i / 2 + 0.1));
       CanvasUtils.drawText(canvas, position, 0, span);
     });
-    if (tempResults != null) {
+    if (tempResults != null && backgroundText != null) {
       ResultData result = tempResults.data.firstWhere(
           (element) => element.number == cyclist.number,
           orElse: () => null);

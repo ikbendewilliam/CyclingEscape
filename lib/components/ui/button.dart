@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 
 class Button {
   final String text;
-  final ButtonType type;
+  ButtonType type;
   final Function onPress;
   final SpriteManager spriteManager;
 
@@ -143,6 +143,11 @@ class Button {
       aspectRatio = 0.8;
       scale = 0.7;
     }
+    if (type == ButtonType.SWITCH_BUTTON_ON ||
+        type == ButtonType.SWITCH_BUTTON_OFF) {
+      aspectRatio = 2;
+      scale = 0.7;
+    }
     if (spriteBackground != null) {
       spriteBackground.renderCentered(canvas, Position(center.dx, center.dy),
           size: Position(buttonSize, buttonSize) * 1.5);
@@ -180,7 +185,17 @@ class Button {
     if (MapUtils.isInsideRect(
         details.globalPosition, center - delta, center + delta)) {
       this.isPressed = false;
-      onPress();
+      if (this.type == ButtonType.SWITCH_BUTTON_ON) {
+        this.type = ButtonType.SWITCH_BUTTON_OFF;
+        onPress(false);
+        getSprite();
+      } else if (this.type == ButtonType.SWITCH_BUTTON_OFF) {
+        this.type = ButtonType.SWITCH_BUTTON_ON;
+        onPress(true);
+        getSprite();
+      } else {
+        onPress();
+      }
       return true;
     }
     return false;

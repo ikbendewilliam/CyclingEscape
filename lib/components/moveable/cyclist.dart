@@ -147,7 +147,7 @@ class Cyclist {
     data['id'] = this.id;
     if (!idOnly) {
       data['number'] = this.number;
-      data['team'] = this.team.toJson(true);
+      data['team'] = this.team?.toJson(true);
       data['rank'] = this.rank;
       data['lastUsedOnTurn'] = this.lastUsedOnTurn;
       data['wearsYellowJersey'] = this.wearsYellowJersey;

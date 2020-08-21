@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 import 'dart:ui';
 import 'package:CyclingEscape/components/data/activeTour.dart';
@@ -26,6 +25,7 @@ import 'baseView.dart';
 import 'cyclingViewUI.dart';
 import 'gameManager.dart';
 import 'menus/followSelect.dart';
+import 'menus/settingsMenu.dart';
 
 class CyclingView implements BaseView, PositionListener, DiceListener {
   int diceValue;
@@ -61,6 +61,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   Cyclist movingCyclist;
   Results tempResults;
   Results startResults;
+  Settings settings;
   Position cyclistSelected;
   Position cyclistLastSelected;
   GameState gameState = GameState.GAME_SELECT_NEXT;
@@ -77,7 +78,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   final Function cyclingEnded;
   final Function navigate;
-  CyclingView(this.spriteManager, this.cyclingEnded, this.navigate);
+  CyclingView(
+      this.spriteManager, this.cyclingEnded, this.navigate, this.settings);
 
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
     if (playSettings != null) {
@@ -221,27 +223,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       followSelect = null;
       this.handleInBetweenTurns();
       this.processGameState(GameState.GAME_SELECT_NEXT);
-      if (backgroundNotification == null) {
-        backgroundNotification =
-            this.spriteManager.getSprite('back_text_04.png');
-      }
-      if (backgroundText == null) {
-        backgroundText = this.spriteManager.getSprite('back_text_05.png');
-      }
-      if (iconTime == null) {
-        iconTime = this.spriteManager.getSprite('icon_time.png');
-      }
-      if (iconRank == null) {
-        iconRank = this.spriteManager.getSprite('icon_rank.png');
-      }
-      if (iconPoints == null) {
-        iconPoints = this.spriteManager.getSprite('icon_points.png');
-      }
-      if (iconMountain == null) {
-        iconMountain = this.spriteManager.getSprite('icon_mountain.png');
-      }
-      createButtons(screenSize != null ? screenSize.height / 7 : 10);
     }
+    createButtons(screenSize != null ? screenSize.height / 7 : 10);
     if (openFollowSelect) {
       this.processGameState(GameState.USER_INPUT_CYCLIST_FOLLOW);
     }
@@ -250,6 +233,24 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     }
     if (grass2 == null) {
       grass2 = this.spriteManager.getSprite('environment/grass2.png');
+    }
+    if (backgroundNotification == null) {
+      backgroundNotification = this.spriteManager.getSprite('back_text_04.png');
+    }
+    if (backgroundText == null) {
+      backgroundText = this.spriteManager.getSprite('back_text_05.png');
+    }
+    if (iconTime == null) {
+      iconTime = this.spriteManager.getSprite('icon_time.png');
+    }
+    if (iconRank == null) {
+      iconRank = this.spriteManager.getSprite('icon_rank.png');
+    }
+    if (iconPoints == null) {
+      iconPoints = this.spriteManager.getSprite('icon_points.png');
+    }
+    if (iconMountain == null) {
+      iconMountain = this.spriteManager.getSprite('icon_mountain.png');
     }
   }
 
@@ -351,15 +352,29 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     }
     if (moving) {
       if (movingTimer == -1) {
-        movingTimer = 1;
+        switch (this.settings.cyclistMovement) {
+          case CyclistMovementType.FAST:
+            movingTimer = 0.5;
+            break;
+          case CyclistMovementType.SLOW:
+            movingTimer = 2;
+            break;
+          case CyclistMovementType.SKIP:
+            movingTimer = 0.01;
+            break;
+          default:
+            movingTimer = 1;
+            break;
+        }
       } else {
         movingTimer -= t;
       }
       movingCyclist.moveTo(1 - movingTimer, moveAnimation);
-      // if (movingCyclist.movingOffset.isFinite) {
-      //   offset = -(movingCyclist.movingOffset * tileSize -
-      //       Offset(screenSize.width, screenSize.height) / 2 / zoom);
-      // }
+      if (movingCyclist.movingOffset.isFinite &&
+          this.settings.cameraMovement == CameraMovementType.AUTO) {
+        offset = -(movingCyclist.movingOffset * tileSize -
+            Offset(screenSize.width, screenSize.height) / 2 / zoom);
+      }
       if (movingTimer <= 0) {
         this.processGameState(GameState.USER_WAIT_CYCLIST_MOVING_FINISHED);
       }
@@ -512,19 +527,22 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         int minThrow = this.canFollow();
         if (minThrow >= 0) {
           Position placeBefore = getPlaceBefore();
-          if (minThrow >= 7 &&
-              (this.autoFollow || !placeBefore.cyclist.team.isPlayer)) {
+          if ((minThrow >= 7 && !placeBefore.cyclist.team.isPlayer) ||
+              (minThrow >= this.settings.autofollowThreshold &&
+                  this.autoFollow)) {
             following = true;
             follow();
             processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
-          } else if (placeBefore.cyclist.team.isPlayer) {
+          } else if (placeBefore.cyclist.team.isPlayer &&
+              (minThrow >= this.settings.autofollowThreshold ||
+                  this.settings.autofollowAsk)) {
             followSelect =
                 FollowSelect(this.spriteManager, (FollowType returnValue) {
               followSelect = null;
               switch (returnValue) {
                 case FollowType.AUTO_FOLLOW:
                   this.autoFollow = true;
-                  if (minThrow >= 7) {
+                  if (minThrow >= this.settings.autofollowThreshold) {
                     follow();
                     processGameState(GameState.USER_WAIT_CYCLIST_MOVING);
                   } else {
@@ -731,12 +749,18 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           this.selectNextCyclist();
         }
       }
-      this.dice = Dice(this.spriteManager, this);
-      this.dice2 = Dice(this.spriteManager, this);
+      this.dice = Dice(this.spriteManager, this,
+          difficulty: settings.difficulty,
+          isPlayer: cyclistSelected.cyclist.team.isPlayer);
+      this.dice2 = Dice(this.spriteManager, this,
+          difficulty: settings.difficulty,
+          isPlayer: cyclistSelected.cyclist.team.isPlayer);
       if (screenSize != null) {
-        offset = -((cyclistSelected.p1 + cyclistSelected.p2) / 2 * tileSize -
-            Offset(screenSize.width, screenSize.height) / 2 / zoom);
-        checkBounds();
+        if (this.settings.cameraMovement != CameraMovementType.NONE) {
+          offset = -((cyclistSelected.p1 + cyclistSelected.p2) / 2 * tileSize -
+              Offset(screenSize.width, screenSize.height) / 2 / zoom);
+          checkBounds();
+        }
       }
       processGameState(GameState.USER_INPUT_DICE_START);
     }
@@ -821,15 +845,19 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     });
   }
 
-  static CyclingView fromJson(Map<String, dynamic> json,
-      SpriteManager spriteManager, Function cyclingEnded, Function navigate) {
+  static CyclingView fromJson(
+      Map<String, dynamic> json,
+      SpriteManager spriteManager,
+      Function cyclingEnded,
+      Function navigate,
+      Settings settings) {
     List<Position> existingPositions = [];
     List<Sprint> existingSprints = [];
     List<Cyclist> existingCyclists = [];
     List<Team> existingTeams = [];
 
     CyclingView cyclingView =
-        CyclingView(spriteManager, cyclingEnded, navigate);
+        CyclingView(spriteManager, cyclingEnded, navigate, settings);
     if (json['teams'] != null) {
       cyclingView.teams = [];
       json['teams'].forEach((j) {
@@ -837,9 +865,17 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             Team.fromJson(j, existingCyclists, existingTeams, spriteManager));
       });
     }
+    cyclingView.map = GameMap.fromJson(
+        json['map'],
+        existingPositions,
+        existingSprints,
+        existingCyclists,
+        existingTeams,
+        spriteManager,
+        cyclingView);
     cyclingView.diceValue = json['diceValue'];
     cyclingView.currentTurn = json['currentTurn'];
-    cyclingView.grid = json['grid'];
+    cyclingView.grid = json['grid'] == true;
     cyclingView.ended = json['ended'];
     cyclingView.moving = json['moving'];
     cyclingView.autoFollow = json['autoFollow'];
@@ -856,14 +892,6 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     cyclingView.tileSize = json['tileSize'];
     cyclingView.cyclistMoved = json['cyclistMoved'];
     cyclingView.diceValueCooldown = json['diceValueCooldown'];
-    cyclingView.map = GameMap.fromJson(
-        json['map'],
-        existingPositions,
-        existingSprints,
-        existingCyclists,
-        existingTeams,
-        spriteManager,
-        cyclingView);
     cyclingView.movingCyclist = Cyclist.fromJson(
         json['movingCyclist'], existingCyclists, existingTeams, spriteManager);
     cyclingView.tempResults = Results.fromJson(
@@ -910,20 +938,67 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       });
     }
 
-    // activeTour.currentResults.data.forEach((element) {
-    //   if (element.team.isPlaceHolder) {
-    //     element.team = existingTeams.firstWhere(
-    //         (existing) => existing.id == element.team.id,
-    //         orElse: () => element.team);
-    //   }
-    // });
-    // existingCyclists.forEach((element) {
-    //   if (element.team.isPlaceHolder) {
-    //     element.team = existingTeams.firstWhere(
-    //         (existing) => existing.id == element.team.id,
-    //         orElse: () => element.team);
-    //   }
-    // });
+    cyclingView.tempResults?.data?.forEach((element) {
+      if (element.team.isPlaceHolder) {
+        element.team = existingTeams.firstWhere(
+            (existing) => existing.id == element.team.id,
+            orElse: () => element.team);
+      }
+    });
+    cyclingView.startResults?.data?.forEach((element) {
+      if (element.team.isPlaceHolder) {
+        element.team = existingTeams.firstWhere(
+            (existing) => existing.id == element.team.id,
+            orElse: () => element.team);
+      }
+    });
+    cyclingView.map.sprints?.forEach((sprint) {
+      sprint.cyclistPlaces.forEach((element) {
+        if (element.cyclist.isPlaceHolder) {
+          element.cyclist = existingCyclists.firstWhere(
+              (existing) => existing.id == element.cyclist.id,
+              orElse: () => element.cyclist);
+        }
+      });
+    });
+    existingPositions.forEach((element) {
+      if (element.cyclist?.isPlaceHolder == true) {
+        element.cyclist = existingCyclists.firstWhere(
+            (existing) => existing.id == element.cyclist.id,
+            orElse: () => element.cyclist);
+      }
+      if (element.sprint?.isPlaceHolder == true) {
+        element.sprint = existingSprints.firstWhere(
+            (existing) => existing.id == element.sprint.id,
+            orElse: () => element.sprint);
+      }
+      for (int i = 0; i < element.connections.length; i++) {
+        if (element.connections[i].isPlaceHolder) {
+          element.connections[i] = existingPositions.firstWhere(
+              (existing) => existing.id == element.connections[i].id,
+              orElse: () => element.connections[i]);
+        }
+      }
+      for (int i = 0; i < element.route.length; i++) {
+        if (element.route[i].isPlaceHolder) {
+          element.route[i] = existingPositions.firstWhere(
+              (existing) => existing.id == element.route[i].id,
+              orElse: () => element.route[i]);
+        }
+      }
+    });
+    existingCyclists.forEach((element) {
+      if (element.team.isPlaceHolder) {
+        element.team = existingTeams.firstWhere(
+            (existing) => existing.id == element.team.id,
+            orElse: () => element.team);
+      }
+      if (element.lastPosition?.isPlaceHolder == true) {
+        element.lastPosition = existingPositions.firstWhere(
+            (existing) => existing.id == element.lastPosition.id,
+            orElse: () => element.lastPosition);
+      }
+    });
     existingTeams.forEach((team) {
       for (int i = 0; i < team.cyclists.length; i++) {
         if (team.cyclists[i].isPlaceHolder) {
@@ -934,25 +1009,19 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       }
     });
 
-    print({
-      'existingPositions': existingPositions,
-      'existingSprints': existingSprints,
-      'existingCyclists': existingCyclists,
-      'existingTeams': existingTeams,
-    });
-
     return cyclingView;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['grid'] = this.grid;
     data['diceValue'] = this.diceValue;
     data['currentTurn'] = this.currentTurn;
     data['ended'] = this.ended;
     data['moving'] = this.moving;
     data['autoFollow'] = this.autoFollow;
     data['hasResults'] = this.hasResults;
-    data['openFollowSelect'] = this.openFollowSelect;
+    data['openFollowSelect'] = this.followSelect != null;
     data['zoom'] = this.zoom;
     data['movingTimer'] = this.movingTimer;
     data['cyclistMoved'] = this.cyclistMoved;
@@ -964,26 +1033,26 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
     data['gameState'] = this.gameState.toString();
 
-    data['dice'] = this.dice?.toJson();
-    data['dice2'] = this.dice2?.toJson();
-    data['map'] = this.map?.toJson();
-    print('movingCyclist: ${jsonEncode(data)}');
-    data['movingCyclist'] = this.movingCyclist?.toJson(true);
-    print('tempResults: ${jsonEncode(data)}');
-    data['tempResults'] = this.tempResults?.toJson();
-    print('startResults: ${jsonEncode(data)}');
-    data['startResults'] = this.startResults?.toJson();
-    print('cyclistSelected: ${jsonEncode(data)}');
-    data['cyclistSelected'] = this.cyclistSelected?.toJson(true);
-    print('cyclistLastSelected: ${jsonEncode(data)}');
-    data['cyclistLastSelected'] = this.cyclistLastSelected?.toJson(true);
-    print('teams: ${jsonEncode(data)}');
+    data['dice'] = this.dice != null ? this.dice.toJson() : null;
+    data['dice2'] = this.dice2 != null ? this.dice2.toJson() : null;
+    data['map'] = this.map != null ? this.map.toJson() : null;
+    data['movingCyclist'] =
+        this.movingCyclist != null ? this.movingCyclist.toJson(true) : null;
+    data['tempResults'] =
+        this.tempResults != null ? this.tempResults.toJson() : null;
+    data['startResults'] =
+        this.startResults != null ? this.startResults.toJson() : null;
+    data['cyclistSelected'] =
+        this.cyclistSelected != null ? this.cyclistSelected.toJson(true) : null;
+    data['cyclistLastSelected'] = this.cyclistLastSelected != null
+        ? this.cyclistLastSelected.toJson(true)
+        : null;
 
-    data['teams'] = this.teams?.map((i) => i.toJson(false));
-    print('moveAnimation: ${jsonEncode(data)}');
-    data['moveAnimation'] = this.moveAnimation?.map((i) => i.toJson(true));
-    print('notifications: ${jsonEncode(data)}');
-    data['notifications'] = this.notifications?.map((i) => i.toJson());
+    data['teams'] = this.teams?.map((i) => i.toJson(false))?.toList();
+    data['moveAnimation'] =
+        this.moveAnimation?.map((i) => i.toJson(true))?.toList();
+    data['notifications'] =
+        this.notifications?.map((i) => i.toJson())?.toList();
 
     return data;
   }

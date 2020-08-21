@@ -40,21 +40,28 @@ class MainMenu implements BaseView {
     buttons = [];
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
+      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.6),
       ButtonType.BAR_GREEN,
-      () => {navigate(GameManagerState.TOUR_SELECT_MENU, load: true)},
+      () => {navigate(GameManagerState.PLAYING, load: true)},
+      'Continue',
+    ));
+    buttons.add(Button(
+      this.spriteManager,
+      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 0.5),
+      ButtonType.BAR_BLACK,
+      () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
       'Career',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize),
+      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 0.6),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
       'Single race',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.7),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.TOUR_SELECT_MENU)},
       'Tour',
@@ -64,6 +71,11 @@ class MainMenu implements BaseView {
         Offset(buttonSize / 2 + 5, screenSize.height - buttonSize / 2 - 5),
         ButtonType.ICON_CREDITS,
         () => {navigate(GameManagerState.CREDITS)}));
+    buttons.add(Button(
+        this.spriteManager,
+        Offset(buttonSize / 2 * 3 + 5, screenSize.height - buttonSize / 2 - 5),
+        ButtonType.ICON_SETTINGS,
+        () => {navigate(GameManagerState.SETTINGS_MENU)}));
   }
 
   @override
@@ -94,23 +106,23 @@ class MainMenu implements BaseView {
     double buttonSize = screenSize.height / 7;
 
     buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 3.3, buttonSize * 1.45),
+        canvas, Position(screenSize.width / 3.3, buttonSize * 1.05),
         size: Position(screenSize.width * 1.3 / 3.3,
-            screenSize.height - buttonSize * 2.5));
+            screenSize.height - buttonSize * 1.5));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
     backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 1.2),
+        canvas, Position(screenSize.width / 3, buttonSize * 0.8),
         size: Position(screenSize.width / 3, buttonSize));
 
     TextSpan span = new TextSpan(
         style: new TextStyle(
             color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
         text: 'Cycling Escape');
-    Offset position = Offset(screenSize.width / 2, buttonSize * 1.4);
+    Offset position = Offset(screenSize.width / 2, buttonSize * 1.05);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 

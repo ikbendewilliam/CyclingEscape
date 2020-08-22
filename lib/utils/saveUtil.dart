@@ -5,6 +5,7 @@ import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/views/cyclingView.dart';
 import 'package:CyclingEscape/views/menus/settingsMenu.dart';
+import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:flame/position.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,9 +46,19 @@ class SaveUtil {
         jsonDecode(prefs.getString('be.wive.cyclingescape.settings')));
   }
 
-  static Future<void> clearSettings() async {
+  static void saveTutorialsViewed(TutorialsViewed tutorialsViewed) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('be.wive.cyclingescape.settings');
+    await prefs.setString('be.wive.cyclingescape.tutorialsviewed',
+        jsonEncode(tutorialsViewed.toJson()));
+  }
+
+  static Future<TutorialsViewed> loadTutorialsViewed() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('be.wive.cyclingescape.tutorialsviewed')) {
+      return null;
+    }
+    return TutorialsViewed.fromJson(
+        jsonDecode(prefs.getString('be.wive.cyclingescape.tutorialsviewed')));
   }
 
   static void saveCyclingView(CyclingView cyclingView) async {

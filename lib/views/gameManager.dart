@@ -13,10 +13,10 @@ import 'package:CyclingEscape/views/menus/pauseMenu.dart';
 import 'package:CyclingEscape/views/menus/settingsMenu.dart';
 import 'package:CyclingEscape/views/menus/tourInBetweenRaces.dart';
 import 'package:CyclingEscape/views/menus/tourSelect.dart';
+import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
 import 'package:flame/game/game.dart';
 import 'package:flame/gestures.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'baseView.dart';
@@ -39,10 +39,12 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   CreditsView credits;
   CyclingView cyclingView;
   ResultsView resultsView;
+  TutorialView tutorial;
   SettingsMenu settingsMenu;
   SpriteManager spriteManager;
   MenuBackground menuBackground;
   TourSelectMenu tourSelectMenu;
+  TutorialsViewed tutorialsViewed = TutorialsViewed();
   GameManagerState state;
   CourseSelectMenu courseSelectMenu;
   TourInBetweenRacesMenu tourInBetweenRacesMenu;
@@ -56,6 +58,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     helpMenu = new HelpMenu(spriteManager, navigate);
     credits = new CreditsView(spriteManager, navigate);
     pauseMenu = new PauseMenu(spriteManager, navigate);
+    tutorial = new TutorialView(spriteManager, navigate);
     courseSelectMenu = new CourseSelectMenu(spriteManager, navigate);
     settingsMenu = new SettingsMenu(spriteManager, navigate, settings);
     tourInBetweenRacesMenu =
@@ -67,14 +70,24 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   Future<void> loadSettings() async {
     // get settings
-    Settings _settings = await SaveUtil.loadSettings();
-    if (_settings != null) {
-      settings.autofollowAsk = _settings.autofollowAsk;
-      settings.autofollowThreshold = _settings.autofollowThreshold;
-      settings.cameraMovement = _settings.cameraMovement;
-      settings.cyclistMovement = _settings.cyclistMovement;
-      settings.difficulty = _settings.difficulty;
-    }
+    SaveUtil.loadSettings().then((_settings) {
+      if (_settings != null) {
+        settings.autofollowAsk = _settings.autofollowAsk;
+        settings.autofollowThreshold = _settings.autofollowThreshold;
+        settings.cameraMovement = _settings.cameraMovement;
+        settings.cyclistMovement = _settings.cyclistMovement;
+        settings.difficulty = _settings.difficulty;
+      }
+    });
+    SaveUtil.loadTutorialsViewed().then((_tutorialsViewed) {
+      if (_tutorialsViewed != null) {
+        tutorialsViewed.typesViewed = _tutorialsViewed.typesViewed;
+      }
+      if (!tutorialsViewed.hasViewed(TutorialType.FIRST_OPEN)) {
+        this.navigate(GameManagerState.TUTORIAL,
+            tutorialType: TutorialType.FIRST_OPEN);
+      }
+    });
   }
 
   void load() {
@@ -120,6 +133,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         case GameManagerState.HELP_MENU:
         case GameManagerState.TOUR_SELECT_MENU:
         case GameManagerState.TOUR_BETWEEN_RACES:
+        case GameManagerState.TUTORIAL:
           menuBackground.render(canvas, currentSize);
           break;
         case GameManagerState.PAUSED:
@@ -224,7 +238,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       int team,
       bool continueing: false,
       bool save: false,
-      bool load: false}) async {
+      bool load: false,
+      TutorialType tutorialType}) async {
     if (deleteActiveTour) {
       this.activeTour = null;
       this.tourSelectMenu.selectedTour = null;
@@ -255,6 +270,14 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       } else {
         return;
       }
+    }
+    if (tutorialType != null) {
+      newState = GameManagerState.TUTORIAL;
+      tutorialsViewed.addViewed(tutorialType);
+      tutorial.previousState = this.state;
+      tutorial.previousView = this.currentView;
+      tutorial.tutorialType = tutorialType;
+      tutorial.setText();
     }
     this.state = newState;
     switch (newState) {
@@ -325,6 +348,16 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = resultsView;
         resultsView.isPaused = true;
         resultsView.onAttach();
+        break;
+        break;
+      case GameManagerState.TUTORIAL:
+        currentView = tutorial;
+        tutorial.onAttach();
+        break;
+      case GameManagerState.CLOSE_TUTORIAL:
+        this.state = tutorial.previousState;
+        this.currentView = tutorial.previousView;
+        this.currentView.onAttach();
         break;
       default:
       // Do nothing

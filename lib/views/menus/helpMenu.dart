@@ -290,7 +290,6 @@ class HelpMenu implements BaseView {
   splitLongText(String text) {
     List<String> splitted = [];
     while (text.length > 0) {
-      print(text.length);
       if (text.length <= 30) {
         splitted.add(text);
         text = '';

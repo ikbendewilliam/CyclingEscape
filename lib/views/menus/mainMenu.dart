@@ -20,7 +20,6 @@ class MainMenu implements BaseView {
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundHeader;
-  bool canContinue;
 
   final Function navigate;
 
@@ -32,7 +31,6 @@ class MainMenu implements BaseView {
       screenSize = Size(1, 1);
     }
 
-    canContinue = await SaveUtil.hasCyclingView();
     createButtons();
 
     buttonBackground = spriteManager.getSprite('options_back_01.png');
@@ -40,6 +38,7 @@ class MainMenu implements BaseView {
   }
 
   createButtons() async {
+    bool canContinue = await SaveUtil.hasCyclingView();
     double buttonSize = screenSize.height / 7;
     buttons = [];
     buttons.add(Button(
@@ -86,6 +85,9 @@ class MainMenu implements BaseView {
       () => {navigate(GameManagerState.PLAYING, load: true)},
       'Continue',
     ));
+    buttons.forEach((element) {
+      element.setScreenSize(screenSize);
+    });
   }
 
   @override
@@ -140,9 +142,6 @@ class MainMenu implements BaseView {
   void resize(Size size) {
     screenSize = size;
     createButtons();
-    buttons.forEach((element) {
-      element.setScreenSize(size);
-    });
   }
 
   @override

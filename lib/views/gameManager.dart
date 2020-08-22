@@ -80,9 +80,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       }
     });
     SaveUtil.loadTutorialsViewed().then((_tutorialsViewed) {
-      // if (_tutorialsViewed != null) {
-      //   tutorialsViewed.typesViewed = _tutorialsViewed.typesViewed;
-      // }
+      if (_tutorialsViewed != null) {
+        tutorialsViewed.typesViewed = _tutorialsViewed.typesViewed;
+      }
       openTutorial(TutorialType.FIRST_OPEN);
     });
   }
@@ -277,10 +277,13 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     if (tutorialType != null) {
       newState = GameManagerState.TUTORIAL;
       tutorialsViewed.addViewed(tutorialType);
+      tutorial = TutorialView(spriteManager, navigate);
       tutorial.previousState = this.state;
       tutorial.previousView = this.currentView;
       tutorial.tutorialType = tutorialType;
       tutorial.setText();
+      print(tutorial.previousState);
+      print(tutorial.previousView);
     }
     this.state = newState;
     switch (newState) {
@@ -288,6 +291,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         if (activeTour != null &&
             activeTour.racesDone >= activeTour.tour.races) {
           activeTour = null;
+          openTutorial(TutorialType.TOUR_FIRST_FINISHED);
         }
         currentView = mainmenu;
         mainmenu.onAttach();
@@ -365,6 +369,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         this.state = tutorial.previousState;
         this.currentView = tutorial.previousView;
         this.currentView.onAttach();
+        if (this.currentView is TutorialView) {
+          tutorial = this.currentView;
+        }
         break;
       default:
       // Do nothing

@@ -548,9 +548,6 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           } else if (placeBefore.cyclist.team.isPlayer &&
               (minThrow >= this.settings.autofollowThreshold ||
                   this.settings.autofollowAsk)) {
-            if (this.autoFollow) {
-              openTutorial(TutorialType.FOLLOW);
-            }
             followSelect =
                 FollowSelect(this.spriteManager, (FollowType returnValue) {
               followSelect = null;
@@ -576,6 +573,9 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             followSelect.onAttach();
             followSelect.resize(screenSize);
             following = true;
+            if (this.autoFollow) {
+              openTutorial(TutorialType.FOLLOW);
+            }
           }
         }
         if (!following) {
@@ -595,12 +595,21 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
         if (!cyclistSelected.cyclist.team.isPlayer) {
           selectPosition(MapUtils.findMaxValue(
               cyclistSelected, max(0, diceValue + cyclistSelected.fieldValue)));
+        } else {
+          openTutorial(TutorialType.SELECT_POSITION);
         }
         break;
       case GameState.USER_INPUT_DICE_START:
         if (!cyclistSelected.cyclist.team.isPlayer) {
           startDice();
           processGameState(GameState.USER_WAIT_DICE_ROLLING);
+        } else {
+          openTutorial(TutorialType.THROW_DICE);
+          if (cyclistSelected.fieldValue < 0) {
+            openTutorial(TutorialType.FIELDVALUE);
+          } else if (cyclistSelected.fieldValue > 0) {
+            openTutorial(TutorialType.FIELDVALUE_POSITIVE);
+          }
         }
         break;
       case GameState.USER_INPUT_DICE_DONE:
@@ -674,8 +683,16 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             if (sprints.firstWhere((s) => s.type == SprintType.FINISH,
                     orElse: () => null) !=
                 null) {
+              openTutorial(TutorialType.FINISH);
               position.removeCyclist(); // Remove cyclist when finished
               removed = true;
+            } else if (sprints.firstWhere(
+                    (s) =>
+                        s.type == SprintType.MOUNTAIN_SPRINT ||
+                        s.type == SprintType.SPRINT,
+                    orElse: () => null) !=
+                null) {
+              openTutorial(TutorialType.SPRINT);
             }
           }
         }

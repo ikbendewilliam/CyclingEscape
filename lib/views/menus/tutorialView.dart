@@ -320,21 +320,21 @@ TutorialType getTutorialTypeFromString(String tutorialTypeAsString) {
 }
 
 enum TutorialType {
-  FIRST_OPEN, // Implemented
-  CAREER,
-  SINGLE_RACE, // Implemented
-  TOUR, // Implemented
-  OPEN_RACE, // Implemented
+  FIRST_OPEN,
+  CAREER, // Not implemented!
+  SINGLE_RACE,
+  TOUR,
+  OPEN_RACE,
   THROW_DICE,
   SELECT_POSITION,
-  FOLLOW, // Implemented
-  NO_FOLLOW_AVAILABLE, // Implemented
-  FOLLOW_AFTER_AUTO_FOLLOW, // Implemented
+  FOLLOW,
+  NO_FOLLOW_AVAILABLE,
+  FOLLOW_AFTER_AUTO_FOLLOW,
   FIELDVALUE,
   FIELDVALUE_POSITIVE,
   SPRINT,
   FINISH,
-  RANKINGS, // Implemented
-  SETTINGS, // Implemented
+  RANKINGS,
+  SETTINGS,
   TOUR_FIRST_FINISHED,
 }

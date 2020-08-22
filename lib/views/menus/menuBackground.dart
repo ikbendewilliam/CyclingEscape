@@ -86,6 +86,9 @@ class MenuBackground {
   }
 
   void update(double t) {
+    if (screenSize == null) {
+      return;
+    }
     double offset = screenSize.height / 7;
     horizontalOffset += t * 3;
     if (Random().nextDouble() < 0.005) {

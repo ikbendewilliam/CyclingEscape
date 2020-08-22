@@ -51,8 +51,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   GameManager() {
     spriteManager = new SpriteManager();
-    cyclingView =
-        new CyclingView(spriteManager, cyclingEnded, navigate, settings);
+    cyclingView = new CyclingView(
+        spriteManager, cyclingEnded, navigate, settings, openTutorial);
     resultsView = new ResultsView(spriteManager, navigate);
     mainmenu = new MainMenu(spriteManager, navigate);
     helpMenu = new HelpMenu(spriteManager, navigate);
@@ -80,18 +80,20 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       }
     });
     SaveUtil.loadTutorialsViewed().then((_tutorialsViewed) {
-      if (_tutorialsViewed != null) {
-        tutorialsViewed.typesViewed = _tutorialsViewed.typesViewed;
-      }
-      if (!tutorialsViewed.hasViewed(TutorialType.FIRST_OPEN)) {
-        this.navigate(GameManagerState.TUTORIAL,
-            tutorialType: TutorialType.FIRST_OPEN);
-      }
+      // if (_tutorialsViewed != null) {
+      //   tutorialsViewed.typesViewed = _tutorialsViewed.typesViewed;
+      // }
+      openTutorial(TutorialType.FIRST_OPEN);
     });
   }
 
+  openTutorial(TutorialType type) {
+    if (!tutorialsViewed.hasViewed(type)) {
+      this.navigate(GameManagerState.TUTORIAL, tutorialType: type);
+    }
+  }
+
   void load() {
-    loadSettings();
     spriteManager.loadSprites().whenComplete(() {
       currentView.onAttach();
       // cyclingView.onAttach();
@@ -104,8 +106,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       // tourInBetweenRacesMenu.onAttach();
       // tourSelectMenu.onAttach();
       if (menuBackground == null) {
-        menuBackground = MenuBackground();
+        menuBackground = MenuBackground(this.spriteManager);
       }
+      loadSettings();
       loading = false;
     });
   }
@@ -261,7 +264,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
     if (load) {
       CyclingView newCyclingView = await SaveUtil.loadCyclingView(
-          spriteManager, cyclingEnded, navigate, settings);
+          spriteManager, cyclingEnded, navigate, settings, openTutorial);
       if (newCyclingView != null) {
         print('load successful');
         this.cyclingView = newCyclingView;
@@ -296,10 +299,12 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       case GameManagerState.COURSE_SELECT_MENU:
         currentView = courseSelectMenu;
         courseSelectMenu.onAttach();
+        openTutorial(TutorialType.SINGLE_RACE);
         break;
       case GameManagerState.SETTINGS_MENU:
         currentView = settingsMenu;
         settingsMenu.onAttach();
+        openTutorial(TutorialType.SETTINGS);
         break;
       case GameManagerState.HELP_MENU:
         currentView = helpMenu;
@@ -313,6 +318,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
           currentView = tourSelectMenu;
           tourSelectMenu.onAttach();
         }
+        openTutorial(TutorialType.TOUR);
         break;
       case GameManagerState.PLAYING:
         currentView = cyclingView;
@@ -330,6 +336,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         } else {
           cyclingView.onAttach();
         }
+        openTutorial(TutorialType.OPEN_RACE);
         break;
       case GameManagerState.TOUR_BETWEEN_RACES:
         currentView = tourInBetweenRacesMenu;
@@ -339,6 +346,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = resultsView;
         resultsViewEndsRace = false;
         resultsView.onAttach();
+        openTutorial(TutorialType.RANKINGS);
         break;
       case GameManagerState.PAUSED:
         currentView = pauseMenu;
@@ -348,7 +356,6 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = resultsView;
         resultsView.isPaused = true;
         resultsView.onAttach();
-        break;
         break;
       case GameManagerState.TUTORIAL:
         currentView = tutorial;
@@ -379,7 +386,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     resultsView.onAttach();
     resize(currentSize);
     cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate,
-        settings); // Clean the CyclingView to be safe
+        settings, openTutorial); // Clean the CyclingView to be safe
     SaveUtil.clearCyclingView();
   }
 }

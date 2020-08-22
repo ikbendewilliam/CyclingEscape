@@ -263,6 +263,9 @@ class TutorialView implements BaseView {
     buttons.forEach((element) {
       element.setScreenSize(size);
     });
+    if (this.previousView != null) {
+      this.previousView.resize(size);
+    }
   }
 
   @override
@@ -279,6 +282,7 @@ class TutorialsViewed {
   }
 
   bool hasViewed(TutorialType type) {
+    print(typesViewed);
     return typesViewed.contains(type);
   }
 
@@ -316,21 +320,21 @@ TutorialType getTutorialTypeFromString(String tutorialTypeAsString) {
 }
 
 enum TutorialType {
-  FIRST_OPEN,
+  FIRST_OPEN, // Implemented
   CAREER,
-  SINGLE_RACE,
-  TOUR,
-  OPEN_RACE,
+  SINGLE_RACE, // Implemented
+  TOUR, // Implemented
+  OPEN_RACE, // Implemented
   THROW_DICE,
   SELECT_POSITION,
-  FOLLOW,
-  NO_FOLLOW_AVAILABLE,
-  FOLLOW_AFTER_AUTO_FOLLOW,
+  FOLLOW, // Implemented
+  NO_FOLLOW_AVAILABLE, // Implemented
+  FOLLOW_AFTER_AUTO_FOLLOW, // Implemented
   FIELDVALUE,
   FIELDVALUE_POSITIVE,
   SPRINT,
   FINISH,
-  RANKINGS,
-  SETTINGS,
+  RANKINGS, // Implemented
+  SETTINGS, // Implemented
   TOUR_FIRST_FINISHED,
 }

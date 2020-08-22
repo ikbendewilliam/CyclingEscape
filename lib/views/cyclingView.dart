@@ -10,6 +10,7 @@ import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
 import 'package:flame/position.dart' as flamePosition;
 import 'package:flame/sprite.dart';
@@ -78,8 +79,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
 
   final Function cyclingEnded;
   final Function navigate;
-  CyclingView(
-      this.spriteManager, this.cyclingEnded, this.navigate, this.settings);
+  final Function openTutorial;
+
+  CyclingView(this.spriteManager, this.cyclingEnded, this.navigate,
+      this.settings, this.openTutorial);
 
   void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
     if (playSettings != null) {
@@ -528,8 +531,13 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       case GameState.USER_INPUT_CYCLIST_FOLLOW:
         bool following = false;
         int minThrow = this.canFollow();
-        if (minThrow >= 0) {
-          Position placeBefore = getPlaceBefore();
+        Position placeBefore = getPlaceBefore();
+        if (minThrow <= 0 && placeBefore?.cyclist?.team?.isPlayer == true) {
+          openTutorial(TutorialType.NO_FOLLOW_AVAILABLE);
+        } else if (minThrow > 0) {
+          if (placeBefore.cyclist.team.isPlayer) {
+            openTutorial(TutorialType.FOLLOW);
+          }
           if ((minThrow >= 7 && !placeBefore.cyclist.team.isPlayer) ||
               (minThrow >= this.settings.autofollowThreshold &&
                   this.autoFollow &&
@@ -540,6 +548,9 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           } else if (placeBefore.cyclist.team.isPlayer &&
               (minThrow >= this.settings.autofollowThreshold ||
                   this.settings.autofollowAsk)) {
+            if (this.autoFollow) {
+              openTutorial(TutorialType.FOLLOW);
+            }
             followSelect =
                 FollowSelect(this.spriteManager, (FollowType returnValue) {
               followSelect = null;
@@ -854,7 +865,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       SpriteManager spriteManager,
       Function cyclingEnded,
       Function navigate,
-      Settings settings) {
+      Settings settings,
+      Function openTutorial) {
     List<Position> existingPositions = [];
     List<Sprint> existingSprints = [];
     List<Cyclist> existingCyclists = [];
@@ -863,8 +875,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     if (json == null || json['map'] == null) {
       return null;
     }
-    CyclingView cyclingView =
-        CyclingView(spriteManager, cyclingEnded, navigate, settings);
+    CyclingView cyclingView = CyclingView(
+        spriteManager, cyclingEnded, navigate, settings, openTutorial);
     if (json['teams'] != null) {
       cyclingView.teams = [];
       json['teams'].forEach((j) {

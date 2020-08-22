@@ -67,8 +67,12 @@ class SaveUtil {
         'be.wive.cyclingescape.activeGame', jsonEncode(cyclingView.toJson()));
   }
 
-  static Future<CyclingView> loadCyclingView(SpriteManager spriteManager,
-      Function cyclingEnded, Function navigate, Settings settings) async {
+  static Future<CyclingView> loadCyclingView(
+      SpriteManager spriteManager,
+      Function cyclingEnded,
+      Function navigate,
+      Settings settings,
+      Function openTutorial) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.activeGame')) {
       return null;
@@ -78,7 +82,8 @@ class SaveUtil {
         spriteManager,
         cyclingEnded,
         navigate,
-        settings);
+        settings,
+        openTutorial);
   }
 
   static Future<bool> hasCyclingView() async {

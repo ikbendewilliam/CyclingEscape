@@ -67,6 +67,17 @@ class SpriteManager {
     spriteNames.add('back_tour.png');
     spriteNames.add('icon_credits.png');
     spriteNames.add('icon_help.png');
+    spriteNames.add('cyclistSillouhette.png');
+    spriteNames.add('cloud1.png');
+    spriteNames.add('cloud2.png');
+    spriteNames.add('cloud3.png');
+    spriteNames.add('cloud4.png');
+    spriteNames.add('cloud5.png');
+    spriteNames.add('tardis.png');
+    spriteNames.add('bg_1.png');
+    spriteNames.add('bg_2.png');
+    spriteNames.add('bg_3.png');
+    spriteNames.add('bg_4.png');
     spriteNames.add('environment/rock1.png');
     spriteNames.add('environment/rock2.png');
     spriteNames.add('environment/rock3.png');

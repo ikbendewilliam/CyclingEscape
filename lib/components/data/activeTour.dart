@@ -1,4 +1,3 @@
-import 'package:CyclingEscape/components/data/resultData.dart';
 import 'package:CyclingEscape/components/data/results.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';

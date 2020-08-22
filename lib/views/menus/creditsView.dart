@@ -137,6 +137,13 @@ class CreditsView implements BaseView {
     CanvasUtils.drawText(
         canvas, Offset(screenSize.width / 2, y += 0.3 * buttonSize), 0, span);
 
+    span = new TextSpan(
+        style: new TextStyle(
+            color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
+        text: 'Megan - for playing Harry Potter with me!');
+    CanvasUtils.drawText(
+        canvas, Offset(screenSize.width / 2, y += 0.3 * buttonSize), 0, span);
+
     backgroundHeader.renderPosition(
         canvas, Position(screenSize.width / 3, buttonSize * 0.21),
         size: Position(screenSize.width / 3, buttonSize * 0.8));

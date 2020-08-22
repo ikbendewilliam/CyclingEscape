@@ -134,9 +134,6 @@ class Button {
   }
 
   void render(Canvas canvas) {
-    if (sprite == null && spriteBackground == null && spritePressed == null) {
-      getSprite();
-    }
     double aspectRatio = (this.text != null) ? 3.5 : 1;
     double scale = 1;
 

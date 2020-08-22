@@ -361,6 +361,8 @@ enum GameManagerState {
   PLAYING,
   PAUSED,
   PAUSED_RESULTS,
+  CLOSE_TUTORIAL,
+  TUTORIAL,
   RESULTS,
   CREDITS
 }

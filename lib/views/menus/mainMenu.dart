@@ -1,6 +1,7 @@
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -19,32 +20,28 @@ class MainMenu implements BaseView {
   List<Button> buttons = [];
   Sprite buttonBackground;
   Sprite backgroundHeader;
+  bool canContinue;
 
   final Function navigate;
 
   MainMenu(this.spriteManager, this.navigate);
 
-  void onAttach() {
+  void onAttach() async {
     buttons = [];
     if (screenSize == null) {
       screenSize = Size(1, 1);
     }
-    double dy = 54;
-    createButtons(dy);
+
+    canContinue = await SaveUtil.hasCyclingView();
+    createButtons();
 
     buttonBackground = spriteManager.getSprite('options_back_01.png');
     backgroundHeader = spriteManager.getSprite('back_text_01.png');
   }
 
-  createButtons(double buttonSize) {
+  createButtons() async {
+    double buttonSize = screenSize.height / 7;
     buttons = [];
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.6),
-      ButtonType.BAR_GREEN,
-      () => {navigate(GameManagerState.PLAYING, load: true)},
-      'Continue',
-    ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 0.5),
@@ -55,14 +52,14 @@ class MainMenu implements BaseView {
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 0.6),
-      ButtonType.BAR_YELLOW,
+      ButtonType.BAR_BLUE,
       () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
       'Single race',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.7),
-      ButtonType.BAR_YELLOW,
+      ButtonType.BAR_RED,
       () => {navigate(GameManagerState.TOUR_SELECT_MENU)},
       'Tour',
     ));
@@ -82,6 +79,13 @@ class MainMenu implements BaseView {
             screenSize.height - buttonSize / 2 - 5),
         ButtonType.ICON_HELP,
         () => {navigate(GameManagerState.HELP_MENU)}));
+    buttons.add(Button(
+      this.spriteManager,
+      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.6),
+      (canContinue == true ? ButtonType.BAR_GREEN : ButtonType.BAR_BLACK),
+      () => {navigate(GameManagerState.PLAYING, load: true)},
+      'Continue',
+    ));
   }
 
   @override
@@ -135,9 +139,7 @@ class MainMenu implements BaseView {
   @override
   void resize(Size size) {
     screenSize = size;
-    double buttonSize = screenSize.height / 7;
-    buttons = [];
-    createButtons(buttonSize);
+    createButtons();
     buttons.forEach((element) {
       element.setScreenSize(size);
     });

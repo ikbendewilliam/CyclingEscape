@@ -179,6 +179,18 @@ class HelpMenu implements BaseView {
         text.add('');
         text.addAll(splitLongText(
             'If you enjoy the game (or don\'t) let me know by writing a review.'));
+        text.add('');
+        text.addAll(splitLongText(
+            'You can find information about the following topics:'));
+        text.add('Basics');
+        text.add('Map types');
+        text.add('Results/rankings');
+        text.add('Tours');
+        text.add('Career');
+        text.add('Career - upgrades');
+        text.add('Strategy');
+        text.add('Settings');
+        text.add('More information and contact');
         break;
       case 1:
         text.add('Basics');
@@ -208,7 +220,7 @@ class HelpMenu implements BaseView {
             'The maps are always randomly generated from options. This does not mean that all options are always used. You may select heavy and only have cobbled or even no special road.'));
         break;
       case 3:
-        text.add('Results');
+        text.add('Results/rankings');
         text.add('(points, mountain sprints, finish, ...)');
         text.add('');
         text.addAll(splitLongText(
@@ -217,12 +229,18 @@ class HelpMenu implements BaseView {
         text.add('Who is first?');
         text.add('');
         text.addAll(splitLongText(
-            'The first one to pass is not always the rider that gets the most points. The positions are only calculated at the END of the turn. This means that at the start of the turn you may pass it first, but then during the turn 4 riders may pass you and take all the points of the sprint. The closest field to the end is used to know how far you are, so be carefull when there are turns after the sprint.'));
+            'The first one to pass is not always the rider that gets the most points. The positions are only calculated at the END of the turn. This means that at the start of the turn you may pass it first, but then during the turn 4 riders may pass you and take all the points of the sprint. The closest position to the end is used to know how far you are, so be carefull when there are turns after the sprint. When the end of the positions are on the same line, the rider on the right hand side is first.'));
+        text.add('');
+        text.add('Different rankings');
+        text.add('');
+        text.addAll(splitLongText(
+            'There are a few different rankings. Time, young, points, mountain and team. Time is the most important one and is calculated on how many turns it takes you to finish. This means that when you finish one turn after the first finisher you get +1 time. The one with the least time is the winner and may wear the yellow jersey. Young is calculated in the same way, however only riders with a number ending in a 1 or 2 are eligable. Other riders will not count towards this ranking. The first in the young ranking may wear the white jersey. Points is simpler, you gain points by finishing in the top 7 or passing a sprint in the top 4 (see above for the exact points). The first in the point ranking can wear the green jersey. The mountain ranking is similar to the point ranking with the only difference that you can only earn mountain points (mp) in sprints. The first in the mountain ranking may wear the polka dot jersey. The team ranking is a bit different. This uses the total of all of your riders in time and adds it together. The team with the less time wins this ranking, but there is no special jersey for this.'));
         break;
       case 4:
         text.add('Tours');
         text.add('');
-        text.add('tbd');
+        text.addAll(splitLongText(
+            'Tours are a combination of multiple races. Your first start is based on your team, but starting from the second race the start positions are based upon the time rankings of the tour. The rankings of each race are combined and shown at the end of each race. Starting from the second race certain riders will start wearing special jerseys. This is because they are first in one or more rankings. (If a rider is first in time and points, they will only wear the time jersey and the points jersey will not be worn that race).'));
         break;
       case 5:
         text.add('Career');
@@ -237,17 +255,32 @@ class HelpMenu implements BaseView {
       case 7:
         text.add('Strategy');
         text.add('');
-        text.add('tbd');
+        text.addAll(splitLongText(
+            'To win you need to finish first, so you need to think about when to follow and which position to choose. Sometimes it is smart to not go all the available positions and instead of moving 10 for example only move 8. You can do this so you can follow the turn afterwards or to block a certain junction. In the same regard you should think about when to follow. In some instances it may be smart to follow a 6 or 5, while in other it is smart to not follow even a 10. Following a small number can be smart to ensure you get out of a sticky situation such as a mountain top or a difficult cobbled position. Another reason might be that the road is blocked so throwing a 10 will result in a similar situation. The last reason to follow a lower number is when you are behind and there is no one else to follow. It is as likely that they throw a 12 as you, so not following a 6, then throwing a 3 yourself and them throwing a high number would result in you being left behind alone. When you are certain you will finish (one or two tiles to go), you may decide to not follow a 10 for example. This will lose  you a certain second place, but with some luck may earn you the first place. This is less important if other riders have already finished and is dangerous when you are further away.'));
         break;
       case 8:
         text.add('Settings');
         text.add('');
-        text.add('tbd');
+        text.addAll(splitLongText(
+            'There are a few settings that may improve your experience. The first two have to do with auto follow. You can decide the threshold, the number that you need to be able to follow automatically, and wether or not the game should ask if you want to follow when a lower value is needed. For example you set the threshold on 5 and ask on false. The game will then auto follow if you need a 5 to follow and automatically go to the next rider when they throw a 4.'));
+        text.add('');
+        text.add('Cyclist move speed');
+        text.addAll(splitLongText(
+            'This determines the speed of the riders when they move. You can set this to fast (0.5s), normal (1s), slow(2s) or to skip (0.01s). When setting this to skip it may be hard to follow, but the game will progress much faster.'));
+        text.add('');
+        text.add('Camera movement');
+        text.addAll(splitLongText(
+            'This determines when the camera should automatically move. There are 3 options: disabled, you will always have to manually move the camera. Select only will move the camera to the next cyclist when it is their turn. Follow and select will follow a rider when they are moving. This gives you a nice overview of everything that happens, but may be a little nauseating.'));
+        text.add('');
+        text.add('Difficulty');
+        text.addAll(splitLongText(
+            'When the game is much to easy or hard, you can change the difficulty (even in game). Setting this on easy will give you a big advantage and (whenever possible) will increase your throw up to 2 more (1 for each dice). Setting the difficulty to hard will increase all opponents throws with this amount. This may seem little, but know that a short race is on average 8 turns which may result in as much as 16 more thrown. Following even a low number of tiles is highly recommended on hard difficulty!'));
         break;
       case 9:
         text.add('More information and contact');
         text.add('');
-        text.add('tbd');
+        text.addAll(splitLongText(
+            'If you need more information, want to report a bug, have a suggestion, or just want to have a chat, you may contact me on wivecontact@gmail.com I would love to hear from you.'));
         break;
       default:
     }

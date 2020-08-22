@@ -70,6 +70,11 @@ class SaveUtil {
         settings);
   }
 
+  static Future<bool> hasCyclingView() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey('be.wive.cyclingescape.activeGame');
+  }
+
   static Future<void> clearCyclingView() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('be.wive.cyclingescape.activeGame');

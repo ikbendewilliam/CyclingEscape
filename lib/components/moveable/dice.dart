@@ -30,9 +30,9 @@ class Dice {
       // 1, 2, 3, 4, 5, 6 respectivly
       List<int> indexes = [49, 53, 113, 0, 61, 57];
       endIndex = indexes[Random().nextInt(indexes.length)];
-      if (isPlayer && difficulty == DifficultyType.EASY) {
+      if (isPlayer == true && difficulty == DifficultyType.EASY) {
         increaseValue();
-      } else if (!isPlayer && difficulty == DifficultyType.HARD) {
+      } else if (isPlayer == false && difficulty == DifficultyType.HARD) {
         increaseValue();
       }
       currentIndex = indexes[Random().nextInt(indexes.length)];

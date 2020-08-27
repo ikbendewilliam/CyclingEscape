@@ -1,5 +1,7 @@
 # This is a generated file; do not edit or check into version control.
+app_review=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\app_review-2.0.1\\
 audioplayers=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\audioplayers-0.15.1\\
+package_info=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\package_info-0.4.3\\
 path_provider=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider-1.6.11\\
 path_provider_linux=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider_linux-0.0.1+2\\
 path_provider_macos=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider_macos-0.0.4+3\\
@@ -7,3 +9,7 @@ shared_preferences=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.d
 shared_preferences_linux=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_linux-0.0.2+1\\
 shared_preferences_macos=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+10\\
 shared_preferences_web=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+7\\
+url_launcher=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher-5.5.0\\
+url_launcher_linux=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_linux-0.0.1+1\\
+url_launcher_macos=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_macos-0.0.1+7\\
+url_launcher_web=C:\\Users\\ikben\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_web-0.1.2+1\\

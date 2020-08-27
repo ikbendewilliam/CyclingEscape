@@ -6,6 +6,7 @@ import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:CyclingEscape/views/menus/careerMenu.dart';
 import 'package:CyclingEscape/views/menus/creditsView.dart';
 import 'package:CyclingEscape/views/menus/helpMenu.dart';
 import 'package:CyclingEscape/views/menus/menuBackground.dart';
@@ -15,12 +16,14 @@ import 'package:CyclingEscape/views/menus/tourInBetweenRaces.dart';
 import 'package:CyclingEscape/views/menus/tourSelect.dart';
 import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
+import 'package:app_review/app_review.dart';
 import 'package:flame/game/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'baseView.dart';
 import 'cyclingView.dart';
+import 'menus/careerUpgrades.dart';
 import 'menus/courseSelect.dart';
 import 'menus/mainMenu.dart';
 
@@ -36,6 +39,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   Settings settings = Settings();
   PauseMenu pauseMenu;
   ActiveTour activeTour;
+  CareerMenu career;
   CreditsView credits;
   CyclingView cyclingView;
   ResultsView resultsView;
@@ -44,6 +48,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   SpriteManager spriteManager;
   MenuBackground menuBackground;
   TourSelectMenu tourSelectMenu;
+  CareerUpgradesMenu careerUpgrades;
   TutorialsViewed tutorialsViewed = TutorialsViewed();
   GameManagerState state;
   CourseSelectMenu courseSelectMenu;
@@ -55,6 +60,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         spriteManager, cyclingEnded, navigate, settings, openTutorial);
     resultsView = new ResultsView(spriteManager, navigate);
     mainmenu = new MainMenu(spriteManager, navigate);
+    career = new CareerMenu(spriteManager, navigate);
+    careerUpgrades = new CareerUpgradesMenu(spriteManager, navigate);
     helpMenu = new HelpMenu(spriteManager, navigate);
     credits = new CreditsView(spriteManager, navigate);
     pauseMenu = new PauseMenu(spriteManager, navigate);
@@ -89,6 +96,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   openTutorial(TutorialType type) {
     if (!tutorialsViewed.hasViewed(type)) {
+      if (type == TutorialType.TOUR_FIRST_FINISHED) {
+        AppReview.openAndroidReview().then((_) => {});
+      }
       this.navigate(GameManagerState.TUTORIAL, tutorialType: type);
     }
   }
@@ -129,6 +139,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     } else {
       switch (state) {
         case GameManagerState.MAIN_MENU:
+        case GameManagerState.CAREER_MENU:
+        case GameManagerState.CAREER_UPGRADES_MENU:
         case GameManagerState.CREDITS:
         case GameManagerState.RESULTS:
         case GameManagerState.COURSE_SELECT_MENU:
@@ -184,6 +196,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     } else {
       currentView.update(t);
       if (state == GameManagerState.MAIN_MENU ||
+          state == GameManagerState.CAREER_MENU ||
+          state == GameManagerState.CAREER_UPGRADES_MENU ||
           state == GameManagerState.CREDITS ||
           state == GameManagerState.COURSE_SELECT_MENU ||
           state == GameManagerState.SETTINGS_MENU ||
@@ -296,6 +310,14 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         currentView = mainmenu;
         mainmenu.onAttach();
         break;
+      case GameManagerState.CAREER_MENU:
+        currentView = career;
+        career.onAttach();
+        break;
+      case GameManagerState.CAREER_UPGRADES_MENU:
+        currentView = careerUpgrades;
+        careerUpgrades.onAttach();
+        break;
       case GameManagerState.CREDITS:
         currentView = credits;
         credits.onAttach();
@@ -400,6 +422,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
 enum GameManagerState {
   MAIN_MENU,
+  CAREER_MENU,
+  CAREER_UPGRADES_MENU,
   COURSE_SELECT_MENU,
   SETTINGS_MENU,
   HELP_MENU,

@@ -783,10 +783,10 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       }
       this.dice = Dice(this.spriteManager, this,
           difficulty: settings.difficulty,
-          isPlayer: cyclistSelected.cyclist.team.isPlayer);
+          isPlayer: cyclistSelected?.cyclist?.team?.isPlayer);
       this.dice2 = Dice(this.spriteManager, this,
           difficulty: settings.difficulty,
-          isPlayer: cyclistSelected.cyclist.team.isPlayer);
+          isPlayer: cyclistSelected?.cyclist?.team?.isPlayer);
       if (screenSize != null) {
         if (this.settings.cameraMovement != CameraMovementType.NONE) {
           offset = -((cyclistSelected.p1 + cyclistSelected.p2) / 2 * tileSize -

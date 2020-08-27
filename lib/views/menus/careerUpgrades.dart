@@ -11,7 +11,7 @@ import 'dart:ui';
 import '../baseView.dart';
 import '../gameManager.dart';
 
-class MainMenu implements BaseView {
+class CareerUpgradesMenu implements BaseView {
   @override
   Size screenSize;
   @override
@@ -23,7 +23,7 @@ class MainMenu implements BaseView {
 
   final Function navigate;
 
-  MainMenu(this.spriteManager, this.navigate);
+  CareerUpgradesMenu(this.spriteManager, this.navigate);
 
   void onAttach() async {
     buttons = [];
@@ -44,46 +44,9 @@ class MainMenu implements BaseView {
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 0.5),
-      ButtonType.BAR_YELLOW,
+      ButtonType.BAR_RED,
       () => {navigate(GameManagerState.CAREER_MENU)},
       'Career',
-    ));
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 0.6),
-      ButtonType.BAR_BLUE,
-      () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
-      'Single race',
-    ));
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.7),
-      ButtonType.BAR_RED,
-      () => {navigate(GameManagerState.TOUR_SELECT_MENU)},
-      'Tour',
-    ));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(buttonSize / 2 + 5, screenSize.height - buttonSize / 2 - 5),
-        ButtonType.ICON_CREDITS,
-        () => {navigate(GameManagerState.CREDITS)}));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width - buttonSize / 2 - 5, buttonSize / 2 + 5),
-        ButtonType.ICON_SETTINGS,
-        () => {navigate(GameManagerState.SETTINGS_MENU)}));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width - buttonSize / 2 - 5,
-            screenSize.height - buttonSize / 2 - 5),
-        ButtonType.ICON_HELP,
-        () => {navigate(GameManagerState.HELP_MENU)}));
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.6),
-      (canContinue == true ? ButtonType.BAR_GREEN : ButtonType.BAR_BLACK),
-      () => {navigate(GameManagerState.PLAYING, load: true)},
-      'Continue',
     ));
     buttons.forEach((element) {
       element.setScreenSize(screenSize);

@@ -15,6 +15,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import 'gameManager.dart';
+import 'menus/careerMenu.dart';
 
 class ResultsView implements BaseView {
   final Function closeCallback;
@@ -41,15 +42,16 @@ class ResultsView implements BaseView {
   Sprite iconYoung;
   double scroll = 0;
   double scrollStart = 0;
+  Career career;
   ActiveTour activeTour;
   ResultsType type = ResultsType.RACE;
   List<Button> buttons = [];
   List<Sprint> sprints = [];
   List<Results> results = [];
 
-  ResultsView(this.spriteManager, this.closeCallback);
+  ResultsView(this.spriteManager, this.closeCallback, this.career);
 
-  calculateResults() {
+  calculateResults(bool inCareer) {
     if (lastResultsAdded) {
       return;
     }
@@ -113,59 +115,68 @@ class ResultsView implements BaseView {
     this.results.add(timeResults);
 
     Results youngResults = Results(ResultsType.YOUNG);
-    youngResults.data = timeResults.data
-        .where((element) => element.number % 10 <= 2)
-        .map((e) => e.copy())
-        .toList();
-    youngResults.data.sort((a, b) => a.time - b.time);
-    if (youngResults.data.length > 0 &&
-        activeTour != null &&
-        activeTour.currentResults != null) {
-      activeTour.currentResults.whiteJersey = youngResults.data.first.number;
+    if (career.rankingTypes > 4 || !inCareer) {
+      youngResults.data = timeResults.data
+          .where((element) => element.number % 10 <= 2)
+          .map((e) => e.copy())
+          .toList();
+      youngResults.data.sort((a, b) => a.time - b.time);
+      if (youngResults.data.length > 0 &&
+          activeTour != null &&
+          activeTour.currentResults != null) {
+        activeTour.currentResults.whiteJersey = youngResults.data.first.number;
+      }
     }
     this.results.add(youngResults);
 
     Results pointsResults = Results(ResultsType.POINTS);
-    pointsResults.data = timeResults.data
-        .where((element) => element.points > 0)
-        .map((e) => e.copy())
-        .toList();
-    pointsResults.data.sort((a, b) => b.points - a.points);
-    if (youngResults.data.length > 0 &&
-        activeTour != null &&
-        activeTour.currentResults != null) {
-      activeTour.currentResults.greenJersey = pointsResults.data.first.number;
+    if (career.rankingTypes > 1 || !inCareer) {
+      pointsResults.data = timeResults.data
+          .where((element) => element.points > 0)
+          .map((e) => e.copy())
+          .toList();
+      pointsResults.data.sort((a, b) => b.points - a.points);
+      if (youngResults.data.length > 0 &&
+          activeTour != null &&
+          activeTour.currentResults != null) {
+        activeTour.currentResults.greenJersey = pointsResults.data.first.number;
+      }
     }
     this.results.add(pointsResults);
 
     Results mountainResults = Results(ResultsType.MOUNTAIN);
-    mountainResults.data = timeResults.data
-        .where((element) => element.mountain > 0)
-        .map((e) => e.copy())
-        .toList();
-    mountainResults.data.sort((a, b) => b.mountain - a.mountain);
-    if (mountainResults.data.length > 0 &&
-        activeTour != null &&
-        activeTour.currentResults != null) {
-      activeTour.currentResults.bouledJersey =
-          mountainResults.data.first.number;
+    if (career.rankingTypes > 3 || !inCareer) {
+      mountainResults.data = timeResults.data
+          .where((element) => element.mountain > 0)
+          .map((e) => e.copy())
+          .toList();
+      mountainResults.data.sort((a, b) => b.mountain - a.mountain);
+      if (mountainResults.data.length > 0 &&
+          activeTour != null &&
+          activeTour.currentResults != null) {
+        activeTour.currentResults.bouledJersey =
+            mountainResults.data.first.number;
+      }
     }
     this.results.add(mountainResults);
 
     Results teamResults = Results(ResultsType.TEAM);
-    List<Team> teams = timeResults.data.map((element) => element.team).toList();
-    teams.forEach((team) {
-      if (teamResults.data.where((element) => element.team == team).length ==
-          0) {
-        ResultData resultData = ResultData();
-        timeResults.data
-            .where((element) => element.team == team)
-            .forEach((element) => resultData.time += element.time);
-        resultData.team = team;
-        teamResults.data.add(resultData);
-      }
-    });
-    teamResults.data.sort((a, b) => a.time - b.time);
+    if (career.rankingTypes > 3 || !inCareer) {
+      List<Team> teams =
+          timeResults.data.map((element) => element.team).toList();
+      teams.forEach((team) {
+        if (teamResults.data.where((element) => element.team == team).length ==
+            0) {
+          ResultData resultData = ResultData();
+          timeResults.data
+              .where((element) => element.team == team)
+              .forEach((element) => resultData.time += element.time);
+          resultData.team = team;
+          teamResults.data.add(resultData);
+        }
+      });
+      teamResults.data.sort((a, b) => a.time - b.time);
+    }
     this.results.add(teamResults);
 
     this.results.forEach((result) {
@@ -179,7 +190,7 @@ class ResultsView implements BaseView {
   }
 
   @override
-  void onAttach() {
+  void onAttach([bool inCareer]) {
     if (screenSize == null) {
       screenSize = Size(1, 1);
     }
@@ -197,7 +208,7 @@ class ResultsView implements BaseView {
     iconYoung = this.spriteManager.getSprite('icon_young.png');
     type = ResultsType.RACE;
 
-    calculateResults();
+    calculateResults(inCareer);
     createButtons();
   }
 

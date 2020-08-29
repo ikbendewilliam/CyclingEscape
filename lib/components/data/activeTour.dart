@@ -2,6 +2,7 @@ import 'package:CyclingEscape/components/data/results.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/data/team.dart';
 import 'package:CyclingEscape/components/moveable/cyclist.dart';
+import 'package:CyclingEscape/views/menus/careerMenu.dart';
 import 'package:CyclingEscape/views/menus/tourSelect.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +10,19 @@ import 'package:flutter/material.dart';
 class ActiveTour {
   final Tour tour;
   String id = UniqueKey().toString();
+  RaceType raceType;
   int racesDone = 0;
   Results currentResults = Results(ResultsType.TOUR);
   List<Team> teams;
   List<Cyclist> cyclists = [];
 
-  ActiveTour(this.tour);
+  ActiveTour(this.tour, this.raceType);
 
   static ActiveTour fromJson(
       Map<String, dynamic> json, SpriteManager spriteManager) {
-    ActiveTour activeTour =
-        ActiveTour(json['tour'] != null ? Tour.fromJson(json['tour']) : null);
+    ActiveTour activeTour = ActiveTour(
+        json['tour'] != null ? Tour.fromJson(json['tour']) : null,
+        json['raceType'] != null ? RaceType.fromJson(json['raceType']) : null);
     activeTour.id = json['id'];
     activeTour.racesDone = json['racesDone'];
     List<Team> existingTeams = [];
@@ -78,6 +81,7 @@ class ActiveTour {
     data['currentResults'] = this.currentResults.toJson();
     data['teams'] = this.teams?.map((i) => i.toJson(false))?.toList();
     data['cyclists'] = this.cyclists?.map((i) => i.toJson(false))?.toList();
+    data['raceType'] = this.raceType?.toJson();
     return data;
   }
 }

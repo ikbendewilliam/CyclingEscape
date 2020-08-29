@@ -42,21 +42,21 @@ class PauseMenu implements BaseView {
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.PLAYING, continueing: true)},
-      'Continue',
+      text: 'Continue',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.PLAYING, save: true)},
-      'Save',
+      text: 'Save',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.MAIN_MENU)},
-      'Main menu',
+      text: 'Main menu',
     ));
   }
 

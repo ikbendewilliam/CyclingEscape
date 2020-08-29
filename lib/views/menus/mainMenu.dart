@@ -46,21 +46,21 @@ class MainMenu implements BaseView {
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 0.5),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.CAREER_MENU)},
-      'Career',
+      text: 'Career',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 0.6),
       ButtonType.BAR_BLUE,
       () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
-      'Single race',
+      text: 'Single race',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.7),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.TOUR_SELECT_MENU)},
-      'Tour',
+      text: 'Tour',
     ));
     buttons.add(Button(
         this.spriteManager,
@@ -83,7 +83,7 @@ class MainMenu implements BaseView {
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.6),
       (canContinue == true ? ButtonType.BAR_GREEN : ButtonType.BAR_BLACK),
       () => {navigate(GameManagerState.PLAYING, load: true)},
-      'Continue',
+      text: 'Continue',
     ));
     buttons.forEach((element) {
       element.setScreenSize(screenSize);

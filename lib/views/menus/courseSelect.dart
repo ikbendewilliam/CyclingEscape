@@ -212,32 +212,6 @@ class CourseSelectMenu implements BaseView {
     }
   }
 
-  mapTypeAsString() {
-    switch (maptype) {
-      case MapType.FLAT:
-        return 'Flat';
-      case MapType.COBBLE:
-        return 'Cobbled';
-      case MapType.HILLS:
-        return 'Hilled';
-      case MapType.HEAVY:
-        return 'HEAVY';
-    }
-  }
-
-  mapLengthAsString() {
-    switch (mapLength) {
-      case MapLength.SHORT:
-        return 'Short';
-      case MapLength.MEDIUM:
-        return 'Medium';
-      case MapLength.LONG:
-        return 'Long';
-      case MapLength.VERY_LONG:
-        return 'Very long';
-    }
-  }
-
   @override
   void onScaleUpdate(ScaleUpdateDetails details) {
     buttons.forEach((button) {
@@ -318,7 +292,7 @@ class CourseSelectMenu implements BaseView {
     span = new TextSpan(
         style: new TextStyle(
             color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: mapTypeAsString());
+        text: mapTypeAsString(maptype));
     position = Offset(screenSize.width / 2,
         2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
@@ -330,7 +304,7 @@ class CourseSelectMenu implements BaseView {
     span = new TextSpan(
         style: new TextStyle(
             color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: mapLengthAsString());
+        text: mapLengthAsString(mapLength));
     position = Offset(screenSize.width / 2,
         2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);

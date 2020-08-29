@@ -232,6 +232,18 @@ class TutorialView implements BaseView {
         text.addAll(splitLongText(
             'Well done, you\'ve just finished your first tour. Hopefully you did well. If you enjoyed it (or didn\'t), consider rating the game and please continue with more races, tours and the career!'));
         break;
+      case TutorialType.CAREER_FIRST_FINISHED:
+        text.add('Money!');
+        text.add('');
+        text.addAll(splitLongText(
+            'Well done, you\'ve just earned your first money, you can spend this in upgrades to improve your team.'));
+        break;
+      case TutorialType.CAREER_UPGRADES:
+        text.add('Upgrades');
+        text.add('');
+        text.addAll(splitLongText(
+            'You can upgrade your team by hiring more riders, unlocking more rankings (sprints, team, mountain and young) or unlock better races'));
+        break;
     }
     selectedText = text;
   }
@@ -273,22 +285,29 @@ class TutorialView implements BaseView {
 }
 
 class TutorialsViewed {
-  List<TutorialType> typesViewed = [];
+  List<TutorialType> typesViewed;
+  int toursFinished;
 
-  TutorialsViewed([this.typesViewed]) {
+  TutorialsViewed([this.typesViewed, this.toursFinished]) {
     if (this.typesViewed == null) {
       this.typesViewed = [];
+    }
+    if (this.toursFinished == null) {
+      this.toursFinished = 0;
     }
   }
 
   bool hasViewed(TutorialType type) {
-    print(typesViewed);
     return typesViewed.contains(type);
+  }
+
+  void save() {
+    SaveUtil.saveTutorialsViewed(this);
   }
 
   void addViewed(TutorialType type) {
     typesViewed.add(type);
-    SaveUtil.saveTutorialsViewed(this);
+    save();
   }
 
   static TutorialsViewed fromJson(Map<String, dynamic> json) {
@@ -299,6 +318,7 @@ class TutorialsViewed {
       json['typesViewed']
           ?.map<TutorialType>((e) => getTutorialTypeFromString(e))
           ?.toList(),
+      json['toursFinished'],
     );
   }
 
@@ -306,6 +326,7 @@ class TutorialsViewed {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['typesViewed'] =
         this.typesViewed.map<String>((e) => e.toString()).toList();
+    data['toursFinished'] = this.toursFinished;
     return data;
   }
 }
@@ -322,6 +343,8 @@ TutorialType getTutorialTypeFromString(String tutorialTypeAsString) {
 enum TutorialType {
   FIRST_OPEN,
   CAREER, // Not implemented!
+  CAREER_FIRST_FINISHED, // Not implemented!
+  CAREER_UPGRADES, // Not implemented!
   SINGLE_RACE,
   TOUR,
   OPEN_RACE,

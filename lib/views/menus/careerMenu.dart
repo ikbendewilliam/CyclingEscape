@@ -25,10 +25,11 @@ class CareerMenu implements BaseView {
   Sprite backText;
   Sprite backTextDisabled;
   int index = 0;
+  Career career;
 
   final Function navigate;
 
-  CareerMenu(this.spriteManager, this.navigate) {
+  CareerMenu(this.spriteManager, this.navigate, this.career) {
     raceTypes.add(RaceType(
         'local race', 50, Tour(8, 1, 1, MapType.FLAT, MapLength.SHORT)));
     raceTypes.add(RaceType(
@@ -41,7 +42,7 @@ class CareerMenu implements BaseView {
         Tour(5, 4, 1, MapType.HILLS, MapLength.MEDIUM)));
     raceTypes.add(RaceType('international race', 84 * 1000,
         Tour(7, 5, 1, MapType.HEAVY, MapLength.VERY_LONG)));
-    raceTypes.add(RaceType('international tour', 1500 * 1000,
+    raceTypes.add(RaceType('international tour', 350 * 1000,
         Tour(6, 5, 8, MapType.HEAVY, MapLength.LONG)));
     raceTypes.add(RaceType('World tour', 5 * 1000 * 1000,
         Tour(8, 6, 20, MapType.HEAVY, MapLength.VERY_LONG)));
@@ -68,7 +69,24 @@ class CareerMenu implements BaseView {
       this.spriteManager,
       Offset(screenSize.width / 2 - buttonSize * 3.25, 3 * buttonSize),
       ButtonType.ICON_HELP,
-      () {},
+      () {
+        String text = '';
+        text += raceTypes[index].name + '\n';
+        text += 'Winner gets: \$' +
+            earningsToString(raceTypes[index].earnings) +
+            '\n';
+        text += 'Teams: ' + raceTypes[index].tour.teams.toString() + '\n';
+        text += 'Riders for other teams: ' +
+            raceTypes[index].tour.ridersPerTeam.toString() +
+            '\n';
+        text += 'Races: ' + raceTypes[index].tour.races.toString() + '\n';
+        text += 'Map length: ' +
+            mapLengthAsString(raceTypes[index].tour.mapLength) +
+            '\n';
+        // text += 'test\n';
+        text += 'Map type: ' + mapTypeAsString(raceTypes[index].tour.mapType);
+        navigate(GameManagerState.INFO, infoText: text);
+      },
     ));
     buttons.add(Button(
       this.spriteManager,
@@ -90,21 +108,25 @@ class CareerMenu implements BaseView {
       this.spriteManager,
       Offset(screenSize.width / 2 + buttonSize * 3.25, 3 * buttonSize),
       ButtonType.ICON_PLAY,
-      () {},
+      () {
+        if (index < career.raceTypes) {
+          navigate(GameManagerState.PLAYING, careerRaceType: raceTypes[index]);
+        }
+      },
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4.4 * buttonSize),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.CAREER_UPGRADES_MENU)},
-      'Upgrades',
+      text: 'Upgrades',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 5.5 * buttonSize),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.MAIN_MENU)},
-      'Main menu',
+      text: 'Main menu',
     ));
     buttons.forEach((element) {
       element.setScreenSize(screenSize);
@@ -162,14 +184,12 @@ class CareerMenu implements BaseView {
     span = new TextSpan(
         style: new TextStyle(
             color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'You have: 2051 \$');
+        text: 'You have: \$' + earningsToString(career.cash));
     position = Offset(screenSize.width / 2, 2 * buttonSize);
 
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    Sprite sprite = raceTypes[index]?.tour?.ridersPerTeam == 1
-        ? backText
-        : backTextDisabled;
+    Sprite sprite = index < career.raceTypes ? backText : backTextDisabled;
     sprite.renderCentered(
         canvas, Position(screenSize.width / 2, 3 * buttonSize),
         size: Position(buttonSize * 3.5, buttonSize));
@@ -184,7 +204,9 @@ class CareerMenu implements BaseView {
     span = new TextSpan(
         style: new TextStyle(
             color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
-        text: 'winner earns: \$' + earningsToString(raceTypes[index].earnings));
+        text: index < career.raceTypes
+            ? ('winner earns: \$' + earningsToString(raceTypes[index].earnings))
+            : 'unlock in upgrades');
     position = Offset(screenSize.width / 2, 3 * buttonSize + buttonSize * 0.5);
 
     CanvasUtils.drawText(canvas, position, 0, span);
@@ -192,10 +214,10 @@ class CareerMenu implements BaseView {
 
   String earningsToString(int earnings) {
     if (earnings > 1000 * 1000) {
-      return (earnings / 1000 / 1000).toString() + 'M';
+      return (earnings / 1000 / 1000).toStringAsFixed(2) + 'M';
     }
     if (earnings > 1000) {
-      return (earnings / 1000).toString() + 'k';
+      return (earnings / 1000).toStringAsFixed(2) + 'k';
     }
     return earnings.toString();
   }
@@ -216,4 +238,55 @@ class RaceType {
   final Tour tour;
 
   RaceType(this.name, this.earnings, this.tour);
+
+  static RaceType fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return RaceType(
+        json['name'], json['earnings'], Tour.fromJson(json['tour']));
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['earnings'] = this.earnings;
+    data['tour'] = this.tour.toJson();
+    return data;
+  }
+}
+
+class Career {
+  int riders;
+  int rankingTypes;
+  int raceTypes;
+  int cash;
+
+  Career([
+    this.riders = 1,
+    this.rankingTypes = 1,
+    this.raceTypes = 1,
+    this.cash = 0,
+  ]);
+
+  static Career fromJson(Map<String, dynamic> json) {
+    if (json == null) {
+      return null;
+    }
+    return Career(
+      json['riders'],
+      json['rankingTypes'],
+      json['raceTypes'],
+      json['cash'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['riders'] = this.riders;
+    data['rankingTypes'] = this.rankingTypes;
+    data['raceTypes'] = this.raceTypes;
+    data['cash'] = this.cash;
+    return data;
+  }
 }

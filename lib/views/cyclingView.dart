@@ -34,6 +34,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   bool grid = false;
   bool ended = false;
   bool moving = false;
+  bool inCareer = false;
   bool autoFollow = false;
   bool hasResults = false;
   bool openFollowSelect = false;
@@ -84,7 +85,11 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   CyclingView(this.spriteManager, this.cyclingEnded, this.navigate,
       this.settings, this.openTutorial);
 
-  void onAttach({PlaySettings playSettings, ActiveTour activeTour, int team}) {
+  void onAttach(
+      {PlaySettings playSettings,
+      ActiveTour activeTour,
+      int team,
+      int playerRiders}) {
     if (playSettings != null) {
       this.hasResults = false;
       this.map = MapUtils.generateMap(playSettings, this, this.spriteManager);
@@ -181,14 +186,26 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             bouledJersey != null && bouledJersey == cyclist.number;
       });
       activeTour.cyclists.sort((a, b) => b.rank - a.rank);
-      for (int i = 0;
-          i < activeTour.tour.teams * activeTour.tour.ridersPerTeam;
-          i++) {
-        int teamIndex =
-            (i - (i / activeTour.tour.teams).floor()) % activeTour.tour.teams;
+      int maxCyclists = activeTour.tour.teams * activeTour.tour.ridersPerTeam;
+      if (playerRiders != null && playerRiders > 0) {
+        maxCyclists =
+            (activeTour.tour.teams - 1) * activeTour.tour.ridersPerTeam +
+                playerRiders;
+      }
+      for (int i = 0; i < maxCyclists; i++) {
         Cyclist cyclist;
-        if (activeTour.cyclists.length ==
-            activeTour.tour.teams * activeTour.tour.ridersPerTeam) {
+        int teamIndex = (i / activeTour.tour.ridersPerTeam).floor();
+        if (playerRiders != null && playerRiders > 0) {
+          teamIndex = 0;
+          if (i >= playerRiders) {
+            teamIndex =
+                ((i - playerRiders) / activeTour.tour.ridersPerTeam).floor() +
+                    1;
+          }
+        }
+        if (maxCyclists ==
+                activeTour.tour.teams * activeTour.tour.ridersPerTeam &&
+            maxCyclists == activeTour.cyclists.length) {
           cyclist = activeTour.cyclists[i];
         } else {
           cyclist = Cyclist(
@@ -207,6 +224,16 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
             0,
             cyclist.number,
             cyclist.team));
+      }
+      List<int> teamIndexes = [0, 0, 0, 0, 0, 0, 0, 0];
+      for (int i = 0; i < maxCyclists; i++) {
+        // int teamIndex = (i % teams.length);
+        int teamIndex =
+            (i - (i / activeTour.tour.teams).floor()) % activeTour.tour.teams;
+        if (teams[teamIndex].cyclists.length <= teamIndexes[teamIndex]) {
+          teamIndex = 0;
+        }
+        Cyclist cyclist = teams[teamIndex].cyclists[teamIndexes[teamIndex]++];
         if (this.map.positions.length < i) {
           throw Error(); // Out of bounds
         }
@@ -215,6 +242,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       }
     }
     if (playSettings != null || activeTour != null) {
+      inCareer = (playerRiders != null && playerRiders > 0);
       currentTurn = 0;
       ended = false;
       autoFollow = false;
@@ -924,6 +952,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     cyclingView.mapSize = SaveUtil.sizeFromJson(json['mapSize']);
     cyclingView.offset = SaveUtil.offsetFromJson(json['offset']);
     cyclingView.zoom = json['zoom'];
+    cyclingView.inCareer = json['inCareer'];
     cyclingView.movingTimer = json['movingTimer'];
     cyclingView.tileSize = json['tileSize'];
     cyclingView.cyclistMoved = json['cyclistMoved'];
@@ -1059,6 +1088,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     data['hasResults'] = this.hasResults;
     data['openFollowSelect'] = this.followSelect != null;
     data['zoom'] = this.zoom;
+    data['inCareer'] = this.inCareer;
     data['movingTimer'] = this.movingTimer;
     data['cyclistMoved'] = this.cyclistMoved;
     data['diceValueCooldown'] = this.diceValueCooldown;

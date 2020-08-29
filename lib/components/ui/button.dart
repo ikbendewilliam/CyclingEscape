@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/spriteManager.dart';
@@ -20,9 +21,10 @@ class Button {
   Sprite sprite;
   Sprite spritePressed;
   double buttonSize = 1;
+  double scale;
 
   Button(this.spriteManager, this.center, this.type, this.onPress,
-      [this.text]) {
+      {this.text, this.scale}) {
     getSprite();
   }
 
@@ -164,11 +166,17 @@ class Button {
     if (this.text != null) {
       TextSpan span = new TextSpan(
           style: new TextStyle(
-              color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
+              color: Colors.white,
+              fontSize: pow(buttonSize, 1 / 2) * 2.5,
+              fontFamily: 'SaranaiGame'),
           text: this.text);
       Offset position = Offset(center.dx, center.dy);
-      position = Offset(position.dx,
-          position.dy - (isPressed ? buttonSize / 4 : buttonSize / 3));
+      position = Offset(
+          position.dx,
+          position.dy -
+              (isPressed
+                  ? pow(buttonSize, 1 / 2) * 2
+                  : pow(buttonSize, 1 / 2) * 2.5));
       CanvasUtils.drawText(canvas, position, 0, span);
     }
   }
@@ -203,8 +211,10 @@ class Button {
   }
 
   void setScreenSize(Size size) {
-    // this.center = Offset(size.width / 2, center.dy);
     buttonSize = size.height / 7;
+    if (scale != null) {
+      buttonSize *= scale;
+    }
   }
 }
 

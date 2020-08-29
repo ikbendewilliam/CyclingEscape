@@ -42,21 +42,21 @@ class FollowSelect implements BaseView {
       Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {returnValue(FollowType.FOLLOW)},
-      'Follow',
+      text: 'Follow',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.LEAVE)},
-      'Leave',
+      text: 'Leave',
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.AUTO_FOLLOW)},
-      'Auto follow',
+      text: 'Auto follow',
     ));
   }
 
@@ -124,8 +124,7 @@ class FollowSelect implements BaseView {
   }
 
   @override
-  void update(double t) {
-  }
+  void update(double t) {}
 }
 
 enum FollowType { FOLLOW, LEAVE, AUTO_FOLLOW }

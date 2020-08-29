@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/views/cyclingView.dart';
+import 'package:CyclingEscape/views/menus/careerMenu.dart';
 import 'package:CyclingEscape/views/menus/settingsMenu.dart';
 import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:flame/position.dart';
@@ -59,6 +60,21 @@ class SaveUtil {
     }
     return TutorialsViewed.fromJson(
         jsonDecode(prefs.getString('be.wive.cyclingescape.tutorialsviewed')));
+  }
+
+  static void saveCareer(Career career) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+        'be.wive.cyclingescape.career', jsonEncode(career.toJson()));
+  }
+
+  static Future<Career> loadCareer() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('be.wive.cyclingescape.career')) {
+      return null;
+    }
+    return Career.fromJson(
+        jsonDecode(prefs.getString('be.wive.cyclingescape.career')));
   }
 
   static void saveCyclingView(CyclingView cyclingView) async {

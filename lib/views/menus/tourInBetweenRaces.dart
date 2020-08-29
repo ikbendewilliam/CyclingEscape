@@ -52,24 +52,31 @@ class TourInBetweenRacesMenu implements BaseView {
       ButtonType.ICON_RESULTS,
       () => {navigate(GameManagerState.RESULTS)},
     ));
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 13 * 6, 4.7 * buttonSize),
-      ButtonType.ICON_TRASH,
-      () => {navigate(GameManagerState.MAIN_MENU, deleteActiveTour: true)},
-    ));
-    buttons.add(Button(
-      this.spriteManager,
-      Offset(screenSize.width / 13 * 7, 4.7 * buttonSize),
-      ButtonType.ICON_NO,
-      () => {navigate(GameManagerState.MAIN_MENU)},
-    ));
     if (activeTour != null && activeTour.racesDone < activeTour.tour.races) {
+      buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width / 13 * 7, 4.7 * buttonSize),
+        ButtonType.ICON_NO,
+        () => {navigate(GameManagerState.MAIN_MENU)},
+      ));
+      buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width / 13 * 6, 4.7 * buttonSize),
+        ButtonType.ICON_TRASH,
+        () => {navigate(GameManagerState.MAIN_MENU, deleteActiveTour: true)},
+      ));
       buttons.add(Button(
         this.spriteManager,
         Offset(screenSize.width / 13 * 8, 4.7 * buttonSize),
         ButtonType.ICON_PLAY,
         () => {navigate(GameManagerState.PLAYING)},
+      ));
+    } else {
+      buttons.add(Button(
+        this.spriteManager,
+        Offset(screenSize.width / 13 * 8, 4.7 * buttonSize),
+        ButtonType.ICON_YES,
+        () => {navigate(GameManagerState.MAIN_MENU)},
       ));
     }
   }

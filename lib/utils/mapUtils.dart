@@ -736,3 +736,33 @@ MapLength getMapLengthFromString(String mapLengthAsString) {
 }
 
 enum MapLength { SHORT, MEDIUM, LONG, VERY_LONG }
+
+String mapTypeAsString(MapType maptype) {
+  switch (maptype) {
+    case MapType.FLAT:
+      return 'Flat';
+    case MapType.COBBLE:
+      return 'Cobbled';
+    case MapType.HILLS:
+      return 'Hilled';
+    case MapType.HEAVY:
+      return 'HEAVY';
+    default:
+      return 'Unkown';
+  }
+}
+
+String mapLengthAsString(MapLength mapLength) {
+  switch (mapLength) {
+    case MapLength.SHORT:
+      return 'Short';
+    case MapLength.MEDIUM:
+      return 'Medium';
+    case MapLength.LONG:
+      return 'Long';
+    case MapLength.VERY_LONG:
+      return 'Very long';
+    default:
+      return 'Unkown';
+  }
+}

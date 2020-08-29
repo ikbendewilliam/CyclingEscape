@@ -78,6 +78,10 @@ class SpriteManager {
     spriteNames.add('bg_2.png');
     spriteNames.add('bg_3.png');
     spriteNames.add('bg_4.png');
+    spriteNames.add('bar_green.png');
+    spriteNames.add('bar_blue.png');
+    spriteNames.add('bar_empty.png');
+    spriteNames.add('bar_red.png');
     spriteNames.add('environment/rock1.png');
     spriteNames.add('environment/rock2.png');
     spriteNames.add('environment/rock3.png');

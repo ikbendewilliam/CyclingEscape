@@ -13,8 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SaveUtil {
   static void saveTour(ActiveTour activeTour) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'be.wive.cyclingescape.activeTour', jsonEncode(activeTour.toJson()));
+    await prefs.setString('be.wive.cyclingescape.activeTour', jsonEncode(activeTour.toJson()));
   }
 
   static Future<ActiveTour> loadTour(SpriteManager spriteManager) async {
@@ -22,9 +21,7 @@ class SaveUtil {
     if (!prefs.containsKey('be.wive.cyclingescape.activeTour')) {
       return null;
     }
-    return ActiveTour.fromJson(
-        jsonDecode(prefs.getString('be.wive.cyclingescape.activeTour')),
-        spriteManager);
+    return ActiveTour.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeTour')), spriteManager);
   }
 
   static Future<void> clearTour() async {
@@ -34,8 +31,7 @@ class SaveUtil {
 
   static void saveSettings(Settings settings) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'be.wive.cyclingescape.settings', jsonEncode(settings.toJson()));
+    await prefs.setString('be.wive.cyclingescape.settings', jsonEncode(settings.toJson()));
   }
 
   static Future<Settings> loadSettings() async {
@@ -43,14 +39,12 @@ class SaveUtil {
     if (!prefs.containsKey('be.wive.cyclingescape.settings')) {
       return null;
     }
-    return Settings.fromJson(
-        jsonDecode(prefs.getString('be.wive.cyclingescape.settings')));
+    return Settings.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.settings')));
   }
 
   static void saveTutorialsViewed(TutorialsViewed tutorialsViewed) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('be.wive.cyclingescape.tutorialsviewed',
-        jsonEncode(tutorialsViewed.toJson()));
+    await prefs.setString('be.wive.cyclingescape.tutorialsviewed', jsonEncode(tutorialsViewed.toJson()));
   }
 
   static Future<TutorialsViewed> loadTutorialsViewed() async {
@@ -58,14 +52,12 @@ class SaveUtil {
     if (!prefs.containsKey('be.wive.cyclingescape.tutorialsviewed')) {
       return null;
     }
-    return TutorialsViewed.fromJson(
-        jsonDecode(prefs.getString('be.wive.cyclingescape.tutorialsviewed')));
+    return TutorialsViewed.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.tutorialsviewed')));
   }
 
   static void saveCareer(Career career) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'be.wive.cyclingescape.career', jsonEncode(career.toJson()));
+    await prefs.setString('be.wive.cyclingescape.career', jsonEncode(career.toJson()));
   }
 
   static Future<Career> loadCareer() async {
@@ -73,33 +65,20 @@ class SaveUtil {
     if (!prefs.containsKey('be.wive.cyclingescape.career')) {
       return null;
     }
-    return Career.fromJson(
-        jsonDecode(prefs.getString('be.wive.cyclingescape.career')));
+    return Career.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.career')));
   }
 
   static void saveCyclingView(CyclingView cyclingView) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'be.wive.cyclingescape.activeGame', jsonEncode(cyclingView.toJson()));
+    await prefs.setString('be.wive.cyclingescape.activeGame', jsonEncode(cyclingView.toJson()));
   }
 
-  static Future<CyclingView> loadCyclingView(
-      SpriteManager spriteManager,
-      Function cyclingEnded,
-      Function navigate,
-      Settings settings,
-      Function openTutorial) async {
+  static Future<CyclingView> loadCyclingView(SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings, Function openTutorial) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.activeGame')) {
       return null;
     }
-    return CyclingView.fromJson(
-        jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame')),
-        spriteManager,
-        cyclingEnded,
-        navigate,
-        settings,
-        openTutorial);
+    return CyclingView.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame')), spriteManager, cyclingEnded, navigate, settings, openTutorial);
   }
 
   static Future<bool> hasCyclingView() async {

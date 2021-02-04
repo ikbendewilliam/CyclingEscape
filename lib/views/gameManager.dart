@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/activeTour.dart';
@@ -25,6 +24,7 @@ import 'package:flame/game/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../components/data/activeTour.dart';
 import 'baseView.dart';
 import 'cyclingView.dart';
 import 'menus/careerUpgrades.dart';
@@ -63,8 +63,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   GameManager() {
     spriteManager = new SpriteManager();
-    cyclingView = new CyclingView(
-        spriteManager, cyclingEnded, navigate, settings, openTutorial);
+    cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
     resultsView = new ResultsView(spriteManager, navigate, career);
     mainmenu = new MainMenu(spriteManager, navigate);
     careerMenu = new CareerMenu(spriteManager, navigate, career);
@@ -76,8 +75,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     tutorial = new TutorialView(spriteManager, navigate);
     courseSelectMenu = new CourseSelectMenu(spriteManager, navigate);
     settingsMenu = new SettingsMenu(spriteManager, navigate, settings);
-    tourInBetweenRacesMenu =
-        new TourInBetweenRacesMenu(spriteManager, navigate);
+    tourInBetweenRacesMenu = new TourInBetweenRacesMenu(spriteManager, navigate);
     tourSelectMenu = new TourSelectMenu(spriteManager, navigate);
     currentView = mainmenu;
     state = GameManagerState.MAIN_MENU;
@@ -139,12 +137,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     if (loading) {
       // print(loadingPercentage);
       Paint bgPaint = Paint()..color = Colors.green[200];
-      canvas.drawRect(
-          Rect.fromLTRB(0, 0, currentSize.width, currentSize.height), bgPaint);
-      TextSpan span = new TextSpan(
-          style: new TextStyle(
-              color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-          text: 'Loading... '); // ${loadingPercentage.toStringAsFixed(2)}%
+      canvas.drawRect(Rect.fromLTRB(0, 0, currentSize.width, currentSize.height), bgPaint);
+      TextSpan span =
+          new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Loading... '); // ${loadingPercentage.toStringAsFixed(2)}%
       Offset position = Offset(currentSize.width / 2, currentSize.height / 2);
       CanvasUtils.drawText(canvas, position, 0, span);
     } else {
@@ -193,9 +188,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       if (this.activeTour != null) {
         SaveUtil.saveTour(activeTour);
       }
-      if (cyclingView != null &&
-          !cyclingView.ended &&
-          cyclingView.map != null) {
+      if (cyclingView != null && !cyclingView.ended && cyclingView.map != null) {
         SaveUtil.saveCyclingView(cyclingView);
       }
     }
@@ -288,19 +281,18 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     if (this.activeTour != null) {
       SaveUtil.saveTour(activeTour);
     }
-    if (this.cyclingView != null &&
-        !this.cyclingView.ended &&
-        cyclingView.map != null) {
+    if (this.cyclingView != null && !this.cyclingView.ended && cyclingView.map != null) {
       SaveUtil.saveCyclingView(this.cyclingView);
     }
     if (load) {
-      CyclingView newCyclingView = await SaveUtil.loadCyclingView(
-          spriteManager, cyclingEnded, navigate, settings, openTutorial);
+      CyclingView newCyclingView = await SaveUtil.loadCyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
       if (newCyclingView != null) {
         this.cyclingView = newCyclingView;
         newState = GameManagerState.PLAYING;
         continueing = true;
-        this.inCareer = this.cyclingView.inCareer == true;
+        inCareer = cyclingView.inCareer;
+        careerRaceType = cyclingView.careerRaceType;
+        activeTour = ActiveTour(careerRaceType.tour, careerRaceType);
       } else {
         return;
       }
@@ -319,17 +311,14 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       case GameManagerState.MAIN_MENU:
         currentView = mainmenu;
         mainmenu.onAttach();
-        if (activeTour != null &&
-            activeTour.racesDone >= activeTour.tour.races) {
+        if (activeTour != null && activeTour.racesDone >= activeTour.tour.races) {
           if (inCareer == true) {
-            int earnings = calculateEarnings(
-                activeTour.currentResults.data, activeTour.raceType);
+            int earnings = calculateEarnings(activeTour.currentResults.data, activeTour.raceType);
             career.cash += earnings;
             SaveUtil.saveCareer(career);
             print('Congratulations, you have earned \$$earnings.');
             navigate(GameManagerState.CAREER_MENU);
-            navigate(GameManagerState.INFO,
-                infoText: 'Congratulations, you have earned \$$earnings.');
+            navigate(GameManagerState.INFO, infoText: 'Congratulations, you have earned \$$earnings.');
           }
           inCareer = false;
           this.activeTour = null;
@@ -407,11 +396,9 @@ class GameManager extends Game with ScaleDetector, TapDetector {
             activeTour = null;
             cyclingView.onAttach(playSettings: playSettings, team: playerTeam);
           } else if (activeTour != null) {
-            cyclingView.onAttach(
-                activeTour: activeTour,
-                team: playerTeam,
-                playerRiders: inCareer ? career.riders : -1);
+            cyclingView.onAttach(activeTour: activeTour, team: playerTeam, playerRiders: inCareer ? career.riders : -1);
           }
+          cyclingView.inCareer = inCareer;
         } else {
           cyclingView.onAttach();
         }
@@ -467,8 +454,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
     resultsView.onAttach(inCareer);
     resize(currentSize);
-    cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate,
-        settings, openTutorial); // Clean the CyclingView to be safe
+    cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial); // Clean the CyclingView to be safe
     SaveUtil.clearCyclingView();
   }
 
@@ -477,28 +463,13 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
     List<ResultData> timeResults = data;
 
-    List<ResultData> youngResults = career.rankingTypes > 4
-        ? timeResults
-            .where((element) => element.number % 10 <= 2)
-            .map((e) => e.copy())
-            .toList()
-        : [];
+    List<ResultData> youngResults = career.rankingTypes > 4 ? timeResults.where((element) => element.number % 10 <= 2).map((e) => e.copy()).toList() : [];
     youngResults.sort((a, b) => a.time - b.time);
 
-    List<ResultData> pointsResults = career.rankingTypes > 1
-        ? timeResults
-            .where((element) => element.points > 0)
-            .map((e) => e.copy())
-            .toList()
-        : [];
+    List<ResultData> pointsResults = career.rankingTypes > 1 ? timeResults.where((element) => element.points > 0).map((e) => e.copy()).toList() : [];
     pointsResults.sort((a, b) => b.points - a.points);
 
-    List<ResultData> mountainResults = career.rankingTypes > 3
-        ? timeResults
-            .where((element) => element.mountain > 0)
-            .map((e) => e.copy())
-            .toList()
-        : [];
+    List<ResultData> mountainResults = career.rankingTypes > 3 ? timeResults.where((element) => element.mountain > 0).map((e) => e.copy()).toList() : [];
     mountainResults.sort((a, b) => b.mountain - a.mountain);
 
     List<ResultData> teamResults = [];
@@ -507,9 +478,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       teams.forEach((team) {
         if (teamResults.where((element) => element.team == team).length == 0) {
           ResultData resultData = ResultData();
-          timeResults
-              .where((element) => element.team == team)
-              .forEach((element) => resultData.time += element.time);
+          timeResults.where((element) => element.team == team).forEach((element) => resultData.time += element.time);
           resultData.team = team;
           teamResults.add(resultData);
         }
@@ -518,24 +487,11 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     teamResults.sort((a, b) => a.time - b.time);
 
     int earnings = 0;
-    earnings += calculateResultDataEarnings(
-        timeResults, (1 * raceType.earnings).floor());
-    earnings += career.rankingTypes > 4
-        ? calculateResultDataEarnings(
-            youngResults, (0.5 * raceType.earnings).floor())
-        : 0;
-    earnings += career.rankingTypes > 1
-        ? calculateResultDataEarnings(
-            pointsResults, (0.5 * raceType.earnings).floor())
-        : 0;
-    earnings += career.rankingTypes > 3
-        ? calculateResultDataEarnings(
-            mountainResults, (0.25 * raceType.earnings).floor())
-        : 0;
-    earnings += career.rankingTypes > 2
-        ? calculateResultDataEarnings(
-            teamResults, (0.75 * raceType.earnings).floor())
-        : 0;
+    earnings += calculateResultDataEarnings(timeResults, (1 * raceType.earnings).floor());
+    earnings += career.rankingTypes > 4 ? calculateResultDataEarnings(youngResults, (0.5 * raceType.earnings).floor()) : 0;
+    earnings += career.rankingTypes > 1 ? calculateResultDataEarnings(pointsResults, (0.5 * raceType.earnings).floor()) : 0;
+    earnings += career.rankingTypes > 3 ? calculateResultDataEarnings(mountainResults, (0.25 * raceType.earnings).floor()) : 0;
+    earnings += career.rankingTypes > 2 ? calculateResultDataEarnings(teamResults, (0.75 * raceType.earnings).floor()) : 0;
     return earnings;
   }
 

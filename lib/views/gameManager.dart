@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/activeTour.dart';
@@ -113,7 +114,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       tutorialsViewed.toursFinished++;
       tutorialsViewed.save();
       if (tutorialsViewed.toursFinished == 5) {
-        AppReview.openAndroidReview().then((_) => {});
+        AppReview.requestReview.then((_) {});
       }
     }
     if (!tutorialsViewed.hasViewed(type)) {

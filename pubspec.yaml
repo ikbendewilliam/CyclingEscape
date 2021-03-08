@@ -20,8 +20,8 @@ dev_dependencies:
 
 flutter_icons:
   android: "launcher_icon"
-  ios: true
-  image_path: "assets/icon/icon_white_bg.png"
+  ios: false
+  image_path: "assets/icon/icon.png"
 
 flutter:
   uses-material-design: true

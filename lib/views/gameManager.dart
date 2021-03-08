@@ -291,8 +291,10 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         newState = GameManagerState.PLAYING;
         continueing = true;
         inCareer = cyclingView.inCareer;
-        careerRaceType = cyclingView.careerRaceType;
-        activeTour = ActiveTour(careerRaceType.tour, careerRaceType);
+        if (cyclingView.careerRaceType != null) {
+          careerRaceType = cyclingView.careerRaceType;
+          activeTour = ActiveTour(careerRaceType.tour, careerRaceType);
+        }
       } else {
         return;
       }

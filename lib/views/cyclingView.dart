@@ -197,7 +197,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       }
     }
     if (playSettings != null || activeTour != null) {
-      careerRaceType = activeTour.raceType;
+      careerRaceType = activeTour?.raceType;
       inCareer = (playerRiders != null && playerRiders > 0);
       currentTurn = 0;
       ended = false;

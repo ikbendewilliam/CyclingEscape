@@ -4,6 +4,8 @@ import 'package:flame/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+const disableDevicePreview = true;
+
 void main() async {
   GameManager gameManager = new GameManager();
   runApp(app(gameManager.widget));
@@ -13,7 +15,9 @@ void main() async {
   gameManager.load();
 }
 
-Widget app(Widget gameWidget) => DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => gameWidget, // Wrap your app
-    );
+Widget app(Widget gameWidget) => disableDevicePreview
+    ? gameWidget
+    : DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => gameWidget, // Wrap your app
+      );

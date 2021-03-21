@@ -5,7 +5,7 @@ import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/views/baseView.dart';
 import 'package:CyclingEscape/views/gameManager.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -45,28 +45,17 @@ class HelpMenu implements BaseView {
 
   createButtons() {
     buttons = [];
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width / 9.8, screenSize.height / 2),
-        ButtonType.ICON_LEFT, () {
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width / 9.8, screenSize.height / 2), ButtonType.ICON_LEFT, () {
       screen = (screen - 1 + 10) % 10;
       scroll = 0;
       selectedText = getTextFromScreen();
     }));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(
-            screenSize.width - screenSize.width / 9.8, screenSize.height / 2),
-        ButtonType.ICON_RIGHT, () {
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width - screenSize.width / 9.8, screenSize.height / 2), ButtonType.ICON_RIGHT, () {
       screen = (screen + 1 + 10) % 10;
       scroll = 0;
       selectedText = getTextFromScreen();
     }));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width / 15 * 13, screenSize.height / 6 * 4.8),
-        ButtonType.ICON_YES,
-        () => navigate(GameManagerState.MAIN_MENU)));
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width / 15 * 13, screenSize.height / 6 * 4.8), ButtonType.ICON_YES, () => navigate(GameManagerState.MAIN_MENU)));
     buttons.forEach((element) {
       element.setScreenSize(screenSize);
     });
@@ -108,40 +97,24 @@ class HelpMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize.height / 7;
 
-    background.renderPosition(
-        canvas, Position(screenSize.width / 15, buttonSize / 2),
-        size: Position(
-            screenSize.width / 15 * 13, screenSize.height - buttonSize));
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize / 4),
-        size: Position(screenSize.width / 3, buttonSize));
+    background.render(canvas, position: Vector2(screenSize.width / 15, buttonSize / 2), size: Vector2(screenSize.width / 15 * 13, screenSize.height - buttonSize));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize / 4), size: Vector2(screenSize.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Help');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Help');
     Offset position = Offset(screenSize.width / 2, buttonSize / 2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backgroundSlider.renderPosition(
-        canvas, Position(screenSize.width * 0.76, buttonSize * 1.5),
-        size: Position(buttonSize / 2, screenSize.height / 1.5));
+    backgroundSlider.render(canvas, position: Vector2(screenSize.width * 0.76, buttonSize * 1.5), size: Vector2(buttonSize / 2, screenSize.height / 1.5));
 
-    sliderFront.renderPosition(
-        canvas,
-        Position(
-            screenSize.width * 0.76,
-            buttonSize * 1.5 +
-                scroll * (screenSize.height / 1.5 - buttonSize / 2)),
-        size: Position(buttonSize, buttonSize) / 2);
+    sliderFront.render(canvas,
+        position: Vector2(screenSize.width * 0.76, buttonSize * 1.5 + scroll * (screenSize.height / 1.5 - buttonSize / 2)), size: Vector2(buttonSize, buttonSize) / 2);
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
     canvas.save();
-    canvas.clipRect(
-        Rect.fromLTRB(0, buttonSize * 1.4, screenSize.width, buttonSize * 6));
+    canvas.clipRect(Rect.fromLTRB(0, buttonSize * 1.4, screenSize.width, buttonSize * 6));
     renderText(canvas);
 
     canvas.restore();
@@ -159,15 +132,8 @@ class HelpMenu implements BaseView {
 
   renderLine(canvas, line, yOffset) {
     double buttonSize = screenSize.height / 7;
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'),
-        text: line);
-    CanvasUtils.drawText(
-        canvas,
-        Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 3)),
-        0,
-        span);
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
+    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 3)), 0, span);
   }
 
   getTextFromScreen() {
@@ -177,11 +143,9 @@ class HelpMenu implements BaseView {
         text.addAll(splitLongText(
             'Hello and welcome to the help page. You can find most information about the game on this page. If you were to have any more questions, don\'t hesitate to send me a mail.'));
         text.add('');
-        text.addAll(splitLongText(
-            'If you enjoy the game (or don\'t) let me know by writing a review.'));
+        text.addAll(splitLongText('If you enjoy the game (or don\'t) let me know by writing a review.'));
         text.add('');
-        text.addAll(splitLongText(
-            'You can find information about the following topics:'));
+        text.addAll(splitLongText('You can find information about the following topics:'));
         text.add('Basics');
         text.add('Map types');
         text.add('Results/rankings');

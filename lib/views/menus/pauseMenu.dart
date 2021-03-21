@@ -1,7 +1,7 @@
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -87,23 +87,16 @@ class PauseMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 3.3, buttonSize * 1.45),
-        size: Position(screenSize.width * 1.3 / 3.3,
-            screenSize.height - buttonSize * 2.5));
+    buttonBackground.render(canvas,
+        position: Vector2(screenSize.width / 3.3, buttonSize * 1.45), size: Vector2(screenSize.width * 1.3 / 3.3, screenSize.height - buttonSize * 2.5));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 1.2),
-        size: Position(screenSize.width / 3, buttonSize));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 1.2), size: Vector2(screenSize.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Paused');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Paused');
     Offset position = Offset(screenSize.width / 2, buttonSize * 1.4);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

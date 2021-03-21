@@ -3,7 +3,7 @@ import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/mapUtils.dart';
 import 'package:CyclingEscape/views/menus/tourSelect.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -30,22 +30,14 @@ class CareerMenu implements BaseView {
   final Function navigate;
 
   CareerMenu(this.spriteManager, this.navigate, this.career) {
-    raceTypes.add(RaceType(
-        'local race', 50, Tour(8, 1, 1, MapType.FLAT, MapLength.SHORT)));
-    raceTypes.add(RaceType(
-        'national race', 300, Tour(6, 2, 1, MapType.COBBLE, MapLength.MEDIUM)));
-    raceTypes.add(RaceType('continental race', 2000,
-        Tour(5, 3, 1, MapType.HILLS, MapLength.LONG)));
-    raceTypes.add(RaceType(
-        'national tour', 6000, Tour(4, 3, 1, MapType.FLAT, MapLength.SHORT)));
-    raceTypes.add(RaceType('continental tour', 30 * 1000,
-        Tour(5, 4, 1, MapType.HILLS, MapLength.MEDIUM)));
-    raceTypes.add(RaceType('international race', 84 * 1000,
-        Tour(7, 5, 1, MapType.HEAVY, MapLength.VERY_LONG)));
-    raceTypes.add(RaceType('international tour', 350 * 1000,
-        Tour(6, 5, 8, MapType.HEAVY, MapLength.LONG)));
-    raceTypes.add(RaceType('World tour', 5 * 1000 * 1000,
-        Tour(8, 6, 20, MapType.HEAVY, MapLength.VERY_LONG)));
+    raceTypes.add(RaceType('local race', 50, Tour(8, 1, 1, MapType.FLAT, MapLength.SHORT)));
+    raceTypes.add(RaceType('national race', 300, Tour(6, 2, 1, MapType.COBBLE, MapLength.MEDIUM)));
+    raceTypes.add(RaceType('continental race', 2000, Tour(5, 3, 1, MapType.HILLS, MapLength.LONG)));
+    raceTypes.add(RaceType('national tour', 6000, Tour(4, 3, 1, MapType.FLAT, MapLength.SHORT)));
+    raceTypes.add(RaceType('continental tour', 30 * 1000, Tour(5, 4, 1, MapType.HILLS, MapLength.MEDIUM)));
+    raceTypes.add(RaceType('international race', 84 * 1000, Tour(7, 5, 1, MapType.HEAVY, MapLength.VERY_LONG)));
+    raceTypes.add(RaceType('international tour', 350 * 1000, Tour(6, 5, 8, MapType.HEAVY, MapLength.LONG)));
+    raceTypes.add(RaceType('World tour', 5 * 1000 * 1000, Tour(8, 6, 20, MapType.HEAVY, MapLength.VERY_LONG)));
   }
 
   void onAttach() async {
@@ -72,17 +64,11 @@ class CareerMenu implements BaseView {
       () {
         String text = '';
         text += raceTypes[index].name + '\n';
-        text += 'Winner gets: \$' +
-            earningsToString(raceTypes[index].earnings) +
-            '\n';
+        text += 'Winner gets: \$' + earningsToString(raceTypes[index].earnings) + '\n';
         text += 'Teams: ' + raceTypes[index].tour.teams.toString() + '\n';
-        text += 'Riders for other teams: ' +
-            raceTypes[index].tour.ridersPerTeam.toString() +
-            '\n';
+        text += 'Riders for other teams: ' + raceTypes[index].tour.ridersPerTeam.toString() + '\n';
         text += 'Races: ' + raceTypes[index].tour.races.toString() + '\n';
-        text += 'Map length: ' +
-            mapLengthAsString(raceTypes[index].tour.mapLength) +
-            '\n';
+        text += 'Map length: ' + mapLengthAsString(raceTypes[index].tour.mapLength) + '\n';
         // text += 'test\n';
         text += 'Map type: ' + mapTypeAsString(raceTypes[index].tour.mapType);
         navigate(GameManagerState.INFO, infoText: text);
@@ -160,53 +146,34 @@ class CareerMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 6, buttonSize * 1.05),
-        size: Position(
-            screenSize.width / 3 * 2, screenSize.height - buttonSize * 1.5));
+    buttonBackground.render(canvas, position: Vector2(screenSize.width / 6, buttonSize * 1.05), size: Vector2(screenSize.width / 3 * 2, screenSize.height - buttonSize * 1.5));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 0.8),
-        size: Position(screenSize.width / 3, buttonSize));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.8), size: Vector2(screenSize.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Career');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Career');
     Offset position = Offset(screenSize.width / 2, buttonSize * 1.05);
 
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'You have: \$' + earningsToString(career.cash));
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'You have: \$' + earningsToString(career.cash));
     position = Offset(screenSize.width / 2, 2 * buttonSize);
 
     CanvasUtils.drawText(canvas, position, 0, span);
 
     Sprite sprite = index < career.raceTypes ? backText : backTextDisabled;
-    sprite.renderCentered(
-        canvas, Position(screenSize.width / 2, 3 * buttonSize),
-        size: Position(buttonSize * 3.5, buttonSize));
+    sprite.render(canvas, position: Vector2(screenSize.width / 2, 3 * buttonSize), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-        text: raceTypes[index].name);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: raceTypes[index].name);
     position = Offset(screenSize.width / 2, 3 * buttonSize - buttonSize * 0.25);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
-        text: index < career.raceTypes
-            ? ('winner earns: \$' + earningsToString(raceTypes[index].earnings))
-            : 'unlock in upgrades');
+        style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
+        text: index < career.raceTypes ? ('winner earns: \$' + earningsToString(raceTypes[index].earnings)) : 'unlock in upgrades');
     position = Offset(screenSize.width / 2, 3 * buttonSize + buttonSize * 0.5);
 
     CanvasUtils.drawText(canvas, position, 0, span);
@@ -243,8 +210,7 @@ class RaceType {
     if (json == null) {
       return null;
     }
-    return RaceType(
-        json['name'], json['earnings'], Tour.fromJson(json['tour']));
+    return RaceType(json['name'], json['earnings'], Tour.fromJson(json['tour']));
   }
 
   Map<String, dynamic> toJson() {

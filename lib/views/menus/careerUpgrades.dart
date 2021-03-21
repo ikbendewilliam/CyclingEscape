@@ -2,7 +2,7 @@ import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -62,10 +62,7 @@ class CareerUpgradesMenu implements BaseView {
       () => {navigate(GameManagerState.CAREER_MENU)},
       text: 'Career',
     ));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width * 0.73, 2.9 * buttonSize),
-        ButtonType.BAR_RED, () {
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width * 0.73, 2.9 * buttonSize), ButtonType.BAR_RED, () {
       if (career.riders < 6 && career.cash >= getRiderPrice()) {
         career.cash -= getRiderPrice();
         career.riders++;
@@ -73,10 +70,7 @@ class CareerUpgradesMenu implements BaseView {
         createButtons();
       }
     }, text: '\$ ${priceToString(getRiderPrice())}', scale: 0.5));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width * 0.73, (2.9 + 0.7) * buttonSize),
-        ButtonType.BAR_GREEN, () {
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width * 0.73, (2.9 + 0.7) * buttonSize), ButtonType.BAR_GREEN, () {
       if (career.rankingTypes < 5 && career.cash >= getRankingPrice()) {
         career.cash -= getRankingPrice();
         career.rankingTypes++;
@@ -84,10 +78,7 @@ class CareerUpgradesMenu implements BaseView {
         createButtons();
       }
     }, text: '\$ ${priceToString(getRankingPrice())}', scale: 0.5));
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width * 0.73, (2.9 + 1.4) * buttonSize),
-        ButtonType.BAR_BLUE, () {
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width * 0.73, (2.9 + 1.4) * buttonSize), ButtonType.BAR_BLUE, () {
       if (career.raceTypes < 8 && career.cash >= getRacePrice()) {
         career.cash -= getRacePrice();
         career.raceTypes++;
@@ -187,51 +178,31 @@ class CareerUpgradesMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 6, buttonSize * 1.05),
-        size: Position(
-            screenSize.width / 3 * 2, screenSize.height - buttonSize * 1.5));
+    buttonBackground.render(canvas, position: Vector2(screenSize.width / 6, buttonSize * 1.05), size: Vector2(screenSize.width / 3 * 2, screenSize.height - buttonSize * 1.5));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 0.8),
-        size: Position(screenSize.width / 3, buttonSize));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.8), size: Vector2(screenSize.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Upgrades');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Upgrades');
     Offset position = Offset(screenSize.width / 2, buttonSize * 1.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'You have: ${career.cash} \$');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'You have: ${career.cash} \$');
     position = Offset(screenSize.width / 2, 2 * buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-        text: 'Your riders');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Your riders');
     position = Offset(screenSize.width / 3, buttonSize * 2.7);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-        text: 'Rankings');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Rankings');
     position = Offset(screenSize.width / 3, buttonSize * (2.7 + 0.7));
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-        text: 'Race type');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Race type');
     position = Offset(screenSize.width / 3, buttonSize * (2.7 + 1.4));
     CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -249,15 +220,10 @@ class CareerUpgradesMenu implements BaseView {
     }
   }
 
-  renderBar(Canvas canvas, Sprite sprite, int horizontalOffset,
-      int verticalOffset, double buttonSize) {
-    sprite.renderPosition(
-        canvas,
-        Position(
-            screenSize.width / 2.3 +
-                screenSize.width / 60 * horizontalOffset * 1.5,
-            buttonSize * 2.6 + buttonSize * 0.7 * verticalOffset),
-        size: Position(screenSize.width / 60, buttonSize / 2));
+  renderBar(Canvas canvas, Sprite sprite, int horizontalOffset, int verticalOffset, double buttonSize) {
+    sprite.render(canvas,
+        position: Vector2(screenSize.width / 2.3 + screenSize.width / 60 * horizontalOffset * 1.5, buttonSize * 2.6 + buttonSize * 0.7 * verticalOffset),
+        size: Vector2(screenSize.width / 60, buttonSize / 2));
   }
 
   @override

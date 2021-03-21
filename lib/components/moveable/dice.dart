@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/views/menus/settingsMenu.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
 class Dice {
@@ -23,8 +23,7 @@ class Dice {
 
   final DiceListener listener;
 
-  Dice(this.spriteManager, this.listener,
-      {bool generate: true, DifficultyType difficulty, bool isPlayer}) {
+  Dice(this.spriteManager, this.listener, {bool generate: true, DifficultyType difficulty, bool isPlayer}) {
     sprites = this.spriteManager.getDiceSprites();
     if (generate) {
       // 1, 2, 3, 4, 5, 6 respectivly
@@ -69,11 +68,9 @@ class Dice {
       canvas.translate(offset.dx, offset.dy);
       canvas.rotate(angle);
       if (currentIndex < diceAnimation.length) {
-        sprites[diceAnimation[currentIndex]].renderCentered(
-            canvas, Position(0, 0),
-            size: Position(tileSize * scale, tileSize * scale));
+        sprites[diceAnimation[currentIndex]].render(canvas, position: Vector2.zero(), size: Vector2(tileSize * scale, tileSize * scale));
       } else {
-        sprites[diceAnimation.last].renderCentered(canvas, Position(0, 0));
+        sprites[diceAnimation.last].render(canvas, position: Vector2.zero());
       }
       canvas.restore();
     }
@@ -181,8 +178,7 @@ class Dice {
     }
   }
 
-  static Dice fromJson(Map<String, dynamic> json, DiceListener listener,
-      SpriteManager spriteManager) {
+  static Dice fromJson(Map<String, dynamic> json, DiceListener listener, SpriteManager spriteManager) {
     if (json == null) {
       return null;
     }
@@ -196,9 +192,7 @@ class Dice {
     dice.angle = json['angle'];
     dice.scale = json['scale'];
     dice.countdown = json['countdown'];
-    dice.diceAnimation = json['diceAnimation'] != null
-        ? new List<int>.from(json['diceAnimation'])
-        : [];
+    dice.diceAnimation = json['diceAnimation'] != null ? new List<int>.from(json['diceAnimation']) : [];
     return dice;
   }
 

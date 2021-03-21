@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/mapUtils.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +23,7 @@ class Button {
   double buttonSize = 1;
   double scale;
 
-  Button(this.spriteManager, this.center, this.type, this.onPress,
-      {this.text, this.scale}) {
+  Button(this.spriteManager, this.center, this.type, this.onPress, {this.text, this.scale}) {
     getSprite();
   }
 
@@ -139,44 +138,27 @@ class Button {
     double aspectRatio = (this.text != null) ? 3.5 : 1;
     double scale = 1;
 
-    if (type == ButtonType.ICON_LEFT ||
-        type == ButtonType.ICON_RIGHT ||
-        type == ButtonType.ICON_SMALL_LEFT ||
-        type == ButtonType.ICON_SMALL_RIGHT) {
+    if (type == ButtonType.ICON_LEFT || type == ButtonType.ICON_RIGHT || type == ButtonType.ICON_SMALL_LEFT || type == ButtonType.ICON_SMALL_RIGHT) {
       aspectRatio = 0.8;
       scale = 0.7;
     }
-    if (type == ButtonType.SWITCH_BUTTON_ON ||
-        type == ButtonType.SWITCH_BUTTON_OFF) {
+    if (type == ButtonType.SWITCH_BUTTON_ON || type == ButtonType.SWITCH_BUTTON_OFF) {
       aspectRatio = 2;
       scale = 0.7;
     }
     if (spriteBackground != null) {
-      spriteBackground.renderCentered(canvas, Position(center.dx, center.dy),
-          size: Position(buttonSize, buttonSize) * 1.5);
+      spriteBackground.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize, buttonSize) * 1.5);
     }
     if (!isPressed) {
-      sprite.renderCentered(canvas, Position(center.dx, center.dy),
-          size: Position(buttonSize * scale * aspectRatio, buttonSize * scale));
+      sprite.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     } else {
-      spritePressed.renderCentered(canvas, Position(center.dx, center.dy),
-          size: Position(buttonSize * scale * aspectRatio, buttonSize * scale));
+      spritePressed.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     }
 
     if (this.text != null) {
-      TextSpan span = new TextSpan(
-          style: new TextStyle(
-              color: Colors.white,
-              fontSize: pow(buttonSize, 1 / 2) * 2.5,
-              fontFamily: 'SaranaiGame'),
-          text: this.text);
+      TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: pow(buttonSize, 1 / 2) * 2.5, fontFamily: 'SaranaiGame'), text: this.text);
       Offset position = Offset(center.dx, center.dy);
-      position = Offset(
-          position.dx,
-          position.dy -
-              (isPressed
-                  ? pow(buttonSize, 1 / 2) * 2
-                  : pow(buttonSize, 1 / 2) * 2.5));
+      position = Offset(position.dx, position.dy - (isPressed ? pow(buttonSize, 1 / 2) * 2 : pow(buttonSize, 1 / 2) * 2.5));
       CanvasUtils.drawText(canvas, position, 0, span);
     }
   }
@@ -184,15 +166,13 @@ class Button {
   void onTapDown(Offset point) {
     double aspectRatio = (this.text != null) ? 3.5 : 1;
     Offset delta = Offset(buttonSize * aspectRatio, buttonSize) / 2;
-    this.isPressed =
-        MapUtils.isInsideRect(point, center - delta, center + delta);
+    this.isPressed = MapUtils.isInsideRect(point, center - delta, center + delta);
   }
 
   bool onTapUp(TapUpDetails details) {
     double aspectRatio = (this.text != null) ? 3.5 : 1;
     Offset delta = Offset(buttonSize * aspectRatio, buttonSize) / 2;
-    if (MapUtils.isInsideRect(
-        details.globalPosition, center - delta, center + delta)) {
+    if (MapUtils.isInsideRect(details.globalPosition, center - delta, center + delta)) {
       this.isPressed = false;
       if (this.type == ButtonType.SWITCH_BUTTON_ON) {
         this.type = ButtonType.SWITCH_BUTTON_OFF;

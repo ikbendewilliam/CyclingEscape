@@ -20,7 +20,7 @@ import 'package:CyclingEscape/views/menus/tourSelect.dart';
 import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
 import 'package:app_review/app_review.dart';
-import 'package:flame/game/game.dart';
+import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -121,15 +121,14 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
   }
 
-  void load() {
-    spriteManager.loadSprites().whenComplete(() {
-      currentView.onAttach();
-      if (menuBackground == null) {
-        menuBackground = MenuBackground(this.spriteManager);
-      }
-      loadSettings();
-      loading = false;
-    });
+  void load() async {
+    await spriteManager.loadSprites();
+    currentView.onAttach();
+    if (menuBackground == null) {
+      menuBackground = MenuBackground(this.spriteManager);
+    }
+    loadSettings();
+    loading = false;
   }
 
   @override

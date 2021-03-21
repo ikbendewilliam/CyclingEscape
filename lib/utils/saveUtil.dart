@@ -7,7 +7,7 @@ import 'package:CyclingEscape/views/cyclingView.dart';
 import 'package:CyclingEscape/views/menus/careerMenu.dart';
 import 'package:CyclingEscape/views/menus/settingsMenu.dart';
 import 'package:CyclingEscape/views/menus/tutorialView.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveUtil {
@@ -141,14 +141,14 @@ class SaveUtil {
     return data;
   }
 
-  static Position positionFromJson(Map<String, dynamic> json) {
+  static Vector2? positionFromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }
-    return Position(json['x'], json['y']);
+    return Vector2(json['x'], json['y']);
   }
 
-  static Map<String, dynamic> positionToJson(Position position) {
+  static Map<String, dynamic>? positionToJson(Vector2? position) {
     if (position == null) {
       return null;
     }

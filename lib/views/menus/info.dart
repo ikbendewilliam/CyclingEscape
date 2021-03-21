@@ -1,7 +1,7 @@
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -41,11 +41,7 @@ class InfoView implements BaseView {
   createButtons() {
     double buttonSize = screenSize.height / 7;
     buttons = [];
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width / 3 * 2, 5.5 * buttonSize),
-        ButtonType.ICON_YES,
-        () => {navigate(GameManagerState.CLOSE_INFO)}));
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width / 3 * 2, 5.5 * buttonSize), ButtonType.ICON_YES, () => {navigate(GameManagerState.CLOSE_INFO)}));
   }
 
   @override
@@ -79,30 +75,21 @@ class InfoView implements BaseView {
     Paint overlay = Paint()
       ..color = Color(0x77000000)
       ..blendMode = BlendMode.darken;
-    canvas.drawRect(
-        Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), overlay);
+    canvas.drawRect(Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), overlay);
 
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 4, buttonSize),
-        size: Position(
-            screenSize.width / 2, screenSize.height - buttonSize * 1.75));
+    buttonBackground.render(canvas, position: Vector2(screenSize.width / 4, buttonSize), size: Vector2(screenSize.width / 2, screenSize.height - buttonSize * 1.75));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 0.75),
-        size: Position(screenSize.width / 3, buttonSize));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.75), size: Vector2(screenSize.width / 3, buttonSize));
 
     renderText(canvas);
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Info');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Info');
     Offset position = Offset(screenSize.width / 2, buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -115,15 +102,8 @@ class InfoView implements BaseView {
 
   renderLine(canvas, line, yOffset) {
     double buttonSize = screenSize.height / 7;
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'),
-        text: line);
-    CanvasUtils.drawText(
-        canvas,
-        Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 4)),
-        0,
-        span);
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
+    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 4)), 0, span);
   }
 
   splitLongText(String text) {

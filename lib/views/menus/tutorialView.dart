@@ -2,7 +2,7 @@ import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -43,11 +43,7 @@ class TutorialView implements BaseView {
   createButtons() {
     double buttonSize = screenSize.height / 7;
     buttons = [];
-    buttons.add(Button(
-        this.spriteManager,
-        Offset(screenSize.width / 3 * 2, 5.5 * buttonSize),
-        ButtonType.ICON_YES,
-        () => {navigate(GameManagerState.CLOSE_TUTORIAL)}));
+    buttons.add(Button(this.spriteManager, Offset(screenSize.width / 3 * 2, 5.5 * buttonSize), ButtonType.ICON_YES, () => {navigate(GameManagerState.CLOSE_TUTORIAL)}));
   }
 
   @override
@@ -81,30 +77,22 @@ class TutorialView implements BaseView {
     Paint overlay = Paint()
       ..color = Color(0x77000000)
       ..blendMode = BlendMode.darken;
-    canvas.drawRect(
-        Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), overlay);
+    canvas.drawRect(Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), overlay);
 
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 4, buttonSize),
-        size: Position(
-            screenSize.width / 2, screenSize.height - buttonSize * 1.75));
+    buttonBackground.render(canvas,
+        anchor: Anchor.center, position: Vector2(screenSize.width / 4, buttonSize), size: Vector2(screenSize.width / 2, screenSize.height - buttonSize * 1.75));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 0.75),
-        size: Position(screenSize.width / 3, buttonSize));
+    backgroundHeader.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 3, buttonSize * 0.75), size: Vector2(screenSize.width / 3, buttonSize));
 
     renderText(canvas);
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Tutorial');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Tutorial');
     Offset position = Offset(screenSize.width / 2, buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -117,15 +105,8 @@ class TutorialView implements BaseView {
 
   renderLine(canvas, line, yOffset) {
     double buttonSize = screenSize.height / 7;
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'),
-        text: line);
-    CanvasUtils.drawText(
-        canvas,
-        Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 4)),
-        0,
-        span);
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
+    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 4)), 0, span);
   }
 
   setText() {
@@ -163,8 +144,7 @@ class TutorialView implements BaseView {
       case TutorialType.THROW_DICE:
         text.add('Your turn');
         text.add('');
-        text.addAll(splitLongText(
-            'Your turn! Throw the dices by tapping on the screen. You will be able to move the value you throw.'));
+        text.addAll(splitLongText('Your turn! Throw the dices by tapping on the screen. You will be able to move the value you throw.'));
         break;
       case TutorialType.SELECT_POSITION:
         text.add('Select a position');
@@ -235,14 +215,12 @@ class TutorialView implements BaseView {
       case TutorialType.CAREER_FIRST_FINISHED:
         text.add('Money!');
         text.add('');
-        text.addAll(splitLongText(
-            'Well done, you\'ve just earned your first money, you can spend this in upgrades to improve your team.'));
+        text.addAll(splitLongText('Well done, you\'ve just earned your first money, you can spend this in upgrades to improve your team.'));
         break;
       case TutorialType.CAREER_UPGRADES:
         text.add('Upgrades');
         text.add('');
-        text.addAll(splitLongText(
-            'You can upgrade your team by hiring more riders, unlocking more rankings (sprints, team, mountain and young) or unlock better races'));
+        text.addAll(splitLongText('You can upgrade your team by hiring more riders, unlocking more rankings (sprints, team, mountain and young) or unlock better races'));
         break;
     }
     selectedText = text;
@@ -315,17 +293,14 @@ class TutorialsViewed {
       return null;
     }
     return TutorialsViewed(
-      json['typesViewed']
-          ?.map<TutorialType>((e) => getTutorialTypeFromString(e))
-          ?.toList(),
+      json['typesViewed']?.map<TutorialType>((e) => getTutorialTypeFromString(e))?.toList(),
       json['toursFinished'],
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['typesViewed'] =
-        this.typesViewed.map<String>((e) => e.toString()).toList();
+    data['typesViewed'] = this.typesViewed.map<String>((e) => e.toString()).toList();
     data['toursFinished'] = this.toursFinished;
     return data;
   }

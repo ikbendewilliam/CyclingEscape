@@ -12,7 +12,7 @@ import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
 import 'package:CyclingEscape/views/menus/tutorialView.dart';
 import 'package:CyclingEscape/views/resultsView.dart';
-import 'package:flame/position.dart' as flamePosition;
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -245,14 +245,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     canvas.save();
     canvas.translate(offset.dx * zoom, offset.dy * zoom);
     canvas.scale(zoom);
-    if (grass != null && grass2 != null && grass.loaded() && grass2.loaded()) {
+    if (grass != null && grass2 != null) {
       for (int i = -(offset.dx / tileSize).ceil(); i < -(offset.dx / tileSize).floor() + screenSize.width / tileSize / zoom; i++) {
         for (int j = -(offset.dy / tileSize).ceil(); j < -(offset.dy / tileSize).floor() + screenSize.height / tileSize / zoom; j++) {
           Sprite g = grass;
           if ((i * j + i + j) % 5 == 0 || (i * j + i + j) % 7 == 0) {
             g = grass2;
           }
-          g.renderPosition(canvas, flamePosition.Position(i * tileSize, j * tileSize), size: flamePosition.Position(tileSize * 1.05, tileSize * 1.05));
+          g.render(canvas, position: Vector2(i * tileSize, j * tileSize), size: Vector2(tileSize * 1.05, tileSize * 1.05));
         }
       }
     }

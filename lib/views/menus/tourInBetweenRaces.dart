@@ -2,7 +2,7 @@ import 'package:CyclingEscape/components/data/activeTour.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -108,26 +108,18 @@ class TourInBetweenRacesMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 3.5, buttonSize * 1.5),
-        size: Position(screenSize.width * 1.5 / 3.5, buttonSize * 4));
+    buttonBackground.render(canvas, position: Vector2(screenSize.width / 3.5, buttonSize * 1.5), size: Vector2(screenSize.width * 1.5 / 3.5, buttonSize * 4));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Races done:');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Races done:');
     Offset position = Offset(screenSize.width / 2, 2.4 * buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     if (activeTour != null) {
-      span = new TextSpan(
-          style: new TextStyle(
-              color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-          text: '${activeTour.racesDone} out of ${activeTour.tour.races}');
+      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${activeTour.racesDone} out of ${activeTour.tour.races}');
       position = Offset(screenSize.width / 2, 2.8 * buttonSize);
       CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -139,21 +131,13 @@ class TourInBetweenRacesMenu implements BaseView {
           bestRider = element.number;
         }
       });
-      span = new TextSpan(
-          style: new TextStyle(
-              color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-          text: 'Best rider: $bestRider ${th(bestPlace + 1)}');
+      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Best rider: $bestRider ${th(bestPlace + 1)}');
       position = Offset(screenSize.width / 2, 3.4 * buttonSize);
       CanvasUtils.drawText(canvas, position, 0, span);
     }
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 2.7, buttonSize * 1.3),
-        size: Position(screenSize.width / 4, buttonSize * 0.8));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 2.7, buttonSize * 1.3), size: Vector2(screenSize.width / 4, buttonSize * 0.8));
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Next race');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Next race');
     position = Offset(screenSize.width / 2, buttonSize * 1.45);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

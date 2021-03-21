@@ -1,3 +1,6 @@
+import 'package:collection/collection.dart';
+import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 
 class SpriteManager {
@@ -118,59 +121,30 @@ class SpriteManager {
     spriteNames.add('cyclists/bollekes2.png');
   }
 
-  Future loadSprites() {
-    return Future(() {
-      if (!loaded) {
-        loaded = true;
-        spriteNames.forEach((spriteName) {
-          sprites.add(SpriteName(spriteName, Sprite(spriteName)));
-        });
+  Future<void> loadSprites() async {
+    if (!loaded) {
+      loaded = true;
+      loading = true;
+      spriteNames.forEach((spriteName) async {
+        sprites.add(SpriteName(spriteName, Sprite(await Flame.images.load(spriteName))));
+      });
 
-        for (int j = 0; j < 9; j++) {
-          for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
-            diceSprites.add(Sprite('dice.png',
-                x: 37.5 * i * 1,
-                y: 37.5 * j * 1,
-                height: 37 * 1.0,
-                width: 37 * 1.0));
-          }
+      for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
+          diceSprites.add(Sprite(await Flame.images.load('dice.png'), srcPosition: Vector2(37.5 * i * 1, 37.5 * j * 1), srcSize: Vector2(37 * 1.0, 37 * 1.0)));
         }
       }
-    });
+      loading = false;
+    }
   }
 
-  double checkLoadingPercentage() {
-    if (!loading) {
-      return 100;
-    }
-    loading = false;
-    int spritesLoaded = 0;
-    sprites.forEach((element) {
-      if (element.sprite.loaded()) {
-        spritesLoaded++;
-      } else {
-        loading = true;
-      }
-    });
-    if (!loading) {
-      return 100;
-    }
-    return 1 / (sprites.length + diceSprites.length) * spritesLoaded;
-  }
+  double checkLoadingPercentage() => loading ? (sprites.length / spriteNames.length) + (diceSprites.length / 114) * 100 : 100;
 
   List<Sprite> getDiceSprites() {
     return this.diceSprites;
   }
 
-  Sprite getSprite(spriteName) {
-    SpriteName name = sprites.firstWhere(
-        (element) => element.name == spriteName,
-        orElse: () => null);
-    if (name == null) {
-      return null;
-    }
-    return name.sprite;
-  }
+  Sprite? getSprite(spriteName) => sprites.firstWhereOrNull((element) => element.name == spriteName)?.sprite;
 }
 
 class SpriteName {

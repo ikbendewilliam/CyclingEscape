@@ -2,7 +2,7 @@ import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/ui/button.dart';
 import 'package:CyclingEscape/utils/canvasUtils.dart';
 import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
@@ -44,30 +44,24 @@ class SettingsMenu implements BaseView {
   createButtons(double buttonSize) {
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25,
-          2.7 * buttonSize - buttonSize * 0.9),
+      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 0.9),
       ButtonType.ICON_MINUS,
       () {
-        settings.autofollowThreshold =
-            (settings.autofollowThreshold - 1 - 2 + 11) % 11 + 2;
+        settings.autofollowThreshold = (settings.autofollowThreshold - 1 - 2 + 11) % 11 + 2;
       },
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25,
-          2.7 * buttonSize - buttonSize * 0.9),
+      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 0.9),
       ButtonType.ICON_PLUS,
       () {
-        settings.autofollowThreshold =
-            (settings.autofollowThreshold + 1 - 2 + 11) % 11 + 2;
+        settings.autofollowThreshold = (settings.autofollowThreshold + 1 - 2 + 11) % 11 + 2;
       },
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize),
-      settings?.autofollowAsk == true
-          ? ButtonType.SWITCH_BUTTON_ON
-          : ButtonType.SWITCH_BUTTON_OFF,
+      settings?.autofollowAsk == true ? ButtonType.SWITCH_BUTTON_ON : ButtonType.SWITCH_BUTTON_OFF,
       (isOn) {
         settings.autofollowAsk = isOn;
         saveSettings();
@@ -75,50 +69,43 @@ class SettingsMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25,
-          2.7 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_MINUS,
       () => {decreaseCyclistMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25,
-          2.7 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_PLUS,
       () => {increaseCyclistMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25,
-          2.7 * buttonSize + buttonSize * 1.1 * 2),
+      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_MINUS,
       () => {decreaseCameraMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25,
-          2.7 * buttonSize + buttonSize * 1.1 * 2),
+      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_PLUS,
       () => {increaseCameraMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25,
-          2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_MINUS,
       () => {decreaseDifficulty()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25,
-          2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_PLUS,
       () => {increaseDifficulty()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 3.3,
-          2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize.width / 2 + buttonSize * 3.3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_YES,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
@@ -296,110 +283,61 @@ class SettingsMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize.height / 7;
 
-    buttonBackground.renderPosition(
-        canvas, Position(screenSize.width / 6, buttonSize * 0.4),
-        size: Position(screenSize.width / 3 * 2, screenSize.height / 1.1));
+    buttonBackground.render(canvas, position: Vector2(screenSize.width / 6, buttonSize * 0.4), size: Vector2(screenSize.width / 3 * 2, screenSize.height / 1.1));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backText.renderCentered(canvas,
-        Position(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 0.9),
-        size: Position(buttonSize * 3.5, buttonSize * 0.7));
+    backText.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 0.9), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'),
-        text: 'autofollow threshold:');
-    Offset position = Offset(screenSize.width / 2,
-        2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.4);
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'autofollow threshold:');
+    Offset position = Offset(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.4);
 
     CanvasUtils.drawText(canvas, position, 0, span);
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: '${settings?.autofollowThreshold}');
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.05);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${settings?.autofollowThreshold}');
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'),
-        text: 'autofollow ask below threshold');
-    position = Offset(screenSize.width / 2 - buttonSize * 0.5,
-        2.7 * buttonSize - buttonSize * 0.15);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'autofollow ask below threshold');
+    position = Offset(screenSize.width / 2 - buttonSize * 0.5, 2.7 * buttonSize - buttonSize * 0.15);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.renderCentered(canvas,
-        Position(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1),
-        size: Position(buttonSize * 3.5, buttonSize * 0.7));
+    backText.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'),
-        text: 'Cyclist move speed');
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.6);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'Cyclist move speed');
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: cyclistMovementAsString());
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: cyclistMovementAsString());
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.renderCentered(canvas,
-        Position(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2),
-        size: Position(buttonSize * 3.5, buttonSize * 0.7));
+    backText.render(canvas,
+        anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'),
-        text: 'camera automatic movement');
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.6);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'camera automatic movement');
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'),
-        text: cameraMovementAsString());
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.2);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: cameraMovementAsString());
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.renderCentered(canvas,
-        Position(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3),
-        size: Position(buttonSize * 3.5, buttonSize * 0.7));
+    backText.render(canvas,
+        anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'),
-        text: 'Difficulty');
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.6);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'Difficulty');
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: difficultyAsString());
-    position = Offset(screenSize.width / 2,
-        2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.3);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: difficultyAsString());
+    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backgroundHeader.renderPosition(
-        canvas, Position(screenSize.width / 3, buttonSize * 0.21),
-        size: Position(screenSize.width / 3, buttonSize * 0.8));
+    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.21), size: Vector2(screenSize.width / 3, buttonSize * 0.8));
 
-    span = new TextSpan(
-        style: new TextStyle(
-            color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'),
-        text: 'Settings');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Settings');
     position = Offset(screenSize.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -430,12 +368,7 @@ class Settings {
   CameraMovementType cameraMovement;
   DifficultyType difficulty;
 
-  Settings(
-      [this.autofollowThreshold,
-      this.autofollowAsk,
-      this.cyclistMovement,
-      this.cameraMovement,
-      this.difficulty]) {
+  Settings([this.autofollowThreshold, this.autofollowAsk, this.cyclistMovement, this.cameraMovement, this.difficulty]) {
     if (this.autofollowThreshold == null) {
       this.autofollowThreshold = 7;
     }
@@ -474,8 +407,7 @@ class Settings {
   }
 }
 
-CyclistMovementType getCyclistMovementTypeFromString(
-    String cyclistMovementTypeAsString) {
+CyclistMovementType getCyclistMovementTypeFromString(String cyclistMovementTypeAsString) {
   for (CyclistMovementType element in CyclistMovementType.values) {
     if (element.toString() == cyclistMovementTypeAsString) {
       return element;
@@ -484,8 +416,7 @@ CyclistMovementType getCyclistMovementTypeFromString(
   return null;
 }
 
-CameraMovementType getCameraMovementTypeFromString(
-    String cameraMovementTypeAsString) {
+CameraMovementType getCameraMovementTypeFromString(String cameraMovementTypeAsString) {
   for (CameraMovementType element in CameraMovementType.values) {
     if (element.toString() == cameraMovementTypeAsString) {
       return element;

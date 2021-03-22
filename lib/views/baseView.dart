@@ -4,7 +4,7 @@ import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class BaseView {
-  Size screenSize;
+  Size? screenSize;
   final SpriteManager spriteManager;
 
   BaseView(this.spriteManager);
@@ -17,7 +17,7 @@ abstract class BaseView {
   void onScaleStart(ScaleStartDetails details);
   void onScaleUpdate(ScaleUpdateDetails details);
 
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
   }
 }

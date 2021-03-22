@@ -10,10 +10,10 @@ class Dice {
   List<Sprite> sprites = [];
   final SpriteManager spriteManager;
 
-  int diceValue;
+  int? diceValue;
   int direction = 1;
-  int currentIndex;
-  int endIndex;
+  late int currentIndex;
+  int? endIndex;
   int directionCountDown = 0;
   bool rolling = false;
   double angle = 0;
@@ -23,7 +23,7 @@ class Dice {
 
   final DiceListener listener;
 
-  Dice(this.spriteManager, this.listener, {bool generate: true, DifficultyType difficulty, bool isPlayer}) {
+  Dice(this.spriteManager, this.listener, {bool generate: true, DifficultyType? difficulty, bool? isPlayer}) {
     sprites = this.spriteManager.getDiceSprites();
     if (generate) {
       // 1, 2, 3, 4, 5, 6 respectivly
@@ -41,9 +41,9 @@ class Dice {
   }
 
   getDiceAnimation(indexes, {again: true}) {
-    int index = endIndex;
+    int? index = endIndex;
     int counter = 1;
-    List<int> animation = [index];
+    List<int?> animation = [index];
     while ((indexes.indexOf(index) == -1 || counter < 40) && counter < 1000) {
       index = getNewIndex(index);
       animation.add(index);
@@ -62,13 +62,13 @@ class Dice {
     rolling = true;
   }
 
-  render(Canvas canvas, Offset offset, double tileSize) {
+  render(Canvas canvas, Offset offset, double? tileSize) {
     if (sprites.length > 0 && currentIndex >= 0 && diceAnimation.length > 0) {
       canvas.save();
       canvas.translate(offset.dx, offset.dy);
       canvas.rotate(angle);
       if (currentIndex < diceAnimation.length) {
-        sprites[diceAnimation[currentIndex]].render(canvas, position: Vector2.zero(), size: Vector2(tileSize * scale, tileSize * scale));
+        sprites[diceAnimation[currentIndex]].render(canvas, position: Vector2.zero(), size: Vector2(tileSize! * scale, tileSize * scale));
       } else {
         sprites[diceAnimation.last].render(canvas, position: Vector2.zero());
       }
@@ -98,7 +98,7 @@ class Dice {
     }
   }
 
-  getIJ(int current) {
+  getIJ(int? current) {
     int i = 0;
     int j = 0;
     if (current == 0) {
@@ -107,7 +107,7 @@ class Dice {
       i = 0;
       j = 8;
     } else {
-      i = (current + 15) % 16;
+      i = (current! + 15) % 16;
       j = ((current + 15) / 16).floor();
     }
     return [i, j];
@@ -115,12 +115,12 @@ class Dice {
 
   int getValue() {
     final ij = getIJ(endIndex);
-    int i = ij[0], j = ij[1];
+    int? i = ij[0], j = ij[1];
     if (j == 0) {
       return 4;
     } else if (j == 8) {
       return 3;
-    } else if (j == 4 && i % 4 == 0) {
+    } else if (j == 4 && i! % 4 == 0) {
       switch ((i / 4).floor()) {
         case 0:
           return 1;
@@ -136,25 +136,25 @@ class Dice {
   }
 
   void increaseValue() {
-    List<int> indexes = [49, 53, 113, 0, 61, 57];
+    List<int?> indexes = [49, 53, 113, 0, 61, 57];
     int newIndex = indexes.indexOf(endIndex) + 1;
     if (newIndex < indexes.length) {
       endIndex = indexes[newIndex];
     }
   }
 
-  getNewIndex(int current) {
+  getNewIndex(int? current) {
     final ij = getIJ(current);
-    int i = ij[0], j = ij[1];
+    int? i = ij[0], j = ij[1];
     directionCountDown--;
     if (directionCountDown <= 0) {
       direction = Random().nextInt(4);
       directionCountDown = Random().nextInt(10) + 5;
     }
-    bool moveHorizontal = !(j <= 0 || j >= 8) && direction / 2 == 0;
+    bool moveHorizontal = !(j! <= 0 || j >= 8) && direction / 2 == 0;
     bool increase = direction % 2 == 0;
     if (moveHorizontal) {
-      i = (i + (increase ? 1 : -1) + 16) % 16;
+      i = (i! + (increase ? 1 : -1) + 16) % 16;
     } else {
       if (j <= 0 || j >= 8) {
         direction += 1;
@@ -174,11 +174,11 @@ class Dice {
     } else if (j >= 8) {
       return sprites.length - 1;
     } else {
-      return i + (j - 1) * 16 + 1;
+      return i! + (j - 1) * 16 + 1;
     }
   }
 
-  static Dice fromJson(Map<String, dynamic> json, DiceListener listener, SpriteManager spriteManager) {
+  static Dice? fromJson(Map<String, dynamic>? json, DiceListener listener, SpriteManager spriteManager) {
     if (json == null) {
       return null;
     }

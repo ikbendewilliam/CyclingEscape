@@ -15,7 +15,7 @@ import '../gameManager.dart';
 
 class CourseSelectMenu implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
@@ -23,9 +23,9 @@ class CourseSelectMenu implements BaseView {
   int ridersPerTeam = 4;
   int selectedColor = 0;
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
-  Sprite backText;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
+  Sprite? backText;
   MapType maptype = MapType.FLAT;
   MapLength mapLength = MapLength.MEDIUM;
 
@@ -49,7 +49,7 @@ class CourseSelectMenu implements BaseView {
   createButtons(double buttonSize) {
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 1.1),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 1.1),
       ButtonType.ICON_MINUS,
       () {
         teams--;
@@ -58,7 +58,7 @@ class CourseSelectMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 1.1),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 1.1),
       ButtonType.ICON_PLUS,
       () {
         teams++;
@@ -67,7 +67,7 @@ class CourseSelectMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize),
       ButtonType.ICON_MINUS,
       () {
         ridersPerTeam--;
@@ -76,7 +76,7 @@ class CourseSelectMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize),
       ButtonType.ICON_PLUS,
       () {
         ridersPerTeam++;
@@ -85,49 +85,49 @@ class CourseSelectMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_MINUS,
       () => {decreaseType()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_PLUS,
       () => {increaseType()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_MINUS,
       () => {decreaseLength()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_PLUS,
       () => {increaseLength()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 9 * 3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 9 * 3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 9 * 6, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 9 * 6, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_PLAY,
       () => {navigate(GameManagerState.PLAYING, playSettings: PlaySettings(teams, ridersPerTeam, maptype, mapLength), team: selectedColor)},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 7 * 3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 7 * 3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_SMALL_LEFT,
       () => {selectedColor = (selectedColor - 1 + 8) % 8},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 7 * 4, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 7 * 4, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_SMALL_RIGHT,
       () => {selectedColor = (selectedColor + 1) % 8},
     ));
@@ -226,9 +226,9 @@ class CourseSelectMenu implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas, position: Vector2(screenSize.width / 4, buttonSize * 0.4), size: Vector2(screenSize.width / 2, screenSize.height / 1.1));
+    buttonBackground!.render(canvas, position: Vector2(screenSize!.width / 4, buttonSize * 0.4), size: Vector2(screenSize!.width / 2, screenSize!.height / 1.1));
 
     buttons.forEach((button) {
       button.render(canvas);
@@ -238,50 +238,50 @@ class CourseSelectMenu implements BaseView {
       ..color = Team.getColorFromId(selectedColor)
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(Offset(screenSize.width / 2, buttonSize * 6), buttonSize / 4, paint);
+    canvas.drawCircle(Offset(screenSize!.width / 2, buttonSize * 6), buttonSize / 4, paint);
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
-    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize * 5.85), 0, span);
+    CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 5.85), 0, span);
 
-    backText.render(canvas, position: Vector2(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 1.1), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Teams: $teams');
-    Offset position = Offset(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.3);
+    Offset position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.render(canvas, position: Vector2(screenSize.width / 2, 2.7 * buttonSize), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Riders: ${ridersPerTeam * teams}');
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 0.3);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.render(canvas, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapTypeAsString(maptype));
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.render(canvas, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapLengthAsString(mapLength));
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.3);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.21), size: Vector2(screenSize.width / 3, buttonSize * 0.8));
+    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Configure game');
-    position = Offset(screenSize.width / 2, buttonSize * 0.35);
+    position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     createButtons(buttonSize);
     buttons.forEach((element) {
-      element.setScreenSize(size);
+      element.setScreenSize(size!);
     });
   }
 

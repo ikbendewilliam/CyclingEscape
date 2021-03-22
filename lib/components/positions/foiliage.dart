@@ -13,9 +13,9 @@ class Foiliage {
   final FoiliageType type;
   final SpriteManager spriteManager;
 
-  Sprite sprite;
+  Sprite? sprite;
   double aspectRatio = 1;
-  DrawHeight drawHeight;
+  DrawHeight? drawHeight;
 
   Foiliage(this.offset, this.size, this.type, this.spriteManager, this.angle) {
     switch (this.type) {
@@ -63,21 +63,21 @@ class Foiliage {
     }
   }
 
-  render(Canvas canvas, double tileSize, Offset center, double screenRange, DrawHeight drawHeight) {
+  render(Canvas canvas, double? tileSize, Offset center, double screenRange, DrawHeight drawHeight) {
     if (drawHeight != this.drawHeight) {
       return;
     }
     if (pow(center.dx - offset.dx, 2) + pow(center.dy - offset.dy, 2) > screenRange) {
       return;
     }
-    if (sprite == null || !sprite.loaded()) {
+    if (sprite == null) {
       return;
     }
 
     canvas.save();
-    canvas.translate(offset.dx * tileSize, offset.dy * tileSize);
+    canvas.translate(offset.dx * tileSize!, offset.dy * tileSize);
     canvas.rotate(angle);
-    sprite.render(canvas, position: Vector2.zero(), anchor: Anchor.center, size: Vector2(aspectRatio, 1) * size * tileSize);
+    sprite!.render(canvas, position: Vector2.zero(), anchor: Anchor.center, size: Vector2(aspectRatio, 1) * size * tileSize);
     canvas.restore();
   }
 
@@ -101,7 +101,7 @@ FoiliageType getFoiliageTypeFromString(String foiliageTypeAsString) {
       return element;
     }
   }
-  return null;
+  return FoiliageType.ROCK_1;
 }
 
 enum FoiliageType { ROCK_1, ROCK_2, ROCK_3, TENT_BLUE_1, TENT_BLUE_2, TENT_RED_1, TENT_RED_2, TREE_1, TREE_2, TRIBUNE }

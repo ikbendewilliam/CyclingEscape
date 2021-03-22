@@ -13,19 +13,19 @@ import '../gameManager.dart';
 
 class TutorialView implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
 
   final Function navigate;
-  GameManagerState previousState;
-  BaseView previousView;
-  TutorialType tutorialType;
-  List<String> selectedText;
+  GameManagerState? previousState;
+  BaseView? previousView;
+  TutorialType? tutorialType;
+  late List<String> selectedText;
 
   TutorialView(this.spriteManager, this.navigate);
 
@@ -41,9 +41,9 @@ class TutorialView implements BaseView {
   }
 
   createButtons() {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
-    buttons.add(Button(this.spriteManager, Offset(screenSize.width / 3 * 2, 5.5 * buttonSize), ButtonType.ICON_YES, () => {navigate(GameManagerState.CLOSE_TUTORIAL)}));
+    buttons.add(Button(this.spriteManager, Offset(screenSize!.width / 3 * 2, 5.5 * buttonSize), ButtonType.ICON_YES, () => {navigate(GameManagerState.CLOSE_TUTORIAL)}));
   }
 
   @override
@@ -72,28 +72,28 @@ class TutorialView implements BaseView {
   @override
   void render(Canvas canvas) {
     if (this.previousView != null) {
-      this.previousView.render(canvas);
+      this.previousView!.render(canvas);
     }
     Paint overlay = Paint()
       ..color = Color(0x77000000)
       ..blendMode = BlendMode.darken;
-    canvas.drawRect(Rect.fromLTRB(0, 0, screenSize.width, screenSize.height), overlay);
+    canvas.drawRect(Rect.fromLTRB(0, 0, screenSize!.width, screenSize!.height), overlay);
 
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas,
-        anchor: Anchor.center, position: Vector2(screenSize.width / 4, buttonSize), size: Vector2(screenSize.width / 2, screenSize.height - buttonSize * 1.75));
+    buttonBackground!
+        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 4, buttonSize), size: Vector2(screenSize!.width / 2, screenSize!.height - buttonSize * 1.75));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 3, buttonSize * 0.75), size: Vector2(screenSize.width / 3, buttonSize));
+    backgroundHeader!.render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 3, buttonSize * 0.75), size: Vector2(screenSize!.width / 3, buttonSize));
 
     renderText(canvas);
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Tutorial');
-    Offset position = Offset(screenSize.width / 2, buttonSize);
+    Offset position = Offset(screenSize!.width / 2, buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 
@@ -104,9 +104,9 @@ class TutorialView implements BaseView {
   }
 
   renderLine(canvas, line, yOffset) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
-    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize / 2 * (yOffset / 2 + 4)), 0, span);
+    CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize / 2 * (yOffset / 2 + 4)), 0, span);
   }
 
   setText() {
@@ -222,6 +222,8 @@ class TutorialView implements BaseView {
         text.add('');
         text.addAll(splitLongText('You can upgrade your team by hiring more riders, unlocking more rankings (sprints, team, mountain and young) or unlock better races'));
         break;
+      case null:
+        break;
     }
     selectedText = text;
   }
@@ -247,14 +249,14 @@ class TutorialView implements BaseView {
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
     createButtons();
     buttons.forEach((element) {
-      element.setScreenSize(size);
+      element.setScreenSize(size!);
     });
     if (this.previousView != null) {
-      this.previousView.resize(size);
+      this.previousView!.resize(size);
     }
   }
 
@@ -266,14 +268,7 @@ class TutorialsViewed {
   List<TutorialType> typesViewed;
   int toursFinished;
 
-  TutorialsViewed([this.typesViewed, this.toursFinished]) {
-    if (this.typesViewed == null) {
-      this.typesViewed = [];
-    }
-    if (this.toursFinished == null) {
-      this.toursFinished = 0;
-    }
-  }
+  TutorialsViewed([this.typesViewed = const [], this.toursFinished = 0]);
 
   bool hasViewed(TutorialType type) {
     return typesViewed.contains(type);
@@ -288,7 +283,7 @@ class TutorialsViewed {
     save();
   }
 
-  static TutorialsViewed fromJson(Map<String, dynamic> json) {
+  static TutorialsViewed? fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }
@@ -306,7 +301,7 @@ class TutorialsViewed {
   }
 }
 
-TutorialType getTutorialTypeFromString(String tutorialTypeAsString) {
+TutorialType? getTutorialTypeFromString(String tutorialTypeAsString) {
   for (TutorialType element in TutorialType.values) {
     if (element.toString() == tutorialTypeAsString) {
       return element;

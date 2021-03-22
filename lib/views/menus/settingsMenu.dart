@@ -13,14 +13,14 @@ import '../gameManager.dart';
 
 class SettingsMenu implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
-  Sprite backText;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
+  Sprite? backText;
 
   Settings settings;
 
@@ -44,24 +44,24 @@ class SettingsMenu implements BaseView {
   createButtons(double buttonSize) {
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 0.9),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 0.9),
       ButtonType.ICON_MINUS,
       () {
-        settings.autofollowThreshold = (settings.autofollowThreshold - 1 - 2 + 11) % 11 + 2;
+        settings.autofollowThreshold = (settings.autofollowThreshold! - 1 - 2 + 11) % 11 + 2;
       },
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 0.9),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize - buttonSize * 0.9),
       ButtonType.ICON_PLUS,
       () {
-        settings.autofollowThreshold = (settings.autofollowThreshold + 1 - 2 + 11) % 11 + 2;
+        settings.autofollowThreshold = (settings.autofollowThreshold! + 1 - 2 + 11) % 11 + 2;
       },
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize),
-      settings?.autofollowAsk == true ? ButtonType.SWITCH_BUTTON_ON : ButtonType.SWITCH_BUTTON_OFF,
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize),
+      settings.autofollowAsk == true ? ButtonType.SWITCH_BUTTON_ON : ButtonType.SWITCH_BUTTON_OFF,
       (isOn) {
         settings.autofollowAsk = isOn;
         saveSettings();
@@ -69,43 +69,43 @@ class SettingsMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_MINUS,
       () => {decreaseCyclistMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1),
       ButtonType.ICON_PLUS,
       () => {increaseCyclistMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_MINUS,
       () => {decreaseCameraMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 2),
       ButtonType.ICON_PLUS,
       () => {increaseCameraMovement()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_MINUS,
       () => {decreaseDifficulty()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_PLUS,
       () => {increaseDifficulty()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 3.3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
+      Offset(screenSize!.width / 2 + buttonSize * 3.3, 2.7 * buttonSize + buttonSize * 1.1 * 3),
       ButtonType.ICON_YES,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
@@ -125,6 +125,8 @@ class SettingsMenu implements BaseView {
       case CyclistMovementType.SKIP:
         settings.cyclistMovement = CyclistMovementType.SLOW;
         break;
+      case null:
+        throw Exception("settings.cyclistMovement shouldn't be null");
     }
     saveSettings();
   }
@@ -143,6 +145,8 @@ class SettingsMenu implements BaseView {
       case CyclistMovementType.SKIP:
         settings.cyclistMovement = CyclistMovementType.FAST;
         break;
+      case null:
+        throw Exception("settings.cyclistMovement shouldn't be null");
     }
     saveSettings();
   }
@@ -158,6 +162,8 @@ class SettingsMenu implements BaseView {
       case CameraMovementType.SELECT_ONLY:
         settings.cameraMovement = CameraMovementType.AUTO;
         break;
+      case null:
+        throw Exception("settings.cameraMovement shouldn't be null");
     }
     saveSettings();
   }
@@ -173,6 +179,8 @@ class SettingsMenu implements BaseView {
       case CameraMovementType.SELECT_ONLY:
         settings.cameraMovement = CameraMovementType.NONE;
         break;
+      case null:
+        throw Exception("settings.cameraMovement shouldn't be null");
     }
     saveSettings();
   }
@@ -188,6 +196,8 @@ class SettingsMenu implements BaseView {
       case DifficultyType.HARD:
         settings.difficulty = DifficultyType.EASY;
         break;
+      case null:
+        throw Exception("settings.difficulty shouldn't be null");
     }
     saveSettings();
   }
@@ -203,6 +213,8 @@ class SettingsMenu implements BaseView {
       case DifficultyType.HARD:
         settings.difficulty = DifficultyType.NORMAL;
         break;
+      case null:
+        throw Exception("settings.difficulty shouldn't be null");
     }
     saveSettings();
   }
@@ -211,16 +223,14 @@ class SettingsMenu implements BaseView {
     switch (settings.cyclistMovement) {
       case CyclistMovementType.FAST:
         return 'Fast';
-        break;
       case CyclistMovementType.NORMAL:
         return 'Normal';
-        break;
       case CyclistMovementType.SLOW:
         return 'Slow';
-        break;
       case CyclistMovementType.SKIP:
         return 'Skip';
-        break;
+      case null:
+        throw Exception("settings.cyclistMovement shouldn't be null");
     }
   }
 
@@ -228,13 +238,12 @@ class SettingsMenu implements BaseView {
     switch (settings.cameraMovement) {
       case CameraMovementType.AUTO:
         return 'Follow and select';
-        break;
       case CameraMovementType.SELECT_ONLY:
         return 'Select only';
-        break;
       case CameraMovementType.NONE:
         return 'Disabled';
-        break;
+      case null:
+        throw Exception("settings.cameraMovement shouldn't be null");
     }
   }
 
@@ -242,13 +251,12 @@ class SettingsMenu implements BaseView {
     switch (settings.difficulty) {
       case DifficultyType.EASY:
         return 'Easy';
-        break;
       case DifficultyType.NORMAL:
         return 'Normal';
-        break;
       case DifficultyType.HARD:
         return 'Hard';
-        break;
+      case null:
+        throw Exception("settings.difficulty shouldn't be null");
     }
   }
 
@@ -281,78 +289,80 @@ class SettingsMenu implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas, position: Vector2(screenSize.width / 6, buttonSize * 0.4), size: Vector2(screenSize.width / 3 * 2, screenSize.height / 1.1));
+    buttonBackground!.render(canvas, position: Vector2(screenSize!.width / 6, buttonSize * 0.4), size: Vector2(screenSize!.width / 3 * 2, screenSize!.height / 1.1));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backText.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 0.9), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!
+        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.9), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'autofollow threshold:');
-    Offset position = Offset(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.4);
+    Offset position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.4);
 
     CanvasUtils.drawText(canvas, position, 0, span);
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${settings?.autofollowThreshold}');
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.05);
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${settings.autofollowThreshold}');
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'autofollow ask below threshold');
-    position = Offset(screenSize.width / 2 - buttonSize * 0.5, 2.7 * buttonSize - buttonSize * 0.15);
+    position = Offset(screenSize!.width / 2 - buttonSize * 0.5, 2.7 * buttonSize - buttonSize * 0.15);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!
+        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'Cyclist move speed');
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.6);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: cyclistMovementAsString());
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.render(canvas,
-        anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!.render(canvas,
+        anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'camera automatic movement');
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.6);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: cameraMovementAsString());
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.2);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText.render(canvas,
-        anchor: Anchor.center, position: Vector2(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!.render(canvas,
+        anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'Difficulty');
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.6);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: difficultyAsString());
-    position = Offset(screenSize.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.3);
+    position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.21), size: Vector2(screenSize.width / 3, buttonSize * 0.8));
+    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Settings');
-    position = Offset(screenSize.width / 2, buttonSize * 0.35);
+    position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     createButtons(buttonSize);
     buttons.forEach((element) {
       if (element.type == ButtonType.ICON_YES) {
-        element.setScreenSize(size);
+        element.setScreenSize(size!);
       } else {
-        element.setScreenSize(size * 0.7);
+        element.setScreenSize(size! * 0.7);
       }
     });
   }
@@ -362,11 +372,11 @@ class SettingsMenu implements BaseView {
 }
 
 class Settings {
-  int autofollowThreshold;
-  bool autofollowAsk;
-  CyclistMovementType cyclistMovement;
-  CameraMovementType cameraMovement;
-  DifficultyType difficulty;
+  int? autofollowThreshold;
+  bool? autofollowAsk;
+  CyclistMovementType? cyclistMovement;
+  CameraMovementType? cameraMovement;
+  DifficultyType? difficulty;
 
   Settings([this.autofollowThreshold, this.autofollowAsk, this.cyclistMovement, this.cameraMovement, this.difficulty]) {
     if (this.autofollowThreshold == null) {
@@ -407,7 +417,7 @@ class Settings {
   }
 }
 
-CyclistMovementType getCyclistMovementTypeFromString(String cyclistMovementTypeAsString) {
+CyclistMovementType? getCyclistMovementTypeFromString(String? cyclistMovementTypeAsString) {
   for (CyclistMovementType element in CyclistMovementType.values) {
     if (element.toString() == cyclistMovementTypeAsString) {
       return element;
@@ -416,7 +426,7 @@ CyclistMovementType getCyclistMovementTypeFromString(String cyclistMovementTypeA
   return null;
 }
 
-CameraMovementType getCameraMovementTypeFromString(String cameraMovementTypeAsString) {
+CameraMovementType? getCameraMovementTypeFromString(String? cameraMovementTypeAsString) {
   for (CameraMovementType element in CameraMovementType.values) {
     if (element.toString() == cameraMovementTypeAsString) {
       return element;
@@ -425,7 +435,7 @@ CameraMovementType getCameraMovementTypeFromString(String cameraMovementTypeAsSt
   return null;
 }
 
-DifficultyType getDifficultyTypeFromString(String difficultyTypeAsString) {
+DifficultyType? getDifficultyTypeFromString(String? difficultyTypeAsString) {
   for (DifficultyType element in DifficultyType.values) {
     if (element.toString() == difficultyTypeAsString) {
       return element;

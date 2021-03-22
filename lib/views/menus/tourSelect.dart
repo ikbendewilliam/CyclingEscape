@@ -16,18 +16,18 @@ import '../gameManager.dart';
 
 class TourSelectMenu implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   int selectedColor = 0;
-  Tour selectedTour;
+  Tour? selectedTour;
   List<Tour> tours = [];
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
-  Sprite backgroundTour;
-  Sprite backText;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
+  Sprite? backgroundTour;
+  Sprite? backText;
 
   final Function navigate;
 
@@ -70,31 +70,31 @@ class TourSelectMenu implements BaseView {
   createButtons(double buttonSize) {
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 7 * 3, 5.25 * buttonSize),
+      Offset(screenSize!.width / 7 * 3, 5.25 * buttonSize),
       ButtonType.ICON_NO,
       () => {navigate(GameManagerState.MAIN_MENU)},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 5.25 * buttonSize),
+      Offset(screenSize!.width / 2, 5.25 * buttonSize),
       ButtonType.ICON_RELOAD,
       () => {generateTours()},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 7 * 4, 5.25 * buttonSize),
+      Offset(screenSize!.width / 7 * 4, 5.25 * buttonSize),
       ButtonType.ICON_PLAY,
       () => {selectedTour != null ? navigate(GameManagerState.PLAYING, tourSettings: selectedTour, team: selectedColor) : null},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 7 * 3, 4.3 * buttonSize),
+      Offset(screenSize!.width / 7 * 3, 4.3 * buttonSize),
       ButtonType.ICON_SMALL_LEFT,
       () => {selectedColor = (selectedColor - 1 + 8) % 8},
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 7 * 4, 4.3 * buttonSize),
+      Offset(screenSize!.width / 7 * 4, 4.3 * buttonSize),
       ButtonType.ICON_SMALL_RIGHT,
       () => {selectedColor = (selectedColor + 1) % 8},
     ));
@@ -142,10 +142,10 @@ class TourSelectMenu implements BaseView {
       button.onTapUp(details);
     });
 
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     tours.asMap().forEach((i, element) {
-      Offset start = Offset(screenSize.width / 6 * 1.1 * (i + 0.77), buttonSize * 1.7);
-      if (MapUtils.isInsideRect(details.globalPosition, start, start + Offset(screenSize.width / 6, buttonSize * 2.2))) {
+      Offset start = Offset(screenSize!.width / 6 * 1.1 * (i + 0.77), buttonSize * 1.7);
+      if (MapUtils.isInsideRect(details.globalPosition, start, start + Offset(screenSize!.width / 6, buttonSize * 2.2))) {
         selectedTour = element;
       }
     });
@@ -159,31 +159,32 @@ class TourSelectMenu implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 8, buttonSize), size: Vector2(screenSize.width / 8 * 6, screenSize.height / 1.4));
+    buttonBackground!
+        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 8, buttonSize), size: Vector2(screenSize!.width / 8 * 6, screenSize!.height / 1.4));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.render(canvas, anchor: Anchor.center, position: Vector2(screenSize.width / 3, buttonSize * 0.81), size: Vector2(screenSize.width / 3, buttonSize * 0.8));
+    backgroundHeader!.render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 3, buttonSize * 0.81), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
     Paint paint = Paint()
       ..color = Team.getColorFromId(selectedColor)
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(Offset(screenSize.width / 2, buttonSize * 4.3), buttonSize / 4, paint);
+    canvas.drawCircle(Offset(screenSize!.width / 2, buttonSize * 4.3), buttonSize / 4, paint);
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
-    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize * 4.15), 0, span);
+    CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 4.15), 0, span);
 
     tours.asMap().forEach((i, element) {
-      Color drawColor = element == selectedTour ? Colors.green[600] : Colors.white;
-      backgroundTour.render(canvas,
-          anchor: Anchor.center, position: Vector2(screenSize.width / 6 * 1.1 * (i + 0.77), buttonSize * 1.7), size: Vector2(screenSize.width / 6, buttonSize * 2.2));
+      Color? drawColor = element == selectedTour ? Colors.green[600] : Colors.white;
+      backgroundTour!.render(canvas,
+          anchor: Anchor.center, position: Vector2(screenSize!.width / 6 * 1.1 * (i + 0.77), buttonSize * 1.7), size: Vector2(screenSize!.width / 6, buttonSize * 2.2));
 
-      Offset position = Offset(screenSize.width / 6 * 1.1 * (i + 1.27), buttonSize * 1.8);
+      Offset position = Offset(screenSize!.width / 6 * 1.1 * (i + 1.27), buttonSize * 1.8);
 
       TextSpan span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'Teams: ${element.teams}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 0), 0, span);
@@ -200,18 +201,18 @@ class TourSelectMenu implements BaseView {
     });
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Start a tour');
-    Offset position = Offset(screenSize.width / 2, buttonSize * 0.95);
+    Offset position = Offset(screenSize!.width / 2, buttonSize * 0.95);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     createButtons(buttonSize);
     buttons.forEach((element) {
-      element.setScreenSize(size);
+      element.setScreenSize(size!);
     });
   }
 
@@ -225,7 +226,7 @@ class Tour {
   final int races;
   final MapType mapType;
   final MapLength mapLength;
-  String id = UniqueKey().toString();
+  String? id = UniqueKey().toString();
 
   Tour(this.teams, this.ridersPerTeam, this.races, this.mapType, this.mapLength);
 

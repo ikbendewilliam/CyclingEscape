@@ -14,16 +14,16 @@ import '../gameManager.dart';
 
 class CareerMenu implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   List<Button> buttons = [];
   List<RaceType> raceTypes = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
-  Sprite backText;
-  Sprite backTextDisabled;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
+  Sprite? backText;
+  Sprite? backTextDisabled;
   int index = 0;
   Career career;
 
@@ -55,16 +55,16 @@ class CareerMenu implements BaseView {
   }
 
   createButtons() async {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 3.25, 3 * buttonSize),
+      Offset(screenSize!.width / 2 - buttonSize * 3.25, 3 * buttonSize),
       ButtonType.ICON_HELP,
       () {
         String text = '';
-        text += raceTypes[index].name + '\n';
-        text += 'Winner gets: \$' + earningsToString(raceTypes[index].earnings) + '\n';
+        text += raceTypes[index].name! + '\n';
+        text += 'Winner gets: \$' + earningsToString(raceTypes[index].earnings!) + '\n';
         text += 'Teams: ' + raceTypes[index].tour.teams.toString() + '\n';
         text += 'Riders for other teams: ' + raceTypes[index].tour.ridersPerTeam.toString() + '\n';
         text += 'Races: ' + raceTypes[index].tour.races.toString() + '\n';
@@ -76,7 +76,7 @@ class CareerMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 - buttonSize * 2.25, 3 * buttonSize),
+      Offset(screenSize!.width / 2 - buttonSize * 2.25, 3 * buttonSize),
       ButtonType.ICON_MINUS,
       () {
         index = (index - 1 < 0) ? raceTypes.length - 1 : index - 1;
@@ -84,7 +84,7 @@ class CareerMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 2.25, 3 * buttonSize),
+      Offset(screenSize!.width / 2 + buttonSize * 2.25, 3 * buttonSize),
       ButtonType.ICON_PLUS,
       () {
         index = index + 1 >= raceTypes.length ? 0 : index + 1;
@@ -92,7 +92,7 @@ class CareerMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2 + buttonSize * 3.25, 3 * buttonSize),
+      Offset(screenSize!.width / 2 + buttonSize * 3.25, 3 * buttonSize),
       ButtonType.ICON_PLAY,
       () {
         if (index < career.raceTypes) {
@@ -102,20 +102,20 @@ class CareerMenu implements BaseView {
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4.4 * buttonSize),
+      Offset(screenSize!.width / 2, 4.4 * buttonSize),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.CAREER_UPGRADES_MENU)},
       text: 'Upgrades',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 5.5 * buttonSize),
+      Offset(screenSize!.width / 2, 5.5 * buttonSize),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.MAIN_MENU)},
       text: 'Main menu',
     ));
     buttons.forEach((element) {
-      element.setScreenSize(screenSize);
+      element.setScreenSize(screenSize!);
     });
   }
 
@@ -144,37 +144,37 @@ class CareerMenu implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas, position: Vector2(screenSize.width / 6, buttonSize * 1.05), size: Vector2(screenSize.width / 3 * 2, screenSize.height - buttonSize * 1.5));
+    buttonBackground!.render(canvas, position: Vector2(screenSize!.width / 6, buttonSize * 1.05), size: Vector2(screenSize!.width / 3 * 2, screenSize!.height - buttonSize * 1.5));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 0.8), size: Vector2(screenSize.width / 3, buttonSize));
+    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.8), size: Vector2(screenSize!.width / 3, buttonSize));
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Career');
-    Offset position = Offset(screenSize.width / 2, buttonSize * 1.05);
+    Offset position = Offset(screenSize!.width / 2, buttonSize * 1.05);
 
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'You have: \$' + earningsToString(career.cash));
-    position = Offset(screenSize.width / 2, 2 * buttonSize);
+    position = Offset(screenSize!.width / 2, 2 * buttonSize);
 
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    Sprite sprite = index < career.raceTypes ? backText : backTextDisabled;
-    sprite.render(canvas, position: Vector2(screenSize.width / 2, 3 * buttonSize), size: Vector2(buttonSize * 3.5, buttonSize));
+    Sprite sprite = index < career.raceTypes ? backText! : backTextDisabled!;
+    sprite.render(canvas, position: Vector2(screenSize!.width / 2, 3 * buttonSize), size: Vector2(buttonSize * 3.5, buttonSize));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: raceTypes[index].name);
-    position = Offset(screenSize.width / 2, 3 * buttonSize - buttonSize * 0.25);
+    position = Offset(screenSize!.width / 2, 3 * buttonSize - buttonSize * 0.25);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     span = new TextSpan(
         style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
-        text: index < career.raceTypes ? ('winner earns: \$' + earningsToString(raceTypes[index].earnings)) : 'unlock in upgrades');
-    position = Offset(screenSize.width / 2, 3 * buttonSize + buttonSize * 0.5);
+        text: index < career.raceTypes ? ('winner earns: \$' + earningsToString(raceTypes[index].earnings!)) : 'unlock in upgrades');
+    position = Offset(screenSize!.width / 2, 3 * buttonSize + buttonSize * 0.5);
 
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -190,7 +190,7 @@ class CareerMenu implements BaseView {
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
     createButtons();
   }
@@ -200,13 +200,13 @@ class CareerMenu implements BaseView {
 }
 
 class RaceType {
-  final String name;
-  final int earnings;
+  final String? name;
+  final int? earnings;
   final Tour tour;
 
   RaceType(this.name, this.earnings, this.tour);
 
-  static RaceType fromJson(Map<String, dynamic> json) {
+  static RaceType? fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }
@@ -235,7 +235,7 @@ class Career {
     this.cash = 0,
   ]);
 
-  static Career fromJson(Map<String, dynamic> json) {
+  static Career? fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }

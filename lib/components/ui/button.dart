@@ -10,18 +10,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Button {
-  final String text;
+  final String? text;
   ButtonType type;
   final Function onPress;
   final SpriteManager spriteManager;
 
   bool isPressed = false;
   Offset center;
-  Sprite spriteBackground;
-  Sprite sprite;
-  Sprite spritePressed;
+  Sprite? spriteBackground;
+  Sprite? sprite;
+  Sprite? spritePressed;
   double buttonSize = 1;
-  double scale;
+  double? scale;
 
   Button(this.spriteManager, this.center, this.type, this.onPress, {this.text, this.scale}) {
     getSprite();
@@ -147,12 +147,12 @@ class Button {
       scale = 0.7;
     }
     if (spriteBackground != null) {
-      spriteBackground.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize, buttonSize) * 1.5);
+      spriteBackground!.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize, buttonSize) * 1.5);
     }
     if (!isPressed) {
-      sprite.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
+      sprite!.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     } else {
-      spritePressed.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
+      spritePressed!.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     }
 
     if (this.text != null) {
@@ -193,7 +193,7 @@ class Button {
   void setScreenSize(Size size) {
     buttonSize = size.height / 7;
     if (scale != null) {
-      buttonSize *= scale;
+      buttonSize *= scale!;
     }
   }
 }

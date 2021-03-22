@@ -5,6 +5,7 @@ import 'package:CyclingEscape/components/data/playSettings.dart';
 import 'package:CyclingEscape/components/data/spriteManager.dart';
 import 'package:CyclingEscape/components/positions/gameMap.dart';
 import 'package:CyclingEscape/components/positions/sprint.dart';
+import 'package:collection/collection.dart';
 
 import '../components/positions/position.dart';
 
@@ -15,10 +16,10 @@ class MapUtils {
   double currentAngle = 0;
   double jOffset = 0;
   Offset currentPosition;
-  Sprint nextSprint;
+  Sprint? nextSprint;
   PositionType currentPositionType = PositionType.FLAT;
   List<Sprint> sprints = [];
-  List<Position> mapPositions;
+  List<Position>? mapPositions;
 
   MapUtils(this.listener, this.currentPosition) {
     mapPositions = [];
@@ -30,8 +31,7 @@ class MapUtils {
   }
 
   void addSprint(int width, SprintType type) {
-    Sprint sprint =
-        Sprint(type, currentPosition, width, -currentAngle, currentSegment++);
+    Sprint sprint = Sprint(type, currentPosition, width, -currentAngle, currentSegment++);
     sprints.add(sprint);
     this.moveWithoutAdding(Offset(cos(currentAngle), sin(currentAngle)) / 3, 0);
     nextSprint = sprint;
@@ -45,18 +45,12 @@ class MapUtils {
       for (int j = 0; j < width; j++) {
         int jAccent = reverseJ ? width - j - 1 : j;
         double fieldValue = 0;
-        Offset p1 = Offset(
-            currentPosition.dx +
-                dx * i * cos(currentAngle) +
-                dx * (j / 2) * cos(currentAngle + pi / 2),
-            currentPosition.dy +
-                dy * i * sin(currentAngle) +
-                dy * (j / 2) * sin(currentAngle + pi / 2));
+        Offset p1 = Offset(currentPosition.dx + dx * i * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
+            currentPosition.dy + dy * i * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2));
         switch (currentPositionType) {
           case PositionType.COBBLE:
             String t = (p1.dx * p1.dy / 61667).toString();
-            int x =
-                int.parse(t.toString().substring(t.length - 6, t.length - 5));
+            int x = int.parse(t.toString().substring(t.length - 6, t.length - 5));
             fieldValue = x < 4 ? -1 : (x < 7 ? -2 : (x < 9 ? -3 : -4));
             break;
           case PositionType.UPHILL:
@@ -70,13 +64,8 @@ class MapUtils {
         }
         positions.add(new Position(
             p1,
-            Offset(
-                currentPosition.dx +
-                    (dx * (i + 1)) * cos(currentAngle) +
-                    dx * (j / 2) * cos(currentAngle + pi / 2),
-                currentPosition.dy +
-                    (dy * (i + 1)) * sin(currentAngle) +
-                    dy * (j / 2) * sin(currentAngle + pi / 2)),
+            Offset(currentPosition.dx + (dx * (i + 1)) * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
+                currentPosition.dy + (dy * (i + 1)) * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2)),
             listener,
             i == length - 1,
             currentSegment,
@@ -94,10 +83,9 @@ class MapUtils {
       }
       nextSprint = null;
     }
-    currentPosition += Offset(
-        dx * length * cos(currentAngle), dy * length * sin(currentAngle));
+    currentPosition += Offset(dx * length * cos(currentAngle), dy * length * sin(currentAngle));
     currentSegment++;
-    mapPositions.addAll(positions);
+    mapPositions!.addAll(positions);
   }
 
   void addCorner(double deltaAngle, int width, double radius) {
@@ -106,56 +94,37 @@ class MapUtils {
     bool clockwise = deltaAngle < 0;
     for (int j = 0; j < width; j++) {
       int jAccent = clockwise ? width - j - 1 : j;
-      Offset segmentStart = currentPosition +
-          Offset(-j * sin(currentAngle), j * cos(currentAngle));
-      positions.addAll(_addCornerSegment(
-          segmentStart,
-          currentAngle + (clockwise ? pi : 0),
-          endAngle + (clockwise ? pi : 0),
-          radius - jAccent,
-          clockwise,
-          currentSegment,
-          j + jOffset));
+      Offset segmentStart = currentPosition + Offset(-j * sin(currentAngle), j * cos(currentAngle));
+      positions
+          .addAll(_addCornerSegment(segmentStart, currentAngle + (clockwise ? pi : 0), endAngle + (clockwise ? pi : 0), radius - jAccent, clockwise, currentSegment, j + jOffset));
     }
     nextSprint = null;
     double radiusAccent = radius - (clockwise ? width - 1 : 0);
-    currentPosition += Offset(radiusAccent * cos(currentAngle - pi / 2),
-            radiusAccent * sin(currentAngle - pi / 2)) *
-        (clockwise ? 1 : -1);
-    currentPosition += Offset(radiusAccent * cos(endAngle - pi / 2),
-            radiusAccent * sin(endAngle - pi / 2)) *
-        (clockwise ? -1 : 1);
+    currentPosition += Offset(radiusAccent * cos(currentAngle - pi / 2), radiusAccent * sin(currentAngle - pi / 2)) * (clockwise ? 1 : -1);
+    currentPosition += Offset(radiusAccent * cos(endAngle - pi / 2), radiusAccent * sin(endAngle - pi / 2)) * (clockwise ? -1 : 1);
     currentSegment++;
     currentAngle = endAngle;
-    mapPositions.addAll(positions);
+    mapPositions!.addAll(positions);
   }
 
-  List<Position> _addCornerSegment(Offset start, double startAngle,
-      double endAngle, double radius, bool clockwise, int segment, double j) {
+  List<Position> _addCornerSegment(Offset start, double startAngle, double endAngle, double radius, bool clockwise, int segment, double j) {
     List<Position> positions = [];
     double length = radius * (startAngle - endAngle).abs();
     int numberOfPositions = (length / 2).floor();
     double centerAngle = (startAngle + endAngle) / 2;
     double maxAngle = (startAngle - centerAngle).abs();
     double istart = -(numberOfPositions % 2) / 2 + 0.5;
-    Offset centerOfCorner =
-        start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
+    Offset centerOfCorner = start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
     int imax = (numberOfPositions / 2).ceil();
     for (double i = istart; i < imax; i++) {
       for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
-        double startAngle2 =
-            centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
+        double startAngle2 = centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
         double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
-        Offset offset = Offset(cos(angle), sin(angle)) *
-            length /
-            2 /
-            numberOfPositions.toDouble();
+        Offset offset = Offset(cos(angle), sin(angle)) * length / 2 / numberOfPositions.toDouble();
 
-        double radiusPart = pow(
-            pow(radius, 2) - (pow(offset.dx, 2) + pow(offset.dy, 2)), 1 / 2);
+        double radiusPart = pow(pow(radius, 2) - (pow(offset.dx, 2) + pow(offset.dy, 2)), 1 / 2) as double;
 
-        Offset center = centerOfCorner +
-            Offset(radiusPart * sin(angle), -radiusPart * cos(angle));
+        Offset center = centerOfCorner + Offset(radiusPart * sin(angle), -radiusPart * cos(angle));
         Offset p1 = center + offset * k.toDouble();
         Offset p2 = center - offset * k.toDouble();
 
@@ -166,9 +135,7 @@ class MapUtils {
         }
         int iAccent;
         if (istart == 0.5) {
-          iAccent = (numberOfPositions / 2).floor() -
-              k * i.ceil() +
-              (k == -1 ? -1 : 0);
+          iAccent = (numberOfPositions / 2).floor() - k * i.ceil() + (k == -1 ? -1 : 0);
         } else {
           iAccent = (numberOfPositions / 2).floor() - i.floor() * k;
         }
@@ -179,8 +146,7 @@ class MapUtils {
         switch (currentPositionType) {
           case PositionType.COBBLE:
             String t = (p1.dx * p1.dy / 61667).toString();
-            int x =
-                int.parse(t.toString().substring(t.length - 6, t.length - 5));
+            int x = int.parse(t.toString().substring(t.length - 6, t.length - 5));
             fieldValue = x < 4 ? -1 : (x < 7 ? -2 : (x < 9 ? -3 : -4));
             break;
           case PositionType.UPHILL:
@@ -192,53 +158,33 @@ class MapUtils {
           default:
             fieldValue = 0;
         }
-        positions.add(Position(
-            p1,
-            p2,
-            listener,
-            iAccent == numberOfPositions - 1,
-            segment,
-            iAccent * 1.0,
-            ((iAccent + 1) * 100.0 / (numberOfPositions)).roundToDouble(),
-            j,
-            clockwise ? k : -k,
-            clockwise,
-            (startAngle2 + pi * 2) % (pi * 2),
-            radius,
-            true,
-            currentPositionType,
-            curvature: numberOfPositions,
-            fieldValue: fieldValue,
-            sprint: iAccent < 1 ? nextSprint : null));
+        positions.add(Position(p1, p2, listener, iAccent == numberOfPositions - 1, segment, iAccent * 1.0, ((iAccent + 1) * 100.0 / (numberOfPositions)).roundToDouble(), j,
+            clockwise ? k : -k, clockwise, (startAngle2 + pi * 2) % (pi * 2), radius, true, currentPositionType,
+            curvature: numberOfPositions, fieldValue: fieldValue, sprint: iAccent < 1 ? nextSprint : null));
       }
     }
     return positions;
   }
 
-  void setPositionType(PositionType positionType, [int fieldValue]) {
+  void setPositionType(PositionType positionType, [int? fieldValue]) {
     currentPositionType = positionType;
     if (fieldValue != null) {
       this.fieldValue = fieldValue;
     }
   }
 
-  List<Position> generatePositions() {
-    MapUtils.connectPositions(mapPositions);
+  List<Position>? generatePositions() {
+    MapUtils.connectPositions(mapPositions!);
     return mapPositions;
   }
 
   static void connectPositions(List<Position> positions) {
-    List<List<Position>> segments = new List();
+    List<List<Position>?> segments = [];
     positions.forEach((element) {
       if (segments.length == 0) {
         segments.add([element]);
       } else {
-        List<Position> segment = segments.firstWhere(
-            (a) =>
-                a.firstWhere((b) => b.segment == element.segment,
-                    orElse: () => null) !=
-                null,
-            orElse: () => null);
+        List<Position>? segment = segments.firstWhereOrNull(((a) => a!.firstWhereOrNull((b) => b.segment == element.segment) != null));
         if (segment != null) {
           segment.add(element);
         } else {
@@ -247,35 +193,21 @@ class MapUtils {
       }
     });
     segments.forEach((segment) {
-      int segmentId = segment.first.segment;
-      List<Position> nextSegment = segments.firstWhere(
-          (a) =>
-              a.first.segment == segmentId + 1 ||
-              (a.firstWhere(
-                      (element) =>
-                          element.segment == segmentId + 2 &&
-                          element.sprint != null,
-                      orElse: () => null) !=
-                  null),
-          orElse: () => null);
-      List<Position> nextSegmentPositions = new List();
+      int segmentId = segment!.first.segment;
+      List<Position>? nextSegment = segments
+          .firstWhereOrNull(((a) => a!.first.segment == segmentId + 1 || (a.firstWhereOrNull((element) => element.segment == segmentId + 2 && element.sprint != null) != null)));
+      var nextSegmentPositions = <Position>[];
       if (nextSegment != null) {
-        nextSegmentPositions =
-            nextSegment.where((position) => position.i < 1).toList();
+        nextSegmentPositions = nextSegment.where((position) => position.i < 1).toList();
       }
       segment.forEach((position) {
         if (position.isLast) {
-          position.connections = nextSegmentPositions
-              .where((element) => (element.j - position.j).abs() <= 1)
-              .toList();
+          position.connections = nextSegmentPositions.where((element) => (element.j - position.j).abs() <= 1).toList();
         } else {
           position.connections = segment
               .where((element) =>
-                  (((position.isCurved &&
-                          (element.curvature == position.curvature) &&
-                          (element.j - position.j).abs() <= 1)) ||
-                      (!position.isCurved &&
-                          (element.j - position.j).abs() <= 1)) &&
+                  (position.isCurved && (element.curvature == position.curvature) && (element.j - position.j).abs() <= 1 ||
+                      (!position.isCurved && (element.j - position.j).abs() <= 1)) &&
                   (element.i == position.i + 1))
               .toList();
         }
@@ -283,8 +215,7 @@ class MapUtils {
     });
   }
 
-  static bool isInside(
-      Offset point, Offset p1, Offset p2, double width, double angle) {
+  static bool isInside(Offset point, Offset p1, Offset p2, double width, double angle) {
     Offset center = (p1 + p2) / 2;
     Offset rotatedPoint = rotatePoint(point - center, -angle);
     Offset rotatedPoint1 = rotatePoint(p1 - center, -angle);
@@ -293,26 +224,18 @@ class MapUtils {
   }
 
   static bool isInsideLine(Offset point, Offset p1, Offset p2, double width) {
-    return point.dx >= p1.dx &&
-        point.dx <= p2.dx &&
-        point.dy >= -width / 2 &&
-        point.dy <= width / 2;
+    return point.dx >= p1.dx && point.dx <= p2.dx && point.dy >= -width / 2 && point.dy <= width / 2;
   }
 
   static bool isInsideRect(Offset point, Offset p1, Offset p2) {
-    return point.dx >= p1.dx &&
-        point.dx <= p2.dx &&
-        point.dy >= p1.dy &&
-        point.dy <= p2.dy;
+    return point.dx >= p1.dx && point.dx <= p2.dx && point.dy >= p1.dy && point.dy <= p2.dy;
   }
 
   static Offset rotatePoint(localPoint, angle) {
-    return Offset(localPoint.dx * cos(angle) - localPoint.dy * sin(angle),
-        localPoint.dy * cos(angle) + localPoint.dx * sin(angle));
+    return Offset(localPoint.dx * cos(angle) - localPoint.dy * sin(angle), localPoint.dy * cos(angle) + localPoint.dx * sin(angle));
   }
 
-  static List<Sprint> getSprintsBetween(Position from, Position to,
-      [List<Sprint> currentSprints]) {
+  static List<Sprint?> getSprintsBetween(Position from, Position to, [List<Sprint?>? currentSprints]) {
     if (currentSprints == null) {
       currentSprints = [];
     }
@@ -320,58 +243,48 @@ class MapUtils {
       currentSprints.add(from.sprint);
     }
     if (to.segment - from.segment >= 1) {
-      return getSprintsBetween(from.connections.first, to, currentSprints);
+      return getSprintsBetween(from.connections!.first!, to, currentSprints);
     }
     return currentSprints;
   }
 
-  static List<Position> findPlaceBefore(
-      Position position, double maxDepth, bool emptyPosition,
-      {List<Position> positions, Position startPosition, int currentDepth}) {
+  static List<Position?> findPlaceBefore(Position? position, double? maxDepth, bool emptyPosition, {List<Position>? positions, Position? startPosition, int? currentDepth}) {
     if (currentDepth == null) {
       currentDepth = 0;
-    } else if (currentDepth > maxDepth) {
+    } else if (currentDepth > maxDepth!) {
       return [];
     }
     if (startPosition == null) {
-      Position positionFound;
-      positions.forEach((element) {
-        if (element.connections.length > 0 &&
-            element.connections.indexOf(position) >= 0 &&
-            element.j == position.j) {
+      Position? positionFound;
+      positions!.forEach((element) {
+        if (element.connections!.length > 0 && element.connections!.indexOf(position) >= 0 && element.j == position!.j) {
           positionFound = element;
         }
       });
       return [positionFound];
     } else {
       Position currentPosition = startPosition;
-      if (currentPosition.connections.length > 0 &&
-          currentPosition.getValue(false) < position.getValue(false)) {
-        if (currentPosition.connections.indexOf(position) >= 0 &&
-            currentPosition.j == position.j) {
-          List<Position> route = [currentPosition];
+      if (currentPosition.connections!.length > 0 && currentPosition.getValue(false) < position!.getValue(false)) {
+        if (currentPosition.connections!.indexOf(position) >= 0 && currentPosition.j == position.j) {
+          List<Position?> route = [currentPosition];
           return route;
         } else {
           // priorityPosition is for nicer animation/movement of cyclists
-          Position priorityPosition = currentPosition.connections.firstWhere(
-              (element) => element.j == currentPosition.j,
-              orElse: () => null);
+          Position? priorityPosition = currentPosition.connections!.firstWhere(((element) => element?.j == currentPosition.j), orElse: () => null);
           if (priorityPosition != null) {
-            currentPosition.connections.insert(0, priorityPosition);
-            currentPosition.connections.removeAt(
-                currentPosition.connections.lastIndexOf(priorityPosition));
+            currentPosition.connections!.insert(0, priorityPosition);
+            currentPosition.connections!.removeAt(currentPosition.connections!.lastIndexOf(priorityPosition));
           }
-          for (int i = 0; i < currentPosition.connections.length; i++) {
-            if (currentPosition.connections[i].cyclist == null ||
-                !emptyPosition) {
-              List<Position> routeFound = findPlaceBefore(
+          for (int i = 0; i < currentPosition.connections!.length; i++) {
+            if (currentPosition.connections![i]!.cyclist == null || !emptyPosition) {
+              List<Position?> routeFound = findPlaceBefore(
                 position,
                 maxDepth,
                 emptyPosition,
-                startPosition: currentPosition.connections[i],
+                startPosition: currentPosition.connections![i],
                 currentDepth: currentDepth + 1,
               );
-              if (routeFound != null && routeFound.length > 0) {
+              if (routeFound.length > 0) {
                 routeFound.insert(0, currentPosition);
                 return routeFound;
               }
@@ -383,8 +296,7 @@ class MapUtils {
     return [];
   }
 
-  static List<Position> findMaxValue(Position currentPosition, double maxValue,
-      [List<Position> route]) {
+  static List<Position?>? findMaxValue(Position? currentPosition, double maxValue, [List<Position?>? route]) {
     if (maxValue == 0) {
       return [currentPosition];
     } else if (route == null) {
@@ -393,13 +305,12 @@ class MapUtils {
       return null;
     }
     route.add(currentPosition);
-    if (currentPosition.connections.length > 0) {
+    if (currentPosition!.connections!.length > 0) {
       if (route.length - 1 > maxValue) {
         double bestValue = 0;
-        Position bestPosition;
-        currentPosition.connections.forEach((element) {
-          if (element.cyclist == null &&
-              (bestPosition == null || element.getValue(false) > bestValue)) {
+        Position? bestPosition;
+        currentPosition.connections!.forEach((element) {
+          if (element!.cyclist == null && (bestPosition == null || element.getValue(false) > bestValue)) {
             bestValue = element.getValue(false);
             bestPosition = element;
           }
@@ -410,24 +321,18 @@ class MapUtils {
         return route;
       } else {
         double bestValue = 0;
-        List<Position> bestRoute;
+        List<Position?>? bestRoute;
         // priorityPosition is for nicer animation/movement of cyclists
-        Position priorityPosition = currentPosition.connections.firstWhere(
-            (element) => element.j == currentPosition.j,
-            orElse: () => null);
+        Position? priorityPosition = currentPosition.connections!.firstWhere(((element) => element?.j == currentPosition.j), orElse: () => null);
         if (priorityPosition != null) {
-          currentPosition.connections.insert(0, priorityPosition);
-          currentPosition.connections.removeAt(
-              currentPosition.connections.lastIndexOf(priorityPosition));
+          currentPosition.connections!.insert(0, priorityPosition);
+          currentPosition.connections!.removeAt(currentPosition.connections!.lastIndexOf(priorityPosition));
         }
-        for (int i = 0; i < currentPosition.connections.length; i++) {
-          if (currentPosition.connections[i].cyclist == null) {
-            List<Position> maxValueRoute = findMaxValue(
-                currentPosition.connections[i], maxValue, route.toList());
-            if (maxValueRoute != null &&
-                (bestRoute == null ||
-                    maxValueRoute.last.getValue(false) > bestValue)) {
-              bestValue = maxValueRoute.last.getValue(false);
+        for (int i = 0; i < currentPosition.connections!.length; i++) {
+          if (currentPosition.connections![i]!.cyclist == null) {
+            List<Position?>? maxValueRoute = findMaxValue(currentPosition.connections![i], maxValue, route.toList());
+            if (maxValueRoute != null && (bestRoute == null || maxValueRoute.last!.getValue(false) > bestValue)) {
+              bestValue = maxValueRoute.last!.getValue(false);
               bestRoute = maxValueRoute;
             }
           }
@@ -439,8 +344,7 @@ class MapUtils {
   }
 
   // minDistance is used for when you don't move your max potential (for example taking the outer edge of a corner) so more riders can follow
-  static double calculateDistance(Position start, Position end,
-      {double currentDistance, double minDistance}) {
+  static double calculateDistance(Position? start, Position end, {double? currentDistance, double? minDistance}) {
     if (minDistance == null) {
       minDistance = -1;
     }
@@ -449,13 +353,12 @@ class MapUtils {
     }
     if (start == end) {
       return currentDistance;
-    } else if (start.getValue(false) > end.getValue(false)) {
+    } else if (start!.getValue(false) > end.getValue(false)) {
       return 9999;
     } else {
       double shortestDistance = 9999;
-      start.connections.forEach((element) {
-        double distance = calculateDistance(element, end,
-            currentDistance: currentDistance + 1, minDistance: minDistance);
+      start.connections!.forEach((element) {
+        double distance = calculateDistance(element, end, currentDistance: currentDistance! + 1, minDistance: minDistance);
         if (distance < shortestDistance) {
           shortestDistance = distance;
         }
@@ -464,9 +367,7 @@ class MapUtils {
     }
   }
 
-  static GameMap generateMap(PlaySettings playSettings,
-      PositionListener listener, SpriteManager spriteManager) {
-    // return generateMountainMap(listener); // Used for debugging
+  static GameMap generateMap(PlaySettings playSettings, PositionListener listener, SpriteManager spriteManager) {
     MapUtils newMap = new MapUtils(listener, Offset(0, 4));
 
     newMap.addStraight(playSettings.ridersPerTeam, max(playSettings.teams, 3));
@@ -481,7 +382,7 @@ class MapUtils {
     List<double> angles = [pi / 4, pi / 3];
     double minAngle = -pi / 2;
     double maxAngle = pi / 2;
-    int segmentLength;
+    late int segmentLength;
     switch (playSettings.mapLength) {
       case MapLength.SHORT:
         segmentLength = 15;
@@ -497,7 +398,7 @@ class MapUtils {
         break;
     }
     PositionType positionType = PositionType.FLAT;
-    int fieldValue;
+    int? fieldValue;
 
     for (int i = 0; i < segmentLength; i++) {
       if (Random().nextDouble() > 0.9) {
@@ -507,8 +408,7 @@ class MapUtils {
           change = -change;
           width = width + 2 * change.floor();
         }
-        newMap.moveWithoutAdding(
-            Offset(sin(angle), -cos(angle)) * change / 2, -change / 2);
+        newMap.moveWithoutAdding(Offset(sin(angle), -cos(angle)) * change / 2, -change / 2);
       }
       if (fieldValue != null && (i % 2 == 0 || fieldValue >= 4)) {
         if (positionType == PositionType.UPHILL) {
@@ -521,10 +421,7 @@ class MapUtils {
         } else {
           fieldValue--;
           if (fieldValue <= 0) {
-            positionType =
-                Random().nextBool() && playSettings.mapType == MapType.HEAVY
-                    ? PositionType.COBBLE
-                    : PositionType.FLAT;
+            positionType = Random().nextBool() && playSettings.mapType == MapType.HEAVY ? PositionType.COBBLE : PositionType.FLAT;
             fieldValue = null;
           }
         }
@@ -539,45 +436,28 @@ class MapUtils {
         int a = Random().nextBool() ? -1 : 1;
         int angleIndex = Random().nextInt(angles.length);
         double deltaAngle = angles[angleIndex];
-        if (angle + deltaAngle * a > maxAngle ||
-            angle + deltaAngle * a < minAngle) {
+        if (angle + deltaAngle * a > maxAngle || angle + deltaAngle * a < minAngle) {
           a = -a;
         }
         angle += deltaAngle * a;
         newMap.addCorner(deltaAngle * a, width, radius + 0.0);
       }
-      if (i % 7 == 0 &&
-          i < segmentLength * 0.8 &&
-          i > segmentLength * 0.2 &&
-          Random().nextDouble() < 0.3 &&
-          positionType != PositionType.UPHILL) {
+      if (i % 7 == 0 && i < segmentLength * 0.8 && i > segmentLength * 0.2 && Random().nextDouble() < 0.3 && positionType != PositionType.UPHILL) {
         newMap.addSprint(width, SprintType.SPRINT);
       }
-      if (playSettings.mapType != MapType.FLAT &&
-          i % 3 == 0 &&
-          Random().nextDouble() < 0.2) {
+      if (playSettings.mapType != MapType.FLAT && i % 3 == 0 && Random().nextDouble() < 0.2) {
         switch (positionType) {
           case PositionType.FLAT:
-            positionType = (Random().nextBool() &&
-                        playSettings.mapType == MapType.HEAVY) ||
-                    playSettings.mapType == MapType.HILLS
-                ? PositionType.UPHILL
-                : PositionType.COBBLE;
+            positionType = (Random().nextBool() && playSettings.mapType == MapType.HEAVY) || playSettings.mapType == MapType.HILLS ? PositionType.UPHILL : PositionType.COBBLE;
             break;
           case PositionType.UPHILL:
             positionType = PositionType.DOWNHILL;
-            if (i < segmentLength * 0.8 &&
-                i > segmentLength * 0.2 &&
-                Random().nextDouble() < 0.7) {
+            if (i < segmentLength * 0.8 && i > segmentLength * 0.2 && Random().nextDouble() < 0.7) {
               newMap.addSprint(width, SprintType.MOUNTAIN_SPRINT);
             }
             break;
           case PositionType.COBBLE:
-            positionType = (Random().nextBool() &&
-                        playSettings.mapType == MapType.HEAVY) ||
-                    playSettings.mapType == MapType.HILLS
-                ? PositionType.UPHILL
-                : PositionType.FLAT;
+            positionType = (Random().nextBool() && playSettings.mapType == MapType.HEAVY) || playSettings.mapType == MapType.HILLS ? PositionType.UPHILL : PositionType.FLAT;
             break;
 
           case PositionType.DOWNHILL:
@@ -595,120 +475,7 @@ class MapUtils {
 
     newMap.addSprint(width, SprintType.FINISH);
     newMap.addStraight(12, width);
-    List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
-
-    return map;
-  }
-
-  static GameMap generateFlatMap(
-      PositionListener listener, SpriteManager spriteManager) {
-    MapUtils newMap = new MapUtils(listener, Offset(0, 4));
-    newMap.addStraight(4, 4);
-    newMap.addSprint(4, SprintType.START);
-    newMap.addCorner(-pi / 2, 4, 8);
-    newMap.addCorner(pi / 3, 4, 8);
-    newMap.addCorner(-pi / 2, 4, 8);
-    newMap.addCorner(pi / 2, 4, 10);
-    newMap.addCorner(pi / 2, 4, 12);
-    newMap.addCorner(pi / 2, 4, 14);
-    newMap.addCorner(pi / 2, 4, 16);
-    newMap.addSprint(4, SprintType.FINISH);
-    newMap.addStraight(8, 4);
-
-    List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
-
-    return map;
-  }
-
-  static GameMap generateCobbleMap(
-      PositionListener listener, SpriteManager spriteManager) {
-    MapUtils newMap = new MapUtils(listener, Offset(0, 4));
-    newMap.addStraight(4, 4);
-    newMap.addSprint(4, SprintType.START);
-    newMap.addStraight(17, 4);
-    newMap.addCorner(pi / 2, 4, 8);
-    newMap.addCorner(pi / 2, 4, 8);
-    newMap.setPositionType(PositionType.COBBLE);
-    newMap.addStraight(8, 4);
-    newMap.addCorner(-pi, 4, 6);
-    newMap.addStraight(18, 4);
-    newMap.addCorner(-pi / 4, 4, 10);
-    newMap.addStraight(4, 4);
-    newMap.addSprint(4, SprintType.SPRINT);
-    newMap.addStraight(4, 4);
-    newMap.addCorner(pi / 4, 4, 10);
-    newMap.setPositionType(PositionType.FLAT);
-    newMap.addStraight(7, 4);
-    newMap.addCorner(pi / 2, 4, 10);
-    newMap.addStraight(7, 4);
-    newMap.addCorner(pi / 2, 4, 10);
-    newMap.addStraight(7, 4);
-    newMap.setPositionType(PositionType.COBBLE);
-    newMap.addStraight(17, 4);
-    newMap.setPositionType(PositionType.FLAT);
-    newMap.addStraight(8, 4);
-    newMap.addSprint(4, SprintType.FINISH);
-    newMap.addStraight(8, 4);
-
-    List<Position> positions = newMap.generatePositions();
-    GameMap map = GameMap(positions, newMap.sprints, spriteManager);
-
-    return map;
-  }
-
-  static GameMap generateMountainMap(
-      PositionListener listener, SpriteManager spriteManager) {
-    MapUtils newMap = new MapUtils(listener, Offset(0, 4));
-    newMap.addStraight(4, 4);
-    newMap.addSprint(4, SprintType.START);
-    // newMap.addCorner(pi / 2, 4, 8);
-    // newMap.addStraight(3, 4);
-    // newMap.moveWithoutAdding(Offset(-0.5, 0), 0.5);
-    newMap.setPositionType(PositionType.UPHILL, 10);
-    newMap.addStraight(20, 4);
-    // newMap.addCorner(pi / 4, 3, 6);
-    // newMap.addCorner(-pi / 2, 3, 9);
-    // newMap.setPositionType(PositionType.UPHILL, 2);
-    // newMap.addCorner(-pi / 2, 3, 9);
-    // newMap.addStraight(2, 3);
-    // newMap.moveWithoutAdding(Offset(0.5, 0.5), 0.5);
-    // newMap.setPositionType(PositionType.UPHILL, 3);
-    // newMap.addCorner(pi / 2, 2, 6);
-    // newMap.setPositionType(PositionType.UPHILL, 4);
-    // newMap.addStraight(3, 2);
-    // newMap.addCorner(-pi, 2, 6);
-    // newMap.setPositionType(PositionType.UPHILL, 5);
-    // newMap.addCorner(pi * 3 / 4, 2, 4);
-    // newMap.addStraight(1, 2);
-    // newMap.addSprint(2, SprintType.MOUNTAIN_SPRINT);
-    // newMap.setPositionType(PositionType.DOWNHILL, 5);
-    // newMap.addStraight(2, 2);
-    // newMap.addCorner(-pi, 2, 4);
-    // newMap.setPositionType(PositionType.DOWNHILL, 4);
-    // newMap.addStraight(8, 3);
-    // newMap.addCorner(pi / 2, 3, 6);
-    // newMap.setPositionType(PositionType.DOWNHILL, 3);
-    // newMap.addCorner(pi / 2, 3, 8);
-    // newMap.addStraight(5, 3);
-    // newMap.setPositionType(PositionType.DOWNHILL, 2);
-    // newMap.addStraight(8, 4);
-    // newMap.addCorner(pi / 2, 4, 10);
-    // newMap.setPositionType(PositionType.DOWNHILL, 1);
-    // newMap.addStraight(10, 4);
-    newMap.setPositionType(PositionType.FLAT);
-    // newMap.addCorner(-pi / 2, 4, 10);
-    // newMap.addStraight(4, 4);
-    // newMap.addStraight(6, 4);
-    // newMap.addCorner(-pi / 4, 4, 10);
-    // newMap.addStraight(8, 4);
-    // newMap.addCorner(pi / 4, 4, 10);
-    // newMap.addStraight(18, 4);
-    newMap.addSprint(4, SprintType.FINISH);
-    newMap.addStraight(12, 4);
-
-    List<Position> positions = newMap.generatePositions();
+    List<Position>? positions = newMap.generatePositions();
     GameMap map = GameMap(positions, newMap.sprints, spriteManager);
 
     return map;
@@ -721,7 +488,7 @@ MapType getMapTypeFromString(String mapTypeAsString) {
       return element;
     }
   }
-  return null;
+  throw Exception("Incorrect mapTypeAsString $mapTypeAsString");
 }
 
 enum MapType { FLAT, COBBLE, HILLS, HEAVY }
@@ -732,7 +499,7 @@ MapLength getMapLengthFromString(String mapLengthAsString) {
       return element;
     }
   }
-  return null;
+  throw Exception("Incorrect mapLengthAsString $mapLengthAsString");
 }
 
 enum MapLength { SHORT, MEDIUM, LONG, VERY_LONG }
@@ -747,8 +514,6 @@ String mapTypeAsString(MapType maptype) {
       return 'Hilled';
     case MapType.HEAVY:
       return 'HEAVY';
-    default:
-      return 'Unkown';
   }
 }
 
@@ -762,7 +527,5 @@ String mapLengthAsString(MapLength mapLength) {
       return 'Long';
     case MapLength.VERY_LONG:
       return 'Very long';
-    default:
-      return 'Unkown';
   }
 }

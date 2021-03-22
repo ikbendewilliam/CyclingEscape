@@ -11,13 +11,13 @@ import '../baseView.dart';
 
 class FollowSelect implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundText;
+  Sprite? buttonBackground;
+  Sprite? backgroundText;
 
   final Function returnValue;
   final int minThrow;
@@ -39,21 +39,21 @@ class FollowSelect implements BaseView {
   createButtons(double buttonSize) {
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
+      Offset(screenSize!.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {returnValue(FollowType.FOLLOW)},
       text: 'Follow',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize),
+      Offset(screenSize!.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.LEAVE)},
       text: 'Leave',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize!.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.AUTO_FOLLOW)},
       text: 'Auto follow',
@@ -85,28 +85,28 @@ class FollowSelect implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas, position: Vector2(screenSize.width / 3, 2 * buttonSize), size: Vector2(screenSize.width / 3, screenSize.height - buttonSize * 3));
+    buttonBackground!.render(canvas, position: Vector2(screenSize!.width / 3, 2 * buttonSize), size: Vector2(screenSize!.width / 3, screenSize!.height - buttonSize * 3));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundText.render(canvas, position: Vector2(screenSize.width / 2 - buttonSize * 1.75, buttonSize * 1.4), size: Vector2(buttonSize * 3.5, buttonSize * 0.4));
+    backgroundText!.render(canvas, position: Vector2(screenSize!.width / 2 - buttonSize * 1.75, buttonSize * 1.4), size: Vector2(buttonSize * 3.5, buttonSize * 0.4));
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'You need to throw $minThrow');
-    CanvasUtils.drawText(canvas, Offset(screenSize.width / 2, buttonSize * 1.45), 0, span);
+    CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 1.45), 0, span);
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     this.screenSize = size;
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     createButtons(buttonSize);
     buttons.forEach((element) {
-      element.setScreenSize(size);
+      element.setScreenSize(size!);
     });
   }
 

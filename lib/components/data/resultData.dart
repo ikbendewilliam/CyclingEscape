@@ -7,57 +7,24 @@ class ResultData {
   int rank = 0;
   int time = 0;
   int number = 0;
-  Team team;
+  Team? team;
   int points = 0;
   int mountain = 0;
-  double value;
-  String id = UniqueKey().toString();
+  double? value;
+  String? id = UniqueKey().toString();
 
-  ResultData(
-      [this.rank,
-      this.time,
-      this.points,
-      this.mountain,
-      this.number,
-      this.team,
-      this.value]) {
-    if (rank == null) {
-      rank = 0;
-    }
-    if (time == null) {
-      time = 0;
-    }
-    if (number == null) {
-      number = 0;
-    }
-    if (points == null) {
-      points = 0;
-    }
-    if (mountain == null) {
-      mountain = 0;
-    }
-  }
+  ResultData([this.rank = 0, this.time = 0, this.points = 0, this.mountain = 0, this.number = 0, this.team, this.value]);
 
-  ResultData copy() {
-    return ResultData(this.rank, this.time, this.points, this.mountain,
-        this.number, this.team);
-  }
+  ResultData copy() => ResultData(this.rank, this.time, this.points, this.mountain, this.number, this.team);
 
-  static ResultData fromJson(
-      Map<String, dynamic> json,
-      List<Cyclist> existingCyclists,
-      List<Team> existingTeams,
-      SpriteManager spriteManager) {
+  static ResultData fromJson(Map<String, dynamic> json, List<Cyclist?> existingCyclists, List<Team?> existingTeams, SpriteManager spriteManager) {
     ResultData results = ResultData(
       json['rank'],
       json['time'],
       json['points'],
       json['mountain'],
       json['number'],
-      json['team'] != null
-          ? Team.fromJson(
-              json['team'], existingCyclists, existingTeams, spriteManager)
-          : null,
+      json['team'] != null ? Team.fromJson(json['team'], existingCyclists, existingTeams, spriteManager) : null,
       json['value'],
     );
     results.id = json['id'];

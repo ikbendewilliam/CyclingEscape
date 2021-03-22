@@ -1,14 +1,14 @@
 import 'package:CyclingEscape/components/moveable/cyclist.dart';
 
 class CyclistPlace {
-  Cyclist cyclist;
-  final double value;
-  bool displayed = false;
+  Cyclist? cyclist;
+  final double? value;
+  bool? displayed = false;
 
   CyclistPlace(this.cyclist, this.value);
 
   int getTurns() {
-    return (-value / 1000 / 1000 / 1000 + 1).floor();
+    return (-value! / 1000 / 1000 / 1000 + 1).floor();
   }
 
   static CyclistPlace fromJson(Map<String, dynamic> json) {
@@ -20,7 +20,7 @@ class CyclistPlace {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cyclist'] = this.cyclist.toJson(true);
+    data['cyclist'] = this.cyclist!.toJson(true);
     data['value'] = this.value;
     data['displayed'] = this.displayed;
     return data;

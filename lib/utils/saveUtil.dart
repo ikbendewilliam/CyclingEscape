@@ -16,12 +16,12 @@ class SaveUtil {
     await prefs.setString('be.wive.cyclingescape.activeTour', jsonEncode(activeTour.toJson()));
   }
 
-  static Future<ActiveTour> loadTour(SpriteManager spriteManager) async {
+  static Future<ActiveTour?> loadTour(SpriteManager spriteManager) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.activeTour')) {
       return null;
     }
-    return ActiveTour.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeTour')), spriteManager);
+    return ActiveTour.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeTour') ?? ''), spriteManager);
   }
 
   static Future<void> clearTour() async {
@@ -34,12 +34,12 @@ class SaveUtil {
     await prefs.setString('be.wive.cyclingescape.settings', jsonEncode(settings.toJson()));
   }
 
-  static Future<Settings> loadSettings() async {
+  static Future<Settings?> loadSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.settings')) {
       return null;
     }
-    return Settings.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.settings')));
+    return Settings.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.settings') ?? ''));
   }
 
   static void saveTutorialsViewed(TutorialsViewed tutorialsViewed) async {
@@ -47,12 +47,12 @@ class SaveUtil {
     await prefs.setString('be.wive.cyclingescape.tutorialsviewed', jsonEncode(tutorialsViewed.toJson()));
   }
 
-  static Future<TutorialsViewed> loadTutorialsViewed() async {
+  static Future<TutorialsViewed?> loadTutorialsViewed() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.tutorialsviewed')) {
       return null;
     }
-    return TutorialsViewed.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.tutorialsviewed')));
+    return TutorialsViewed.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.tutorialsviewed') ?? ''));
   }
 
   static void saveCareer(Career career) async {
@@ -60,12 +60,12 @@ class SaveUtil {
     await prefs.setString('be.wive.cyclingescape.career', jsonEncode(career.toJson()));
   }
 
-  static Future<Career> loadCareer() async {
+  static Future<Career?> loadCareer() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.career')) {
       return null;
     }
-    return Career.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.career')));
+    return Career.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.career') ?? ''));
   }
 
   static void saveCyclingView(CyclingView cyclingView) async {
@@ -73,12 +73,12 @@ class SaveUtil {
     await prefs.setString('be.wive.cyclingescape.activeGame', jsonEncode(cyclingView.toJson()));
   }
 
-  static Future<CyclingView> loadCyclingView(SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings, Function openTutorial) async {
+  static Future<CyclingView?> loadCyclingView(SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings, Function openTutorial) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.activeGame')) {
       return null;
     }
-    return CyclingView.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame')), spriteManager, cyclingEnded, navigate, settings, openTutorial);
+    return CyclingView.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame') ?? ''), spriteManager, cyclingEnded, navigate, settings, openTutorial);
   }
 
   static Future<bool> hasCyclingView() async {
@@ -91,14 +91,9 @@ class SaveUtil {
     prefs.remove('be.wive.cyclingescape.activeGame');
   }
 
-  static Offset offsetFromJson(Map<String, dynamic> json) {
-    if (json == null) {
-      return null;
-    }
-    return Offset(json['dx'], json['dy']);
-  }
+  static Offset offsetFromJson(Map<String, dynamic> json) => Offset(json['dx'], json['dy']);
 
-  static Map<String, dynamic> offsetToJson(Offset offset) {
+  static Map<String, dynamic>? offsetToJson(Offset? offset) {
     if (offset == null) {
       return null;
     }
@@ -108,14 +103,14 @@ class SaveUtil {
     return data;
   }
 
-  static Size sizeFromJson(Map<String, dynamic> json) {
+  static Size? sizeFromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }
     return Size(json['width'], json['height']);
   }
 
-  static Map<String, dynamic> sizeToJson(Size size) {
+  static Map<String, dynamic>? sizeToJson(Size? size) {
     if (size == null) {
       return null;
     }
@@ -125,14 +120,14 @@ class SaveUtil {
     return data;
   }
 
-  static Color colorFromJson(Map<String, dynamic> json) {
+  static Color? colorFromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }
     return Color(json['color']);
   }
 
-  static Map<String, dynamic> colorToJson(Color color) {
+  static Map<String, dynamic>? colorToJson(Color? color) {
     if (color == null) {
       return null;
     }

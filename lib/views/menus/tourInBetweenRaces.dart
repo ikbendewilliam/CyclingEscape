@@ -13,21 +13,21 @@ import '../gameManager.dart';
 
 class TourInBetweenRacesMenu implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
-  Sprite backText;
-  ActiveTour activeTour;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
+  Sprite? backText;
+  ActiveTour? activeTour;
 
   final Function navigate;
 
   TourInBetweenRacesMenu(this.spriteManager, this.navigate);
 
-  void onAttach({ActiveTour activeTour}) {
+  void onAttach({ActiveTour? activeTour}) {
     if (activeTour != null) {
       this.activeTour = activeTour;
     } else {
@@ -48,33 +48,33 @@ class TourInBetweenRacesMenu implements BaseView {
     buttons = [];
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 13 * 5, 4.7 * buttonSize),
+      Offset(screenSize!.width / 13 * 5, 4.7 * buttonSize),
       ButtonType.ICON_RESULTS,
       () => {navigate(GameManagerState.RESULTS)},
     ));
-    if (activeTour != null && activeTour.racesDone < activeTour.tour.races) {
+    if (activeTour != null && activeTour!.racesDone < activeTour!.tour!.races) {
       buttons.add(Button(
         this.spriteManager,
-        Offset(screenSize.width / 13 * 7, 4.7 * buttonSize),
+        Offset(screenSize!.width / 13 * 7, 4.7 * buttonSize),
         ButtonType.ICON_NO,
         () => {navigate(GameManagerState.MAIN_MENU)},
       ));
       buttons.add(Button(
         this.spriteManager,
-        Offset(screenSize.width / 13 * 6, 4.7 * buttonSize),
+        Offset(screenSize!.width / 13 * 6, 4.7 * buttonSize),
         ButtonType.ICON_TRASH,
         () => {navigate(GameManagerState.MAIN_MENU, deleteActiveTour: true)},
       ));
       buttons.add(Button(
         this.spriteManager,
-        Offset(screenSize.width / 13 * 8, 4.7 * buttonSize),
+        Offset(screenSize!.width / 13 * 8, 4.7 * buttonSize),
         ButtonType.ICON_PLAY,
         () => {navigate(GameManagerState.PLAYING)},
       ));
     } else {
       buttons.add(Button(
         this.spriteManager,
-        Offset(screenSize.width / 13 * 8, 4.7 * buttonSize),
+        Offset(screenSize!.width / 13 * 8, 4.7 * buttonSize),
         ButtonType.ICON_YES,
         () => {navigate(GameManagerState.MAIN_MENU)},
       ));
@@ -106,39 +106,39 @@ class TourInBetweenRacesMenu implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas, position: Vector2(screenSize.width / 3.5, buttonSize * 1.5), size: Vector2(screenSize.width * 1.5 / 3.5, buttonSize * 4));
+    buttonBackground!.render(canvas, position: Vector2(screenSize!.width / 3.5, buttonSize * 1.5), size: Vector2(screenSize!.width * 1.5 / 3.5, buttonSize * 4));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Races done:');
-    Offset position = Offset(screenSize.width / 2, 2.4 * buttonSize);
+    Offset position = Offset(screenSize!.width / 2, 2.4 * buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     if (activeTour != null) {
-      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${activeTour.racesDone} out of ${activeTour.tour.races}');
-      position = Offset(screenSize.width / 2, 2.8 * buttonSize);
+      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${activeTour!.racesDone} out of ${activeTour!.tour!.races}');
+      position = Offset(screenSize!.width / 2, 2.8 * buttonSize);
       CanvasUtils.drawText(canvas, position, 0, span);
 
-      int bestRider = activeTour.currentResults.data.length;
-      int bestPlace = activeTour.currentResults.data.length;
-      activeTour.currentResults.data.forEach((element) {
-        if (element.team.isPlayer && bestPlace > element.rank) {
+      int? bestRider = activeTour!.currentResults!.data.length;
+      int? bestPlace = activeTour!.currentResults!.data.length;
+      activeTour!.currentResults!.data.forEach((element) {
+        if (element!.team!.isPlayer! && bestPlace! > element.rank) {
           bestPlace = element.rank;
           bestRider = element.number;
         }
       });
-      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Best rider: $bestRider ${th(bestPlace + 1)}');
-      position = Offset(screenSize.width / 2, 3.4 * buttonSize);
+      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Best rider: $bestRider ${th(bestPlace! + 1)}');
+      position = Offset(screenSize!.width / 2, 3.4 * buttonSize);
       CanvasUtils.drawText(canvas, position, 0, span);
     }
-    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 2.7, buttonSize * 1.3), size: Vector2(screenSize.width / 4, buttonSize * 0.8));
+    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 2.7, buttonSize * 1.3), size: Vector2(screenSize!.width / 4, buttonSize * 0.8));
 
     span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Next race');
-    position = Offset(screenSize.width / 2, buttonSize * 1.45);
+    position = Offset(screenSize!.width / 2, buttonSize * 1.45);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 
@@ -155,13 +155,13 @@ class TourInBetweenRacesMenu implements BaseView {
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     createButtons(buttonSize);
     buttons.forEach((element) {
-      element.setScreenSize(size);
+      element.setScreenSize(size!);
     });
   }
 

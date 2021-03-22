@@ -12,13 +12,13 @@ import '../gameManager.dart';
 
 class PauseMenu implements BaseView {
   @override
-  Size screenSize;
+  Size? screenSize;
   @override
   final SpriteManager spriteManager;
 
   List<Button> buttons = [];
-  Sprite buttonBackground;
-  Sprite backgroundHeader;
+  Sprite? buttonBackground;
+  Sprite? backgroundHeader;
 
   final Function navigate;
 
@@ -39,21 +39,21 @@ class PauseMenu implements BaseView {
   createButtons(double buttonSize) {
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize - buttonSize * 1.1),
+      Offset(screenSize!.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.PLAYING, continueing: true)},
       text: 'Continue',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize),
+      Offset(screenSize!.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.PLAYING, save: true)},
       text: 'Save',
     ));
     buttons.add(Button(
       this.spriteManager,
-      Offset(screenSize.width / 2, 4 * buttonSize + buttonSize * 1.1),
+      Offset(screenSize!.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.MAIN_MENU)},
       text: 'Main menu',
@@ -85,30 +85,30 @@ class PauseMenu implements BaseView {
 
   @override
   void render(Canvas canvas) {
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
 
-    buttonBackground.render(canvas,
-        position: Vector2(screenSize.width / 3.3, buttonSize * 1.45), size: Vector2(screenSize.width * 1.3 / 3.3, screenSize.height - buttonSize * 2.5));
+    buttonBackground!
+        .render(canvas, position: Vector2(screenSize!.width / 3.3, buttonSize * 1.45), size: Vector2(screenSize!.width * 1.3 / 3.3, screenSize!.height - buttonSize * 2.5));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader.render(canvas, position: Vector2(screenSize.width / 3, buttonSize * 1.2), size: Vector2(screenSize.width / 3, buttonSize));
+    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 1.2), size: Vector2(screenSize!.width / 3, buttonSize));
 
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Paused');
-    Offset position = Offset(screenSize.width / 2, buttonSize * 1.4);
+    Offset position = Offset(screenSize!.width / 2, buttonSize * 1.4);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
 
   @override
-  void resize(Size size) {
+  void resize(Size? size) {
     screenSize = size;
-    double buttonSize = screenSize.height / 7;
+    double buttonSize = screenSize!.height / 7;
     buttons = [];
     createButtons(buttonSize);
     buttons.forEach((element) {
-      element.setScreenSize(size);
+      element.setScreenSize(size!);
     });
   }
 

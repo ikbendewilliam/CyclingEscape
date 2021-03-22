@@ -10,7 +10,6 @@ class PlaySettings {
   PlaySettings(this.teams, this.ridersPerTeam, this.mapType, this.mapLength);
 
   static PlaySettings fromTour(Tour tour) {
-    return PlaySettings(
-        tour.teams, tour.ridersPerTeam, tour.mapType, tour.mapLength);
+    return PlaySettings(tour.teams, tour.ridersPerTeam, tour.mapType, tour.mapLength);
   }
 }

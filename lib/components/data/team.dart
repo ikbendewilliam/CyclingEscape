@@ -4,15 +4,14 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 class Team {
-  final bool isPlayer;
-  final int numberStart;
-  List<Cyclist> cyclists = [];
-  List<Sprite> sprites = [];
-  String id = UniqueKey().toString();
+  final bool? isPlayer;
+  final int? numberStart;
+  List<Cyclist?> cyclists = [];
+  List<Sprite?> sprites = [];
+  String? id = UniqueKey().toString();
   bool isPlaceHolder;
 
-  Team(this.isPlayer, this.numberStart, SpriteManager spriteManager,
-      {this.isPlaceHolder: false}) {
+  Team(this.isPlayer, this.numberStart, SpriteManager? spriteManager, {this.isPlaceHolder: false}) {
     if (isPlaceHolder) {
       return;
     }
@@ -78,22 +77,17 @@ class Team {
     }
   }
 
-  Sprite getSprite(versie2) {
+  Sprite? getSprite(versie2) {
     // print({numberStart, numberStart * 2, numberStart * 2 + (versie2 ? 1 : 0)});
-    return sprites[numberStart * 2 + (versie2 ? 1 : 0)];
+    return sprites[numberStart! * 2 + (versie2 ? 1 : 0)];
   }
 
-  static Team fromJson(
-      Map<String, dynamic> json,
-      List<Cyclist> existingCyclists,
-      List<Team> existingTeams,
-      SpriteManager spriteManager) {
+  static Team? fromJson(Map<String, dynamic>? json, List<Cyclist?> existingCyclists, List<Team?> existingTeams, SpriteManager? spriteManager) {
     if (json == null) {
       return null;
     }
-    if (existingTeams != null && existingTeams.length > 0) {
-      Team t = existingTeams.firstWhere((element) => element.id == json['id'],
-          orElse: () => null);
+    if (existingTeams.length > 0) {
+      Team? t = existingTeams.firstWhere(((element) => element!.id == json['id']), orElse: () => null);
       if (t != null) {
         return t;
       }
@@ -109,8 +103,7 @@ class Team {
     existingTeams.add(team);
     if (json['cyclists'] != null) {
       json['cyclists'].forEach((j) {
-        team.cyclists.add(Cyclist.fromJson(
-            j, existingCyclists, existingTeams, spriteManager));
+        team.cyclists.add(Cyclist.fromJson(j, existingCyclists, existingTeams, spriteManager));
       });
     }
     return team;
@@ -122,7 +115,7 @@ class Team {
     if (!idOnly) {
       data['isPlayer'] = this.isPlayer;
       data['numberStart'] = this.numberStart;
-      data['cyclists'] = this.cyclists?.map((i) => i.toJson(false))?.toList();
+      data['cyclists'] = this.cyclists.map((i) => i!.toJson(false)).toList();
     }
     return data;
   }

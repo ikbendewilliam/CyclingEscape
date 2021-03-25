@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class BaseView {

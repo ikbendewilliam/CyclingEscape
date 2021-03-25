@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/views/menus/settingsMenu.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/views/menus/settingsMenu.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
@@ -13,7 +13,7 @@ class Dice {
   int? diceValue;
   int direction = 1;
   late int currentIndex;
-  int? endIndex;
+  int endIndex = 0;
   int directionCountDown = 0;
   bool rolling = false;
   double angle = 0;
@@ -40,10 +40,10 @@ class Dice {
     currentIndex = 0;
   }
 
-  getDiceAnimation(indexes, {again: true}) {
-    int? index = endIndex;
+  List<int> getDiceAnimation(indexes, {again: true}) {
+    int index = endIndex;
     int counter = 1;
-    List<int?> animation = [index];
+    List<int> animation = [index];
     while ((indexes.indexOf(index) == -1 || counter < 40) && counter < 1000) {
       index = getNewIndex(index);
       animation.add(index);
@@ -136,7 +136,7 @@ class Dice {
   }
 
   void increaseValue() {
-    List<int?> indexes = [49, 53, 113, 0, 61, 57];
+    List<int> indexes = [49, 53, 113, 0, 61, 57];
     int newIndex = indexes.indexOf(endIndex) + 1;
     if (newIndex < indexes.length) {
       endIndex = indexes[newIndex];

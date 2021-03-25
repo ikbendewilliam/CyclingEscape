@@ -1,4 +1,4 @@
-import 'package:CyclingEscape/components/moveable/cyclist.dart';
+import 'package:cycling_escape/components/moveable/cyclist.dart';
 
 class CyclistPlace {
   Cyclist? cyclist;
@@ -12,8 +12,7 @@ class CyclistPlace {
   }
 
   static CyclistPlace fromJson(Map<String, dynamic> json) {
-    CyclistPlace cyclistPlace = CyclistPlace(
-        Cyclist.fromJson(json['cyclist'], [], [], null), json['value']);
+    CyclistPlace cyclistPlace = CyclistPlace(Cyclist.fromJson(json['cyclist'], [], [], null), json['value']);
     cyclistPlace.displayed = json['displayed'];
     return cyclistPlace;
   }

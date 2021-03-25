@@ -1,19 +1,20 @@
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/activeTour.dart';
-import 'package:CyclingEscape/components/data/resultData.dart';
-import 'package:CyclingEscape/components/data/results.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/positions/sprint.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:CyclingEscape/views/baseView.dart';
+import 'package:cycling_escape/components/data/activeTour.dart';
+import 'package:cycling_escape/components/data/resultData.dart';
+import 'package:cycling_escape/components/data/results.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/positions/sprint.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
+import 'package:cycling_escape/views/baseView.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'gameManager.dart';
 import 'menus/careerMenu.dart';
@@ -49,8 +50,9 @@ class ResultsView implements BaseView {
   List<Button> buttons = [];
   List<Sprint?> sprints = [];
   List<Results?> results = [];
+  AppLocalizations appLocalizations;
 
-  ResultsView(this.spriteManager, this.closeCallback, this.career);
+  ResultsView(this.spriteManager, this.closeCallback, this.career, this.appLocalizations);
 
   calculateResults(bool? inCareer) {
     if (lastResultsAdded) {
@@ -290,18 +292,18 @@ class ResultsView implements BaseView {
   getTypeAsString() {
     switch (type) {
       case ResultsType.TIME:
-        return 'Time';
+        return appLocalizations.resultsTimeTitle;
       case ResultsType.YOUNG:
-        return 'Young riders';
+        return appLocalizations.resultsYoungRidersTitle;
       case ResultsType.POINTS:
-        return 'Points';
+        return appLocalizations.resultsPointsTitle;
       case ResultsType.MOUNTAIN:
-        return 'Mountain';
+        return appLocalizations.resultsMountainTitle;
       case ResultsType.TEAM:
-        return 'Team';
+        return appLocalizations.resultsTeamTitle;
       case ResultsType.RACE:
       default:
-        return 'Results';
+        return appLocalizations.resultsTitle;
     }
   }
 

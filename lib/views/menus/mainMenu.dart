@@ -1,10 +1,11 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -20,10 +21,11 @@ class MainMenu implements BaseView {
   List<Button> buttons = [];
   Sprite? buttonBackground;
   Sprite? backgroundHeader;
+  AppLocalizations appLocalizations;
 
   final Function navigate;
 
-  MainMenu(this.spriteManager, this.navigate);
+  MainMenu(this.spriteManager, this.navigate, this.appLocalizations);
 
   void onAttach() async {
     buttons = [];
@@ -46,21 +48,21 @@ class MainMenu implements BaseView {
       Offset(screenSize!.width / 2, 4 * buttonSize - buttonSize * 0.5),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.CAREER_MENU)},
-      text: 'Career',
+      text: appLocalizations.careerButton,
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize!.width / 2, 4 * buttonSize + buttonSize * 0.6),
       ButtonType.BAR_BLUE,
       () => {navigate(GameManagerState.COURSE_SELECT_MENU)},
-      text: 'Single race',
+      text: appLocalizations.singleRaceButton,
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize!.width / 2, 4 * buttonSize + buttonSize * 1.7),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.TOUR_SELECT_MENU)},
-      text: 'Tour',
+      text: appLocalizations.tourButton,
     ));
     buttons
         .add(Button(this.spriteManager, Offset(buttonSize / 2 + 5, screenSize!.height - buttonSize / 2 - 5), ButtonType.ICON_CREDITS, () => {navigate(GameManagerState.CREDITS)}));
@@ -73,7 +75,7 @@ class MainMenu implements BaseView {
       Offset(screenSize!.width / 2, 4 * buttonSize - buttonSize * 1.6),
       (canContinue == true ? ButtonType.BAR_GREEN : ButtonType.BAR_BLACK),
       () => {navigate(GameManagerState.PLAYING, load: true)},
-      text: 'Continue',
+      text: appLocalizations.continueButton,
     ));
     buttons.forEach((element) {
       element.setScreenSize(screenSize!);
@@ -107,8 +109,8 @@ class MainMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize!.height / 7;
 
-    buttonBackground!
-        .render(canvas, position: Vector2(screenSize!.width / 3.3, buttonSize * 1.05), size: Vector2(screenSize!.width * 1.3 / 3.3, screenSize!.height - buttonSize * 1.5));
+    buttonBackground?.render(canvas,
+        position: Vector2(screenSize!.width / 3.3, buttonSize * 1.05), size: Vector2(screenSize!.width * 1.3 / 3.3, screenSize!.height - buttonSize * 1.5));
 
     buttons.forEach((button) {
       button.render(canvas);

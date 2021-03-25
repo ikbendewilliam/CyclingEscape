@@ -1,6 +1,6 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';

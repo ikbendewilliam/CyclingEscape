@@ -1,17 +1,18 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:CyclingEscape/components/data/activeTour.dart';
-import 'package:CyclingEscape/components/data/cyclistPlace.dart';
-import 'package:CyclingEscape/components/data/playSettings.dart';
-import 'package:CyclingEscape/components/data/resultData.dart';
-import 'package:CyclingEscape/components/data/results.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/positions/gameMap.dart';
-import 'package:CyclingEscape/components/positions/sprint.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:CyclingEscape/views/menus/tutorialView.dart';
-import 'package:CyclingEscape/views/resultsView.dart';
+import 'package:cycling_escape/components/data/activeTour.dart';
+import 'package:cycling_escape/components/data/cyclistPlace.dart';
+import 'package:cycling_escape/components/data/playSettings.dart';
+import 'package:cycling_escape/components/data/resultData.dart';
+import 'package:cycling_escape/components/data/results.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/positions/gameMap.dart';
+import 'package:cycling_escape/components/positions/sprint.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
+import 'package:cycling_escape/views/menus/tutorialView.dart';
+import 'package:cycling_escape/views/resultsView.dart';
+import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
@@ -414,9 +415,9 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     this.map!.positions!.where((element) => element.cyclist != null).toList().forEach((cyclistPosition) {
       if (startResults != null) {
         useStartResults = true;
-        startResult = startResults!.data.firstWhere((element) => element!.number == cyclistPosition.cyclist!.number, orElse: () => null);
+        startResult = startResults!.data.firstWhereOrNull((element) => element!.number == cyclistPosition.cyclist!.number);
       }
-      ResultData? result = tempResults!.data.firstWhere(((element) => element!.number == cyclistPosition.cyclist!.number), orElse: () => null);
+      ResultData? result = tempResults!.data.firstWhereOrNull(((element) => element!.number == cyclistPosition.cyclist!.number));
       if (result != null) {
         result.time = (useStartResults ? startResult!.time : 0) + currentTurn!;
         result.value = useStartResults ? 100.0 - startResult!.rank : cyclistPosition.getValue(false);
@@ -557,7 +558,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   }
 
   Position? getPlaceBefore() {
-    return MapUtils.findPlaceBefore(cyclistLastSelected, 9999, false, positions: map!.positions).lastWhere((element) => true, orElse: () => null);
+    return MapUtils.findPlaceBefore(cyclistLastSelected, 9999, false, positions: map!.positions).lastWhereOrNull((element) => true);
   }
 
   follow() {
@@ -578,16 +579,14 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
       if (position.cyclist != null) {
         if (position.cyclist!.lastPosition != null) {
           List<Sprint?> sprints = MapUtils.getSprintsBetween(position.cyclist!.lastPosition!, position);
-          sprints = sprints
-              .where((element) => element!.cyclistPlaces.firstWhere((CyclistPlace? x) => x!.cyclist!.number == position.cyclist!.number, orElse: () => null) == null)
-              .toList();
+          sprints = sprints.where((element) => element!.cyclistPlaces.firstWhereOrNull((CyclistPlace? x) => x!.cyclist!.number == position.cyclist!.number) == null).toList();
           sprints.forEach((sprint) => sprint!.addCyclistPlace(CyclistPlace(position.cyclist, position.getValue(true))));
           if (sprints.length > 0) {
-            if (sprints.firstWhere((s) => s!.type == SprintType.FINISH, orElse: () => null) != null) {
+            if (sprints.firstWhereOrNull((s) => s!.type == SprintType.FINISH) != null) {
               openTutorial(TutorialType.FINISH);
               position.removeCyclist(); // Remove cyclist when finished
               removed = true;
-            } else if (sprints.firstWhere((s) => s!.type == SprintType.MOUNTAIN_SPRINT || s.type == SprintType.SPRINT, orElse: () => null) != null) {
+            } else if (sprints.firstWhereOrNull((s) => s!.type == SprintType.MOUNTAIN_SPRINT || s.type == SprintType.SPRINT) != null) {
               openTutorial(TutorialType.SPRINT);
             }
           }
@@ -605,7 +604,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
           if (sprint.type == SprintType.FINISH) {
             addNotification('${element.cyclist!.number} Finished ${th(key + 1)}', element.cyclist!.team!.getColor());
           } else if (sprint.getPoints(key) > 0) {
-            ResultData? result = tempResults!.data.firstWhere(((r) => r!.number == element.cyclist!.number), orElse: () => null);
+            ResultData? result = tempResults!.data.firstWhereOrNull(((r) => r!.number == element.cyclist!.number));
             if (result != null) {
               switch (sprint.type) {
                 case SprintType.MOUNTAIN_SPRINT:
@@ -782,11 +781,11 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     cyclingView.dice2 = Dice.fromJson(json['dice2'], cyclingView, spriteManager);
     cyclingView.worldSize = SaveUtil.sizeFromJson(json['worldSize']);
     cyclingView.mapSize = SaveUtil.sizeFromJson(json['mapSize']);
-    cyclingView.offset = SaveUtil.offsetFromJson(json['offset']);
+    cyclingView.offset = SaveUtil.offsetFromJson(json['offset'])!;
     cyclingView.zoom = json['zoom'];
     cyclingView.inCareer = json['inCareer'];
     cyclingView.movingTimer = json['movingTimer'];
-    cyclingView.tileSize = json['tileSize'];
+    cyclingView.tileSize = json['tileSize'] ?? 1.0;
     cyclingView.cyclistMoved = json['cyclistMoved'];
     cyclingView.diceValueCooldown = json['diceValueCooldown'];
     cyclingView.movingCyclist = Cyclist.fromJson(json['movingCyclist'], existingCyclists, existingTeams, spriteManager);

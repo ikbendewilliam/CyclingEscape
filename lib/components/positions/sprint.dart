@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/cyclistPlace.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/cyclistPlace.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class Sprint {
@@ -89,7 +90,7 @@ class Sprint {
       return null;
     }
     if (existingSprints.length > 0) {
-      Sprint? c = existingSprints.firstWhere(((element) => element!.id == json['id']), orElse: () => null);
+      Sprint? c = existingSprints.firstWhereOrNull(((element) => element!.id == json['id']));
       if (c != null) {
         return c;
       }
@@ -101,14 +102,14 @@ class Sprint {
     }
     Sprint sprint = Sprint(
       getSprintTypeFromString(json['type']),
-      SaveUtil.offsetFromJson(json['offset']),
+      SaveUtil.offsetFromJson(json['offset'])!,
       json['width'],
       json['angle'],
       json['segment'],
     );
     sprint.id = json['id'];
     existingSprints.add(sprint);
-    sprint.offset = SaveUtil.offsetFromJson(json['offset']);
+    sprint.offset = SaveUtil.offsetFromJson(json['offset'])!;
     json['cyclistPlaces'].forEach((p) => sprint.cyclistPlaces.add(CyclistPlace.fromJson(p)));
     return sprint;
   }

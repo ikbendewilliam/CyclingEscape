@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/mapUtils.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/mapUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/cupertino.dart';
@@ -147,12 +147,12 @@ class Button {
       scale = 0.7;
     }
     if (spriteBackground != null) {
-      spriteBackground!.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize, buttonSize) * 1.5);
+      spriteBackground!.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize, buttonSize) * 1.5);
     }
     if (!isPressed) {
-      sprite!.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
+      sprite!.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     } else {
-      spritePressed!.render(canvas, anchor: Anchor.center, position: Vector2(center.dx, center.dy), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
+      spritePressed!.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     }
 
     if (this.text != null) {

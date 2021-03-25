@@ -1,10 +1,11 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -16,6 +17,7 @@ class CreditsView implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   List<Button> buttons = [];
   Sprite? buttonBackground;
@@ -23,7 +25,7 @@ class CreditsView implements BaseView {
 
   final Function navigate;
 
-  CreditsView(this.spriteManager, this.navigate);
+  CreditsView(this.spriteManager, this.navigate, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -109,7 +111,7 @@ class CreditsView implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Credits');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.creditsTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

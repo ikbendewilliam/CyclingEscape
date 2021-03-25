@@ -1,17 +1,15 @@
 # This is a generated file; do not edit or check into version control.
-app_review=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\app_review-2.0.1\\
-package_info=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\package_info-0.4.3+4\\
-path_provider=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider-2.0.1\\
+app_review=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\app_review-2.1.0-nullsafety.0\\
+package_info=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\package_info-0.5.0-nullsafety\\
 path_provider_linux=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider_linux-2.0.0\\
-path_provider_macos=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider_macos-2.0.0\\
 path_provider_windows=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider_windows-2.0.0\\
 shared_preferences=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences-2.0.5\\
 shared_preferences_linux=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_linux-2.0.0\\
 shared_preferences_macos=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-2.0.0\\
 shared_preferences_web=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_web-2.0.0\\
 shared_preferences_windows=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_windows-2.0.0\\
-url_launcher=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher-5.7.10\\
-url_launcher_linux=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_linux-0.0.1+4\\
-url_launcher_macos=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_macos-0.0.1+9\\
-url_launcher_web=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_web-0.1.5+3\\
-url_launcher_windows=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_windows-0.0.1+3\\
+url_launcher=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher-6.0.2\\
+url_launcher_linux=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_linux-2.0.0\\
+url_launcher_macos=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_macos-2.0.0\\
+url_launcher_web=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_web-2.0.0\\
+url_launcher_windows=C:\\Users\\ikben\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dartlang.org\\url_launcher_windows-2.0.0\\

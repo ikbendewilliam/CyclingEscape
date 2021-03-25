@@ -1,6 +1,7 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/moveable/cyclist.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/moveable/cyclist.dart';
 import 'package:flame/sprite.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class Team {
@@ -87,7 +88,7 @@ class Team {
       return null;
     }
     if (existingTeams.length > 0) {
-      Team? t = existingTeams.firstWhere(((element) => element!.id == json['id']), orElse: () => null);
+      Team? t = existingTeams.firstWhereOrNull(((element) => element!.id == json['id']));
       if (t != null) {
         return t;
       }

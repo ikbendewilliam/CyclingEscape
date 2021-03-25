@@ -1,9 +1,10 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -15,6 +16,7 @@ class PauseMenu implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   List<Button> buttons = [];
   Sprite? buttonBackground;
@@ -22,7 +24,7 @@ class PauseMenu implements BaseView {
 
   final Function navigate;
 
-  PauseMenu(this.spriteManager, this.navigate);
+  PauseMenu(this.spriteManager, this.navigate, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -42,21 +44,21 @@ class PauseMenu implements BaseView {
       Offset(screenSize!.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {navigate(GameManagerState.PLAYING, continueing: true)},
-      text: 'Continue',
+      text: appLocalizations.continueButton,
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize!.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {navigate(GameManagerState.PLAYING, save: true)},
-      text: 'Save',
+      text: appLocalizations.saveButton,
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize!.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.MAIN_MENU)},
-      text: 'Main menu',
+      text: appLocalizations.mainMenuButton,
     ));
   }
 
@@ -96,7 +98,7 @@ class PauseMenu implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 1.2), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Paused');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.pausedTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 1.4);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

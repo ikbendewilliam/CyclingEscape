@@ -1,10 +1,11 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -17,6 +18,7 @@ class CareerUpgradesMenu implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   List<Button> buttons = [];
   Sprite? buttonBackground;
@@ -32,7 +34,7 @@ class CareerUpgradesMenu implements BaseView {
 
   final Function navigate;
 
-  CareerUpgradesMenu(this.spriteManager, this.navigate, this.career);
+  CareerUpgradesMenu(this.spriteManager, this.navigate, this.career, this.appLocalizations);
 
   void onAttach() async {
     buttons = [];
@@ -60,7 +62,7 @@ class CareerUpgradesMenu implements BaseView {
       Offset(screenSize!.width / 2, 5.5 * buttonSize),
       ButtonType.BAR_RED,
       () => {navigate(GameManagerState.CAREER_MENU)},
-      text: 'Career',
+      text: appLocalizations.careerButton,
     ));
     buttons.add(Button(this.spriteManager, Offset(screenSize!.width * 0.73, 2.9 * buttonSize), ButtonType.BAR_RED, () {
       if (career.riders < 6 && career.cash >= getRiderPrice()) {
@@ -189,23 +191,23 @@ class CareerUpgradesMenu implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.8), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Upgrades');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesButton);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 1.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'You have: ${career.cash} \$');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerMoney + ' ${career.cash} \$');
     position = Offset(screenSize!.width / 2, 2 * buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Your riders');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRiders);
     position = Offset(screenSize!.width / 3, buttonSize * 2.7);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Rankings');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRankings);
     position = Offset(screenSize!.width / 3, buttonSize * (2.7 + 0.7));
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Race type');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRaceTypes);
     position = Offset(screenSize!.width / 3, buttonSize * (2.7 + 1.4));
     CanvasUtils.drawText(canvas, position, 0, span);
 

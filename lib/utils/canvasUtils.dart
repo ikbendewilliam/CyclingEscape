@@ -23,3 +23,7 @@ class CanvasUtils {
 extension Vector2FromOffset on Vector2 {
   static Vector2 fromOffset(Offset offset) => Vector2(offset.dx, offset.dy);
 }
+
+extension RenderCentered on Sprite {
+  void renderCentered(Canvas canvas, {position: Vector2, size: Vector2}) => render(canvas, position: position - size / 2.0, size: size);
+}

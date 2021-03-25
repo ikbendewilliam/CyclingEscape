@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/resultData.dart';
-import 'package:CyclingEscape/components/data/results.dart';
-import 'package:CyclingEscape/components/moveable/cyclist.dart';
-import 'package:CyclingEscape/components/moveable/dice.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
+import 'package:cycling_escape/components/data/resultData.dart';
+import 'package:cycling_escape/components/data/results.dart';
+import 'package:cycling_escape/components/moveable/cyclist.dart';
+import 'package:cycling_escape/components/moveable/dice.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ class CyclingViewUI {
       int? points = result?.points;
       int? mp = result?.mountain;
       backgroundText.render(canvas,
-          position: Vector2(screenSize!.width / 2 - tileSize! * 3.1, screenSize.height - tileSize * 0.75), size: Vector2(screenSize.width / 2 + tileSize * 3.1, screenSize.height));
+          position: Vector2(screenSize!.width / 2 - tileSize! * 3.1, screenSize.height - tileSize * 0.75), size: Vector2(tileSize * 6.2, tileSize * 0.75));
 
       Offset position = Offset(screenSize.width / 2 - tileSize * 1.75, screenSize.height - tileSize * 0.58);
 

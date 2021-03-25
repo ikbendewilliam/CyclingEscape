@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/moveable/cyclist.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/moveable/cyclist.dart';
 
 import 'foiliage.dart';
 import 'position.dart';
@@ -157,8 +157,8 @@ class GameMap {
       return null;
     }
     List<Position>? positions =
-        json['positions']?.map<Position>((v) => Position.fromJson(v, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, listener))?.toList();
-    List<Sprint>? sprints = json['sprints']?.map<Sprint>((v) => Sprint.fromJson(v, existingSprints))?.toList();
+        json['positions']?.map<Position>((v) => Position.fromJson(v, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, listener)!)?.toList();
+    List<Sprint>? sprints = json['sprints']?.map<Sprint>((v) => Sprint.fromJson(v, existingSprints)!)?.toList();
     GameMap gameMap = GameMap(positions, sprints, spriteManager, createFoiliage: false);
     gameMap.foiliage = json['foiliage']?.map<Foiliage>((v) => Foiliage.fromJson(v, spriteManager))?.toList();
 

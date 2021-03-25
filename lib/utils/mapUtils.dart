@@ -1,11 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/playSettings.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/positions/gameMap.dart';
-import 'package:CyclingEscape/components/positions/sprint.dart';
+import 'package:cycling_escape/components/data/playSettings.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/positions/gameMap.dart';
+import 'package:cycling_escape/components/positions/sprint.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../components/positions/position.dart';
 
@@ -270,7 +271,7 @@ class MapUtils {
           return route;
         } else {
           // priorityPosition is for nicer animation/movement of cyclists
-          Position? priorityPosition = currentPosition.connections!.firstWhere(((element) => element?.j == currentPosition.j), orElse: () => null);
+          Position? priorityPosition = currentPosition.connections?.firstWhereOrNull(((element) => element?.j == currentPosition.j));
           if (priorityPosition != null) {
             currentPosition.connections!.insert(0, priorityPosition);
             currentPosition.connections!.removeAt(currentPosition.connections!.lastIndexOf(priorityPosition));
@@ -323,7 +324,7 @@ class MapUtils {
         double bestValue = 0;
         List<Position?>? bestRoute;
         // priorityPosition is for nicer animation/movement of cyclists
-        Position? priorityPosition = currentPosition.connections!.firstWhere(((element) => element?.j == currentPosition.j), orElse: () => null);
+        Position? priorityPosition = currentPosition.connections?.firstWhereOrNull(((element) => element?.j == currentPosition.j));
         if (priorityPosition != null) {
           currentPosition.connections!.insert(0, priorityPosition);
           currentPosition.connections!.removeAt(currentPosition.connections!.lastIndexOf(priorityPosition));
@@ -504,28 +505,28 @@ MapLength getMapLengthFromString(String mapLengthAsString) {
 
 enum MapLength { SHORT, MEDIUM, LONG, VERY_LONG }
 
-String mapTypeAsString(MapType maptype) {
+String mapTypeAsString(MapType maptype, AppLocalizations appLocalizations) {
   switch (maptype) {
     case MapType.FLAT:
-      return 'Flat';
+      return appLocalizations.raceTypeFlat;
     case MapType.COBBLE:
-      return 'Cobbled';
+      return appLocalizations.raceTypeCobbled;
     case MapType.HILLS:
-      return 'Hilled';
+      return appLocalizations.raceTypeHilled;
     case MapType.HEAVY:
-      return 'HEAVY';
+      return appLocalizations.raceTypeHeavy;
   }
 }
 
-String mapLengthAsString(MapLength mapLength) {
+String mapLengthAsString(MapLength mapLength, AppLocalizations appLocalizations) {
   switch (mapLength) {
     case MapLength.SHORT:
-      return 'Short';
+      return appLocalizations.raceDurationShort;
     case MapLength.MEDIUM:
-      return 'Medium';
+      return appLocalizations.raceDurationMedium;
     case MapLength.LONG:
-      return 'Long';
+      return appLocalizations.raceDurationLong;
     case MapLength.VERY_LONG:
-      return 'Very long';
+      return appLocalizations.raceDurationVeryLong;
   }
 }

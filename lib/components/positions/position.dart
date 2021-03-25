@@ -1,12 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/positions/sprint.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/mapUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/positions/sprint.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/mapUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
@@ -247,8 +247,8 @@ class Position {
       return placeholder;
     }
     Position position = Position(
-      SaveUtil.offsetFromJson(json['p1']),
-      SaveUtil.offsetFromJson(json['p2']),
+      SaveUtil.offsetFromJson(json['p1'])!,
+      SaveUtil.offsetFromJson(json['p2'])!,
       listener,
       json['isLast'],
       json['segment'],
@@ -271,9 +271,9 @@ class Position {
 
     position.cyclist = Cyclist.fromJson(json['cyclist'], existingCyclists, existingTeams, spriteManager);
     position.connections =
-        json['connections']?.map<Position>((e) => Position.fromJson(e, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, listener))?.toList();
+        json['connections']?.map<Position>((e) => Position.fromJson(e, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, listener)!)?.toList();
     position.route =
-        json['route']?.map<Position>((e) => Position.fromJson(e, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, listener))?.toList();
+        json['route']?.map<Position>((e) => Position.fromJson(e, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, listener)!)?.toList();
     position.state = getPositionStateFromString(json['state']);
 
     return position;

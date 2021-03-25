@@ -1,12 +1,13 @@
-import 'package:CyclingEscape/components/data/playSettings.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/mapUtils.dart';
+import 'package:cycling_escape/components/data/playSettings.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/mapUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -18,6 +19,7 @@ class CourseSelectMenu implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   int teams = 4;
   int ridersPerTeam = 4;
@@ -31,7 +33,7 @@ class CourseSelectMenu implements BaseView {
 
   final Function navigate;
 
-  CourseSelectMenu(this.spriteManager, this.navigate);
+  CourseSelectMenu(this.spriteManager, this.navigate, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -243,27 +245,27 @@ class CourseSelectMenu implements BaseView {
     TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 5.85), 0, span);
 
-    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Teams: $teams');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.raceTeams + ' $teams');
     Offset position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Riders: ${ridersPerTeam * teams}');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.raceRiders + ' ${ridersPerTeam * teams}');
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapTypeAsString(maptype));
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapTypeAsString(maptype, appLocalizations));
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText!.render(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), anchor: Anchor.center, size: Vector2(buttonSize * 3.5, buttonSize));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapLengthAsString(mapLength));
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapLengthAsString(mapLength, appLocalizations));
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 

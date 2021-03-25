@@ -1,10 +1,11 @@
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -16,6 +17,7 @@ class SettingsMenu implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   List<Button> buttons = [];
   Sprite? buttonBackground;
@@ -26,7 +28,7 @@ class SettingsMenu implements BaseView {
 
   final Function navigate;
 
-  SettingsMenu(this.spriteManager, this.navigate, this.settings);
+  SettingsMenu(this.spriteManager, this.navigate, this.settings, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -222,13 +224,13 @@ class SettingsMenu implements BaseView {
   cyclistMovementAsString() {
     switch (settings.cyclistMovement) {
       case CyclistMovementType.FAST:
-        return 'Fast';
+        return appLocalizations.settingsCyclistMoveSpeedFast;
       case CyclistMovementType.NORMAL:
-        return 'Normal';
+        return appLocalizations.settingsCyclistMoveSpeedNormal;
       case CyclistMovementType.SLOW:
-        return 'Slow';
+        return appLocalizations.settingsCyclistMoveSpeedSlow;
       case CyclistMovementType.SKIP:
-        return 'Skip';
+        return appLocalizations.settingsCyclistMoveSpeedSkip;
       case null:
         throw Exception("settings.cyclistMovement shouldn't be null");
     }
@@ -237,11 +239,11 @@ class SettingsMenu implements BaseView {
   cameraMovementAsString() {
     switch (settings.cameraMovement) {
       case CameraMovementType.AUTO:
-        return 'Follow and select';
+        return appLocalizations.settingsCameraAutoMoveSelectAndFollow;
       case CameraMovementType.SELECT_ONLY:
-        return 'Select only';
+        return appLocalizations.settingsCameraAutoMoveSelectOnly;
       case CameraMovementType.NONE:
-        return 'Disabled';
+        return appLocalizations.settingsCameraAutoMoveDisabled;
       case null:
         throw Exception("settings.cameraMovement shouldn't be null");
     }
@@ -250,11 +252,11 @@ class SettingsMenu implements BaseView {
   difficultyAsString() {
     switch (settings.difficulty) {
       case DifficultyType.EASY:
-        return 'Easy';
+        return appLocalizations.settingsDifficultyEasy;
       case DifficultyType.NORMAL:
-        return 'Normal';
+        return appLocalizations.settingsDifficultyNormal;
       case DifficultyType.HARD:
-        return 'Hard';
+        return appLocalizations.settingsDifficultyHard;
       case null:
         throw Exception("settings.difficulty shouldn't be null");
     }
@@ -297,10 +299,9 @@ class SettingsMenu implements BaseView {
       button.render(canvas);
     });
 
-    backText!
-        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.9), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.9), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'autofollow threshold:');
+    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsAutofollowThreshold);
     Offset position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.4);
 
     CanvasUtils.drawText(canvas, position, 0, span);
@@ -308,14 +309,13 @@ class SettingsMenu implements BaseView {
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'autofollow ask below threshold');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsAutofollowAskBelowThreshold);
     position = Offset(screenSize!.width / 2 - buttonSize * 0.5, 2.7 * buttonSize - buttonSize * 0.15);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText!
-        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'Cyclist move speed');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsCyclistMoveSpeed);
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -323,10 +323,9 @@ class SettingsMenu implements BaseView {
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText!.render(canvas,
-        anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'camera automatic movement');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsCameraAutoMove);
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -334,10 +333,9 @@ class SettingsMenu implements BaseView {
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    backText!.render(canvas,
-        anchor: Anchor.center, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
+    backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: 'Difficulty');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsDifficulty);
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -347,7 +345,7 @@ class SettingsMenu implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Settings');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsTitle);
     position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

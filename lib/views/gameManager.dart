@@ -5,25 +5,26 @@ import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'package:CyclingEscape/components/data/activeTour.dart';
-import 'package:CyclingEscape/components/data/playSettings.dart';
-import 'package:CyclingEscape/components/data/resultData.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/positions/sprint.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
-import 'package:CyclingEscape/views/menus/careerMenu.dart';
-import 'package:CyclingEscape/views/menus/creditsView.dart';
-import 'package:CyclingEscape/views/menus/helpMenu.dart';
-import 'package:CyclingEscape/views/menus/info.dart';
-import 'package:CyclingEscape/views/menus/menuBackground.dart';
-import 'package:CyclingEscape/views/menus/pauseMenu.dart';
-import 'package:CyclingEscape/views/menus/settingsMenu.dart';
-import 'package:CyclingEscape/views/menus/tourInBetweenRaces.dart';
-import 'package:CyclingEscape/views/menus/tourSelect.dart';
-import 'package:CyclingEscape/views/menus/tutorialView.dart';
-import 'package:CyclingEscape/views/resultsView.dart';
+import 'package:cycling_escape/components/data/activeTour.dart';
+import 'package:cycling_escape/components/data/playSettings.dart';
+import 'package:cycling_escape/components/data/resultData.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/positions/sprint.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
+import 'package:cycling_escape/views/menus/careerMenu.dart';
+import 'package:cycling_escape/views/menus/creditsView.dart';
+import 'package:cycling_escape/views/menus/helpMenu.dart';
+import 'package:cycling_escape/views/menus/info.dart';
+import 'package:cycling_escape/views/menus/menuBackground.dart';
+import 'package:cycling_escape/views/menus/pauseMenu.dart';
+import 'package:cycling_escape/views/menus/settingsMenu.dart';
+import 'package:cycling_escape/views/menus/tourInBetweenRaces.dart';
+import 'package:cycling_escape/views/menus/tourSelect.dart';
+import 'package:cycling_escape/views/menus/tutorialView.dart';
+import 'package:cycling_escape/views/resultsView.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../components/data/activeTour.dart';
 import 'baseView.dart';
@@ -61,24 +62,10 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   GameManagerState? state;
   CourseSelectMenu? courseSelectMenu;
   TourInBetweenRacesMenu? tourInBetweenRacesMenu;
+  late AppLocalizations appLocalizations;
 
   GameManager() {
-    spriteManager = new SpriteManager();
-    cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
-    resultsView = new ResultsView(spriteManager, navigate, career);
-    mainmenu = new MainMenu(spriteManager, navigate);
-    careerMenu = new CareerMenu(spriteManager, navigate, career);
-    careerUpgrades = new CareerUpgradesMenu(spriteManager, navigate, career);
-    info = new InfoView(spriteManager, navigate);
-    helpMenu = new HelpMenu(spriteManager, navigate);
-    credits = new CreditsView(spriteManager, navigate);
-    pauseMenu = new PauseMenu(spriteManager, navigate);
-    tutorial = new TutorialView(spriteManager, navigate);
-    courseSelectMenu = new CourseSelectMenu(spriteManager, navigate);
-    settingsMenu = new SettingsMenu(spriteManager, navigate, settings);
-    tourInBetweenRacesMenu = new TourInBetweenRacesMenu(spriteManager, navigate);
-    tourSelectMenu = new TourSelectMenu(spriteManager, navigate);
-    currentView = mainmenu;
+    spriteManager = SpriteManager();
     state = GameManagerState.MAIN_MENU;
   }
 
@@ -122,9 +109,27 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
   }
 
-  void load() async {
+  void load(AppLocalizations appLocalizations) async {
+    this.appLocalizations = appLocalizations;
+    cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
+    resultsView = ResultsView(spriteManager, navigate, career, appLocalizations);
+    mainmenu = MainMenu(spriteManager, navigate, appLocalizations);
+    careerMenu = CareerMenu(spriteManager, navigate, career, appLocalizations);
+    careerUpgrades = CareerUpgradesMenu(spriteManager, navigate, career, appLocalizations);
+    info = InfoView(spriteManager, navigate);
+    helpMenu = HelpMenu(spriteManager, navigate, appLocalizations);
+    credits = CreditsView(spriteManager, navigate, appLocalizations);
+    pauseMenu = PauseMenu(spriteManager, navigate, appLocalizations);
+    tutorial = TutorialView(spriteManager, navigate, appLocalizations);
+    courseSelectMenu = CourseSelectMenu(spriteManager, navigate, appLocalizations);
+    settingsMenu = SettingsMenu(spriteManager, navigate, settings, appLocalizations);
+    tourInBetweenRacesMenu = TourInBetweenRacesMenu(spriteManager, navigate, appLocalizations);
+    tourSelectMenu = TourSelectMenu(spriteManager, navigate, appLocalizations);
+    currentView = mainmenu;
+    currentView?.resize(currentSize);
+
     await spriteManager.loadSprites();
-    currentView!.onAttach();
+    currentView?.onAttach();
     if (menuBackground == null) {
       menuBackground = MenuBackground(this.spriteManager);
     }
@@ -138,8 +143,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       // print(loadingPercentage);
       Paint bgPaint = Paint()..color = Colors.green[200]!;
       canvas.drawRect(Rect.fromLTRB(0, 0, currentSize!.width, currentSize!.height), bgPaint);
-      TextSpan span =
-          new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Loading... '); // ${loadingPercentage.toStringAsFixed(2)}%
+      TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: 'Loading... '); // ${loadingPercentage.toStringAsFixed(2)}%
       Offset position = Offset(currentSize!.width / 2, currentSize!.height / 2);
       CanvasUtils.drawText(canvas, position, 0, span);
     } else {
@@ -237,7 +241,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
   @override
   void onResize(Vector2 size) {
     currentSize = Size(size.x, size.y);
-    currentView!.resize(Size(size.x, size.y));
+    currentView?.resize(Size(size.x, size.y));
     super.onResize(size);
   }
 
@@ -303,7 +307,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     if (tutorialType != null) {
       newState = GameManagerState.TUTORIAL;
       tutorialsViewed.addViewed(tutorialType);
-      tutorial = TutorialView(spriteManager, navigate);
+      tutorial = TutorialView(spriteManager, navigate, appLocalizations);
       tutorial!.previousState = this.state;
       tutorial!.previousView = this.currentView;
       tutorial!.tutorialType = tutorialType;
@@ -457,7 +461,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
     resultsView!.onAttach(inCareer);
     onResize(Vector2(currentSize!.width, currentSize!.height));
-    cyclingView = new CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial); // Clean the CyclingView to be safe
+    cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial); // Clean the CyclingView to be safe
     SaveUtil.clearCyclingView();
   }
 

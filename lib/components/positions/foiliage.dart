@@ -1,8 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
@@ -77,12 +78,12 @@ class Foiliage {
     canvas.save();
     canvas.translate(offset.dx * tileSize!, offset.dy * tileSize);
     canvas.rotate(angle);
-    sprite!.render(canvas, position: Vector2.zero(), anchor: Anchor.center, size: Vector2(aspectRatio, 1) * size * tileSize);
+    sprite!.renderCentered(canvas, position: Vector2.zero(), size: Vector2(aspectRatio, 1) * size * tileSize);
     canvas.restore();
   }
 
   static Foiliage fromJson(Map<String, dynamic> json, SpriteManager spriteManager) {
-    return Foiliage(SaveUtil.offsetFromJson(json['offset']), json['size'], getFoiliageTypeFromString(json['type']), spriteManager, json['angle']);
+    return Foiliage(SaveUtil.offsetFromJson(json['offset'])!, json['size'], getFoiliageTypeFromString(json['type']), spriteManager, json['angle']);
   }
 
   Map<String, dynamic> toJson() {

@@ -1,25 +1,22 @@
-import 'package:CyclingEscape/views/gameManager.dart';
-import 'package:device_preview/device_preview.dart';
+import 'package:cycling_escape/views/gameManager.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const disableDevicePreview = true;
+GameManager? gameManager;
 
 void main() async {
-  final gameManager = new GameManager();
-  runApp(app(GameWidget(game: gameManager)));
+  gameManager = new GameManager();
+  runApp(app());
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();
-  gameManager.load();
 }
 
-Widget app(Widget gameWidget) => MaterialApp(
+Widget app() => MaterialApp(
       localizationsDelegates: [
-        // TODO: uncomment the line below after codegen
-        // AppLocalizations.delegate,
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -30,10 +27,10 @@ Widget app(Widget gameWidget) => MaterialApp(
         const Locale('fr'),
         const Locale('es'),
       ],
-      home: disableDevicePreview
-          ? gameWidget
-          : DevicePreview(
-              enabled: !kReleaseMode,
-              builder: (context) => gameWidget, // Wrap your app
-            ),
+      home: Builder(
+        builder: (context) {
+          gameManager?.load(AppLocalizations.of(context)!);
+          return GameWidget(game: gameManager!);
+        },
+      ),
     );

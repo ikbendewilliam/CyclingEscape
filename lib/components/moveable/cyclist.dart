@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/positions/position.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/saveUtil.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/positions/position.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/saveUtil.dart';
 import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
@@ -76,9 +76,9 @@ class Cyclist {
         sprite = cyclistBouledJerseySprite;
         textColor = Colors.black;
       }
-      sprite!.render(canvas, position: Vector2.zero(), anchor: Anchor.center, size: Vector2(size * 3, size * 6));
+      sprite!.renderCentered(canvas, position: Vector2.zero(), size: Vector2(size * 3, size * 6));
 
-      TextSpan span = new TextSpan(style: new TextStyle(color: textColor, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: number.toString());
+      TextSpan span = new TextSpan(style: TextStyle(color: textColor, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: number.toString());
       CanvasUtils.drawText(canvas, Offset(0, -size / 3), 0, span);
 
       canvas.restore();

@@ -1,13 +1,14 @@
 import 'dart:math';
 
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/ui/button.dart';
-import 'package:CyclingEscape/utils/canvasUtils.dart';
-import 'package:CyclingEscape/utils/mapUtils.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'package:cycling_escape/utils/mapUtils.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:ui';
 
@@ -19,6 +20,7 @@ class TourSelectMenu implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   int selectedColor = 0;
   Tour? selectedTour;
@@ -31,7 +33,7 @@ class TourSelectMenu implements BaseView {
 
   final Function navigate;
 
-  TourSelectMenu(this.spriteManager, this.navigate);
+  TourSelectMenu(this.spriteManager, this.navigate, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -103,26 +105,26 @@ class TourSelectMenu implements BaseView {
   mapTypeAsString(MapType mapType) {
     switch (mapType) {
       case MapType.FLAT:
-        return 'Flat';
+        return appLocalizations.raceTypeFlat;
       case MapType.COBBLE:
-        return 'Cobbled';
+        return appLocalizations.raceTypeCobbled;
       case MapType.HILLS:
-        return 'Hilled';
+        return appLocalizations.raceTypeHilled;
       case MapType.HEAVY:
-        return 'HEAVY';
+        return appLocalizations.raceTypeHeavy;
     }
   }
 
   mapLengthAsString(MapLength mapLength) {
     switch (mapLength) {
       case MapLength.SHORT:
-        return 'Short';
+        return appLocalizations.raceDurationShort;
       case MapLength.MEDIUM:
-        return 'Medium';
+        return appLocalizations.raceDurationMedium;
       case MapLength.LONG:
-        return 'Long';
+        return appLocalizations.raceDurationLong;
       case MapLength.VERY_LONG:
-        return 'Very long';
+        return appLocalizations.raceDurationVeryLong;
     }
   }
 
@@ -161,14 +163,13 @@ class TourSelectMenu implements BaseView {
   void render(Canvas canvas) {
     double buttonSize = screenSize!.height / 7;
 
-    buttonBackground!
-        .render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 8, buttonSize), size: Vector2(screenSize!.width / 8 * 6, screenSize!.height / 1.4));
+    buttonBackground!.render(canvas, position: Vector2(screenSize!.width / 8, buttonSize), size: Vector2(screenSize!.width / 8 * 6, screenSize!.height / 1.4));
 
     buttons.forEach((button) {
       button.render(canvas);
     });
 
-    backgroundHeader!.render(canvas, anchor: Anchor.center, position: Vector2(screenSize!.width / 3, buttonSize * 0.81), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
+    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.81), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
     Paint paint = Paint()
       ..color = Team.getColorFromId(selectedColor)
@@ -181,26 +182,27 @@ class TourSelectMenu implements BaseView {
 
     tours.asMap().forEach((i, element) {
       Color? drawColor = element == selectedTour ? Colors.green[600] : Colors.white;
-      backgroundTour!.render(canvas,
-          anchor: Anchor.center, position: Vector2(screenSize!.width / 6 * 1.1 * (i + 0.77), buttonSize * 1.7), size: Vector2(screenSize!.width / 6, buttonSize * 2.2));
+      backgroundTour!.render(canvas, position: Vector2(screenSize!.width / 6 * 1.1 * (i + 0.77), buttonSize * 1.7), size: Vector2(screenSize!.width / 6, buttonSize * 2.2));
 
       Offset position = Offset(screenSize!.width / 6 * 1.1 * (i + 1.27), buttonSize * 1.8);
 
-      TextSpan span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'Teams: ${element.teams}');
+      TextSpan span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceTeams + ' ${element.teams}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 0), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'Riders: ${element.ridersPerTeam * element.teams}');
+      span = new TextSpan(
+          style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceRiders + ' ${element.ridersPerTeam * element.teams}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 1), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'Races: ${element.races}');
+      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.races + ' ${element.races}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 2), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'Type: ${mapTypeAsString(element.mapType)}');
+      span =
+          new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceType + ' ${mapTypeAsString(element.mapType)}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 3), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'Length:');
+      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceDuration);
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 4), 0, span);
       span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${mapLengthAsString(element.mapLength)}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 5), 0, span);
     });
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Start a tour');
+    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.tourTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 0.95);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

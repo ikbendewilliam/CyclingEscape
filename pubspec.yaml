@@ -1,4 +1,4 @@
-name: CyclingEscape
+name: cycling_escape
 description: A Cycling game by WiVe
 
 version: 1.2.0+17
@@ -11,11 +11,11 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  app_review: ^2.0.1
-  device_preview: ^0.7.1
+  app_review: ^2.1.0-nullsafety.0
   flame: ^1.0.0-rc8
   intl: ^0.17.0
   shared_preferences: ^2.0.5
+  plugin_platform_interface: ^2.0.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.0

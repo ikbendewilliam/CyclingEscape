@@ -1,8 +1,8 @@
-import 'package:CyclingEscape/components/data/resultData.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/components/data/team.dart';
-import 'package:CyclingEscape/components/moveable/cyclist.dart';
-import 'package:CyclingEscape/views/resultsView.dart';
+import 'package:cycling_escape/components/data/resultData.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/data/team.dart';
+import 'package:cycling_escape/components/moveable/cyclist.dart';
+import 'package:cycling_escape/views/resultsView.dart';
 import 'package:flutter/material.dart';
 
 class Results {

@@ -1,4 +1,4 @@
-# CyclingEscape
+# cycling_escape
 
 ## Assets
 bgs: https://thedarkbear.itch.io/3-parallax

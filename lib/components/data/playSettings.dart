@@ -1,5 +1,5 @@
-import 'package:CyclingEscape/utils/mapUtils.dart';
-import 'package:CyclingEscape/views/menus/tourSelect.dart';
+import 'package:cycling_escape/utils/mapUtils.dart';
+import 'package:cycling_escape/views/menus/tourSelect.dart';
 
 class PlaySettings {
   final int teams;

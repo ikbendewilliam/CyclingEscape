@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:CyclingEscape/components/data/activeTour.dart';
-import 'package:CyclingEscape/components/data/spriteManager.dart';
-import 'package:CyclingEscape/views/cyclingView.dart';
-import 'package:CyclingEscape/views/menus/careerMenu.dart';
-import 'package:CyclingEscape/views/menus/settingsMenu.dart';
-import 'package:CyclingEscape/views/menus/tutorialView.dart';
+import 'package:cycling_escape/components/data/activeTour.dart';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/views/cyclingView.dart';
+import 'package:cycling_escape/views/menus/careerMenu.dart';
+import 'package:cycling_escape/views/menus/settingsMenu.dart';
+import 'package:cycling_escape/views/menus/tutorialView.dart';
 import 'package:flame/components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,7 +91,7 @@ class SaveUtil {
     prefs.remove('be.wive.cyclingescape.activeGame');
   }
 
-  static Offset offsetFromJson(Map<String, dynamic> json) => Offset(json['dx'], json['dy']);
+  static Offset? offsetFromJson(Map<String, dynamic>? json) => json == null ? null : Offset(json['dx'], json['dy']);
 
   static Map<String, dynamic>? offsetToJson(Offset? offset) {
     if (offset == null) {

@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 
 class SpriteManager {
@@ -126,12 +125,12 @@ class SpriteManager {
       loaded = true;
       loading = true;
       spriteNames.forEach((spriteName) async {
-        sprites.add(SpriteName(spriteName, Sprite(await Flame.images.load(spriteName))));
+        sprites.add(SpriteName(spriteName, await Sprite.load(spriteName)));
       });
 
       for (int j = 0; j < 9; j++) {
         for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
-          diceSprites.add(Sprite(await Flame.images.load('dice.png'), srcPosition: Vector2(37.5 * i * 1, 37.5 * j * 1), srcSize: Vector2(37 * 1.0, 37 * 1.0)));
+          diceSprites.add(await Sprite.load('dice.png', srcPosition: Vector2(37.5 * i * 1, 37.5 * j * 1), srcSize: Vector2(37 * 1.0, 37 * 1.0)));
         }
       }
       loading = false;

@@ -93,7 +93,7 @@ class TutorialView implements BaseView {
 
     renderText(canvas);
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Tutorial');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Tutorial');
     Offset position = Offset(screenSize!.width / 2, buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -106,7 +106,7 @@ class TutorialView implements BaseView {
 
   renderLine(canvas, line, yOffset) {
     double buttonSize = screenSize!.height / 7;
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize / 2 * (yOffset / 2 + 4)), 0, span);
   }
 
@@ -280,7 +280,7 @@ class TutorialsViewed {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['typesViewed'] = this.typesViewed.map<String>((e) => e.toString()).toList();
     data['toursFinished'] = this.toursFinished;
     return data;

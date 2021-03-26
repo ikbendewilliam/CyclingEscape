@@ -42,7 +42,7 @@ class CyclingViewUI {
     notifications.asMap().forEach((i, notification) {
       backgroundNotification!
           .render(canvas, position: Vector2(screenSize!.width - tileSize! * 3.7, tileSize * (i / 2 + 0.1)), size: Vector2(screenSize.width - tileSize * 3.8, tileSize * 0.5));
-      TextSpan span = new TextSpan(style: new TextStyle(color: notification.color, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: notification.text);
+      TextSpan span = TextSpan(style: TextStyle(color: notification.color, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: notification.text);
       Offset position = Offset(screenSize.width - tileSize * 1.7, tileSize * (i / 2 + 0.1));
       CanvasUtils.drawText(canvas, position, 0, span);
     });
@@ -57,27 +57,27 @@ class CyclingViewUI {
 
       Offset position = Offset(screenSize.width / 2 - tileSize * 1.75, screenSize.height - tileSize * 0.58);
 
-      TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$rank');
+      TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$rank');
       CanvasUtils.drawText(canvas, position, 0, span);
       iconRank!.render(canvas, position: Vector2FromOffset.fromOffset(position - Offset(tileSize, tileSize / 6)), size: Vector2(1, 1) * tileSize * 0.66);
 
-      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$time');
+      span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$time');
       position = position + Offset(tileSize * 1.5, 0);
       CanvasUtils.drawText(canvas, position, 0, span);
       iconTime!.render(canvas, position: Vector2FromOffset.fromOffset(position - Offset(tileSize, tileSize / 6)), size: Vector2(1, 1) * tileSize * 0.66);
 
-      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$points');
+      span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$points');
       position = position + Offset(tileSize * 1.5, 0);
       CanvasUtils.drawText(canvas, position, 0, span);
       iconPoints!.render(canvas, position: Vector2FromOffset.fromOffset(position - Offset(tileSize, tileSize / 6)), size: Vector2(1, 1) * tileSize * 0.66);
 
-      span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$mp');
+      span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$mp');
       position = position + Offset(tileSize * 1.5, 0);
       CanvasUtils.drawText(canvas, position, 0, span);
       iconMountain!.render(canvas, position: Vector2FromOffset.fromOffset(position - Offset(tileSize, tileSize / 6)), size: Vector2(1, 1) * tileSize * 0.66);
     }
     if (diceValueCooldown > 0) {
-      TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 100.0, fontFamily: 'SaranaiGame'), text: '$diceValue');
+      TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 100.0, fontFamily: 'SaranaiGame'), text: '$diceValue');
       CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, screenSize.height / 2), 0, span);
     }
   }

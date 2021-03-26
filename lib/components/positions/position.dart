@@ -137,7 +137,7 @@ class Position {
           angle += pi;
         }
       }
-      TextSpan span = new TextSpan(style: new TextStyle(color: Colors.black, fontSize: 20.0, fontFamily: 'Roboto'), text: fieldValue.toInt().toString());
+      TextSpan span = TextSpan(style: TextStyle(color: Colors.black, fontSize: 20.0, fontFamily: 'Roboto'), text: fieldValue.toInt().toString());
 
       CanvasUtils.drawText(c, Offset(((k == -1 ? p2 : p1).dx + cos(angle) * 0.6) * tileSize!, ((k == -1 ? p2 : p1).dy + sin(angle) * 0.6) * tileSize), angle + pi / 2, span);
     }
@@ -280,7 +280,7 @@ class Position {
   }
 
   Map<String, dynamic> toJson(bool idOnly) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     if (!idOnly) {
       data['k'] = this.k;

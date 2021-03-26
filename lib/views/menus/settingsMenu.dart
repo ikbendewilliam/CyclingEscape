@@ -301,51 +301,51 @@ class SettingsMenu implements BaseView {
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.9), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsAutofollowThreshold);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsAutofollowThreshold);
     Offset position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.4);
 
     CanvasUtils.drawText(canvas, position, 0, span);
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${settings.autofollowThreshold}');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: '${settings.autofollowThreshold}');
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsAutofollowAskBelowThreshold);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsAutofollowAskBelowThreshold);
     position = Offset(screenSize!.width / 2 - buttonSize * 0.5, 2.7 * buttonSize - buttonSize * 0.15);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsCyclistMoveSpeed);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsCyclistMoveSpeed);
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: cyclistMovementAsString());
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: cyclistMovementAsString());
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsCameraAutoMove);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsCameraAutoMove);
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: cameraMovementAsString());
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: cameraMovementAsString());
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3), size: Vector2(buttonSize * 3.5, buttonSize * 0.7));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsDifficulty);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsDifficulty);
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.6);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: difficultyAsString());
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: difficultyAsString());
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 3 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsTitle);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.settingsTitle);
     position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -405,7 +405,7 @@ class Settings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['autofollowThreshold'] = this.autofollowThreshold;
     data['autofollowAsk'] = this.autofollowAsk;
     data['cyclistMovement'] = this.cyclistMovement.toString();

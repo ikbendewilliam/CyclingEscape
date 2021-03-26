@@ -192,12 +192,12 @@ class Dice {
     dice.angle = json['angle'];
     dice.scale = json['scale'];
     dice.countdown = json['countdown'];
-    dice.diceAnimation = json['diceAnimation'] != null ? new List<int>.from(json['diceAnimation']) : [];
+    dice.diceAnimation = json['diceAnimation'] != null ? List<int>.from(json['diceAnimation']) : [];
     return dice;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['diceValue'] = this.diceValue;
     data['direction'] = this.direction;
     data['currentIndex'] = this.currentIndex;

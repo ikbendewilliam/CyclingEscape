@@ -177,7 +177,7 @@ class TourSelectMenu implements BaseView {
 
     canvas.drawCircle(Offset(screenSize!.width / 2, buttonSize * 4.3), buttonSize / 4, paint);
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 4.15), 0, span);
 
     tours.asMap().forEach((i, element) {
@@ -186,23 +186,21 @@ class TourSelectMenu implements BaseView {
 
       Offset position = Offset(screenSize!.width / 6 * 1.1 * (i + 1.27), buttonSize * 1.8);
 
-      TextSpan span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceTeams + ' ${element.teams}');
+      TextSpan span = TextSpan(style: TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceTeams + ' ${element.teams}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 0), 0, span);
-      span = new TextSpan(
-          style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceRiders + ' ${element.ridersPerTeam * element.teams}');
+      span = TextSpan(style: TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceRiders + ' ${element.ridersPerTeam * element.teams}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 1), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.races + ' ${element.races}');
+      span = TextSpan(style: TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.races + ' ${element.races}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 2), 0, span);
-      span =
-          new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceType + ' ${mapTypeAsString(element.mapType)}');
+      span = TextSpan(style: TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceType + ' ${mapTypeAsString(element.mapType)}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 3), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceDuration);
+      span = TextSpan(style: TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: appLocalizations.raceDuration);
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 4), 0, span);
-      span = new TextSpan(style: new TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${mapLengthAsString(element.mapLength)}');
+      span = TextSpan(style: TextStyle(color: drawColor, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${mapLengthAsString(element.mapLength)}');
       CanvasUtils.drawText(canvas, position + Offset(0, buttonSize / 3 * 5), 0, span);
     });
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.tourTitle);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.tourTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 0.95);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -245,7 +243,7 @@ class Tour {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['teams'] = this.teams;
     data['ridersPerTeam'] = this.ridersPerTeam;

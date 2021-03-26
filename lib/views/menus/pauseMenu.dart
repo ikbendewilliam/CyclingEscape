@@ -98,7 +98,7 @@ class PauseMenu implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 1.2), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.pausedTitle);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.pausedTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 1.4);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

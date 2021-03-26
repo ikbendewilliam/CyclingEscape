@@ -44,7 +44,7 @@ class Results {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['teams'] = this.type.toString();
     data['data'] = this.data.map((i) => i!.toJson()).toList();

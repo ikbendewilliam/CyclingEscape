@@ -155,13 +155,12 @@ class CareerMenu implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.8), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerButton);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerButton);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 1.05);
 
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerMoney + ' \$' + earningsToString(career.cash));
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerMoney + ' \$' + earningsToString(career.cash));
     position = Offset(screenSize!.width / 2, 2 * buttonSize);
 
     CanvasUtils.drawText(canvas, position, 0, span);
@@ -169,12 +168,12 @@ class CareerMenu implements BaseView {
     Sprite sprite = index < career.raceTypes ? backText! : backTextDisabled!;
     sprite.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 3 * buttonSize), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: raceTypes[index].name);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: raceTypes[index].name);
     position = Offset(screenSize!.width / 2, 3 * buttonSize - buttonSize * 0.25);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(
-        style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
+    span = TextSpan(
+        style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'),
         text: index < career.raceTypes ? (appLocalizations.careerWinnerEarnings + ' \$' + earningsToString(raceTypes[index].earnings!)) : appLocalizations.careerBlocked);
     position = Offset(screenSize!.width / 2, 3 * buttonSize + buttonSize * 0.5);
 
@@ -216,7 +215,7 @@ class RaceType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['name'] = this.name;
     data['earnings'] = this.earnings;
     data['tour'] = this.tour.toJson();
@@ -250,7 +249,7 @@ class Career {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['riders'] = this.riders;
     data['rankingTypes'] = this.rankingTypes;
     data['raceTypes'] = this.raceTypes;

@@ -1,14 +1,15 @@
 import 'dart:ui';
 
+import 'package:flame/components.dart';
+import 'package:flame/sprite.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cycling_escape/components/data/spriteManager.dart';
 import 'package:cycling_escape/components/ui/button.dart';
 import 'package:cycling_escape/utils/canvasUtils.dart';
 import 'package:cycling_escape/views/baseView.dart';
 import 'package:cycling_escape/views/gameManager.dart';
-import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HelpMenu implements BaseView {
   final Function navigate;
@@ -102,7 +103,7 @@ class HelpMenu implements BaseView {
     background!.render(canvas, position: Vector2(screenSize!.width / 15, buttonSize / 2), size: Vector2(screenSize!.width / 15 * 13, screenSize!.height - buttonSize));
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize / 4), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Help');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.helpTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize / 2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -134,7 +135,7 @@ class HelpMenu implements BaseView {
 
   renderLine(canvas, line, yOffset) {
     double buttonSize = screenSize!.height / 7;
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize / 2 * (yOffset / 2 + 3)), 0, span);
   }
 

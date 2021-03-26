@@ -116,9 +116,9 @@ class MainMenu implements BaseView {
       button.render(canvas);
     });
 
-    backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.8), size: Vector2(screenSize!.width / 3, buttonSize));
+    backgroundHeader?.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.8), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Cycling Escape');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Cycling Escape');
     Offset position = Offset(screenSize!.width / 2, buttonSize * 1.05);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

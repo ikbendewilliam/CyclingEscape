@@ -18,7 +18,7 @@ class CyclistPlace {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['cyclist'] = this.cyclist!.toJson(true);
     data['value'] = this.value;
     data['displayed'] = this.displayed;

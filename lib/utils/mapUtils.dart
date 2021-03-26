@@ -63,7 +63,7 @@ class MapUtils {
           default:
             fieldValue = 0;
         }
-        positions.add(new Position(
+        positions.add(Position(
             p1,
             Offset(currentPosition.dx + (dx * (i + 1)) * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
                 currentPosition.dy + (dy * (i + 1)) * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2)),
@@ -369,7 +369,7 @@ class MapUtils {
   }
 
   static GameMap generateMap(PlaySettings playSettings, PositionListener listener, SpriteManager spriteManager) {
-    MapUtils newMap = new MapUtils(listener, Offset(0, 4));
+    MapUtils newMap = MapUtils(listener, Offset(0, 4));
 
     newMap.addStraight(playSettings.ridersPerTeam, max(playSettings.teams, 3));
     newMap.addSprint(max(playSettings.teams, 3), SprintType.START);

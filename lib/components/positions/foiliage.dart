@@ -87,7 +87,7 @@ class Foiliage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['offset'] = SaveUtil.offsetToJson(this.offset);
     data['size'] = this.size;
     data['type'] = this.type.toString();

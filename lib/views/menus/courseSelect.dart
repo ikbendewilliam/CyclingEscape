@@ -242,36 +242,36 @@ class CourseSelectMenu implements BaseView {
 
     canvas.drawCircle(Offset(screenSize!.width / 2, buttonSize * 6), buttonSize / 4, paint);
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${(selectedColor + 2) * 10}');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 5.85), 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.raceTeams + ' $teams');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.raceTeams + ' $teams');
     Offset position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.raceRiders + ' ${ridersPerTeam * teams}');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.raceRiders + ' ${ridersPerTeam * teams}');
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapTypeAsString(maptype, appLocalizations));
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapTypeAsString(maptype, appLocalizations));
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backText!.renderCentered(canvas, position: Vector2(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2), size: Vector2(buttonSize * 3.5, buttonSize));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapLengthAsString(mapLength, appLocalizations));
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: mapLengthAsString(mapLength, appLocalizations));
     position = Offset(screenSize!.width / 2, 2.7 * buttonSize + buttonSize * 1.1 * 2 - buttonSize * 0.3);
     CanvasUtils.drawText(canvas, position, 0, span);
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Configure game');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.singleRaceTitle);
     position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

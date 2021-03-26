@@ -78,7 +78,7 @@ class Cyclist {
       }
       sprite!.renderCentered(canvas, position: Vector2.zero(), size: Vector2(size * 3, size * 6));
 
-      TextSpan span = new TextSpan(style: TextStyle(color: textColor, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: number.toString());
+      TextSpan span = TextSpan(style: TextStyle(color: textColor, fontSize: 10.0, fontFamily: 'SaranaiGame'), text: number.toString());
       CanvasUtils.drawText(canvas, Offset(0, -size / 3), 0, span);
 
       canvas.restore();
@@ -122,7 +122,7 @@ class Cyclist {
   }
 
   Map<String, dynamic> toJson(bool idOnly) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     if (!idOnly) {
       data['number'] = this.number;

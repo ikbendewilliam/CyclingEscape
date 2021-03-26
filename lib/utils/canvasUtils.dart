@@ -13,9 +13,9 @@ class CanvasUtils {
       scale = 2.8;
     }
     canvas.translate(-textSpan.text!.length * textSpan.style!.fontSize! / scale, 0);
-    TextPainter tp = new TextPainter(text: textSpan, textDirection: TextDirection.ltr);
+    TextPainter tp = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
     tp.layout();
-    tp.paint(canvas, new Offset(0.0, 0.0));
+    tp.paint(canvas, Offset(0.0, 0.0));
     canvas.restore();
   }
 }

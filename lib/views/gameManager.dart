@@ -4,6 +4,7 @@ import 'package:app_review/app_review.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:cycling_escape/components/data/activeTour.dart';
 import 'package:cycling_escape/components/data/playSettings.dart';
@@ -24,7 +25,6 @@ import 'package:cycling_escape/views/menus/tourInBetweenRaces.dart';
 import 'package:cycling_escape/views/menus/tourSelect.dart';
 import 'package:cycling_escape/views/menus/tutorialView.dart';
 import 'package:cycling_escape/views/resultsView.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../components/data/activeTour.dart';
 import 'baseView.dart';
@@ -111,12 +111,12 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
   void load(AppLocalizations appLocalizations) async {
     this.appLocalizations = appLocalizations;
-    cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
+    cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, appLocalizations, openTutorial);
     resultsView = ResultsView(spriteManager, navigate, career, appLocalizations);
     mainmenu = MainMenu(spriteManager, navigate, appLocalizations);
     careerMenu = CareerMenu(spriteManager, navigate, career, appLocalizations);
     careerUpgrades = CareerUpgradesMenu(spriteManager, navigate, career, appLocalizations);
-    info = InfoView(spriteManager, navigate);
+    info = InfoView(spriteManager, navigate, appLocalizations);
     helpMenu = HelpMenu(spriteManager, navigate, appLocalizations);
     credits = CreditsView(spriteManager, navigate, appLocalizations);
     pauseMenu = PauseMenu(spriteManager, navigate, appLocalizations);
@@ -290,7 +290,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
       SaveUtil.saveCyclingView(this.cyclingView!);
     }
     if (load) {
-      CyclingView? newCyclingView = await SaveUtil.loadCyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
+      CyclingView? newCyclingView = await SaveUtil.loadCyclingView(spriteManager, cyclingEnded, navigate, settings, appLocalizations, openTutorial);
       if (newCyclingView != null) {
         this.cyclingView = newCyclingView;
         newState = GameManagerState.PLAYING;
@@ -323,9 +323,8 @@ class GameManager extends Game with ScaleDetector, TapDetector {
             int earnings = calculateEarnings(activeTour!.currentResults!.data, activeTour!.raceType!);
             career.cash += earnings;
             SaveUtil.saveCareer(career);
-            print('Congratulations, you have earned \$$earnings.');
             navigate(GameManagerState.CAREER_MENU);
-            navigate(GameManagerState.INFO, infoText: 'Congratulations, you have earned \$$earnings.');
+            navigate(GameManagerState.INFO, infoText: '${appLocalizations.careerFinishedEarnings} \$$earnings.');
           }
           inCareer = false;
           this.activeTour = null;
@@ -335,7 +334,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
         }
         break;
       case GameManagerState.INFO:
-        info = InfoView(spriteManager, navigate);
+        info = InfoView(spriteManager, navigate, appLocalizations);
         info!.previousState = this.state;
         info!.previousView = this.currentView;
         info!.splitLongText(infoText);
@@ -461,7 +460,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
     }
     resultsView!.onAttach(inCareer);
     onResize(Vector2(currentSize!.width, currentSize!.height));
-    cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial); // Clean the CyclingView to be safe
+    cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, appLocalizations, openTutorial); // Clean the CyclingView to be safe
     SaveUtil.clearCyclingView();
   }
 

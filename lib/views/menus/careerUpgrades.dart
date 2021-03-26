@@ -191,23 +191,23 @@ class CareerUpgradesMenu implements BaseView {
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.8), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesButton);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesButton);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 1.05);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerMoney + ' ${career.cash} \$');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerMoney + ' ${career.cash} \$');
     position = Offset(screenSize!.width / 2, 2 * buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRiders);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRiders);
     position = Offset(screenSize!.width / 3, buttonSize * 2.7);
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRankings);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRankings);
     position = Offset(screenSize!.width / 3, buttonSize * (2.7 + 0.7));
     CanvasUtils.drawText(canvas, position, 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRaceTypes);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: appLocalizations.upgradesRaceTypes);
     position = Offset(screenSize!.width / 3, buttonSize * (2.7 + 1.4));
     CanvasUtils.drawText(canvas, position, 0, span);
 

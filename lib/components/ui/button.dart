@@ -156,7 +156,7 @@ class Button {
     }
 
     if (this.text != null) {
-      TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: pow(buttonSize, 1 / 2) * 2.5, fontFamily: 'SaranaiGame'), text: this.text);
+      TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: pow(buttonSize, 1 / 2) * 2.5, fontFamily: 'SaranaiGame'), text: this.text);
       Offset position = Offset(center.dx, center.dy);
       position = Offset(position.dx, position.dy - (isPressed ? pow(buttonSize, 1 / 2) * 2 : pow(buttonSize, 1 / 2) * 2.5));
       CanvasUtils.drawText(canvas, position, 0, span);

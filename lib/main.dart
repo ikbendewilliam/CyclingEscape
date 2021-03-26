@@ -8,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 GameManager? gameManager;
 
 void main() async {
-  gameManager = new GameManager();
+  gameManager = GameManager();
   runApp(app());
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();

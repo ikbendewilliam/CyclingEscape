@@ -1,5 +1,13 @@
 import 'dart:math';
 import 'dart:ui';
+
+import 'package:collection/collection.dart';
+import 'package:flame/components.dart';
+import 'package:flame/sprite.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:cycling_escape/components/data/activeTour.dart';
 import 'package:cycling_escape/components/data/cyclistPlace.dart';
 import 'package:cycling_escape/components/data/playSettings.dart';
@@ -12,17 +20,12 @@ import 'package:cycling_escape/components/ui/button.dart';
 import 'package:cycling_escape/utils/saveUtil.dart';
 import 'package:cycling_escape/views/menus/tutorialView.dart';
 import 'package:cycling_escape/views/resultsView.dart';
-import 'package:collection/collection.dart';
-import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 
 import '../components/data/team.dart';
 import '../components/moveable/cyclist.dart';
-import '../utils/mapUtils.dart';
 import '../components/moveable/dice.dart';
 import '../components/positions/position.dart';
+import '../utils/mapUtils.dart';
 import 'baseView.dart';
 import 'cyclingViewUI.dart';
 import 'gameManager.dart';
@@ -80,12 +83,13 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   Size? screenSize = Size(1, 1);
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   final Function cyclingEnded;
   final Function navigate;
   final Function openTutorial;
 
-  CyclingView(this.spriteManager, this.cyclingEnded, this.navigate, this.settings, this.openTutorial);
+  CyclingView(this.spriteManager, this.cyclingEnded, this.navigate, this.settings, this.appLocalizations, this.openTutorial);
 
   void onAttach({PlaySettings? playSettings, ActiveTour? activeTour, int? team, int? playerRiders}) {
     if (playSettings != null) {
@@ -492,7 +496,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
                 default:
                   processGameState(GameState.GAME_SELECT_NEXT);
               }
-            }, minThrow);
+            }, minThrow, appLocalizations);
             followSelect!.onAttach();
             followSelect!.resize(screenSize);
             following = true;
@@ -617,7 +621,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
                 // Do nothing
               }
             }
-            addNotification('${element.cyclist!.number} Gained ${sprint.getPoints(key)} ${sprint.getPointsName()}', element.cyclist!.team!.getColor());
+            addNotification('${element.cyclist!.number} ${appLocalizations.raceGained} ${sprint.getPoints(key)} ${sprint.getPointsName()}', element.cyclist!.team!.getColor());
           }
         }
       });
@@ -752,7 +756,8 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     });
   }
 
-  static CyclingView? fromJson(Map<String, dynamic>? json, SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings, Function openTutorial) {
+  static CyclingView? fromJson(Map<String, dynamic>? json, SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings,
+      AppLocalizations appLocalizations, Function openTutorial) {
     List<Position?> existingPositions = [];
     List<Sprint?> existingSprints = [];
     List<Cyclist?> existingCyclists = [];
@@ -761,7 +766,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
     if (json == null || json['map'] == null) {
       return null;
     }
-    CyclingView cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, openTutorial);
+    CyclingView cyclingView = CyclingView(spriteManager, cyclingEnded, navigate, settings, appLocalizations, openTutorial);
     if (json['teams'] != null) {
       cyclingView.teams = [];
       json['teams'].forEach((j) {
@@ -867,7 +872,7 @@ class CyclingView implements BaseView, PositionListener, DiceListener {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['grid'] = this.grid;
     data['diceValue'] = this.diceValue;
     data['currentTurn'] = this.currentTurn;
@@ -939,7 +944,7 @@ class Notification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['text'] = this.text;
     data['color'] = SaveUtil.colorToJson(this.color);
     return data;

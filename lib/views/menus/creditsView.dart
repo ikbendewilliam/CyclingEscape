@@ -82,36 +82,35 @@ class CreditsView implements BaseView {
     });
 
     double y = buttonSize * 1.1;
-    TextSpan span =
-        new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'This game is made by me (WiVe or simply William Verhaeghe)');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'This game is made by me (WiVe or simply William Verhaeghe)');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'This game is made possible thanks ');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'This game is made possible thanks ');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.6 * buttonSize), 0, span);
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: ' to the following great people');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: ' to the following great people');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'Bart barto - cyclists and listening to me whining');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'Bart barto - cyclists and listening to me whining');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'thedarkbear.itch.io/3-parallax - the background in the menus');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'thedarkbear.itch.io/3-parallax - the background in the menus');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'kenney.nl - for the icons, foiliage and grass');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'kenney.nl - for the icons, foiliage and grass');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'kidcomic.net - the game icon');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'kidcomic.net - the game icon');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'Saranai - the game UI');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'Saranai - the game UI');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'Megan - for playing Harry Potter with me!');
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12.0, fontFamily: 'SaranaiGame'), text: 'Megan - for playing Harry Potter with me!');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, y += 0.3 * buttonSize), 0, span);
 
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize * 0.21), size: Vector2(screenSize!.width / 3, buttonSize * 0.8));
 
-    span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.creditsTitle);
+    span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.creditsTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize * 0.35);
     CanvasUtils.drawText(canvas, position, 0, span);
   }

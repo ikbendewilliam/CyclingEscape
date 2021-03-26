@@ -1,11 +1,13 @@
-import 'package:cycling_escape/components/data/spriteManager.dart';
-import 'package:cycling_escape/components/ui/button.dart';
-import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'dart:ui';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 
 import '../baseView.dart';
 
@@ -14,6 +16,7 @@ class FollowSelect implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   List<Button> buttons = [];
   Sprite? buttonBackground;
@@ -22,7 +25,7 @@ class FollowSelect implements BaseView {
   final Function returnValue;
   final int minThrow;
 
-  FollowSelect(this.spriteManager, this.returnValue, this.minThrow);
+  FollowSelect(this.spriteManager, this.returnValue, this.minThrow, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -42,21 +45,21 @@ class FollowSelect implements BaseView {
       Offset(screenSize!.width / 2, 4 * buttonSize - buttonSize * 1.1),
       ButtonType.BAR_GREEN,
       () => {returnValue(FollowType.FOLLOW)},
-      text: 'Follow',
+      text: appLocalizations.followFollow,
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize!.width / 2, 4 * buttonSize),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.LEAVE)},
-      text: 'Leave',
+      text: appLocalizations.followLeave,
     ));
     buttons.add(Button(
       this.spriteManager,
       Offset(screenSize!.width / 2, 4 * buttonSize + buttonSize * 1.1),
       ButtonType.BAR_YELLOW,
       () => {returnValue(FollowType.AUTO_FOLLOW)},
-      text: 'Auto follow',
+      text: appLocalizations.followAuto,
     ));
   }
 
@@ -95,7 +98,7 @@ class FollowSelect implements BaseView {
 
     backgroundText!.render(canvas, position: Vector2(screenSize!.width / 2 - buttonSize * 1.75, buttonSize * 1.4), size: Vector2(buttonSize * 3.5, buttonSize * 0.4));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: 'You need to throw $minThrow');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'SaranaiGame'), text: '${appLocalizations.followAmount} $minThrow');
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize * 1.45), 0, span);
   }
 

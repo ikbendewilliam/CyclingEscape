@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flame/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:cycling_escape/components/data/activeTour.dart';
 import 'package:cycling_escape/components/data/spriteManager.dart';
 import 'package:cycling_escape/views/cyclingView.dart';
 import 'package:cycling_escape/views/menus/careerMenu.dart';
 import 'package:cycling_escape/views/menus/settingsMenu.dart';
 import 'package:cycling_escape/views/menus/tutorialView.dart';
-import 'package:flame/components.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveUtil {
   static void saveTour(ActiveTour activeTour) async {
@@ -73,12 +75,14 @@ class SaveUtil {
     await prefs.setString('be.wive.cyclingescape.activeGame', jsonEncode(cyclingView.toJson()));
   }
 
-  static Future<CyclingView?> loadCyclingView(SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings, Function openTutorial) async {
+  static Future<CyclingView?> loadCyclingView(
+      SpriteManager spriteManager, Function cyclingEnded, Function navigate, Settings settings, AppLocalizations appLocalizations, Function openTutorial) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('be.wive.cyclingescape.activeGame')) {
       return null;
     }
-    return CyclingView.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame') ?? ''), spriteManager, cyclingEnded, navigate, settings, openTutorial);
+    return CyclingView.fromJson(
+        jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame') ?? ''), spriteManager, cyclingEnded, navigate, settings, appLocalizations, openTutorial);
   }
 
   static Future<bool> hasCyclingView() async {
@@ -97,7 +101,7 @@ class SaveUtil {
     if (offset == null) {
       return null;
     }
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['dx'] = offset.dx;
     data['dy'] = offset.dy;
     return data;
@@ -114,7 +118,7 @@ class SaveUtil {
     if (size == null) {
       return null;
     }
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['width'] = size.width;
     data['height'] = size.height;
     return data;
@@ -131,7 +135,7 @@ class SaveUtil {
     if (color == null) {
       return null;
     }
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['color'] = color.value;
     return data;
   }
@@ -147,7 +151,7 @@ class SaveUtil {
     if (position == null) {
       return null;
     }
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['x'] = position.x;
     data['y'] = position.y;
     return data;

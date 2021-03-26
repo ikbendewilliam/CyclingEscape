@@ -166,7 +166,7 @@ class GameMap {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['positions'] = this.positions?.map((i) => i.toJson(false)).toList();
     data['sprints'] = this.sprints?.map((i) => i.toJson(false)).toList();
     data['foiliage'] = this.foiliage?.map((i) => i.toJson()).toList();

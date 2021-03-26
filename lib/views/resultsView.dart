@@ -314,7 +314,7 @@ class ResultsView implements BaseView {
     background!.render(canvas, position: Vector2(screenSize!.width / 6, buttonSize / 2), size: Vector2(screenSize!.width / 6 * 4, screenSize!.height - buttonSize));
     backgroundHeader!.render(canvas, position: Vector2(screenSize!.width / 3, buttonSize / 4), size: Vector2(screenSize!.width / 3, buttonSize));
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: getTypeAsString());
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: getTypeAsString());
     Offset position = Offset(screenSize!.width / 2, buttonSize / 2);
     CanvasUtils.drawText(canvas, position, 0, span);
 
@@ -397,7 +397,7 @@ class ResultsView implements BaseView {
 
   renderCyclistText(Canvas canvas, double yOffset, Color teamColor, String text, double position) {
     double buttonSize = screenSize!.height / 7;
-    TextSpan span = new TextSpan(style: new TextStyle(color: teamColor, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: text);
+    TextSpan span = TextSpan(style: TextStyle(color: teamColor, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: text);
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 3.6 + buttonSize * (position + 0.5), buttonSize * 1.2 * (yOffset / 2 + 2)), 0, span);
   }
 

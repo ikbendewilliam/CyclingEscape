@@ -111,7 +111,7 @@ class Team {
   }
 
   Map<String, dynamic> toJson(bool idOnly) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     if (!idOnly) {
       data['isPlayer'] = this.isPlayer;

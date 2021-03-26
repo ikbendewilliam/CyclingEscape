@@ -1,11 +1,13 @@
-import 'package:cycling_escape/components/data/spriteManager.dart';
-import 'package:cycling_escape/components/ui/button.dart';
-import 'package:cycling_escape/utils/canvasUtils.dart';
+import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'dart:ui';
+import 'package:cycling_escape/components/data/spriteManager.dart';
+import 'package:cycling_escape/components/ui/button.dart';
+import 'package:cycling_escape/utils/canvasUtils.dart';
 
 import '../baseView.dart';
 import '../gameManager.dart';
@@ -15,6 +17,7 @@ class InfoView implements BaseView {
   Size? screenSize;
   @override
   final SpriteManager spriteManager;
+  final AppLocalizations appLocalizations;
 
   List<Button> buttons = [];
   Sprite? buttonBackground;
@@ -25,7 +28,7 @@ class InfoView implements BaseView {
   BaseView? previousView;
   List<String>? selectedText;
 
-  InfoView(this.spriteManager, this.navigate);
+  InfoView(this.spriteManager, this.navigate, this.appLocalizations);
 
   void onAttach() {
     buttons = [];
@@ -89,7 +92,7 @@ class InfoView implements BaseView {
 
     renderText(canvas);
 
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: 'Info');
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 18.0, fontFamily: 'SaranaiGame'), text: appLocalizations.careerInfoTitle);
     Offset position = Offset(screenSize!.width / 2, buttonSize);
     CanvasUtils.drawText(canvas, position, 0, span);
   }
@@ -102,7 +105,7 @@ class InfoView implements BaseView {
 
   renderLine(canvas, line, yOffset) {
     double buttonSize = screenSize!.height / 7;
-    TextSpan span = new TextSpan(style: new TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
+    TextSpan span = TextSpan(style: TextStyle(color: Colors.white, fontSize: 13.0, fontFamily: 'SaranaiGame'), text: line);
     CanvasUtils.drawText(canvas, Offset(screenSize!.width / 2, buttonSize / 2 * (yOffset / 2 + 4)), 0, span);
   }
 

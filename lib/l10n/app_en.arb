@@ -1,6 +1,8 @@
 {
   "continueButton": "continue",
   "careerButton": "career",
+  "careerInfoTitle": "Info",
+  "careerFinishedEarnings": "Congratulations, you have earned",
   "careerMoney": "You have:",
   "careerLocalRace": "Local Race",
   "careerNationalRace": "National Race",
@@ -18,7 +20,6 @@
   "upgradesRiders": "Your riders",
   "upgradesRankings": "Rankings",
   "upgradesRaceTypes": "Race type",
-
   "singleRaceButton": "single race",
   "tourButton": "tour",
   "saveButton": "save",
@@ -40,7 +41,6 @@
   "raceDurationVeryLong": "Very Long",
   "tourTitle": "start a tour",
   "creditsTitle": "credits",
-
   "helpTitle": "help",
   "helpHome1": "Hello and welcome to the help page. You can find most information about the game on this page. If you were to have any more questions, don't hesitate to send me a mail.",
   "helpHome2": "If you enjoy the game (or don't) let me know by writing a review.",
@@ -63,7 +63,7 @@
   "helpResults4": "The first one to pass is not always the rider that gets the most points. The positions are only calculated at the END of the turn. This means that at the start of the turn you may pass it first, but then during the turn 4 riders may pass you and take all the points of the sprint. The closest position to the end is used to know how far you are, so be carefull when there are turns after the sprint. When the end of the positions are on the same line, the rider on the right hand side is first.",
   "helpResults5": "Different rankings",
   "helpResults6": "There are a few different rankings. Time, young, points, mountain and team. Time is the most important one and is calculated on how many turns it takes you to finish. This means that when you finish one turn after the first finisher you get +1 time. The one with the least time is the winner and may wear the yellow jersey. Young is calculated in the same way, however only riders with a number ending in a 1 or 2 are eligable. Other riders will not count towards this ranking. The first in the young ranking may wear the white jersey. Points is simpler, you gain points by finishing in the top 7 or passing a sprint in the top 4 (see above for the exact points). The first in the point ranking can wear the green jersey. The mountain ranking is similar to the point ranking with the only difference that you can only earn mountain points (mp) in sprints. The first in the mountain ranking may wear the polka dot jersey. The team ranking is a bit different. This uses the total of all of your riders in time and adds it together. The team with the less time wins this ranking, but there is no special jersey for this.",
-  "helpToursTitle": "Different rankings",
+  "helpToursTitle": "Tours",
   "helpTours": "Tours are a combination of multiple races. Your first start is based on your team, but starting from the second race the start positions are based upon the time rankings of the tour. The rankings of each race are combined and shown at the end of each race. Starting from the second race certain riders will start wearing special jerseys. This is because they are first in one or more rankings. (If a rider is first in time and points, they will only wear the time jersey and the points jersey will not be worn that race).",
   "helpStrategyTitle": "Strategy",
   "helpStrategy": "To win you need to finish first, so you need to think about when to follow and which position to choose. Sometimes it is smart to not go all the available positions and instead of moving 10 for example only move 8. You can do this so you can follow the turn afterwards or to block a certain junction. In the same regard you should think about when to follow. In some instances it may be smart to follow a 6 or 5, while in other it is smart to not follow even a 10. Following a small number can be smart to ensure you get out of a sticky situation such as a mountain top or a difficult cobbled position. Another reason might be that the road is blocked so throwing a 10 will result in a similar situation. The last reason to follow a lower number is when you are behind and there is no one else to follow. It is as likely that they throw a 12 as you, so not following a 6, then throwing a 3 yourself and them throwing a high number would result in you being left behind alone. When you are certain you will finish (one or two tiles to go), you may decide to not follow a 10 for example. This will lose  you a certain second place, but with some luck may earn you the first place. This is less important if other riders have already finished and is dangerous when you are further away.",
@@ -77,12 +77,10 @@
   "helpSettings7": "When the game is much to easy or hard, you can change the difficulty (even in game). Setting this on easy will give you a big advantage and (whenever possible) will increase your throw up to 2 more (1 for each dice). Setting the difficulty to hard will increase all opponents throws with this amount. This may seem little, but know that a short race is on average 8 turns which may result in as much as 16 more thrown. Following even a low number of tiles is highly recommended on hard difficulty!",
   "helpMoreTitle": "More information and contact",
   "helpMore": "If you need more information, want to report a bug, have a suggestion, or just want to have a chat, you may contact me on wivecontact@gmail.com I would love to hear from you.",
-
   "nextRaceTitle": "next race",
   "nextRaceRacesDone": "Races Done:",
   "nextRaceOf": "out of",
   "nextRaceBestRider": "Best rider:",
-
   "settingsTitle": "settings",
   "settingsAutofollowThreshold": "Autofollow threshold:",
   "settingsAutofollowAskBelowThreshold": "Autofollow ask below threshold",
@@ -99,14 +97,12 @@
   "settingsDifficultyEasy": "Easy",
   "settingsDifficultyNormal": "Normal",
   "settingsDifficultyHard": "Hard",
-
   "followAmount": "You need to throw",
   "followFollow": "Follow",
   "followLeave": "Leave",
   "followAuto": "Auto follow",
   "pausedTitle": "paused",
   "raceGained": "Gained",
-
   "tutorialTitle": "Tutorial",
   "tutorialWelcomeTitle": "Welcome",
   "tutorialWelcomeDescription": "Welcome to cycling escape, I hope you enjoy your stay. There are a few items that may be confusing, but I'll explain them when we encounter them. If you ever need more help, you can go to the help page (i right bottom). (Games are automatically saved). For now let's begin!",
@@ -121,7 +117,7 @@
   "tutorialThrowDiceTitle": "Your turn",
   "tutorialThrowDiceDescription": "Your turn! Throw the dices by tapping on the screen. You will be able to move the value you throw.",
   "tutorialSelectPositionTitle": "Select a position",
-  "tutorialSelectPositionDescription": "Well thrown! You can now move this many spaces. Don't worry, we already did the calculation for you. Simply select any highlited position and you will move there. Try to go as far as possible.",
+  "tutorialSelectPositionDescription": "Well thrown! You can now move this many spaces. Don't worry, we already did the calculation for you. Simply select any highlighted position and you will move there. Try to go as far as possible.",
   "tutorialFollowOrNotTitle": "Follow.. or not",
   "tutorialFollowOrNotDescription": "You have the option to follow. This means that you will move the same number of spaces as the rider in front of you. I suggest only following when you need to throw a 7 or more. You can also use the auto follow command. The game will then decide for you based on your settings. For now this means that it will follow whenever you need to throw a 7 or more.",
   "tutorialCantFollowTitle": "Can't follow",
@@ -146,7 +142,6 @@
   "tutorialFirstCareerDescription": "Well done, you've just earned your first money, you can spend this in upgrades to improve your team.",
   "tutorialUpgradesTitle": "Upgrades",
   "tutorialUpgradesDescription": "You can upgrade your team by hiring more riders, unlocking more rankings (sprints, team, mountain and young) or unlock better races",
-
   "resultsTitle": "results",
   "resultsTimeTitle": "time",
   "resultsYoungRidersTitle": "Young Riders",

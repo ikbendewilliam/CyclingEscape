@@ -130,9 +130,7 @@ class GameManager extends Game with ScaleDetector, TapDetector {
 
     await spriteManager.loadSprites();
     currentView?.onAttach();
-    if (menuBackground == null) {
-      menuBackground = MenuBackground(this.spriteManager);
-    }
+    menuBackground ??= MenuBackground(this.spriteManager);
     loadSettings();
     loading = false;
   }

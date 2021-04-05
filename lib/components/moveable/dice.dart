@@ -7,7 +7,7 @@ import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
 class Dice {
-  List<Sprite> sprites = [];
+  late final SpriteSheet sprites;
   final SpriteManager spriteManager;
 
   int? diceValue;
@@ -24,7 +24,7 @@ class Dice {
   final DiceListener listener;
 
   Dice(this.spriteManager, this.listener, {bool generate: true, DifficultyType? difficulty, bool? isPlayer}) {
-    sprites = this.spriteManager.getDiceSprites();
+    sprites = this.spriteManager.getDiceSpriteSheet();
     if (generate) {
       // 1, 2, 3, 4, 5, 6 respectivly
       List<int> indexes = [49, 53, 113, 0, 61, 57];
@@ -62,16 +62,14 @@ class Dice {
     rolling = true;
   }
 
-  render(Canvas canvas, Offset offset, double? tileSize) {
-    if (sprites.length > 0 && currentIndex >= 0 && diceAnimation.length > 0) {
+  render(Canvas canvas, Offset offset, double tileSize) {
+    if (currentIndex >= 0 && diceAnimation.length > 0) {
       canvas.save();
       canvas.translate(offset.dx, offset.dy);
       canvas.rotate(angle);
-      if (currentIndex < diceAnimation.length) {
-        sprites[diceAnimation[currentIndex]].render(canvas, position: Vector2.zero(), size: Vector2(tileSize! * scale, tileSize * scale));
-      } else {
-        sprites[diceAnimation.last].render(canvas, position: Vector2.zero());
-      }
+      List<int> ij;
+      ij = getIJ((currentIndex < diceAnimation.length) ? diceAnimation[currentIndex] : diceAnimation.last);
+      sprites.getSprite(ij[1], ij[0]).render(canvas, position: Vector2.zero(), size: Vector2(tileSize * scale, tileSize * scale));
       canvas.restore();
     }
   }
@@ -98,29 +96,24 @@ class Dice {
     }
   }
 
-  getIJ(int? current) {
-    int i = 0;
-    int j = 0;
+  List<int> getIJ(int current) {
     if (current == 0) {
-      // i and j are already correct
-    } else if (current == sprites.length - 1) {
-      i = 0;
-      j = 8;
-    } else {
-      i = (current! + 15) % 16;
-      j = ((current + 15) / 16).floor();
+      return [0, 0];
+    } else if (current + sprites.columns > sprites.columns * (sprites.rows - 1)) {
+      return [0, 8];
     }
-    return [i, j];
+    final currentTranslated = current + sprites.columns - 1;
+    return [currentTranslated % sprites.columns, (currentTranslated / sprites.columns).floor()];
   }
 
   int getValue() {
     final ij = getIJ(endIndex);
-    int? i = ij[0], j = ij[1];
+    int i = ij[0], j = ij[1];
     if (j == 0) {
       return 4;
     } else if (j == 8) {
       return 3;
-    } else if (j == 4 && i! % 4 == 0) {
+    } else if (j == 4 && i % 4 == 0) {
       switch ((i / 4).floor()) {
         case 0:
           return 1;
@@ -143,7 +136,7 @@ class Dice {
     }
   }
 
-  getNewIndex(int? current) {
+  getNewIndex(int current) {
     final ij = getIJ(current);
     int? i = ij[0], j = ij[1];
     directionCountDown--;
@@ -151,10 +144,10 @@ class Dice {
       direction = Random().nextInt(4);
       directionCountDown = Random().nextInt(10) + 5;
     }
-    bool moveHorizontal = !(j! <= 0 || j >= 8) && direction / 2 == 0;
+    bool moveHorizontal = !(j <= 0 || j >= 8) && direction / 2 == 0;
     bool increase = direction % 2 == 0;
     if (moveHorizontal) {
-      i = (i! + (increase ? 1 : -1) + 16) % 16;
+      i = (i + (increase ? 1 : -1) + sprites.columns) % sprites.columns;
     } else {
       if (j <= 0 || j >= 8) {
         direction += 1;
@@ -172,9 +165,9 @@ class Dice {
     if (j <= 0) {
       return 0;
     } else if (j >= 8) {
-      return sprites.length - 1;
+      return (sprites.rows - 1) * sprites.columns;
     } else {
-      return i! + (j - 1) * 16 + 1;
+      return i + (j - 1) * sprites.columns + 1;
     }
   }
 

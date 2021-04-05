@@ -38,7 +38,7 @@ class MenuBackground {
     horizontalOffset %= screenSize!.width * 8;
 
     for (int i = 0; i < backgrounds.length - 1; i++) {
-      drawBackground(backgrounds[i]!, canvas, i, screenSize!, offset);
+      drawBackground(backgrounds[i], canvas, i, screenSize!, offset);
     }
 
     List<MovingObject> toDelete = [];
@@ -59,10 +59,10 @@ class MenuBackground {
     drawBackground(backgrounds[backgrounds.length - 1]!, canvas, backgrounds.length - 1, screenSize!, offset);
   }
 
-  void drawBackground(Sprite background, Canvas canvas, int i, Size screenSize, double offset) {
-    background.render(canvas,
+  void drawBackground(Sprite? background, Canvas canvas, int i, Size screenSize, double offset) {
+    background?.render(canvas,
         position: Vector2(-((horizontalOffset * pow(2, i)) % screenSize.width), offset * (i + 1)), size: Vector2(screenSize.width, screenSize.height - offset * (i + 1)));
-    backgrounds[i]!.render(canvas,
+    backgrounds[i]?.render(canvas,
         position: Vector2(screenSize.width - 1 - (horizontalOffset * pow(2, i)) % screenSize.width, offset * (i + 1)),
         size: Vector2(screenSize.width, screenSize.height - offset * (i + 1)));
   }

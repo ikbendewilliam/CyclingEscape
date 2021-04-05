@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-GameManager? gameManager;
+late final GameManager gameManager;
 
 void main() async {
   gameManager = GameManager();
@@ -29,8 +29,8 @@ Widget app() => MaterialApp(
       ],
       home: Builder(
         builder: (context) {
-          gameManager?.load(AppLocalizations.of(context)!);
-          return GameWidget(game: gameManager!);
+          gameManager.load(AppLocalizations.of(context)!);
+          return GameWidget(game: gameManager);
         },
       ),
     );

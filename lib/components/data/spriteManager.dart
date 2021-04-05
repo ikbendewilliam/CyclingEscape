@@ -1,11 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 
 class SpriteManager {
   final List<String> spriteNames = [];
   final List<SpriteName> sprites = [];
-  final List<Sprite> diceSprites = [];
+  SpriteSheet? dices;
   bool loaded = false;
   bool loading = true;
 
@@ -124,24 +125,19 @@ class SpriteManager {
     if (!loaded) {
       loaded = true;
       loading = true;
-      spriteNames.forEach((spriteName) async {
-        sprites.add(SpriteName(spriteName, await Sprite.load(spriteName)));
-      });
 
-      for (int j = 0; j < 9; j++) {
-        for (int i = 0; i < ((j == 0 || j == 8) ? 1 : 16); i++) {
-          diceSprites.add(await Sprite.load('dice.png', srcPosition: Vector2(37.5 * i * 1, 37.5 * j * 1), srcSize: Vector2(37 * 1.0, 37 * 1.0)));
-        }
+      dices = SpriteSheet.fromColumnsAndRows(image: await Flame.images.load('dice.png'), columns: 16, rows: 9);
+      for (var spriteName in spriteNames) {
+        sprites.add(SpriteName(spriteName, await Sprite.load(spriteName)));
       }
+
       loading = false;
     }
   }
 
-  double checkLoadingPercentage() => loading ? (sprites.length / spriteNames.length) + (diceSprites.length / 114) * 100 : 100;
+  double checkLoadingPercentage() => loading ? ((sprites.length + (dices == null ? 0 : 1)) / (spriteNames.length + 1)) : 100;
 
-  List<Sprite> getDiceSprites() {
-    return this.diceSprites;
-  }
+  SpriteSheet getDiceSpriteSheet() => this.dices!;
 
   Sprite? getSprite(spriteName) => sprites.firstWhereOrNull((element) => element.name == spriteName)?.sprite;
 }

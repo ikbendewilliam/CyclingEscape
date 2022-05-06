@@ -1,36 +1,33 @@
-import 'package:cycling_escape/views/gameManager.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
+import 'package:cycling_escape/app.dart';
+import 'package:cycling_escape/di/environments.dart';
+import 'package:cycling_escape/di/injectable.dart';
+import 'package:cycling_escape/main_common.dart';
+import 'package:cycling_escape/util/env/flavor_config.dart';
+import 'package:cycling_escape/util/inspector/database_inspector.dart';
+import 'package:cycling_escape/util/inspector/local_storage_inspector.dart';
+import 'package:cycling_escape/util/inspector/niddler.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-late final GameManager gameManager;
-
-void main() async {
-  gameManager = GameManager();
-  runApp(app());
-  await Flame.device.fullScreen();
-  await Flame.device.setLandscape();
-}
-
-Widget app() => MaterialApp(
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('nl'),
-        const Locale('fr'),
-        const Locale('es'),
-      ],
-      home: Builder(
-        builder: (context) {
-          gameManager.load(AppLocalizations.of(context)!);
-          return GameWidget(game: gameManager);
-        },
-      ),
+Future<void> main() async {
+  await wrapMain(() async {
+    await initNiddler();
+    const values = FlavorValues(
+      baseUrl: 'https://jsonplaceholder.typicode.com/',
+      logNetworkInfo: true,
+      showFullErrorMessages: true,
     );
+    FlavorConfig(
+      flavor: Flavor.dev,
+      name: 'DEV',
+      color: Colors.red,
+      values: values,
+    );
+    // ignore: avoid_print
+    print('Starting app from main.dart');
+    await configureDependencies(Environments.dev);
+    await addDatabaseInspector();
+    await initAllStorageInspectors();
+
+    runApp(const MyApp());
+  });
+}

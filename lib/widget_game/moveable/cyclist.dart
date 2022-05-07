@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/util/canvas/canvas_utils.dart';
 import 'package:cycling_escape/util/save/save_util.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/positions/position.dart';
 import 'package:flame/components.dart';

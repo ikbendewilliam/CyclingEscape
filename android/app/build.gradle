@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.gms.google-services'
 
    def keystoreProperties = new Properties()
    def keystorePropertiesFile = rootProject.file('key.properties')
@@ -32,7 +33,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
    }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -44,8 +45,9 @@ android {
 
     defaultConfig {
         applicationId "be.wive.cyclingescape"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 18
+        targetSdkVersion 31
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -63,6 +65,28 @@ android {
            signingConfig signingConfigs.release
        }
    }
+   
+  flavorDimensions "flavors"
+  productFlavors {
+    dev {
+      dimension "flavors"
+      applicationIdSuffix ".debug"
+      versionNameSuffix "-debug"
+    }
+    alpha {
+      dimension "flavors"
+      applicationIdSuffix ".alpha"
+      versionNameSuffix "-alpha"
+    }
+    beta {
+      dimension "flavors"
+      applicationIdSuffix ".beta"
+      versionNameSuffix "-beta"
+    }
+    prod {
+      dimension "flavors"
+    }
+  }
 }
 
 flutter {

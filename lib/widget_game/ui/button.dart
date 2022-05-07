@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:cycling_escape/util/canvas/canvas_utils.dart';
 import 'package:cycling_escape/util/map/map_utils.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';

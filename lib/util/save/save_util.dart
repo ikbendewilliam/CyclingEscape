@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:cycling_escape/screen_game/cyclingView.dart';
-import 'package:cycling_escape/screen_game/gameManager.dart';
-import 'package:cycling_escape/screen_game/menus/careerMenu.dart';
-import 'package:cycling_escape/screen_game/menus/settingsMenu.dart';
-import 'package:cycling_escape/screen_game/menus/tutorialView.dart';
+import 'package:cycling_escape/screen_game/cycling_view.dart';
+import 'package:cycling_escape/screen_game/game_manager.dart';
+import 'package:cycling_escape/screen_game/menus/career_menu.dart';
+import 'package:cycling_escape/screen_game/menus/settings_menu.dart';
+import 'package:cycling_escape/screen_game/menus/tutorial_view.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
-import 'package:cycling_escape/widget_game/data/activeTour.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/widget_game/data/active_tour.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/components.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';

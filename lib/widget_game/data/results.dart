@@ -1,6 +1,6 @@
-import 'package:cycling_escape/screen_game/resultsView.dart';
-import 'package:cycling_escape/widget_game/data/resultData.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/screen_game/results_view.dart';
+import 'package:cycling_escape/widget_game/data/result_data.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:flutter/material.dart';

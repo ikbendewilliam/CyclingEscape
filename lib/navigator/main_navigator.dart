@@ -1,5 +1,4 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
-import 'package:cycling_escape/repository/analytics/firebase_analytics_repository.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
 import 'package:cycling_escape/screen/home/home_screen.dart';
@@ -13,7 +12,6 @@ import 'package:cycling_escape/widget/general/text_scale_factor.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 
 class MainNavigatorWidget extends StatefulWidget {
@@ -43,9 +41,7 @@ class MainNavigatorWidget extends StatefulWidget {
 
 class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavigationMixin {
   static final GlobalKey<NavigatorState> _navigationKey = GlobalKey<NavigatorState>();
-  static final List<NavigatorObserver> _navigatorObservers = [
-    GetIt.I.get<FireBaseAnalyticsRepository>().routeObserver,
-  ];
+  static final List<NavigatorObserver> _navigatorObservers = [];
 
   static String get initialRoute => FlavorConfig.isInTest() ? 'test_route' : SplashScreen.routeName;
 
@@ -96,7 +92,6 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goToHome() => _navigator.pushReplacementNamed(HomeScreen.routeName);
-
 
   @override
   void goToDebugPlatformSelector() => _navigator.pushNamed(DebugPlatformSelectorScreen.routeName);

@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:cycling_escape/screen_game/menus/settingsMenu.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/screen_game/menus/settings_menu.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 

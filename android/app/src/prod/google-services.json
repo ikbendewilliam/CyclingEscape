@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "44020173560",
+    "project_id": "cycling-escape",
+    "storage_bucket": "cycling-escape.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44020173560:android:f260298aefb22407b3c90d",
+        "android_client_info": {
+          "package_name": "be.wive.cyclingescape"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44020173560-08gc100agda2fnommlfja4f91lnggs3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6Iw5MJZXDkipAE-ZcEfV8Xc9YR7V9Skc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44020173560-08gc100agda2fnommlfja4f91lnggs3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

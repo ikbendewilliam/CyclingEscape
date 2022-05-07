@@ -1,8 +1,8 @@
-import 'package:cycling_escape/screen_game/baseView.dart';
-import 'package:cycling_escape/screen_game/gameManager.dart';
+import 'package:cycling_escape/screen_game/base_view.dart';
+import 'package:cycling_escape/screen_game/game_manager.dart';
 import 'package:cycling_escape/util/canvas/canvas_utils.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/ui/button.dart';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/util/save/save_util.dart';
-import 'package:cycling_escape/widget_game/data/cyclistPlace.dart';
+import 'package:cycling_escape/widget_game/data/cyclist_place.dart';
 import 'package:flutter/material.dart';
 
 class Sprint {

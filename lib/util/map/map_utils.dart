@@ -3,9 +3,9 @@ import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
-import 'package:cycling_escape/widget_game/data/playSettings.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
-import 'package:cycling_escape/widget_game/positions/gameMap.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
+import 'package:cycling_escape/widget_game/positions/game_map.dart';
 import 'package:cycling_escape/widget_game/positions/position.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
 

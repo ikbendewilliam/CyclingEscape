@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:cycling_escape/widget_game/data/spriteManager.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';

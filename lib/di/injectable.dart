@@ -13,7 +13,6 @@ import 'package:cycling_escape/util/interceptor/network_log_interceptor.dart';
 import 'package:cycling_escape/util/interceptor/network_refresh_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -57,9 +56,6 @@ abstract class RegisterModule {
   Future<DatabaseConnection> provideDatabaseConnection() {
     return createDriftDatabaseConnection('db');
   }
-
-  @lazySingleton
-  FirebaseAnalytics provideFirebaseAnalytics() => FirebaseAnalytics.instance;
 
   @lazySingleton
   FlutterSecureStorage storage() => const FlutterSecureStorage();

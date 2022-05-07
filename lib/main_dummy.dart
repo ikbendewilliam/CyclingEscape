@@ -21,6 +21,7 @@ Future<void> main() async {
     // ignore: avoid_print
     print('Starting app from main_dummy.dart');
     await configureDependencies(Environments.dummy);
-    runApp(const MyApp());
+    // runApp(const MyApp());
+    gameAppV1();
   });
 }

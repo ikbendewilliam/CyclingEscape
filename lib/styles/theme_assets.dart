@@ -4,11 +4,13 @@ import 'package:icapps_architecture/icapps_architecture.dart';
 class ThemeAssets {
   ThemeAssets._();
 
+  static const _images = 'assets/images';
+
   static String _getIcon(BuildContext context, String name) {
     if (context.isIOSTheme) {
-      return 'assets/images/icons/ios/$name.svg';
+      return '$_images/icons/ios/$name.svg';
     }
-    return 'assets/images/icons/android/$name.svg';
+    return '$_images/icons/android/$name.svg';
   }
 
   static String listIcon(BuildContext context) => _getIcon(context, 'list');
@@ -24,4 +26,12 @@ class ThemeAssets {
   static String backIcon(BuildContext context) => _getIcon(context, 'back');
 
   static String doneIcon(BuildContext context) => _getIcon(context, 'done');
+
+  static String get menuBackground1 => '$_images/menu_background_1.png';
+
+  static String get menuBackground2 => '$_images/menu_background_2.png';
+
+  static String get menuBackground3 => '$_images/menu_background_3.png';
+
+  static String get menuBackground4 => '$_images/menu_background_4.png';
 }

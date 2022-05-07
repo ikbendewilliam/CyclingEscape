@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 abstract class MainNavigation {
   void goToSplash();
 
-  void goToLogin();
-
   void goToHome();
-
 
   void goToDebugPlatformSelector();
 

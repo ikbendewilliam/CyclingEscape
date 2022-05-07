@@ -27,7 +27,7 @@ class FlutterTemplateButton extends StatelessWidget {
               text,
             ),
             style: isEnabled ? theme.inverseCoreTextTheme.labelButtonSmall : theme.coreTextTheme.labelButtonSmallDisabled,
-            duration: ThemeDurations.shortAnimationDuration(),
+            duration: ThemeDurations.shortAnimationDuration,
           ),
         );
         if (context.isIOSTheme) {
@@ -36,7 +36,7 @@ class FlutterTemplateButton extends StatelessWidget {
               height: height,
               child: content,
               color: isEnabled ? theme.colorsTheme.accent : theme.colorsTheme.disabled,
-              duration: ThemeDurations.shortAnimationDuration(),
+              duration: ThemeDurations.shortAnimationDuration,
             ),
             onClick: isEnabled ? onClick : null,
           );
@@ -50,7 +50,7 @@ class FlutterTemplateButton extends StatelessWidget {
             onClick: isEnabled ? onClick : null,
           ),
           color: isEnabled ? theme.colorsTheme.accent : theme.colorsTheme.disabled,
-          duration: ThemeDurations.shortAnimationDuration(),
+          duration: ThemeDurations.shortAnimationDuration,
         );
       },
     );

@@ -29,7 +29,7 @@ class TextActionItem extends StatelessWidget {
             child: AnimatedDefaultTextStyle(
               style: style ?? theme.inverseCoreTextTheme.labelButtonSmall,
               child: Text(text),
-              duration: ThemeDurations.shortAnimationDuration(),
+              duration: ThemeDurations.shortAnimationDuration,
             ),
           ),
           onClick: enabled ? onClick : null,

@@ -1,9 +1,8 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
-import 'package:cycling_escape/screen/home/home_screen.dart';
 import 'package:cycling_escape/screen/license/license_screen.dart';
-import 'package:cycling_escape/screen/login/login_screen.dart';
+import 'package:cycling_escape/screen/menu/main_menu.dart';
 import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
@@ -64,10 +63,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case '':
       case SplashScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: SplashScreen()), settings: settings);
-      case LoginScreen.routeName:
-        return FadeInRoute<void>(child: const FlavorBanner(child: LoginScreen()), settings: settings);
-      case HomeScreen.routeName:
-        return FadeInRoute<void>(child: const FlavorBanner(child: HomeScreen()), settings: settings);
+      case MainMenu.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: MainMenu()), settings: settings);
       case DebugPlatformSelectorScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: DebugPlatformSelectorScreen()), settings: settings);
       case ThemeModeSelectorScreen.routeName:
@@ -88,10 +85,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goToSplash() => _navigator.pushReplacementNamed(SplashScreen.routeName);
 
   @override
-  void goToLogin() => _navigator.pushReplacementNamed(LoginScreen.routeName);
-
-  @override
-  void goToHome() => _navigator.pushReplacementNamed(HomeScreen.routeName);
+  void goToHome() => _navigator.pushReplacementNamed(MainMenu.routeName);
 
   @override
   void goToDebugPlatformSelector() => _navigator.pushNamed(DebugPlatformSelectorScreen.routeName);

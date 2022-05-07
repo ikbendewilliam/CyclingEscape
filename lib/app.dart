@@ -1,13 +1,12 @@
+import 'package:cycling_escape/navigator/main_navigator.dart';
 import 'package:cycling_escape/screen_game/game_manager.dart';
 import 'package:cycling_escape/styles/theme_data.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
-import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/util/locale/localization_delegate.dart';
 import 'package:cycling_escape/util/locale/localization_fallback_cupertino_delegate.dart';
 import 'package:cycling_escape/viewmodel/global/global_viewmodel.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
     // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     //   systemNavigationBarColor: Colors.transparent,
     // ));
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     return const InternalApp();
   }
 }
@@ -65,12 +63,12 @@ class InternalApp extends StatelessWidget {
         themeMode: viewModel.themeMode,
         theme: FlutterTemplateThemeData.lightTheme(viewModel.targetPlatform),
         darkTheme: FlutterTemplateThemeData.darkTheme(viewModel.targetPlatform),
-        home: Builder(
-          builder: (context) {
-            gameManager.load(Localization.of(context));
-            return GameWidget(game: gameManager);
-          },
-        ),
+        navigatorKey: MainNavigatorWidgetState.navigationKey,
+        initialRoute: home == null ? MainNavigatorWidgetState.initialRoute : null,
+        onGenerateRoute: MainNavigatorWidgetState.onGenerateRoute,
+        navigatorObservers: MainNavigatorWidgetState.navigatorObservers,
+        builder: home == null ? (context, child) => MainNavigatorWidget(child: child) : null,
+        home: home,
       ),
       create: () => GetIt.I()..init(),
     );

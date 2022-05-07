@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@singleton
 class GlobalViewModel with ChangeNotifierEx {
   final LocaleRepository _localeRepo;
   final DebugRepository _debugRepo;

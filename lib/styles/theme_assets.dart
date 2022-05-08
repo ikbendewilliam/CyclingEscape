@@ -34,4 +34,18 @@ class ThemeAssets {
   static String get menuBackground3 => '$_images/menu_background_3.png';
 
   static String get menuBackground4 => '$_images/menu_background_4.png';
+
+  static String get menuCloud1 => '$_images/menu_cloud_1.png';
+
+  static String get menuCloud2 => '$_images/menu_cloud_2.png';
+
+  static String get menuCloud3 => '$_images/menu_cloud_3.png';
+
+  static String get menuCloud4 => '$_images/menu_cloud_4.png';
+
+  static String get menuCloud5 => '$_images/menu_cloud_5.png';
+
+  static String get menuCyclistSilhouette => '$_images/menu_cyclist_silhouette.png';
+
+  static String get menuTardis => '$_images/menu_tardis.png';
 }

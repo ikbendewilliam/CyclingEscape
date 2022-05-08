@@ -2,14 +2,14 @@ import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 
-class FlutterTemplateProgressIndicator extends StatelessWidget {
+class CyclingEscapeProgressIndicator extends StatelessWidget {
   final bool dark;
 
-  const FlutterTemplateProgressIndicator.dark({Key? key})
+  const CyclingEscapeProgressIndicator.dark({Key? key})
       : dark = true,
         super(key: key);
 
-  const FlutterTemplateProgressIndicator.light({Key? key})
+  const CyclingEscapeProgressIndicator.light({Key? key})
       : dark = false,
         super(key: key);
 

@@ -48,7 +48,9 @@ class LcovSection {
     final file = File(filePathTmp);
     final content = file.readAsLinesSync();
     final sb = StringBuffer();
-    getFilteredBody(body, content).forEach((item) => sb..write(item)..write('\n'));
+    getFilteredBody(body, content).forEach((item) => sb
+      ..write(item)
+      ..write('\n'));
     return sb.toString();
   }
 
@@ -100,8 +102,8 @@ List<String> getFilteredBody(List<String> body, List<String> lines) {
 const excludedLines = [
   'AppConstants._();',
   'EnvUtils._();',
-  'FlutterTemplateLogger._();',
-  'FlutterTemplateThemeData._();',
+  'CyclingEscapeLogger._();',
+  'CyclingEscapeThemeData._();',
   'Keys._();',
   'LicenseUtil._();',
   'ThemeAssets._();',

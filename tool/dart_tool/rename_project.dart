@@ -1,7 +1,7 @@
 import 'dart:io';
 
 const originalProjectName = 'cycling_escape';
-const originalClassNamePrefix = 'FlutterTemplate';
+const originalClassNamePrefix = 'CyclingEscape';
 const originalIOSBundleIdentifier = 'com.icapps.fluttertemplate';
 const originalAndroidPackageName = 'com.icapps.fluttertemplate';
 const originalAndroidFolderPath = 'com/icapps/fluttertemplate';

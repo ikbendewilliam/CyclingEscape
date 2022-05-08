@@ -19,7 +19,7 @@ mixin ErrorNavigatorMixin<T extends StatefulWidget> on State<T> implements Error
     } else if (error is LocalizedError) {
       key = error.getLocalizedKey();
     } else {
-      logger.warning('Caught an error that is not handled by the FlutterTemplateError $error');
+      logger.warning('Caught an error that is not handled by the CyclingEscapeError $error');
       key = 'Something went wrong';
     }
     showErrorWithLocaleKey(key);

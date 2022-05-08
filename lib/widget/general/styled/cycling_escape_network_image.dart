@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 
-class FlutterTemplateNetworkImage extends StatelessWidget {
+class CyclingEscapeNetworkImage extends StatelessWidget {
   final String? url;
   final String? fallbackUrl;
   final BoxFit fit;
@@ -16,7 +16,7 @@ class FlutterTemplateNetworkImage extends StatelessWidget {
   final double? width;
   final Duration? duration;
 
-  const FlutterTemplateNetworkImage({
+  const CyclingEscapeNetworkImage({
     required this.url,
     this.fallbackUrl,
     this.fit = BoxFit.cover,
@@ -45,7 +45,7 @@ class FlutterTemplateNetworkImage extends StatelessWidget {
         return SizedBox(
           height: imgHeight,
           width: imgWidth,
-          child: _FlutterTemplateBetterNetworkImage(
+          child: _CyclingEscapeBetterNetworkImage(
             imageUrl: correctUrl,
             height: imgHeight,
             width: imgWidth,
@@ -58,14 +58,14 @@ class FlutterTemplateNetworkImage extends StatelessWidget {
   }
 }
 
-class _FlutterTemplateBetterNetworkImage extends StatefulWidget {
+class _CyclingEscapeBetterNetworkImage extends StatefulWidget {
   final String? imageUrl;
   final BoxFit fit;
   final double? width;
   final double? height;
   final Widget placeholder;
 
-  const _FlutterTemplateBetterNetworkImage({
+  const _CyclingEscapeBetterNetworkImage({
     required this.imageUrl,
     required this.fit,
     required this.width,
@@ -75,10 +75,10 @@ class _FlutterTemplateBetterNetworkImage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _FlutterTemplateBetterNetworkImageState createState() => _FlutterTemplateBetterNetworkImageState();
+  _CyclingEscapeBetterNetworkImageState createState() => _CyclingEscapeBetterNetworkImageState();
 }
 
-class _FlutterTemplateBetterNetworkImageState extends State<_FlutterTemplateBetterNetworkImage> {
+class _CyclingEscapeBetterNetworkImageState extends State<_CyclingEscapeBetterNetworkImage> {
   final _cacheController = GetIt.instance.get<CacheControlling>();
 
   var _isLoading = false;
@@ -97,7 +97,7 @@ class _FlutterTemplateBetterNetworkImageState extends State<_FlutterTemplateBett
   }
 
   @override
-  void didUpdateWidget(_FlutterTemplateBetterNetworkImage oldWidget) {
+  void didUpdateWidget(_CyclingEscapeBetterNetworkImage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.imageUrl != widget.imageUrl) {
       _getImage();

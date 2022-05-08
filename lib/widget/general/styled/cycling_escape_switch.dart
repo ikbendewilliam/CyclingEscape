@@ -1,11 +1,11 @@
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 
-class FlutterTemplateSwitch extends StatelessWidget {
+class CyclingEscapeSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  const FlutterTemplateSwitch({
+  const CyclingEscapeSwitch({
     required this.value,
     required this.onChanged,
     Key? key,

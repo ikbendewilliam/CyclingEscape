@@ -1,13 +1,13 @@
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 
-class FlutterTemplateInputField extends StatelessWidget {
+class CyclingEscapeInputField extends StatelessWidget {
   final String hint;
   final bool enabled;
   final ValueChanged<String> onChanged;
   final TextEditingController? controller;
 
-  const FlutterTemplateInputField({
+  const CyclingEscapeInputField({
     required this.hint,
     required this.onChanged,
     this.enabled = true,

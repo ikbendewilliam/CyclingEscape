@@ -28,7 +28,7 @@ class SplashScreenState extends State<SplashScreen> implements SplashNavigator {
         child: Scaffold(
           backgroundColor: theme.colorsTheme.primary,
           body: const Center(
-            child: FlutterTemplateProgressIndicator.light(),
+            child: CyclingEscapeProgressIndicator.light(),
           ),
         ),
       ),

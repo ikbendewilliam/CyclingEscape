@@ -5,11 +5,11 @@ import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 
-class FlutterTemplateCheckBox extends StatelessWidget {
+class CyclingEscapeCheckBox extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  const FlutterTemplateCheckBox({
+  const CyclingEscapeCheckBox({
     required this.value,
     required this.onChanged,
     Key? key,

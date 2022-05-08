@@ -33,13 +33,14 @@ class MenuBackgroundViewModel with ChangeNotifierEx {
   MenuBackgroundViewModel();
 
   Future<void> init(TickerProvider vsync, BoxConstraints constraints) async {
+    // TODO: Keep old value
     _animationController?.dispose();
     _animationController = AnimationController(
       vsync: vsync,
       duration: ThemeDurations.menuBackground,
     )..repeat();
     _animation = _animationController!.drive(Tween(begin: 0, end: constraints.maxWidth));
-    _generateObjects();
+    if (_objects.isEmpty) _generateObjects();
     _screenConstraints = constraints;
   }
 

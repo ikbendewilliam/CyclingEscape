@@ -2,12 +2,11 @@ import 'package:drift/drift.dart';
 
 part 'cycling_escape_database.g.dart';
 
-@DriftDatabase(tables: [
-])
-class FlutterTemplateDatabase extends _$FlutterTemplateDatabase {
-  FlutterTemplateDatabase(QueryExecutor db) : super(db);
+@DriftDatabase(tables: [])
+class CyclingEscapeDatabase extends _$CyclingEscapeDatabase {
+  CyclingEscapeDatabase(QueryExecutor db) : super(db);
 
-  FlutterTemplateDatabase.connect(DatabaseConnection connection) : super.connect(connection);
+  CyclingEscapeDatabase.connect(DatabaseConnection connection) : super.connect(connection);
 
   @override
   int get schemaVersion => 1;

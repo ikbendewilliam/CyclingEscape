@@ -4,8 +4,8 @@ import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 
-class FlutterTemplateThemeData {
-  FlutterTemplateThemeData._();
+class CyclingEscapeThemeData {
+  CyclingEscapeThemeData._();
 
   static final _darkThemeData = ThemeData(
     fontFamily: ThemeFonts.body,
@@ -49,7 +49,7 @@ class FlutterTemplateThemeData {
   }
 }
 
-class FlutterTemplateTextTheme {
+class CyclingEscapeTextTheme {
   final TextStyle titleHuge;
   final TextStyle titleBig;
   final TextStyle titleNormal;
@@ -68,7 +68,7 @@ class FlutterTemplateTextTheme {
   final TextStyle infoBodySubHeader;
   final TextStyle bodyBig;
 
-  const FlutterTemplateTextTheme({
+  const CyclingEscapeTextTheme({
     required this.titleHuge,
     required this.titleBig,
     required this.titleNormal,
@@ -86,11 +86,11 @@ class FlutterTemplateTextTheme {
   });
 }
 
-class FlutterTemplateTextThemeExceptions {
-  const FlutterTemplateTextThemeExceptions();
+class CyclingEscapeTextThemeExceptions {
+  const CyclingEscapeTextThemeExceptions();
 }
 
-class FlutterTemplateColorsTheme {
+class CyclingEscapeColorsTheme {
   final Color text;
   final Color inverseText;
   final Color disabledButtonText;
@@ -106,7 +106,7 @@ class FlutterTemplateColorsTheme {
   final Color inverseProgressIndicator;
   final Color progressIndicator;
 
-  const FlutterTemplateColorsTheme({
+  const CyclingEscapeColorsTheme({
     required this.text,
     required this.inverseText,
     required this.disabledButtonText,
@@ -124,15 +124,15 @@ class FlutterTemplateColorsTheme {
   });
 }
 
-class FlutterTemplateTheme {
-  final FlutterTemplateTextTheme coreTextTheme;
-  final FlutterTemplateTextTheme inverseCoreTextTheme;
-  final FlutterTemplateTextTheme accentTextTheme;
-  final FlutterTemplateTextThemeExceptions exceptionsTextTheme;
-  final FlutterTemplateColorsTheme colorsTheme;
+class CyclingEscapeTheme {
+  final CyclingEscapeTextTheme coreTextTheme;
+  final CyclingEscapeTextTheme inverseCoreTextTheme;
+  final CyclingEscapeTextTheme accentTextTheme;
+  final CyclingEscapeTextThemeExceptions exceptionsTextTheme;
+  final CyclingEscapeColorsTheme colorsTheme;
 
   static final _instanceDark = _fromColorTheme(
-    colorTheme: const FlutterTemplateColorsTheme(
+    colorTheme: const CyclingEscapeColorsTheme(
       text: ThemeColors.white,
       inverseText: ThemeColors.black,
       disabledButtonText: ThemeColors.lightGrey,
@@ -150,28 +150,11 @@ class FlutterTemplateTheme {
     ),
   );
 
-  static final _instanceLight = _fromColorTheme(
-    colorTheme: const FlutterTemplateColorsTheme(
-      text: ThemeColors.black,
-      inverseText: ThemeColors.white,
-      disabledButtonText: ThemeColors.lightGrey,
-      primary: ThemeColors.primary,
-      accent: ThemeColors.accent,
-      secondary: ThemeColors.black,
-      background: ThemeColors.white,
-      inverseBackground: ThemeColors.white,
-      inputFieldFill: ThemeColors.white,
-      disabled: ThemeColors.disabledGrey,
-      icon: ThemeColors.white,
-      inverseIcon: ThemeColors.black,
-      progressIndicator: ThemeColors.primary,
-      inverseProgressIndicator: ThemeColors.white,
-    ),
-  );
+  static final _instanceLight = _instanceDark;
 
-  static FlutterTemplateTheme _fromColorTheme({required FlutterTemplateColorsTheme colorTheme}) => FlutterTemplateTheme._(
+  static CyclingEscapeTheme _fromColorTheme({required CyclingEscapeColorsTheme colorTheme}) => CyclingEscapeTheme._(
         colorsTheme: colorTheme,
-        coreTextTheme: FlutterTemplateTextTheme(
+        coreTextTheme: CyclingEscapeTextTheme(
           titleHuge: TextStyle(fontSize: 40, color: colorTheme.text, fontFamily: ThemeFonts.title, height: 1.2),
           titleBig: TextStyle(fontSize: 30, color: colorTheme.text, fontFamily: ThemeFonts.title, height: 1.2),
           titleNormal: TextStyle(fontSize: 24, color: colorTheme.text, fontFamily: ThemeFonts.title),
@@ -187,7 +170,7 @@ class FlutterTemplateTheme {
           bodyUltraSmall: TextStyle(fontSize: 12, color: colorTheme.text, fontFamily: ThemeFonts.body),
           infoBodySubHeader: TextStyle(fontSize: 14, color: colorTheme.text, fontFamily: ThemeFonts.body, fontWeight: FontWeight.w600),
         ),
-        inverseCoreTextTheme: FlutterTemplateTextTheme(
+        inverseCoreTextTheme: CyclingEscapeTextTheme(
           titleHuge: TextStyle(fontSize: 40, color: colorTheme.inverseText, fontFamily: ThemeFonts.title, height: 1.2),
           titleBig: TextStyle(fontSize: 30, color: colorTheme.inverseText, fontFamily: ThemeFonts.title, height: 1.2),
           titleNormal: TextStyle(fontSize: 24, color: colorTheme.inverseText, fontFamily: ThemeFonts.title),
@@ -203,7 +186,7 @@ class FlutterTemplateTheme {
           bodyUltraSmall: TextStyle(fontSize: 12, color: colorTheme.inverseText, fontFamily: ThemeFonts.body),
           infoBodySubHeader: TextStyle(fontSize: 14, color: colorTheme.inverseText, fontFamily: ThemeFonts.body, fontWeight: FontWeight.w600),
         ),
-        accentTextTheme: FlutterTemplateTextTheme(
+        accentTextTheme: CyclingEscapeTextTheme(
           titleHuge: TextStyle(fontSize: 40, color: colorTheme.accent, fontFamily: ThemeFonts.title, height: 1.2),
           titleBig: TextStyle(fontSize: 30, color: colorTheme.accent, fontFamily: ThemeFonts.title, height: 1.2),
           titleNormal: TextStyle(fontSize: 24, color: colorTheme.accent, fontFamily: ThemeFonts.title),
@@ -219,10 +202,10 @@ class FlutterTemplateTheme {
           bodyUltraSmall: TextStyle(fontSize: 12, color: colorTheme.accent, fontFamily: ThemeFonts.body),
           infoBodySubHeader: TextStyle(fontSize: 14, color: colorTheme.accent, fontFamily: ThemeFonts.body, fontWeight: FontWeight.w600),
         ),
-        exceptionsTextTheme: const FlutterTemplateTextThemeExceptions(),
+        exceptionsTextTheme: const CyclingEscapeTextThemeExceptions(),
       );
 
-  const FlutterTemplateTheme._({
+  const CyclingEscapeTheme._({
     required this.coreTextTheme,
     required this.inverseCoreTextTheme,
     required this.accentTextTheme,
@@ -230,7 +213,7 @@ class FlutterTemplateTheme {
     required this.colorsTheme,
   });
 
-  static FlutterTemplateTheme of(BuildContext context, {bool forceDark = false, bool forceLight = false}) {
+  static CyclingEscapeTheme of(BuildContext context, {bool forceDark = false, bool forceLight = false}) {
     if (forceDark) return _instanceDark;
     if (forceLight) return _instanceLight;
 

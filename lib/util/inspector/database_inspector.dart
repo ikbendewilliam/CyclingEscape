@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 Future<void> addDatabaseInspector() async {
   if (!kDebugMode) return;
 
-  final database = GetIt.I<FlutterTemplateDatabase>();
+  final database = GetIt.I<CyclingEscapeDatabase>();
 
   final driftInspectorBuilder = DriftInspectorBuilder()
     ..bundleId = 'com.icapps.cycling_escape'

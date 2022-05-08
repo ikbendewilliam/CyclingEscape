@@ -7,10 +7,10 @@ part of 'cycling_escape_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-abstract class _$FlutterTemplateDatabase extends GeneratedDatabase {
-  _$FlutterTemplateDatabase(QueryExecutor e)
+abstract class _$CyclingEscapeDatabase extends GeneratedDatabase {
+  _$CyclingEscapeDatabase(QueryExecutor e)
       : super(SqlTypeSystem.defaultInstance, e);
-  _$FlutterTemplateDatabase.connect(DatabaseConnection c) : super.connect(c);
+  _$CyclingEscapeDatabase.connect(DatabaseConnection c) : super.connect(c);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

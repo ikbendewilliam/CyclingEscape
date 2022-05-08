@@ -1,6 +1,5 @@
 import 'package:cycling_escape/styles/theme_assets.dart';
 import 'package:cycling_escape/viewmodel/menu_background/menu_background_viewmodel.dart';
-import 'package:cycling_escape/widget/provider/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -40,9 +39,9 @@ class MenuBackgroundWidgetState extends State<MenuBackgroundWidget> with TickerP
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (context, constraints) => ProviderWidget<MenuBackgroundViewModel>(
-        create: () => GetIt.I<MenuBackgroundViewModel>()..init(this, constraints),
-        childBuilderWithViewModel: (context, viewModel, theme, localization) => AnimatedBuilder(
+      builder: (context, constraints) {
+        final viewModel = GetIt.I<MenuBackgroundViewModel>()..init(this, constraints);
+        return AnimatedBuilder(
           animation: viewModel.animation,
           builder: (context, child) => Stack(
             children: [
@@ -61,8 +60,8 @@ class MenuBackgroundWidgetState extends State<MenuBackgroundWidget> with TickerP
               _buildBackground(constraints, viewModel.backgroundOffsets.entries.last),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -109,7 +109,7 @@ class DebugScreenState extends State<DebugScreen> implements DebugNavigator {
       );
 
   void goToDatabase() {
-    final db = GetIt.I<FlutterTemplateDatabase>();
+    final db = GetIt.I<CyclingEscapeDatabase>();
     MainNavigatorWidget.of(context).goToDatabase(db);
   }
 }

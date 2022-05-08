@@ -42,7 +42,7 @@ class DebugRowSwitchItem extends StatelessWidget {
                 ],
               ),
             ),
-            FlutterTemplateSwitch(
+            CyclingEscapeSwitch(
               value: value,
               onChanged: onChanged,
             )

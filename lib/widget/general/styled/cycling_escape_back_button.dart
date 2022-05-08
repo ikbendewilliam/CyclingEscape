@@ -4,19 +4,19 @@ import 'package:cycling_escape/widget/general/action/action_item.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 
-class FlutterTemplateBackButton extends StatelessWidget {
+class CyclingEscapeBackButton extends StatelessWidget {
   final VoidCallback? onClick;
   final bool fullScreen;
   final bool isLight;
 
-  const FlutterTemplateBackButton.light({
+  const CyclingEscapeBackButton.light({
     required this.onClick,
     this.fullScreen = false,
     Key? key,
   })  : isLight = true,
         super(key: key);
 
-  const FlutterTemplateBackButton.dark({
+  const CyclingEscapeBackButton.dark({
     required this.onClick,
     this.fullScreen = false,
     Key? key,

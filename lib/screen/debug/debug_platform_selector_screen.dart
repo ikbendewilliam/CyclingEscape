@@ -29,7 +29,7 @@ class DebugPlatformSelectorScreenState extends State<DebugPlatformSelectorScreen
       childBuilderWithViewModel: (context, value, _, localization) => Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          leading: FlutterTemplateBackButton.light(onClick: value.onBackClicked),
+          leading: CyclingEscapeBackButton.light(onClick: value.onBackClicked),
           title: const Text('Select a platform'),
         ),
         body: Consumer<GlobalViewModel>(

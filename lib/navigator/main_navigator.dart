@@ -2,9 +2,11 @@ import 'package:cycling_escape/navigator/main_navigation.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
 import 'package:cycling_escape/screen/license/license_screen.dart';
-import 'package:cycling_escape/screen/menu/main_menu.dart';
+import 'package:cycling_escape/screen/menu/main_menu_screen.dart';
+import 'package:cycling_escape/screen/single_race_menu/single_race_menu_screen.dart';
 import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
+import 'package:cycling_escape/screen/tour_menu/tour_menu_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/widget/general/flavor_banner.dart';
 import 'package:cycling_escape/widget/general/text_scale_factor.dart';
@@ -63,8 +65,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case '':
       case SplashScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: SplashScreen()), settings: settings);
-      case MainMenu.routeName:
-        return FadeInRoute<void>(child: const FlavorBanner(child: MainMenu()), settings: settings);
+      case MainMenuScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: MainMenuScreen()), settings: settings);
       case DebugPlatformSelectorScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: DebugPlatformSelectorScreen()), settings: settings);
       case ThemeModeSelectorScreen.routeName:
@@ -76,6 +78,10 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case SingleRaceMenuScreen.routeName:
+        return PageRouteBuilder<void>(pageBuilder: (context, animation, secondaryAnimation) => const FlavorBanner(child: SingleRaceMenuScreen()), settings: settings);
+      case TourMenuScreen.routeName:
+        return PageRouteBuilder<void>(pageBuilder: (context, animation, secondaryAnimation) => const FlavorBanner(child: TourMenuScreen()), settings: settings);
       default:
         return null;
     }
@@ -85,7 +91,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goToSplash() => _navigator.pushReplacementNamed(SplashScreen.routeName);
 
   @override
-  void goToHome() => _navigator.pushReplacementNamed(MainMenu.routeName);
+  void goToHome() => _navigator.pushReplacementNamed(MainMenuScreen.routeName);
 
   @override
   void goToDebugPlatformSelector() => _navigator.pushNamed(DebugPlatformSelectorScreen.routeName);
@@ -107,6 +113,12 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);
+
+  @override
+  void goToTourMenu() => _navigator.pushNamed(TourMenuScreen.routeName);
 
   @override
   void showCustomDialog<T>({required WidgetBuilder builder}) => showDialog<T>(context: _navigationKey.currentContext!, builder: builder, useRootNavigator: true);

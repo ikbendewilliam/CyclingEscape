@@ -50,6 +50,7 @@ class InternalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderWidget<GlobalViewModel>(
       lazy: FlavorConfig.isInTest(),
+      create: () => GetIt.I()..init(),
       consumer: (context, viewModel, consumerChild) => MaterialApp(
         debugShowCheckedModeBanner: !FlavorConfig.isInTest(),
         localizationsDelegates: [
@@ -70,7 +71,6 @@ class InternalApp extends StatelessWidget {
         builder: home == null ? (context, child) => MainNavigatorWidget(child: child) : null,
         home: home,
       ),
-      create: () => GetIt.I()..init(),
     );
   }
 }

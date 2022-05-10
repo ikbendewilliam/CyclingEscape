@@ -7,41 +7,61 @@ import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
-@singleton
-class MenuBackgroundViewModel with ChangeNotifierEx {
-  late Animation<double> _animation;
-  late BoxConstraints _screenConstraints;
-  AnimationController? _animationController;
-
+class MenuBackgroundDataContainer with ChangeNotifier {
   final List<MovingObject> _objects = [];
   final List<MovingObject> _clouds = [];
-  final List<String> _backgroundAssets = [
-    ThemeAssets.menuBackground1,
-    ThemeAssets.menuBackground2,
-    ThemeAssets.menuBackground3,
-    ThemeAssets.menuBackground4,
-  ];
+  final List<TickerProvider> _tickers = [];
+  AnimationController? _animationController;
+  late Animation<double> _animation;
+  late double _maxWidth;
 
-  Map<String, double> get backgroundOffsets => _backgroundAssets.asMap().map((key, value) => MapEntry(value, _animation.value * pow(2, key)));
+  static final _instance = MenuBackgroundDataContainer._();
 
-  Map<MovingObject, double> get objectsOffsets =>
-      _objects.asMap().map((key, value) => MapEntry(value, _animation.value * value.speed - value.horizontalOffset * _screenConstraints.maxWidth))
-        ..addAll(_clouds.asMap().map((key, value) => MapEntry(value, -_animation.value * value.speed + value.horizontalOffset * _screenConstraints.maxWidth)));
+  static MenuBackgroundDataContainer get instance => _instance;
 
-  Animation get animation => _animation;
-
-  MenuBackgroundViewModel();
-
-  Future<void> init(TickerProvider vsync, BoxConstraints constraints) async {
-    // TODO: Keep old value
-    _animationController?.dispose();
-    _animationController = AnimationController(
-      vsync: vsync,
-      duration: ThemeDurations.menuBackground,
-    )..repeat();
-    _animation = _animationController!.drive(Tween(begin: 0, end: constraints.maxWidth));
+  List<MovingObject> get objects {
     if (_objects.isEmpty) _generateObjects();
-    _screenConstraints = constraints;
+    return _objects;
+  }
+
+  List<MovingObject> get clouds {
+    if (_clouds.isEmpty) _generateObjects();
+    return _clouds;
+  }
+
+  AnimationController? get animationController => _animationController;
+
+  Animation<double> get animation => _animation;
+
+  MenuBackgroundDataContainer._();
+
+  void addTicker(TickerProvider ticker, double maxWidth) {
+    _maxWidth = maxWidth;
+    _tickers.add(ticker);
+    if (_animationController == null) {
+      _animationController = AnimationController(
+        vsync: ticker,
+        duration: ThemeDurations.menuBackground,
+      )..repeat();
+      _animation = animationController!.drive(Tween(begin: 0, end: _maxWidth));
+    } else {
+      _animationController!.resync(ticker);
+    }
+  }
+
+  void removeTicker() {
+    final value = _animationController?.value;
+    _tickers.removeLast();
+    _animationController?.dispose();
+    if (_tickers.isNotEmpty) {
+      _animationController = AnimationController(
+        vsync: _tickers.last,
+        duration: ThemeDurations.menuBackground,
+        value: value,
+      )..repeat();
+      _animation = animationController!.drive(Tween(begin: 0, end: _maxWidth));
+      notifyListeners();
+    }
   }
 
   String get _randomCloud {
@@ -60,45 +80,84 @@ class MenuBackgroundViewModel with ChangeNotifierEx {
   }
 
   void _generateObjects() {
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 50; i++) {
       _generateObject();
     }
   }
 
   void _generateObject() {
-    const double offset = 1 / 7;
-    final randomNumber = Random().nextDouble();
+    const dy = 1 / 7;
+    final random = Random();
+    final randomNumber = random.nextDouble();
     if (randomNumber < 0.85) {
       final cloud = _randomCloud;
       _clouds.add(MovingObject(
         asset: cloud,
-        speed: Random().nextInt(2) + 4,
-        horizontalOffset: Random().nextDouble(),
-        topOffsetPercentage: offset * (Random().nextDouble() + 0.5),
-        scale: cloud == ThemeAssets.menuCloud2 ? 1 : (Random().nextDouble() * 3 + 1),
+        speed: random.nextInt(2) + 4,
+        horizontalOffset: 10 * random.nextDouble(),
+        topOffsetPercentage: dy * (random.nextDouble() + 0.5),
+        scale: cloud == ThemeAssets.menuCloud2 ? 1 : (random.nextDouble() + 0.2),
       ));
     } else {
       _objects.add(MovingObject(
         asset: ThemeAssets.menuCyclistSilhouette,
-        speed: Random().nextInt(5) + 20,
-        horizontalOffset: Random().nextDouble(),
-        topOffsetPercentage: offset * 5.5,
+        speed: random.nextInt(5) + 20,
+        horizontalOffset: 10 * random.nextDouble(),
+        topOffsetPercentage: dy * 5.5,
       ));
     }
     if (!_objects.any((element) => element.asset == ThemeAssets.menuTardis)) {
       _objects.add(MovingObject(
         asset: ThemeAssets.menuTardis,
         speed: 100,
-        horizontalOffset: Random().nextDouble(),
-        topOffsetPercentage: offset * 4,
-        scale: 2,
+        horizontalOffset: 10 * random.nextDouble(),
+        topOffsetPercentage: dy * 4,
+        scale: 0.5,
       ));
     }
+  }
+}
+
+@injectable
+class MenuBackgroundViewModel with ChangeNotifierEx {
+  late BoxConstraints _screenConstraints;
+
+  final List<String> _backgroundAssets = [
+    ThemeAssets.menuBackground1,
+    ThemeAssets.menuBackground2,
+    ThemeAssets.menuBackground3,
+    ThemeAssets.menuBackground4,
+  ];
+
+  MenuBackgroundDataContainer get _data => MenuBackgroundDataContainer.instance;
+
+  Map<String, double> get backgroundOffsets => _backgroundAssets.asMap().map((key, value) => MapEntry(value, animation.value * pow(2, key)));
+
+  Map<MovingObject, double> get objectsOffsets =>
+      _data.objects.asMap().map((key, value) => MapEntry(value, animation.value * value.speed - value.horizontalOffset * _screenConstraints.maxWidth))
+        ..addAll(_data.clouds.asMap().map((key, value) => MapEntry(value, -animation.value * value.speed + value.horizontalOffset * _screenConstraints.maxWidth)));
+
+  Animation<double> get animation => _data.animation;
+
+  MenuBackgroundViewModel();
+
+  Future<void> init(TickerProvider vSync, BoxConstraints constraints) async {
+    _screenConstraints = constraints;
+    _data.addTicker(vSync, constraints.maxWidth);
+    _data.addListener(_notifyListeners);
+  }
+
+  Future<void> _notifyListeners() async {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      if (disposed) return;
+      notifyListeners();
+    });
   }
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    _data.removeListener(_notifyListeners);
+    _data.removeTicker();
     super.dispose();
   }
 }

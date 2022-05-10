@@ -20,6 +20,10 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToSingleRaceMenu();
+
+  void goToTourMenu();
+
   void showCustomDialog<T>({required WidgetBuilder builder});
 }
 

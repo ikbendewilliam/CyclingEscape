@@ -7,16 +7,16 @@ import 'package:cycling_escape/widget/provider/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-class MainMenu extends StatefulWidget {
+class MainMenuScreen extends StatefulWidget {
   static const routeName = 'main_menu';
 
-  const MainMenu({Key? key}) : super(key: key);
+  const MainMenuScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainMenu> createState() => _MainMenuState();
+  State<MainMenuScreen> createState() => _MainMenuScreenState();
 }
 
-class _MainMenuState extends State<MainMenu> implements MainMenuNavigator {
+class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavigator {
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<MainMenuViewModel>(
@@ -40,9 +40,9 @@ class _MainMenuState extends State<MainMenu> implements MainMenuNavigator {
                   onClick: null,
                   type: CyclingEscapeButtonType.yellow,
                 ),
-                const CyclingEscapeButton(
+                CyclingEscapeButton(
                   text: 'Single race',
-                  onClick: null,
+                  onClick: viewModel.onSingleRaceClicked,
                   type: CyclingEscapeButtonType.blue,
                 ),
                 CyclingEscapeButton(
@@ -59,5 +59,8 @@ class _MainMenuState extends State<MainMenu> implements MainMenuNavigator {
   }
 
   @override
-  void goToTourMenu() => MainNavigatorWidget.of(context).goToHome();
+  void goToTourMenu() => MainNavigatorWidget.of(context).goToTourMenu();
+
+  @override
+  void goToSingleRaceMenu() => MainNavigatorWidget.of(context).goToSingleRaceMenu();
 }

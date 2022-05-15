@@ -14,8 +14,18 @@ class CyclingEscapeButton extends StatefulWidget {
   final bool isEnabled;
   final VoidCallback? onClick;
   final CyclingEscapeButtonType type;
+  final String _imageAsset;
 
   const CyclingEscapeButton({
+    required this.text,
+    required this.onClick,
+    this.isEnabled = true,
+    this.type = CyclingEscapeButtonType.blue,
+    Key? key,
+  })  : _imageAsset = '',
+        super(key: key);
+
+  const CyclingEscapeButton.icon({
     required this.text,
     required this.onClick,
     this.isEnabled = true,

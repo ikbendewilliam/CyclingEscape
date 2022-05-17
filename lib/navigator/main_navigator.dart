@@ -11,6 +11,7 @@ import 'package:cycling_escape/screen/tour_menu/tour_menu_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/widget/general/flavor_banner.dart';
 import 'package:cycling_escape/widget/general/text_scale_factor.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
       case GameScreen.routeName:
-        return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: GameScreen()), settings: settings);
+        return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: GameScreen(playSettings: settings.arguments as PlaySettings)), settings: settings);
       case SingleRaceMenuScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: SingleRaceMenuScreen()), settings: settings);
       case TourMenuScreen.routeName:
@@ -118,7 +119,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goBack<T>({T? result}) => _navigator.pop(result);
 
   @override
-  void goToGame() => _navigator.pushReplacementNamed(GameScreen.routeName);
+  void goToGame(PlaySettings playSettings) => _navigator.pushReplacementNamed(GameScreen.routeName, arguments: playSettings);
 
   @override
   void goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);

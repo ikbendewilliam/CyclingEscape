@@ -1,5 +1,6 @@
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
@@ -75,9 +76,14 @@ class SingleRaceMenuViewModel with ChangeNotifierEx {
 
   void onBackClicked() => _navigator.goBack<void>();
 
-  void onStartClicked() => _navigator.goToGame();
+  void onStartClicked() => _navigator.goToGame(PlaySettings(
+        _teams,
+        _cyclists,
+        MapType.values[_raceType],
+        MapLength.values[_raceLength],
+      ));
 }
 
 mixin SingleRaceMenuNavigator implements BackNavigator {
-  void goToGame();
+  void goToGame(PlaySettings playSettings);
 }

@@ -1,3 +1,4 @@
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
-  void goToGame();
+  void goToGame(PlaySettings playSettings);
 
   void goToSingleRaceMenu();
 

@@ -4,6 +4,7 @@ import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart'
 import 'package:cycling_escape/screen_game/cycling_view.dart';
 import 'package:cycling_escape/util/canvas/canvas_utils.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:flame/game.dart';
@@ -19,6 +20,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
   final SpriteManager spriteManager;
   final ValueChanged<List<Sprint>?> onEndCycling;
   final ValueChanged<TutorialType> openTutorial;
+  final PlaySettings playSettings;
   final VoidCallback onPause;
   bool loading = true;
   double loadingPercentage = 0;
@@ -33,6 +35,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
     required this.openTutorial,
     required this.onPause,
     required FollowType Function() onSelectFollow,
+    required this.playSettings,
   }) {
     view = CyclingView(
       spriteManager: spriteManager,
@@ -49,8 +52,14 @@ class GameManager with Game, ScaleDetector, TapDetector {
   Future<void> onLoad() async {
     view.resize(size.toSize());
     await spriteManager.loadSprites();
-    view.onAttach();
+    view.onAttach(playSettings: playSettings);
     loading = false;
+  }
+
+  @override
+  void onGameResize(Vector2 size) {
+    view.resize(size.toSize());
+    super.onGameResize(size);
   }
 
   @override
@@ -207,7 +216,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
   //         }
   //         if (playSettings != null) {
   //           activeTour = null;
-  //           cyclingView!.onAttach(playSettings: playSettings, team: playerTeam);
+  // cyclingView!.onAttach(playSettings: playSettings, team: playerTeam);
   //         } else if (activeTour != null) {
   //           cyclingView!.onAttach(activeTour: activeTour, team: playerTeam, playerRiders: inCareer! ? career.riders : -1);
   //         }

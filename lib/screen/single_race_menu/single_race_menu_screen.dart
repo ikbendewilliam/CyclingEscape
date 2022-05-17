@@ -9,6 +9,7 @@ import 'package:cycling_escape/widget/general/styled/cycling_escape_button.dart'
 import 'package:cycling_escape/widget/general/styled/cycling_escape_value_button.dart';
 import 'package:cycling_escape/widget/menu_background/menu_box.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -96,5 +97,5 @@ class SingleRaceMenuScreenState extends State<SingleRaceMenuScreen> with BackNav
   }
 
   @override
-  void goToGame() => MainNavigatorWidget.of(context).goToGame();
+  void goToGame(PlaySettings playSettings) => MainNavigatorWidget.of(context).goToGame(playSettings);
 }

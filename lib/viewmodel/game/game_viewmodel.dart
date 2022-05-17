@@ -5,6 +5,7 @@ import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart'
 import 'package:cycling_escape/repository/tutorial/tutorial_repository.dart';
 import 'package:cycling_escape/screen_game/game_manager.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
@@ -17,8 +18,16 @@ class GameViewModel with ChangeNotifierEx {
   final TutorialRepository _tutorialRepository;
   final LocalStorage _localStorage;
   final SpriteManager _spriteManager;
+  var _isPaused = false;
+  TutorialType? _tutorialType;
 
   GameManager get gameManager => _gameManager;
+
+  bool get isPaused => _isPaused;
+
+  TutorialType? get tutorialType => _tutorialType;
+
+  bool get ignorePointer => isPaused || _tutorialType != null;
 
   GameViewModel(
     this._tutorialRepository,
@@ -29,6 +38,7 @@ class GameViewModel with ChangeNotifierEx {
   Future<void> init(
     GameNavigator navigator,
     Localization _localizations,
+    PlaySettings playSettings,
   ) async {
     _gameManager = GameManager(
       localizations: _localizations,
@@ -40,6 +50,7 @@ class GameViewModel with ChangeNotifierEx {
       onSelectFollow: () => FollowType.autoFollow, // TODO
       playerTeam: null, // TODO
       career: Career(riders: 2, raceTypes: 2, rankingTypes: 2, cash: 100), // TODO
+      playSettings: playSettings,
     );
     _navigator = navigator;
   }
@@ -48,7 +59,10 @@ class GameViewModel with ChangeNotifierEx {
     print('race ended');
   }
 
-  Future<void> _onPause() async {}
+  Future<void> _onPause() async {
+    _isPaused = true;
+    notifyListeners();
+  }
 
   Future<void> _openTutorial(TutorialType type) async {
     if (type == TutorialType.tourFirstFinished) {
@@ -58,7 +72,10 @@ class GameViewModel with ChangeNotifierEx {
         await AppReview.requestReview;
       }
     }
-    if (!_tutorialRepository.hasViewed(type)) await _navigator.openTutorial(type);
+    if (!_tutorialRepository.hasViewed(type)) {
+      _tutorialType = type;
+      notifyListeners();
+    }
   }
 }
 

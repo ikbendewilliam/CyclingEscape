@@ -263,10 +263,8 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         Offset(-(offset.dx / tileSize).ceil() + screenSize!.width / tileSize / zoom / 2, -(offset.dy / tileSize).ceil() + screenSize!.height / tileSize / zoom / 2);
 
     final double screenRange = screenSize!.width * 1.2 / zoom;
-    map!.render(canvas, tileSize, center, screenRange);
-    if (movingCyclist != null) {
-      movingCyclist!.render(canvas, movingCyclist!.movingOffset! * tileSize, tileSize / 3, movingCyclist!.movingAngle);
-    }
+    map?.render(canvas, tileSize, center, screenRange);
+    movingCyclist?.render(canvas, movingCyclist!.movingOffset! * tileSize, tileSize / 3, movingCyclist!.movingAngle);
     canvas.restore();
 
     CyclingViewUI.render(canvas, tileSize, screenSize, dice, dice2, buttons, notifications, backgroundNotification, backgroundText, iconTime, iconRank, iconPoints, iconMountain,
@@ -608,7 +606,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     Position? nextPosition;
     double nextValue = 0;
     map!.positions!.where((element) => element.cyclist != null).forEach((positionWithCyclist) {
-      final double value = positionWithCyclist.getValue(true);
+      final value = positionWithCyclist.getValue(true);
       if (nextValue < value || nextPosition == null) {
         nextValue = value;
         nextPosition = positionWithCyclist;

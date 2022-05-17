@@ -27,7 +27,7 @@ class GameViewModel with ChangeNotifierEx {
 
   TutorialType? get tutorialType => _tutorialType;
 
-  bool get ignorePointer => isPaused || _tutorialType != null;
+  bool get ignorePointer => false; //isPaused || _tutorialType != null;
 
   GameViewModel(
     this._tutorialRepository,

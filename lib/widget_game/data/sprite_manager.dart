@@ -126,7 +126,7 @@ class SpriteManager {
     if (!loaded) {
       loaded = true;
       loading = true;
-      dices = SpriteSheet.fromColumnsAndRows(image: await Flame.images.load('dice.png'), columns: 16, rows: 9);
+      dices ??= SpriteSheet.fromColumnsAndRows(image: await Flame.images.load('dice3.png'), columns: 16, rows: 9);
       await Future.wait(spriteNames.map((spriteName) async => sprites.add(SpriteName(spriteName, await Sprite.load(spriteName)))));
       spriteNames.clear();
       loading = false;

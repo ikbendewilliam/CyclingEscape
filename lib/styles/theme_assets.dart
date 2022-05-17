@@ -76,4 +76,10 @@ class ThemeAssets {
   static String get buttonYellow => '$_images/yellow_button_01.png';
 
   static String get buttonYellowPressed => '$_images/yellow_button_02.png';
+
+  static String get buttonIconPressed => '$_images/icon_pressed.png';
+
+  static String get buttonIconPlus => '$_images/icon_plus.png';
+
+  static String get buttonIconMinus => '$_images/icon_minus.png';
 }

@@ -20,6 +20,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToGame();
+
   void goToSingleRaceMenu();
 
   void goToTourMenu();

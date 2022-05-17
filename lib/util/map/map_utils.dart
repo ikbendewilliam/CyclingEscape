@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
@@ -485,8 +486,6 @@ MapType getMapTypeFromString(String mapTypeAsString) {
   throw Exception("Incorrect mapTypeAsString $mapTypeAsString");
 }
 
-enum MapType { flat, cobble, hills, heavy }
-
 MapLength getMapLengthFromString(String mapLengthAsString) {
   for (final MapLength element in MapLength.values) {
     if (element.toString() == mapLengthAsString) {
@@ -495,8 +494,6 @@ MapLength getMapLengthFromString(String mapLengthAsString) {
   }
   throw Exception("Incorrect mapLengthAsString $mapLengthAsString");
 }
-
-enum MapLength { short, medium, long, veryLong }
 
 String mapTypeAsString(MapType maptype, Localization localizations) {
   switch (maptype) {

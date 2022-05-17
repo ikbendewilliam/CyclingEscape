@@ -1,5 +1,4 @@
 import 'package:cycling_escape/navigator/main_navigator.dart';
-import 'package:cycling_escape/screen_game/game_manager.dart';
 import 'package:cycling_escape/styles/theme_data.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/util/locale/localization_delegate.dart';
@@ -11,10 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 
-late final GameManager gameManager;
-
 void gameAppV1() async {
-  gameManager = GameManager();
   runApp(const MyApp());
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();
@@ -25,13 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   systemNavigationBarColor: Colors.transparent,
-    // ));
     return const InternalApp();
   }
 }

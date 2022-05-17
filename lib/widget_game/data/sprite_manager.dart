@@ -1,10 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:injectable/injectable.dart';
 
+@singleton
 class SpriteManager {
   final List<String> spriteNames = [];
-  final List<SpriteName> sprites = [];
+  final sprites = <SpriteName>{};
   SpriteSheet? dices;
   bool loaded = false;
   bool loading = true;
@@ -124,12 +126,9 @@ class SpriteManager {
     if (!loaded) {
       loaded = true;
       loading = true;
-
       dices = SpriteSheet.fromColumnsAndRows(image: await Flame.images.load('dice.png'), columns: 16, rows: 9);
-      for (final spriteName in spriteNames) {
-        sprites.add(SpriteName(spriteName, await Sprite.load(spriteName)));
-      }
-
+      await Future.wait(spriteNames.map((spriteName) async => sprites.add(SpriteName(spriteName, await Sprite.load(spriteName)))));
+      spriteNames.clear();
       loading = false;
     }
   }

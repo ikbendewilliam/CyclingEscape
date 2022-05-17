@@ -8,15 +8,17 @@ abstract class BaseView {
   Size? screenSize;
   final SpriteManager spriteManager;
 
-  BaseView(this.spriteManager);
+  BaseView({
+    required this.spriteManager,
+  });
 
   void onAttach();
   void render(Canvas canvas);
   void update(double t);
-  void onTapUp(TapUpInfo details);
-  void onTapDown(TapDownInfo details);
-  void onScaleStart(ScaleStartInfo details);
-  void onScaleUpdate(ScaleUpdateInfo details);
+  void onTapUp(TapUpInfo info);
+  void onTapDown(TapDownInfo info);
+  void onScaleStart(ScaleStartInfo info);
+  void onScaleUpdate(ScaleUpdateInfo info);
 
   void resize(Size? size) {
     screenSize = size;

@@ -1,6 +1,7 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
+import 'package:cycling_escape/screen/game/game_screen.dart';
 import 'package:cycling_escape/screen/license/license_screen.dart';
 import 'package:cycling_escape/screen/menu/main_menu_screen.dart';
 import 'package:cycling_escape/screen/single_race_menu/single_race_menu_screen.dart';
@@ -78,10 +79,12 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case GameScreen.routeName:
+        return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: GameScreen()), settings: settings);
       case SingleRaceMenuScreen.routeName:
-        return PageRouteBuilder<void>(pageBuilder: (context, animation, secondaryAnimation) => const FlavorBanner(child: SingleRaceMenuScreen()), settings: settings);
+        return FadeInRoute<void>(child: const FlavorBanner(child: SingleRaceMenuScreen()), settings: settings);
       case TourMenuScreen.routeName:
-        return PageRouteBuilder<void>(pageBuilder: (context, animation, secondaryAnimation) => const FlavorBanner(child: TourMenuScreen()), settings: settings);
+        return FadeInRoute<void>(child: const FlavorBanner(child: TourMenuScreen()), settings: settings);
       default:
         return null;
     }
@@ -113,6 +116,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToGame() => _navigator.pushReplacementNamed(GameScreen.routeName);
 
   @override
   void goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);

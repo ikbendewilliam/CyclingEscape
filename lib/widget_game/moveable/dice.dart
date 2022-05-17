@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:cycling_escape/screen_game/menus/settings_menu.dart';
+import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
@@ -23,17 +23,18 @@ class Dice {
 
   final DiceListener listener;
 
-  Dice(this.spriteManager, this.listener, {bool generate = true, DifficultyType? difficulty, bool? isPlayer}) {
+  Dice(this.spriteManager, this.listener, {bool generate = true, required DifficultyType difficulty, bool? isPlayer}) {
     sprites = spriteManager.getDiceSpriteSheet();
     if (generate) {
       // 1, 2, 3, 4, 5, 6 respectivly
       final List<int> indexes = [49, 53, 113, 0, 61, 57];
-      endIndex = indexes[Random().nextInt(indexes.length)];
-      if (isPlayer == true && difficulty == DifficultyType.easy) {
-        increaseValue();
-      } else if (isPlayer == false && difficulty == DifficultyType.hard) {
-        increaseValue();
+      var index = Random().nextInt(indexes.length);
+      if (isPlayer == true && difficulty.diceAddition > 0) {
+        index += difficulty.diceAddition;
+      } else if (isPlayer == false && difficulty.diceAddition < 0) {
+        index -= difficulty.diceAddition;
       }
+      endIndex = indexes[index.clamp(0, indexes.length - 1)];
       currentIndex = indexes[Random().nextInt(indexes.length)];
       diceAnimation = getDiceAnimation(indexes);
     }
@@ -129,14 +130,6 @@ class Dice {
     return 0;
   }
 
-  void increaseValue() {
-    final List<int> indexes = [49, 53, 113, 0, 61, 57];
-    final int newIndex = indexes.indexOf(endIndex) + 1;
-    if (newIndex < indexes.length) {
-      endIndex = indexes[newIndex];
-    }
-  }
-
   int getNewIndex(int current) {
     final ij = getIJ(current);
     int? i = ij[0], j = ij[1];
@@ -172,36 +165,36 @@ class Dice {
     }
   }
 
-  static Dice? fromJson(Map<String, dynamic>? json, DiceListener listener, SpriteManager spriteManager) {
-    if (json == null) {
-      return null;
-    }
-    final Dice dice = Dice(spriteManager, listener, generate: false);
-    dice.diceValue = json['diceValue'] as int?;
-    dice.direction = json['direction'] as int;
-    dice.currentIndex = json['currentIndex'] as int;
-    dice.endIndex = json['endIndex'] as int;
-    dice.directionCountDown = json['directionCountDown'] as int;
-    dice.rolling = json['rolling'] as bool;
-    dice.angle = json['angle'] as double;
-    dice.scale = json['scale'] as double;
-    dice.countdown = json['countdown'] as double;
-    dice.diceAnimation = json['diceAnimation'] != null ? List<int>.from(json['diceAnimation'] as List) : [];
-    return dice;
-  }
+  // static Dice? fromJson(Map<String, dynamic>? json, DiceListener listener, SpriteManager spriteManager) {
+  //   if (json == null) {
+  //     return null;
+  //   }
+  //   final Dice dice = Dice(spriteManager, listener, generate: false);
+  //   dice.diceValue = json['diceValue'] as int?;
+  //   dice.direction = json['direction'] as int;
+  //   dice.currentIndex = json['currentIndex'] as int;
+  //   dice.endIndex = json['endIndex'] as int;
+  //   dice.directionCountDown = json['directionCountDown'] as int;
+  //   dice.rolling = json['rolling'] as bool;
+  //   dice.angle = json['angle'] as double;
+  //   dice.scale = json['scale'] as double;
+  //   dice.countdown = json['countdown'] as double;
+  //   dice.diceAnimation = json['diceAnimation'] != null ? List<int>.from(json['diceAnimation'] as List) : [];
+  //   return dice;
+  // }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['diceValue'] = diceValue;
-    data['direction'] = direction;
-    data['currentIndex'] = currentIndex;
-    data['endIndex'] = endIndex;
-    data['directionCountDown'] = directionCountDown;
-    data['rolling'] = rolling;
-    data['angle'] = angle;
-    data['scale'] = scale;
-    data['countdown'] = countdown;
-    data['diceAnimation'] = diceAnimation;
+    // data['diceValue'] = diceValue;
+    // data['direction'] = direction;
+    // data['currentIndex'] = currentIndex;
+    // data['endIndex'] = endIndex;
+    // data['directionCountDown'] = directionCountDown;
+    // data['rolling'] = rolling;
+    // data['angle'] = angle;
+    // data['scale'] = scale;
+    // data['countdown'] = countdown;
+    // data['diceAnimation'] = diceAnimation;
     return data;
   }
 }

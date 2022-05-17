@@ -31,9 +31,10 @@ class _CyclingEscapeValueButtonState extends State<CyclingEscapeValueButton> {
   Widget build(BuildContext context) {
     return DataProviderWidget(
       childBuilder: (context, theme, localization) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CyclingEscapeIconButton(
-            text: '-',
+          CyclingEscapeButton(
+            type: CyclingEscapeButtonType.iconMinus,
             onClick: () {
               if (--value < widget.minValue) {
                 value = widget.maxValue;
@@ -44,10 +45,9 @@ class _CyclingEscapeValueButtonState extends State<CyclingEscapeValueButton> {
           CyclingEscapeButton(
             text: widget.text,
             type: widget.type,
-            onClick: () {},
           ),
-          CyclingEscapeIconButton(
-            text: '+',
+          CyclingEscapeButton(
+            type: CyclingEscapeButtonType.iconPlus,
             onClick: () {
               if (++value > widget.maxValue) {
                 value = widget.minValue;

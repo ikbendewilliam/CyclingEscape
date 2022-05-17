@@ -7,27 +7,19 @@ enum CyclingEscapeButtonType {
   red,
   green,
   yellow,
+  iconPlus,
+  iconMinus,
 }
 
 class CyclingEscapeButton extends StatefulWidget {
-  final String text;
+  final String? text;
   final bool isEnabled;
   final VoidCallback? onClick;
   final CyclingEscapeButtonType type;
-  final String _imageAsset;
 
   const CyclingEscapeButton({
-    required this.text,
-    required this.onClick,
-    this.isEnabled = true,
-    this.type = CyclingEscapeButtonType.blue,
-    Key? key,
-  })  : _imageAsset = '',
-        super(key: key);
-
-  const CyclingEscapeButton.icon({
-    required this.text,
-    required this.onClick,
+    this.onClick,
+    this.text,
     this.isEnabled = true,
     this.type = CyclingEscapeButtonType.blue,
     Key? key,
@@ -51,6 +43,10 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
         return _isPressed ? ThemeAssets.buttonGreenPressed : ThemeAssets.buttonGreen;
       case CyclingEscapeButtonType.yellow:
         return _isPressed ? ThemeAssets.buttonYellowPressed : ThemeAssets.buttonYellow;
+      case CyclingEscapeButtonType.iconPlus:
+        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconPlus;
+      case CyclingEscapeButtonType.iconMinus:
+        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconMinus;
     }
   }
 
@@ -60,18 +56,25 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
       childBuilder: (context, theme, localization) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: GestureDetector(
-          onTapDown: (details) => setState(() {
-            _isPressed = true;
-          }),
+          onTapDown: (details) {
+            if (!widget.isEnabled || widget.onClick == null) return;
+            setState(() {
+              _isPressed = true;
+            });
+          },
           onTapUp: (details) {
+            if (!widget.isEnabled || widget.onClick == null) return;
             setState(() {
               _isPressed = false;
             });
-            if (widget.isEnabled) widget.onClick?.call();
+            widget.onClick?.call();
           },
-          onPanUpdate: (details) => setState(() {
-            _isPressed = false;
-          }),
+          onPanUpdate: (details) {
+            if (!widget.isEnabled || widget.onClick == null) return;
+            setState(() {
+              _isPressed = false;
+            });
+          },
           child: Stack(
             children: [
               Image.asset(
@@ -79,22 +82,24 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
                 fit: BoxFit.fitHeight,
                 height: 48,
               ),
-              Positioned.fill(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 8,
-                    right: 8,
-                    top: _isPressed && widget.isEnabled ? 4 : 0,
-                    bottom: 8,
-                  ),
-                  child: Center(
-                    child: Text(
-                      widget.text,
-                      style: theme.coreTextTheme.labelButtonBig,
+              if (widget.text != null) ...[
+                Positioned.fill(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      top: _isPressed && widget.isEnabled ? 4 : 0,
+                      bottom: 8,
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.text ?? '',
+                        style: theme.coreTextTheme.labelButtonBig,
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
         ),

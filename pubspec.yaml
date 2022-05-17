@@ -4,10 +4,11 @@ description: A Cycling game by WiVe
 version: 2.0.0
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   app_review: ^2.1.1+1
+  collection: ^1.16.0
   flame: ^1.1.1
   plugin_platform_interface: ^2.1.2
   intl: ^0.17.0

@@ -1,9 +1,10 @@
 import 'package:cycling_escape/screen_game/base_view.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 
 class ResultsView extends BaseView {
-  ResultsView({required super.spriteManager});
+  ResultsView({required SpriteManager spriteManager}) : super(spriteManager: spriteManager);
 
   // final Function closeCallback;
   // late int cyclistNumber;

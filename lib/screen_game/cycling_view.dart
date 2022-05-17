@@ -14,6 +14,7 @@ import 'package:cycling_escape/widget_game/data/cyclist_place.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/data/results.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:cycling_escape/widget_game/moveable/dice.dart';
@@ -76,14 +77,14 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   final FollowType Function() onSelectFollow;
 
   CyclingView({
-    required super.spriteManager,
+    required SpriteManager spriteManager,
     required this.onEndCycling,
     required this.localStorage,
     required this.localizations,
     required this.openTutorial,
     required this.onPause,
     required this.onSelectFollow,
-  });
+  }) : super(spriteManager: spriteManager);
 
   @override
   void onAttach({PlaySettings? playSettings, ActiveTour? activeTour, int? team, int? playerRiders}) {

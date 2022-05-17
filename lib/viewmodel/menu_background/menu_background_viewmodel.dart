@@ -148,7 +148,7 @@ class MenuBackgroundViewModel with ChangeNotifierEx {
   }
 
   Future<void> _notifyListeners() async {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       if (disposed) return;
       notifyListeners();
     });

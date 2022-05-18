@@ -8,6 +8,8 @@ import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
@@ -15,19 +17,20 @@ import 'package:injectable/injectable.dart';
 class GameViewModel with ChangeNotifierEx {
   late final GameNavigator _navigator;
   late final GameManager _gameManager;
+  late final Widget _gameWidget;
   final TutorialRepository _tutorialRepository;
   final LocalStorage _localStorage;
   final SpriteManager _spriteManager;
-  var _isPaused = false;
+  final _isPaused = ValueNotifier(false);
   TutorialType? _tutorialType;
 
-  GameManager get gameManager => _gameManager;
+  Widget get gameWidget => _gameWidget;
 
-  bool get isPaused => _isPaused;
+  bool get isPaused => _isPaused.value;
 
   TutorialType? get tutorialType => _tutorialType;
 
-  bool get ignorePointer => false; //isPaused || _tutorialType != null;
+  bool get ignorePointer => isPaused || _tutorialType != null;
 
   GameViewModel(
     this._tutorialRepository,
@@ -47,11 +50,13 @@ class GameViewModel with ChangeNotifierEx {
       localStorage: _localStorage,
       onEndCycling: _onEndCycling,
       onPause: _onPause,
+      isPaused: _isPaused,
       onSelectFollow: () => FollowType.autoFollow, // TODO
       playerTeam: null, // TODO
       career: Career(riders: 2, raceTypes: 2, rankingTypes: 2, cash: 100), // TODO
       playSettings: playSettings,
     );
+    _gameWidget = GameWidget(game: _gameManager);
     _navigator = navigator;
   }
 
@@ -60,7 +65,7 @@ class GameViewModel with ChangeNotifierEx {
   }
 
   Future<void> _onPause() async {
-    _isPaused = true;
+    _isPaused.value = true;
     notifyListeners();
   }
 
@@ -76,6 +81,25 @@ class GameViewModel with ChangeNotifierEx {
       _tutorialType = type;
       notifyListeners();
     }
+  }
+
+  Future<void> onTutorialDismiss() async {
+    _tutorialType = null;
+    notifyListeners();
+  }
+
+  Future<void> onContinue() async {
+    _isPaused.value = false;
+    notifyListeners();
+  }
+
+  Future<void> onSave() async {
+    await onContinue();
+  }
+
+  Future<void> onStop() async {
+    _isPaused.value = false;
+    notifyListeners();
   }
 }
 

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 class SimpleScreen extends StatelessWidget {
   final Widget child;
+  final bool transparant;
 
   const SimpleScreen({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    this.transparant = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
-        child: SafeArea(
-          child: child,
-        ),
+      backgroundColor: transparant ? Colors.transparent : Colors.black,
+      body: SafeArea(
+        child: child,
       ),
     );
   }

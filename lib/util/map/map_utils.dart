@@ -159,9 +159,25 @@ class MapUtils {
           default:
             fieldValue = 0;
         }
-        positions.add(Position(p1, p2, listener, iAccent == numberOfPositions - 1, segment, iAccent * 1.0, ((iAccent + 1) * 100.0 / (numberOfPositions)).roundToDouble(), j,
-            clockwise ? k : -k, clockwise, (startAngle2 + pi * 2) % (pi * 2), radius, true, currentPositionType,
-            curvature: numberOfPositions, fieldValue: fieldValue, sprint: iAccent < 1 ? nextSprint : null));
+        positions.add(Position(
+          p1,
+          p2,
+          listener,
+          iAccent == numberOfPositions - 1,
+          segment,
+          iAccent * 1.0,
+          ((iAccent + 1) * 100.0 / (numberOfPositions)).roundToDouble(),
+          j,
+          clockwise ? k : -k,
+          clockwise,
+          (startAngle2 + pi * 2) % (pi * 2),
+          radius,
+          true,
+          currentPositionType,
+          curvature: numberOfPositions,
+          fieldValue: fieldValue,
+          sprint: iAccent < 1 ? nextSprint : null,
+        ));
       }
     }
     return positions;

@@ -22,7 +22,8 @@ class GameManager with Game, ScaleDetector, TapDetector {
   final ValueChanged<TutorialType> openTutorial;
   final PlaySettings playSettings;
   final VoidCallback onPause;
-  bool loading = true;
+  final ValueNotifier<bool> isPaused;
+  var loading = true;
   double loadingPercentage = 0;
 
   GameManager({
@@ -34,6 +35,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
     required this.onEndCycling,
     required this.openTutorial,
     required this.onPause,
+    required this.isPaused,
     required FollowType Function() onSelectFollow,
     required this.playSettings,
   }) {
@@ -43,7 +45,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
       localStorage: localStorage,
       localizations: localizations,
       openTutorial: openTutorial,
-      onPause: onPause,
+      onPause: _onPause,
       onSelectFollow: onSelectFollow,
     );
   }
@@ -54,6 +56,11 @@ class GameManager with Game, ScaleDetector, TapDetector {
     await spriteManager.loadSprites();
     view.onAttach(playSettings: playSettings);
     loading = false;
+  }
+
+  void _onPause() {
+    paused = !paused;
+    onPause();
   }
 
   @override
@@ -98,6 +105,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
 
   @override
   void update(double dt) {
+    if (isPaused.value) return;
     if (loading) {
       loadingCheck();
       return;

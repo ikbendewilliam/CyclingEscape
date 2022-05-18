@@ -83,20 +83,16 @@ class Position {
       canvas.translate((p1.dx - (1 - cos(startAngle + pi / 2)) * radius) * tileSize, (p1.dy - (1 - sin(startAngle + pi / 2)) * radius) * tileSize);
 
       double deltaAngle = (angle - startAngle) * 2;
-      if (deltaAngle > pi * 2) {
-        deltaAngle -= pi * 2;
-      }
-      if (deltaAngle < -pi * 2) {
-        deltaAngle += pi * 2;
-      }
-      if (deltaAngle < -pi) {
-        deltaAngle = pi * 2 + deltaAngle;
-      }
-      if (deltaAngle > pi) {
-        deltaAngle = -pi * 2 + deltaAngle;
-      }
+
+      // Make sure the anlge is in the correct range
+      if (deltaAngle > pi * 2) deltaAngle -= pi * 2;
+      if (deltaAngle < -pi * 2) deltaAngle += pi * 2;
+      if (deltaAngle < -pi) deltaAngle += pi * 2;
+      if (deltaAngle > pi) deltaAngle -= pi * 2;
+
       canvas.drawArc(Rect.fromLTRB(0, 0, 2 * radius * tileSize, 2 * radius * tileSize), startAngle - pi / 2, deltaAngle * 1.01, false, darkPaint);
       canvas.drawArc(Rect.fromLTRB(0, 0, 2 * radius * tileSize, 2 * radius * tileSize), startAngle - pi / 2, deltaAngle, false, paint);
+
       canvas.restore();
       canvas.drawLine(
           Offset(p1.dx + sin(startAngle) / 2, p1.dy - cos(startAngle) / 2) * tileSize, Offset(p1.dx - sin(startAngle) / 2, p1.dy + cos(startAngle) / 2) * tileSize, darkPaintSmall);
@@ -337,4 +333,5 @@ PositionType? getPositionTypeFromString(String? positionTypeAsString) {
 }
 
 enum PositionState { normal, selectable, notSelectable }
+
 enum PositionType { flat, uphill, downhill, cobble }

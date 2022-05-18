@@ -18,6 +18,7 @@ class MenuBox extends StatelessWidget {
       childBuilder: (context, theme, localization) => Center(
         child: Stack(
           clipBehavior: Clip.none,
+          alignment: Alignment.center,
           children: [
             Positioned.fill(
               child: Image.asset(
@@ -29,27 +30,32 @@ class MenuBox extends StatelessWidget {
               padding: const EdgeInsets.all(16).add(const EdgeInsets.only(top: 32)),
               child: child,
             ),
-            if (title != null) ...[
-              Positioned(
-                top: -12,
-                bottom: null,
-                height: 48,
-                left: 0,
-                right: 0,
-                child: Image.asset(
-                  ThemeAssets.menuHeaderBigger,
-                ),
+            Positioned(
+              top: title!.length > 8 ? -12 : -13,
+              bottom: null,
+              height: 48,
+              child: Stack(
+                children: [
+                  if (title != null) ...[
+                    Image.asset(
+                      title!.length > 8 ? ThemeAssets.menuHeaderBigger : ThemeAssets.menuHeader,
+                    ),
+                    Positioned.fill(
+                      left: 16,
+                      right: 16,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          title!,
+                          style: theme.coreTextTheme.titleSmall,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
-              Positioned.fill(
-                top: 0,
-                bottom: null,
-                child: Text(
-                  title!,
-                  style: theme.coreTextTheme.titleSmall,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+            ),
           ],
         ),
       ),

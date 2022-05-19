@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/model/gamedata/career.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
@@ -11,57 +13,74 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 
-class GameManager with Game, ScaleDetector, TapDetector {
-  late final CyclingView view;
+class GameListener {
   final int? playerTeam;
   final Career? career;
   final LocalStorage localStorage;
   final Localization localizations;
-  final SpriteManager spriteManager;
-  final ValueChanged<List<Sprint>?> onEndCycling;
-  final ValueChanged<TutorialType> openTutorial;
   final PlaySettings playSettings;
   final VoidCallback onPause;
+  final SpriteManager spriteManager;
   final ValueNotifier<bool> isPaused;
-  var loading = true;
-  double loadingPercentage = 0;
+  final FollowType Function() onSelectFollow;
+  final ValueChanged<TutorialType> openTutorial;
+  final ValueChanged<List<Sprint>?> onEndCycling;
 
-  GameManager({
-    required this.playerTeam,
-    required this.spriteManager,
-    required this.localStorage,
-    required this.localizations,
-    required this.career,
-    required this.onEndCycling,
-    required this.openTutorial,
+  GameListener({
     required this.onPause,
     required this.isPaused,
-    required FollowType Function() onSelectFollow,
+    required this.playerTeam,
+    required this.localStorage,
+    required this.onEndCycling,
+    required this.openTutorial,
     required this.playSettings,
-  }) {
-    view = CyclingView(
-      spriteManager: spriteManager,
-      onEndCycling: onEndCycling,
-      localStorage: localStorage,
-      localizations: localizations,
-      openTutorial: openTutorial,
+    required this.localizations,
+    required this.spriteManager,
+    required this.onSelectFollow,
+    this.career,
+  });
+}
+
+class GameManager with Game, ScaleDetector, TapDetector {
+  var _loading = true;
+  double loadingPercentage = 0;
+  CyclingView? _view;
+  GameListener? _listener;
+  final _canStartLoading = Completer<void>();
+
+  bool get loading => _loading || _view == null;
+
+  CyclingView get view => _view!;
+
+  Future<void> addListener(GameListener listener) async {
+    _listener = listener;
+    _view = CyclingView(
+      spriteManager: _listener!.spriteManager,
+      onEndCycling: _listener!.onEndCycling,
+      localStorage: _listener!.localStorage,
+      localizations: _listener!.localizations,
+      openTutorial: _listener!.openTutorial,
+      onSelectFollow: _listener!.onSelectFollow,
       onPause: _onPause,
-      onSelectFollow: onSelectFollow,
     );
+    _canStartLoading.complete();
   }
 
   @override
-  Future<void> onLoad() async {
-    view.resize(size.toSize());
-    await spriteManager.loadSprites();
-    view.onAttach(playSettings: playSettings);
-    loading = false;
+  Future<void>? onLoad() async {
+    await _load();
+    return super.onLoad();
   }
 
-  void _onPause() {
-    paused = !paused;
-    onPause();
+  Future<void> _load() async {
+    await _canStartLoading.future; // Wait for the listener to be added
+    view.resize(size.toSize());
+    await _listener!.spriteManager.loadSprites();
+    view.onAttach(playSettings: _listener!.playSettings);
+    _loading = false;
   }
+
+  void _onPause() => _listener?.onPause();
 
   @override
   void onGameResize(Vector2 size) {
@@ -85,8 +104,8 @@ class GameManager with Game, ScaleDetector, TapDetector {
   }
 
   void loadingCheck() {
-    if (loading) {
-      loadingPercentage = spriteManager.checkLoadingPercentage();
+    if (loading && _listener != null) {
+      loadingPercentage = _listener!.spriteManager.checkLoadingPercentage();
       if (loadingPercentage.isNaN) {
         loadingPercentage = 0;
       }
@@ -105,7 +124,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
 
   @override
   void update(double dt) {
-    if (isPaused.value) return;
+    if (_listener?.isPaused.value != false) return;
     if (loading) {
       loadingCheck();
       return;

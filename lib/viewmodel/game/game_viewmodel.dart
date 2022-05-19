@@ -8,7 +8,6 @@ import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
@@ -16,15 +15,11 @@ import 'package:injectable/injectable.dart';
 @injectable
 class GameViewModel with ChangeNotifierEx {
   late final GameNavigator _navigator;
-  late final GameManager _gameManager;
-  late final Widget _gameWidget;
   final TutorialRepository _tutorialRepository;
   final LocalStorage _localStorage;
   final SpriteManager _spriteManager;
   final _isPaused = ValueNotifier(false);
   TutorialType? _tutorialType;
-
-  Widget get gameWidget => _gameWidget;
 
   bool get isPaused => _isPaused.value;
 
@@ -42,8 +37,10 @@ class GameViewModel with ChangeNotifierEx {
     GameNavigator navigator,
     Localization _localizations,
     PlaySettings playSettings,
+    GameManager gameManager,
   ) async {
-    _gameManager = GameManager(
+    _navigator = navigator;
+    await gameManager.addListener(GameListener(
       localizations: _localizations,
       spriteManager: _spriteManager,
       openTutorial: _openTutorial,
@@ -55,9 +52,7 @@ class GameViewModel with ChangeNotifierEx {
       playerTeam: null, // TODO
       career: Career(riders: 2, raceTypes: 2, rankingTypes: 2, cash: 100), // TODO
       playSettings: playSettings,
-    );
-    _gameWidget = GameWidget(game: _gameManager);
-    _navigator = navigator;
+    ));
   }
 
   Future<void> _onEndCycling(List<Sprint>? sprints) async {

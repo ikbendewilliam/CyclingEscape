@@ -48,7 +48,7 @@ class GameViewModel with ChangeNotifierEx {
       onEndCycling: _onEndCycling,
       onPause: _onPause,
       isPaused: _isPaused,
-      onSelectFollow: () => FollowType.autoFollow, // TODO
+      onSelectFollow: _onSelectFollow, // TODO
       playerTeam: null, // TODO
       career: Career(riders: 2, raceTypes: 2, rankingTypes: 2, cash: 100), // TODO
       playSettings: playSettings,
@@ -64,6 +64,8 @@ class GameViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
+  Future<FollowType> _onSelectFollow() async => FollowType.follow;
+
   Future<void> _openTutorial(TutorialType type) async {
     if (type == TutorialType.tourFirstFinished) {
       _tutorialRepository.toursFinished = _tutorialRepository.toursFinished + 1;
@@ -73,13 +75,16 @@ class GameViewModel with ChangeNotifierEx {
       }
     }
     if (!_tutorialRepository.hasViewed(type)) {
+      _isPaused.value = true;
       _tutorialType = type;
       notifyListeners();
+      _tutorialRepository.addViewed(type);
     }
   }
 
   Future<void> onTutorialDismiss() async {
     _tutorialType = null;
+    _isPaused.value = false;
     notifyListeners();
   }
 
@@ -92,12 +97,9 @@ class GameViewModel with ChangeNotifierEx {
     await onContinue();
   }
 
-  Future<void> onStop() async {
-    _isPaused.value = false;
-    notifyListeners();
-  }
+  Future<void> onStop() => _navigator.goToMainMenu();
 }
 
 mixin GameNavigator {
-  Future<void> openTutorial(TutorialType type);
+  Future<void> goToMainMenu();
 }

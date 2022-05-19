@@ -1,4 +1,4 @@
-import 'package:cycling_escape/model/data/enums.dart';
+import 'package:cycling_escape/navigator/main_navigator.dart';
 import 'package:cycling_escape/screen_game/game_manager.dart';
 import 'package:cycling_escape/viewmodel/game/game_viewmodel.dart';
 import 'package:cycling_escape/widget/game/pause_widget.dart';
@@ -37,17 +37,17 @@ class GameScreenState extends State<GameScreen> implements GameNavigator {
           ProviderWidget<GameViewModel>(
             create: () => GetIt.I()..init(this, localization, widget.playSettings, _gameManager),
             childBuilderWithViewModel: (context, viewModel, theme, _) {
+              if (viewModel.tutorialType != null) {
+                return TutorialWidget(
+                  tutorialType: viewModel.tutorialType!,
+                  onDismiss: viewModel.onTutorialDismiss,
+                );
+              }
               if (viewModel.isPaused) {
                 return PauseWidget(
                   onContinue: viewModel.onContinue,
                   onSave: viewModel.onSave,
                   onStop: viewModel.onStop,
-                );
-              }
-              if (viewModel.tutorialType != null) {
-                return TutorialWidget(
-                  tutorialType: viewModel.tutorialType!,
-                  onDismiss: viewModel.onTutorialDismiss,
                 );
               }
               return const SizedBox.shrink();
@@ -59,5 +59,5 @@ class GameScreenState extends State<GameScreen> implements GameNavigator {
   }
 
   @override
-  Future<void> openTutorial(TutorialType type) async => print('opening tutorial');
+  Future<void> goToMainMenu() async => MainNavigatorWidget.of(context).goToHome();
 }

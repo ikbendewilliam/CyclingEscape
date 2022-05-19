@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
@@ -30,12 +31,12 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   int? diceValue;
   int? currentTurn = 0;
   bool grid = false;
-  bool? ended = false;
-  bool? moving = false;
-  bool? inCareer = false;
-  bool? autoFollow = false;
-  bool? hasResults = false;
-  bool? openFollowSelect = false;
+  bool ended = false;
+  bool moving = false;
+  bool inCareer = false;
+  bool autoFollow = false;
+  bool hasResults = false;
+  bool openFollowSelect = false;
   Dice? dice, dice2;
   Size? worldSize = const Size(1, 1);
   Size? mapSize = const Size(1, 1);
@@ -74,7 +75,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   final Localization localizations;
   final ValueChanged<List<Sprint>?> onEndCycling;
   final ValueChanged<TutorialType> openTutorial;
-  final FollowType Function() onSelectFollow;
+  final Future<FollowType> Function() onSelectFollow;
 
   CyclingView({
     required SpriteManager spriteManager,
@@ -211,7 +212,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       processGameState(GameState.gameSelectNext);
     }
     createButtons(screenSize != null ? screenSize!.height / 7 : 10);
-    if (openFollowSelect!) {
+    if (openFollowSelect) {
       processGameState(GameState.userWaitCyclistFollow);
     }
     grass ??= spriteManager.getSprite('environment/grass.png');
@@ -279,29 +280,10 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       diceValueCooldown -= t;
     }
 
-    if (dice != null) {
-      dice!.update(t);
-    }
-    if (dice2 != null) {
-      dice2!.update(t);
-    }
-    if (moving!) {
-      double startTimer = 0;
-      switch (localStorage.cyclistMovement) {
-        case CyclistMovementType.fast:
-          startTimer = 0.5;
-          break;
-        case CyclistMovementType.slow:
-          startTimer = 2;
-          break;
-        case CyclistMovementType.skip:
-          startTimer = 0.01;
-          break;
-        default:
-          startTimer = 1;
-          break;
-      }
-
+    dice?.update(t);
+    dice2?.update(t);
+    if (moving) {
+      final startTimer = localStorage.cyclistMovement.timerDuration;
       if (movingTimer == -1) {
         movingTimer = startTimer;
       } else {
@@ -341,7 +323,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   void createButtons(double buttonSize) {
     buttons = [];
     buttons.add(Button(spriteManager, Offset(buttonSize / 2 + 5, screenSize!.height - buttonSize / 2 - 5), ButtonType.iconPause, onPause));
-    if (hasResults!) {
+    if (hasResults) {
       buttons.add(Button(spriteManager, Offset(buttonSize / 2 * 3.2 + 5, screenSize!.height - buttonSize / 2 - 5), ButtonType.iconResults, onPause));
     }
   }
@@ -404,10 +386,9 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     });
   }
 
-  void processGameState(GameState? newState) {
-    if (ended!) {
-      return;
-    }
+  Future<void> processGameState(GameState? newState) async {
+    print('newState: $newState, ended: $ended');
+    if (ended) return;
     gameState = newState;
     switch (gameState) {
       case GameState.userWaitCyclistMoving:
@@ -423,7 +404,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         cyclistSelected!.addCyclist(movingCyclist);
         cyclistSelected!.cyclist!.lastUsedOnTurn = (cyclistSelected!.cyclist!.lastUsedOnTurn ?? 0) + 1;
         movingCyclist = null;
-        processGameState(GameState.userWaitCyclistFollow);
+        unawaited(processGameState(GameState.userWaitCyclistFollow));
         break;
       case GameState.userWaitCyclistFollow:
         bool following = false;
@@ -435,38 +416,35 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
           if (placeBefore!.cyclist!.team!.isPlayer!) {
             openTutorial(TutorialType.follow);
           }
-          if ((minThrow >= 7 && !placeBefore.cyclist!.team!.isPlayer!) || (minThrow >= localStorage.autofollowThreshold && autoFollow! && placeBefore.cyclist!.team!.isPlayer!)) {
+          if ((minThrow >= 7 && !placeBefore.cyclist!.team!.isPlayer!) || (minThrow >= localStorage.autofollowThreshold && autoFollow && placeBefore.cyclist!.team!.isPlayer!)) {
             following = true;
             follow();
-            processGameState(GameState.userWaitCyclistMoving);
+            unawaited(processGameState(GameState.userWaitCyclistMoving));
           } else if (placeBefore.cyclist!.team!.isPlayer! && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowAsk)) {
-            final returnValue = onSelectFollow();
+            final returnValue = await onSelectFollow();
             switch (returnValue) {
               case FollowType.autoFollow:
                 autoFollow = true;
                 if (minThrow >= localStorage.autofollowThreshold) {
                   follow();
-                  processGameState(GameState.userWaitCyclistMoving);
+                  unawaited(processGameState(GameState.userWaitCyclistMoving));
                 } else {
-                  processGameState(GameState.gameSelectNext);
+                  unawaited(processGameState(GameState.gameSelectNext));
                 }
                 break;
               case FollowType.follow:
                 follow();
-                processGameState(GameState.userWaitCyclistMoving);
+                unawaited(processGameState(GameState.userWaitCyclistMoving));
                 break;
               case FollowType.leave:
-                processGameState(GameState.gameSelectNext);
+                unawaited(processGameState(GameState.gameSelectNext));
             }
+            following = true;
           }
-          following = true;
-          if (autoFollow!) {
-            openTutorial(TutorialType.follow);
-          }
+          if (autoFollow) openTutorial(TutorialType.follow);
         }
-        if (!following) {
-          processGameState(GameState.gameSelectNext);
-        }
+        if (!following) unawaited(processGameState(GameState.gameSelectNext));
+
         break;
       case GameState.gameSelectNext:
         selectNextCyclist();
@@ -483,7 +461,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       case GameState.userInputDiceStart:
         if (!cyclistSelected!.cyclist!.team!.isPlayer!) {
           startDice();
-          processGameState(GameState.userWaitDiceRolling);
+          unawaited(processGameState(GameState.userWaitDiceRolling));
         } else {
           openTutorial(TutorialType.throwDice);
           if (cyclistSelected!.fieldValue < 0) {
@@ -496,7 +474,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       case GameState.userInputDiceDone:
         if (!cyclistSelected!.cyclist!.team!.isPlayer!) {
           removeDice();
-          processGameState(GameState.userInputPositionChoice);
+          unawaited(processGameState(GameState.userInputPositionChoice));
         }
         break;
       default:
@@ -618,7 +596,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       // No more cyclist -> Race ended
       onEndCycling(map!.sprints);
       ended = true;
-    } else if (!ended!) {
+    } else if (!ended) {
       updateResults();
       cyclistSelected!.setState(PositionState.notSelectable);
       if (cyclistSelected!.cyclist!.lastUsedOnTurn! > currentTurn!) {
@@ -668,17 +646,12 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   }
 
   void checkBounds() {
-    if (zoom > maxZoom) {
-      zoom = maxZoom;
+    zoom.clamp(minZoom, maxZoom);
+    if (offset.dx > worldSize!.width - screenSize!.width / zoom) {
+      offset += Offset(offset.dx - worldSize!.width + screenSize!.width / zoom, 0);
     }
-    if (zoom < minZoom) {
-      zoom = minZoom;
-    }
-    if (-offset.dx > worldSize!.width - screenSize!.width / zoom) {
-      offset += Offset(-offset.dx - worldSize!.width + screenSize!.width / zoom, 0);
-    }
-    if (-offset.dy > worldSize!.height - screenSize!.height / zoom) {
-      offset += Offset(0, -offset.dy - worldSize!.height + screenSize!.height / zoom);
+    if (offset.dy > worldSize!.height - screenSize!.height / zoom) {
+      offset += Offset(0, offset.dy - worldSize!.height + screenSize!.height / zoom);
     }
     if (-offset.dx < 0) {
       offset -= Offset(offset.dx, 0);

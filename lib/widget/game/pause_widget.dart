@@ -23,25 +23,28 @@ class PauseWidget extends StatelessWidget {
         transparant: true,
         child: MenuBox(
           title: localization.pausedTitle,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CyclingEscapeButton(
-                type: CyclingEscapeButtonType.green,
-                text: localization.continueButton,
-                onClick: onContinue,
-              ),
-              CyclingEscapeButton(
-                type: CyclingEscapeButtonType.yellow,
-                text: localization.saveButton,
-                onClick: onSave,
-              ),
-              CyclingEscapeButton(
-                type: CyclingEscapeButtonType.red,
-                text: localization.mainMenuButton,
-                onClick: onStop,
-              ),
-            ],
+          child: Center(
+            heightFactor: 1,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CyclingEscapeButton(
+                  type: CyclingEscapeButtonType.green,
+                  text: localization.continueButton,
+                  onClick: onContinue,
+                ),
+                CyclingEscapeButton(
+                  type: CyclingEscapeButtonType.yellow,
+                  text: localization.saveButton,
+                  onClick: onSave,
+                ),
+                CyclingEscapeButton(
+                  type: CyclingEscapeButtonType.red,
+                  text: localization.mainMenuButton,
+                  onClick: onStop,
+                ),
+              ],
+            ),
           ),
         ),
       ),

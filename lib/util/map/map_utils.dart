@@ -10,6 +10,11 @@ import 'package:cycling_escape/widget_game/positions/game_map.dart';
 import 'package:cycling_escape/widget_game/positions/position.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
 
+/// DISCLAIMER:
+/// This is some strong spagetti code and I don't know how it works anymore
+/// My apologies for that.
+/// Continue reading at your own risk.
+
 class MapUtils {
   final PositionListener listener;
   int currentSegment = 0;
@@ -443,7 +448,7 @@ class MapUtils {
         final int length = Random().nextInt(maxLength - minLength) + minLength;
         newMap.addStraight(length, width);
       } else {
-        final int radius = Random().nextInt(4) + 6 + (width / 2).ceil();
+        final int radius = Random().nextInt(4) + (6.5 + width / 2).ceil();
         int a = Random().nextBool() ? -1 : 1;
         final int angleIndex = Random().nextInt(angles.length);
         final double deltaAngle = angles[angleIndex];

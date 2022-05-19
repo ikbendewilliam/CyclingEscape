@@ -1,6 +1,15 @@
 import 'package:cycling_escape/util/locale/localization_keys.dart';
 
-enum CyclistMovementType { fast, normal, slow, skip }
+enum CyclistMovementType {
+  fast(0.5),
+  normal(1),
+  slow(2),
+  skip(0.01);
+
+  final double timerDuration;
+
+  const CyclistMovementType(this.timerDuration);
+}
 
 enum CameraMovementType { auto, selectOnly, none }
 

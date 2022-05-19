@@ -22,7 +22,7 @@ class GameListener {
   final VoidCallback onPause;
   final SpriteManager spriteManager;
   final ValueNotifier<bool> isPaused;
-  final FollowType Function() onSelectFollow;
+  final Future<FollowType> Function() onSelectFollow;
   final ValueChanged<TutorialType> openTutorial;
   final ValueChanged<List<Sprint>?> onEndCycling;
 
@@ -74,9 +74,9 @@ class GameManager with Game, ScaleDetector, TapDetector {
 
   Future<void> _load() async {
     await _canStartLoading.future; // Wait for the listener to be added
-    view.resize(size.toSize());
     await _listener!.spriteManager.loadSprites();
     view.onAttach(playSettings: _listener!.playSettings);
+    view.resize(size.toSize());
     _loading = false;
   }
 
@@ -117,7 +117,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
 
   @override
   void lifecycleStateChange(AppLifecycleState state) {
-    if (state == AppLifecycleState.inactive && !view.ended! && view.map != null) {
+    if (state == AppLifecycleState.inactive && !view.ended && view.map != null) {
       // SaveUtil.saveCyclingView(view); // TODO: Save cycling view
     }
   }
@@ -143,10 +143,6 @@ class GameManager with Game, ScaleDetector, TapDetector {
   void onTapDown(TapDownInfo info) {
     if (loading) return;
     view.onTapDown(info);
-  }
-
-  void onResize() {
-    view.resize(size.toSize());
   }
 
   @override

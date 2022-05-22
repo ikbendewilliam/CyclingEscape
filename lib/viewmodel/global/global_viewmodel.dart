@@ -1,3 +1,4 @@
+import 'package:auto_orientation/auto_orientation.dart';
 import 'package:cycling_escape/repository/debug/debug_repository.dart';
 import 'package:cycling_escape/repository/locale/locale_repository.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
@@ -5,6 +6,7 @@ import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/util/locale/localization_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
@@ -38,6 +40,8 @@ class GlobalViewModel with ChangeNotifierEx {
     _initLocale();
     _initTargetPlatform();
     _getThemeMode();
+    AutoOrientation.landscapeAutoMode();
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   void _initTargetPlatform() {

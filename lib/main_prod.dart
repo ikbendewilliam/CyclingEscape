@@ -21,7 +21,6 @@ Future<void> main() async {
       values: values,
     );
     await configureDependencies(Environments.prod);
-    // runApp(const MyApp());
-    gameAppV1();
+    startApp();
   });
 }

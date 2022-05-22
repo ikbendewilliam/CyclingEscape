@@ -387,7 +387,6 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   }
 
   Future<void> processGameState(GameState? newState) async {
-    print('newState: $newState, ended: $ended');
     if (ended) return;
     gameState = newState;
     switch (gameState) {

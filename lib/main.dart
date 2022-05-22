@@ -28,7 +28,6 @@ Future<void> main() async {
     await addDatabaseInspector();
     await initAllStorageInspectors();
 
-    // runApp(const MyApp());
-    gameAppV1();
+    startApp();
   });
 }

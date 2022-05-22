@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class MenuBox extends StatelessWidget {
   final Widget child;
   final String? title;
+  final bool wide;
 
   const MenuBox({
     required this.child,
     this.title,
+    this.wide = false,
     Key? key,
   }) : super(key: key);
 
@@ -22,7 +24,7 @@ class MenuBox extends StatelessWidget {
           children: [
             Positioned.fill(
               child: Image.asset(
-                ThemeAssets.menuBox,
+                wide ? ThemeAssets.menuBoxWide : ThemeAssets.menuBox,
                 fit: BoxFit.fitHeight,
               ),
             ),

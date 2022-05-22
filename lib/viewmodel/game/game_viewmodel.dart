@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:app_review/app_review.dart';
 import 'package:cycling_escape/model/data/enums.dart';
-import 'package:cycling_escape/model/gamedata/career.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
 import 'package:cycling_escape/repository/tutorial/tutorial_repository.dart';
 import 'package:cycling_escape/screen_game/game_manager.dart';
@@ -20,12 +21,15 @@ class GameViewModel with ChangeNotifierEx {
   final SpriteManager _spriteManager;
   final _isPaused = ValueNotifier(false);
   TutorialType? _tutorialType;
+  Completer<FollowType>? _completer;
 
   bool get isPaused => _isPaused.value;
 
   TutorialType? get tutorialType => _tutorialType;
 
   bool get ignorePointer => isPaused || _tutorialType != null;
+
+  bool get showFollowDialog => _completer != null;
 
   GameViewModel(
     this._tutorialRepository,
@@ -48,15 +52,16 @@ class GameViewModel with ChangeNotifierEx {
       onEndCycling: _onEndCycling,
       onPause: _onPause,
       isPaused: _isPaused,
-      onSelectFollow: _onSelectFollow, // TODO
+      onSelectFollow: _onSelectFollow,
       playerTeam: null, // TODO
-      career: Career(riders: 2, raceTypes: 2, rankingTypes: 2, cash: 100), // TODO
+      career: null, // TODO
       playSettings: playSettings,
     ));
   }
 
   Future<void> _onEndCycling(List<Sprint>? sprints) async {
-    print('race ended');
+    if (sprints == null) return _navigator.goToMainMenu();
+    await _navigator.goToResults(sprints);
   }
 
   Future<void> _onPause() async {
@@ -64,7 +69,19 @@ class GameViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
-  Future<FollowType> _onSelectFollow() async => FollowType.follow;
+  Future<void> onFollow(FollowType followType) async {
+    _completer?.complete(followType);
+    _completer = null;
+    _isPaused.value = false;
+    notifyListeners();
+  }
+
+  Future<FollowType> _onSelectFollow() async {
+    _completer = Completer();
+    _isPaused.value = true;
+    notifyListeners();
+    return _completer!.future;
+  }
 
   Future<void> _openTutorial(TutorialType type) async {
     if (type == TutorialType.tourFirstFinished) {
@@ -102,4 +119,6 @@ class GameViewModel with ChangeNotifierEx {
 
 mixin GameNavigator {
   Future<void> goToMainMenu();
+
+  Future<void> goToResults(List<Sprint> sprints);
 }

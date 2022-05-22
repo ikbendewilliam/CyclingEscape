@@ -51,6 +51,8 @@ class ThemeAssets {
 
   static String get menuBox => '$_images/back_results.png';
 
+  static String get menuBoxWide => '$_images/back_tour.png';
+
   static String get menuHeader => '$_images/back_text_01.png';
 
   static String get menuHeaderBigger => '$_images/back_text_02.png';
@@ -82,4 +84,16 @@ class ThemeAssets {
   static String get buttonIconPlus => '$_images/icon_plus.png';
 
   static String get buttonIconMinus => '$_images/icon_minus.png';
+
+  static String get buttonIconNext => '$_images/icon_play.png';
+
+  static String get scrollbarBackground => '$_images/back_slider.png';
+
+  static String get scrollbarForeground => '$_images/slider_front.png';
+
+  static String get iconMountain => '$_images/icon_mountain.png';
+
+  static String get iconTime => '$_images/icon_time.png';
+
+  static String get iconNumber => '$_images/icon_number.png';
 }

@@ -4,6 +4,7 @@ import 'package:cycling_escape/screen/debug/debug_screen.dart';
 import 'package:cycling_escape/screen/game/game_screen.dart';
 import 'package:cycling_escape/screen/license/license_screen.dart';
 import 'package:cycling_escape/screen/menu/main_menu_screen.dart';
+import 'package:cycling_escape/screen/results/results_screen.dart';
 import 'package:cycling_escape/screen/single_race_menu/single_race_menu_screen.dart';
 import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
@@ -12,6 +13,7 @@ import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/widget/general/flavor_banner.dart';
 import 'package:cycling_escape/widget/general/text_scale_factor.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
+import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +82,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case ResultsScreen.routeName:
+        return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: ResultsScreen(sprints: settings.arguments as List<Sprint>)), settings: settings);
       case GameScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: GameScreen(playSettings: settings.arguments as PlaySettings)), settings: settings);
       case SingleRaceMenuScreen.routeName:
@@ -117,6 +121,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToResults(List<Sprint> sprints) => _navigator.pushReplacementNamed(ResultsScreen.routeName, arguments: sprints);
 
   @override
   void goToGame(PlaySettings playSettings) => _navigator.pushReplacementNamed(GameScreen.routeName, arguments: playSettings);

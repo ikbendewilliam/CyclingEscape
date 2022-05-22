@@ -1,4 +1,5 @@
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
+import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,8 @@ abstract class MainNavigation {
   void goToDatabase(GeneratedDatabase db);
 
   void goBack<T>({T? result});
+
+  void goToResults(List<Sprint> sprints);
 
   void goToGame(PlaySettings playSettings);
 

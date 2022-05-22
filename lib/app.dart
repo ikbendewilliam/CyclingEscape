@@ -5,15 +5,12 @@ import 'package:cycling_escape/util/locale/localization_delegate.dart';
 import 'package:cycling_escape/util/locale/localization_fallback_cupertino_delegate.dart';
 import 'package:cycling_escape/viewmodel/global/global_viewmodel.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 
-void gameAppV1() async {
+void startApp() async {
   runApp(const MyApp());
-  await Flame.device.fullScreen();
-  await Flame.device.setLandscape();
 }
 
 class MyApp extends StatelessWidget {

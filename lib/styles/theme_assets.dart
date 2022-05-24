@@ -96,4 +96,12 @@ class ThemeAssets {
   static String get iconTime => '$_images/icon_time.png';
 
   static String get iconNumber => '$_images/icon_number.png';
+
+  static String get iconRank => '$_images/icon_rank.png';
+
+  static String get iconTeam => '$_images/icon_team.png';
+
+  static String get iconYoung => '$_images/icon_young.png';
+
+  static String get iconPoints => '$_images/icon_points.png';
 }

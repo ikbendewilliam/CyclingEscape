@@ -17,7 +17,16 @@ enum FollowType { follow, autoFollow, leave }
 
 enum MapType { flat, cobble, hills, heavy }
 
-enum MapLength { short, medium, long, veryLong }
+enum MapLength {
+  short(1),
+  medium(20),
+  long(30),
+  veryLong(40);
+
+  final int segments;
+
+  const MapLength(this.segments);
+}
 
 enum DifficultyType {
   easy(1),

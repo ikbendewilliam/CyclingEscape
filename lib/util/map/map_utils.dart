@@ -398,21 +398,7 @@ class MapUtils {
     final List<double> angles = [pi / 4, pi / 3];
     const double minAngle = -pi / 2;
     const double maxAngle = pi / 2;
-    late int segmentLength;
-    switch (playSettings.mapLength) {
-      case MapLength.short:
-        segmentLength = 15;
-        break;
-      case MapLength.medium:
-        segmentLength = 20;
-        break;
-      case MapLength.long:
-        segmentLength = 30;
-        break;
-      case MapLength.veryLong:
-        segmentLength = 60;
-        break;
-    }
+    late final int segmentLength = playSettings.mapLength.segments;
     PositionType positionType = PositionType.flat;
     int? fieldValue;
 
@@ -448,7 +434,7 @@ class MapUtils {
         final int length = Random().nextInt(maxLength - minLength) + minLength;
         newMap.addStraight(length, width);
       } else {
-        final int radius = Random().nextInt(4) + (6.5 + width / 2).ceil();
+        final int radius = Random().nextInt(4) + (7.0 + width / 2).ceil();
         int a = Random().nextBool() ? -1 : 1;
         final int angleIndex = Random().nextInt(angles.length);
         final double deltaAngle = angles[angleIndex];

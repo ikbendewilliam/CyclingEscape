@@ -1,6 +1,4 @@
-import 'package:cycling_escape/styles/theme_assets.dart';
 import 'package:cycling_escape/styles/theme_dimens.dart';
-import 'package:cycling_escape/widget/general/svg_icon.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
@@ -30,10 +28,10 @@ class SelectorItem extends StatelessWidget {
               ),
               Opacity(
                 opacity: selected ? 1 : 0,
-                child: SvgIcon(
-                  svgAsset: ThemeAssets.doneIcon(context),
-                  color: theme.colorsTheme.accent,
-                ),
+                // child: SvgIcon(
+                // svgAsset: ThemeAssets.doneIcon(context),
+                // color: theme.colorsTheme.accent,
+                // ),
               ),
             ],
           ),

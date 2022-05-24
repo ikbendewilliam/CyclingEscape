@@ -1,5 +1,5 @@
+import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/model/gamedata/tour.dart';
-import 'package:cycling_escape/screen_game/results_view.dart';
 import 'package:cycling_escape/widget_game/data/results.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
@@ -11,7 +11,7 @@ class ActiveTour {
   // RaceType? raceType;
   dynamic raceType;
   int racesDone = 0;
-  Results? currentResults = Results(ResultsType.tour);
+  Results? currentResults = Results(ResultsType.race);
   List<Team?>? teams;
   List<Cyclist?> cyclists = [];
 

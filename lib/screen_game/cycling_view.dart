@@ -6,7 +6,6 @@ import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
 import 'package:cycling_escape/screen_game/base_view.dart';
 import 'package:cycling_escape/screen_game/cycling_view_ui.dart';
-import 'package:cycling_escape/screen_game/results_view.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/util/map/map_utils.dart';
 import 'package:cycling_escape/util/save/save_util.dart';

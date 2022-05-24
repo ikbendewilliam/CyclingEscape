@@ -11,17 +11,16 @@ class ResultsViewModel with ChangeNotifierEx {
   late final List<Results> _results;
   late final controller = PageController();
 
-  // List<Results> get results => _results;
-  List<Results> get results => [..._results, ..._results, ..._results];
+  List<Results> get results => _results;
 
   ResultsViewModel();
 
   Future<void> init(ResultsNavigator navigator, List<Sprint> sprints) async {
     _navigator = navigator;
-    _results = sprints.calculateResults();
+    _results = sprints.calculateResults()..removeWhere((element) => element.data.isEmpty);
   }
 
-  void onContinuePressed() => _navigator.goToMainMenu();
+  void onClosePressed() => _navigator.goToMainMenu();
 }
 
 mixin ResultsNavigator {

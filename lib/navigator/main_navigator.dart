@@ -99,7 +99,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goToSplash() => _navigator.pushReplacementNamed(SplashScreen.routeName);
 
   @override
-  void goToHome() => _navigator.pushReplacementNamed(MainMenuScreen.routeName);
+  void goToHome() => _navigator.pushNamedAndRemoveUntil(MainMenuScreen.routeName, (route) => false);
 
   @override
   void goToDebugPlatformSelector() => _navigator.pushNamed(DebugPlatformSelectorScreen.routeName);

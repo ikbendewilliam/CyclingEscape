@@ -35,10 +35,5 @@ class CyclingEscapeBackButton extends StatelessWidget {
     );
   }
 
-  String getCorrectIcon(BuildContext context) {
-    if (fullScreen) {
-      return ThemeAssets.closeIcon(context);
-    }
-    return ThemeAssets.backIcon(context);
-  }
+  String getCorrectIcon(BuildContext context) => ThemeAssets.buttonIconClose;
 }

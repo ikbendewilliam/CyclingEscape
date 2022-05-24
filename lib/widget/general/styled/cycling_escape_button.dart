@@ -10,6 +10,7 @@ enum CyclingEscapeButtonType {
   iconPlus,
   iconMinus,
   iconNext,
+  iconClose,
 }
 
 class CyclingEscapeButton extends StatefulWidget {
@@ -50,6 +51,8 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
         return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconMinus;
       case CyclingEscapeButtonType.iconNext:
         return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconNext;
+      case CyclingEscapeButtonType.iconClose:
+        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconClose;
     }
   }
 

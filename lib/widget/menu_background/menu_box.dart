@@ -1,15 +1,18 @@
 import 'package:cycling_escape/styles/theme_assets.dart';
+import 'package:cycling_escape/widget/general/styled/cycling_escape_button.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 
 class MenuBox extends StatelessWidget {
+  final bool wide;
   final Widget child;
   final String? title;
-  final bool wide;
+  final VoidCallback? onClosePressed;
 
   const MenuBox({
     required this.child,
     this.title,
+    this.onClosePressed,
     this.wide = false,
     Key? key,
   }) : super(key: key);
@@ -58,6 +61,15 @@ class MenuBox extends StatelessWidget {
                 ],
               ),
             ),
+            if (onClosePressed != null)
+              Positioned(
+                top: 10,
+                right: 10,
+                child: CyclingEscapeButton(
+                  onClick: onClosePressed,
+                  type: CyclingEscapeButtonType.iconClose,
+                ),
+              ),
           ],
         ),
       ),

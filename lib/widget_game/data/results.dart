@@ -1,3 +1,4 @@
+import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/screen_game/results_view.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';

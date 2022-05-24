@@ -28,7 +28,7 @@ class CyclingEscapeCheckBox extends StatelessWidget {
             child: value
                 ? Center(
                     child: SvgIcon(
-                      svgAsset: ThemeAssets.doneIcon(context),
+                      svgAsset: ThemeAssets.buttonIconClose,
                       color: theme.colorsTheme.accent,
                       size: ThemeDimens.padding24,
                     ),

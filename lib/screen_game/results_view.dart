@@ -1,3 +1,4 @@
+import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/screen_game/base_view.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/input.dart';
@@ -398,5 +399,3 @@ ResultsType? getResultsTypeFromString(String? resultsTypeAsString) {
   }
   return null;
 }
-
-enum ResultsType { race, tour, time, young, points, mountain, team }

@@ -1,4 +1,6 @@
+import 'package:cycling_escape/styles/theme_assets.dart';
 import 'package:cycling_escape/util/locale/localization_keys.dart';
+import 'package:flutter/material.dart';
 
 enum CyclistMovementType {
   fast(0.5),
@@ -16,6 +18,42 @@ enum CameraMovementType { auto, selectOnly, none }
 enum FollowType { follow, autoFollow, leave }
 
 enum MapType { flat, cobble, hills, heavy }
+
+enum ResultsType {
+  race(Colors.blue, ThemeAssets.iconRank, ResultsColumn.all),
+  time(Colors.yellow, ThemeAssets.iconTime, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.time]),
+  young(Colors.black, ThemeAssets.iconYoung, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.time]),
+  points(Colors.green, ThemeAssets.iconPoints, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.points]),
+  mountain(Colors.red, ThemeAssets.iconMountain, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.mountain]),
+  team(Colors.purple, ThemeAssets.iconTeam, [ResultsColumn.rank, ResultsColumn.team, ResultsColumn.time]);
+
+  final Color color;
+  final String icon;
+  final List<ResultsColumn> columns;
+
+  const ResultsType(this.color, this.icon, this.columns);
+}
+
+enum ResultsColumn {
+  rank(ThemeAssets.iconRank),
+  number(ThemeAssets.iconNumber),
+  time(ThemeAssets.iconTime),
+  team(ThemeAssets.iconTeam),
+  points(ThemeAssets.iconPoints),
+  mountain(ThemeAssets.iconMountain);
+
+  static const all = [
+    rank,
+    number,
+    time,
+    points,
+    mountain,
+  ];
+
+  final String icon;
+
+  const ResultsColumn(this.icon);
+}
 
 enum MapLength {
   short(1),

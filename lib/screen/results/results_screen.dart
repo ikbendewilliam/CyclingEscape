@@ -28,99 +28,105 @@ class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigato
   Widget build(BuildContext context) {
     return ProviderWidget<ResultsViewModel>(
       create: () => GetIt.I()..init(this, widget.sprints),
-      childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
-        child: MenuBox(
-          title: 'Results',
-          onClosePressed: viewModel.onClosePressed,
-          wide: true,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: AspectRatio(
-              aspectRatio: 2.1,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: viewModel.controller,
-                      itemCount: viewModel.results.length,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, resultIndex) {
-                        final results = viewModel.results[resultIndex];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 32,
-                                child: Row(
-                                  children: [
-                                    ...?results.type?.columns.map((e) => Expanded(
-                                          child: Image.asset(
-                                            e.icon,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        )),
-                                    const SizedBox(width: 40),
-                                  ],
+      childBuilderWithViewModel: (context, viewModel, theme, localization) => WillPopScope(
+        onWillPop: () async {
+          viewModel.onClosePressed();
+          return false;
+        },
+        child: SimpleMenuScreen(
+          child: MenuBox(
+            title: 'Results',
+            onClosePressed: viewModel.onClosePressed,
+            wide: true,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: AspectRatio(
+                aspectRatio: 2.1,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: viewModel.controller,
+                        itemCount: viewModel.results.length,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, resultIndex) {
+                          final results = viewModel.results[resultIndex];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 32,
+                                  child: Row(
+                                    children: [
+                                      ...?results.type?.columns.map((e) => Expanded(
+                                            child: Image.asset(
+                                              e.icon,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          )),
+                                      const SizedBox(width: 40),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: CyclingEscapeListView(
-                                  itemCount: results.data.length,
-                                  itemBuilder: (context, index) {
-                                    final resultData = results.data[index];
-                                    if (resultData == null) return Container();
-                                    String? time;
-                                    if (index == 0) {
-                                      time = resultData.time.toString();
-                                    } else if (resultData.time != results.data[index - 1]?.time) {
-                                      final firstTurns = results.data.first!.time;
-                                      time = '+${resultData.time - firstTurns}';
-                                    }
-                                    final hasColumn = results.type?.columns.contains ?? (_) => false;
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 4),
-                                      padding: const EdgeInsets.symmetric(vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: resultData.team?.getColor(),
-                                        borderRadius: BorderRadius.circular(80),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          if (hasColumn(ResultsColumn.rank)) (index + 1).toString(),
-                                          if (hasColumn(ResultsColumn.number)) resultData.number.toString(),
-                                          if (hasColumn(ResultsColumn.team)) resultData.team?.cyclists.first?.number.toString().replaceFirst('1', '0') ?? '',
-                                          if (hasColumn(ResultsColumn.time)) time ?? '',
-                                          if (hasColumn(ResultsColumn.points)) resultData.points == 0 ? '' : resultData.points.toString(),
-                                          if (hasColumn(ResultsColumn.mountain)) resultData.mountain == 0 ? '' : resultData.mountain.toString(),
-                                        ]
-                                            .map(
-                                              (e) => Expanded(
-                                                child: Text(
-                                                  e,
-                                                  style: theme.coreTextTheme.bodyNormal, // .copyWith(color: resultData.team?.getColor()),
-                                                  textAlign: TextAlign.center,
+                                Expanded(
+                                  child: CyclingEscapeListView(
+                                    itemCount: results.data.length,
+                                    itemBuilder: (context, index) {
+                                      final resultData = results.data[index];
+                                      if (resultData == null) return Container();
+                                      String? time;
+                                      if (index == 0) {
+                                        time = resultData.time.toString();
+                                      } else if (resultData.time != results.data[index - 1]?.time) {
+                                        final firstTurns = results.data.first!.time;
+                                        time = '+${resultData.time - firstTurns}';
+                                      }
+                                      final hasColumn = results.type?.columns.contains ?? (_) => false;
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: 4),
+                                        padding: const EdgeInsets.symmetric(vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: resultData.team?.getColor(),
+                                          borderRadius: BorderRadius.circular(80),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            if (hasColumn(ResultsColumn.rank)) (index + 1).toString(),
+                                            if (hasColumn(ResultsColumn.number)) resultData.number.toString(),
+                                            if (hasColumn(ResultsColumn.team)) resultData.team?.cyclists.first?.number.toString().replaceFirst('1', '0') ?? '',
+                                            if (hasColumn(ResultsColumn.time)) time ?? '',
+                                            if (hasColumn(ResultsColumn.points)) resultData.points == 0 ? '' : resultData.points.toString(),
+                                            if (hasColumn(ResultsColumn.mountain)) resultData.mountain == 0 ? '' : resultData.mountain.toString(),
+                                          ]
+                                              .map(
+                                                (e) => Expanded(
+                                                  child: Text(
+                                                    e,
+                                                    style: theme.coreTextTheme.bodyNormal, // .copyWith(color: resultData.team?.getColor()),
+                                                    textAlign: TextAlign.center,
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    );
-                                  },
+                                              )
+                                              .toList(),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  ResultsBottomNavigation(
-                    controller: viewModel.controller,
-                    pages: viewModel.results.map((e) => e.type).whereType<ResultsType>().toList(),
-                  ),
-                ],
+                    ResultsBottomNavigation(
+                      controller: viewModel.controller,
+                      pages: viewModel.results.map((e) => e.type).whereType<ResultsType>().toList(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

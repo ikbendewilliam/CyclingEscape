@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cycling_escape/model/data/moving_object.dart';
 import 'package:cycling_escape/styles/theme_assets.dart';
 import 'package:cycling_escape/styles/theme_durations.dart';
+import 'package:cycling_escape/widget/menu_background/menu_background_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
@@ -10,7 +11,7 @@ import 'package:injectable/injectable.dart';
 class MenuBackgroundDataContainer with ChangeNotifier {
   final List<MovingObject> _objects = [];
   final List<MovingObject> _clouds = [];
-  final List<TickerProvider> _tickers = [];
+  final List<MenuBackgroundWidgetState> _tickers = [];
   AnimationController? _animationController;
   late Animation<double> _animation;
   late double _maxWidth;
@@ -35,7 +36,7 @@ class MenuBackgroundDataContainer with ChangeNotifier {
 
   MenuBackgroundDataContainer._();
 
-  void addTicker(TickerProvider ticker, double maxWidth) {
+  void addTicker(MenuBackgroundWidgetState ticker, double maxWidth) {
     _maxWidth = maxWidth;
     _tickers.add(ticker);
     if (_animationController == null) {
@@ -51,17 +52,18 @@ class MenuBackgroundDataContainer with ChangeNotifier {
 
   void removeTicker() {
     final value = _animationController?.value;
-    _tickers.removeLast();
-    _animationController?.dispose();
-    if (_tickers.isNotEmpty) {
-      _animationController = AnimationController(
-        vsync: _tickers.last,
-        duration: ThemeDurations.menuBackground,
-        value: value,
-      )..repeat();
-      _animation = animationController!.drive(Tween(begin: 0, end: _maxWidth));
-      notifyListeners();
+    while (_tickers.isNotEmpty && !_tickers.last.mounted) {
+      _tickers.removeLast();
     }
+    _animationController?.dispose();
+    if (_tickers.isEmpty) return;
+    _animationController = AnimationController(
+      vsync: _tickers.last,
+      duration: ThemeDurations.menuBackground,
+      value: value,
+    )..repeat();
+    _animation = animationController!.drive(Tween(begin: 0, end: _maxWidth));
+    notifyListeners();
   }
 
   String get _randomCloud {
@@ -139,9 +141,7 @@ class MenuBackgroundViewModel with ChangeNotifierEx {
 
   Animation<double> get animation => _data.animation;
 
-  MenuBackgroundViewModel();
-
-  Future<void> init(TickerProvider vSync, BoxConstraints constraints) async {
+  Future<void> init(MenuBackgroundWidgetState vSync, BoxConstraints constraints) async {
     _screenConstraints = constraints;
     _data.addTicker(vSync, constraints.maxWidth);
     _data.addListener(_notifyListeners);

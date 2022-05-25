@@ -38,25 +38,33 @@ class GameScreenState extends State<GameScreen> implements GameNavigator {
           ),
           ProviderWidget<GameViewModel>(
             create: () => GetIt.I()..init(this, localization, widget.playSettings, _gameManager),
-            childBuilderWithViewModel: (context, viewModel, theme, _) {
-              if (viewModel.tutorialType != null) {
-                return TutorialWidget(
-                  tutorialType: viewModel.tutorialType!,
-                  onDismiss: viewModel.onTutorialDismiss,
-                );
-              }
-              if (viewModel.showFollowDialog) {
-                return FollowWidget(onFollow: viewModel.onFollow);
-              }
-              if (viewModel.isPaused) {
-                return PauseWidget(
-                  onContinue: viewModel.onContinue,
-                  onSave: viewModel.onSave,
-                  onStop: viewModel.onStop,
-                );
-              }
-              return const SizedBox.shrink();
-            },
+            childBuilderWithViewModel: (context, viewModel, theme, _) => WillPopScope(
+              onWillPop: () async {
+                viewModel.onBackPressed();
+                return false;
+              },
+              child: Builder(
+                builder: (context) {
+                  if (viewModel.tutorialType != null) {
+                    return TutorialWidget(
+                      tutorialType: viewModel.tutorialType!,
+                      onDismiss: viewModel.onTutorialDismiss,
+                    );
+                  }
+                  if (viewModel.showFollowDialog) {
+                    return FollowWidget(onFollow: viewModel.onFollow);
+                  }
+                  if (viewModel.isPaused) {
+                    return PauseWidget(
+                      onContinue: viewModel.onContinue,
+                      onSave: viewModel.onSave,
+                      onStop: viewModel.onStop,
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ),
           ),
         ],
       ),

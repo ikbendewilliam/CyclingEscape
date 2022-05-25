@@ -123,10 +123,10 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goBack<T>({T? result}) => _navigator.pop(result);
 
   @override
-  void goToResults(List<Sprint> sprints) => _navigator.pushReplacementNamed(ResultsScreen.routeName, arguments: sprints);
+  void goToResults(List<Sprint> sprints) => _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: sprints, (route) => false);
 
   @override
-  void goToGame(PlaySettings playSettings) => _navigator.pushReplacementNamed(GameScreen.routeName, arguments: playSettings);
+  void goToGame(PlaySettings playSettings) => _navigator.pushNamed(GameScreen.routeName, arguments: playSettings);
 
   @override
   void goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);

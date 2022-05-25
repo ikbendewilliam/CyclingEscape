@@ -59,6 +59,15 @@ class GameViewModel with ChangeNotifierEx {
     ));
   }
 
+  void onBackPressed() {
+    if (!isPaused) {
+      _isPaused.value = true;
+      notifyListeners();
+      return;
+    }
+    _navigator.goToMainMenu();
+  }
+
   Future<void> _onEndCycling(List<Sprint>? sprints) async {
     if (sprints == null) return _navigator.goToMainMenu();
     await _navigator.goToResults(sprints);

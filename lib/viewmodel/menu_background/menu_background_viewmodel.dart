@@ -56,6 +56,7 @@ class MenuBackgroundDataContainer with ChangeNotifier {
       _tickers.removeLast();
     }
     _animationController?.dispose();
+    _animationController = null;
     if (_tickers.isEmpty) return;
     _animationController = AnimationController(
       vsync: _tickers.last,

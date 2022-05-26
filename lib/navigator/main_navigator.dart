@@ -5,6 +5,7 @@ import 'package:cycling_escape/screen/game/game_screen.dart';
 import 'package:cycling_escape/screen/license/license_screen.dart';
 import 'package:cycling_escape/screen/menu/main_menu_screen.dart';
 import 'package:cycling_escape/screen/results/results_screen.dart';
+import 'package:cycling_escape/screen/settings/settings_screen.dart';
 import 'package:cycling_escape/screen/single_race_menu/single_race_menu_screen.dart';
 import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
@@ -82,6 +83,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case SettingsScreen.routeName:
+        return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: SettingsScreen()), settings: settings);
       case ResultsScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: ResultsScreen(sprints: settings.arguments as List<Sprint>)), settings: settings);
       case GameScreen.routeName:
@@ -121,6 +124,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToSettings() => _navigator.pushNamed(SettingsScreen.routeName);
 
   @override
   void goToResults(List<Sprint> sprints) => _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: sprints, (route) => false);

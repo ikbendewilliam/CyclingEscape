@@ -7,12 +7,14 @@ class CyclingEscapeValueButton extends StatefulWidget {
   final int minValue;
   final int maxValue;
   final String text;
+  final String? label;
   final ValueChanged<int>? onChange;
   final CyclingEscapeButtonType type;
 
   const CyclingEscapeValueButton({
-    required this.text,
     required this.value,
+    required this.text,
+    this.label,
     this.type = CyclingEscapeButtonType.yellow,
     this.minValue = 0,
     this.maxValue = 8,
@@ -30,33 +32,54 @@ class _CyclingEscapeValueButtonState extends State<CyclingEscapeValueButton> {
   @override
   Widget build(BuildContext context) {
     return DataProviderWidget(
-      childBuilder: (context, theme, localization) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CyclingEscapeButton(
-            type: CyclingEscapeButtonType.iconMinus,
-            onClick: () {
-              if (--value < widget.minValue) {
-                value = widget.maxValue;
-              }
-              widget.onChange?.call(value);
-            },
-          ),
-          CyclingEscapeButton(
-            text: widget.text,
-            type: widget.type,
-          ),
-          CyclingEscapeButton(
-            type: CyclingEscapeButtonType.iconPlus,
-            onClick: () {
-              if (++value > widget.maxValue) {
-                value = widget.minValue;
-              }
-              widget.onChange?.call(value);
-            },
-          ),
-        ],
-      ),
+      childBuilder: (context, theme, localization) {
+        final buttons = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CyclingEscapeButton(
+              type: CyclingEscapeButtonType.iconMinus,
+              onClick: () {
+                if (--value < widget.minValue) {
+                  value = widget.maxValue;
+                }
+                widget.onChange?.call(value);
+              },
+            ),
+            const SizedBox(width: 2),
+            CyclingEscapeButton(
+              text: widget.text,
+              type: widget.type,
+            ),
+            const SizedBox(width: 2),
+            CyclingEscapeButton(
+              type: CyclingEscapeButtonType.iconPlus,
+              onClick: () {
+                if (++value > widget.maxValue) {
+                  value = widget.minValue;
+                }
+                widget.onChange?.call(value);
+              },
+            ),
+          ],
+        );
+        if (widget.label != null) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 4),
+              Center(
+                child: Text(
+                  widget.label!,
+                  style: theme.coreTextTheme.bodyUltraSmall,
+                ),
+              ),
+              const SizedBox(height: 4),
+              buttons,
+            ],
+          );
+        }
+        return buttons;
+      },
     );
   }
 }

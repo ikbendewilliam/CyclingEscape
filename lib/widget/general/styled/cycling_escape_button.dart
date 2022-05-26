@@ -11,17 +11,20 @@ enum CyclingEscapeButtonType {
   iconMinus,
   iconNext,
   iconClose,
+  iconSettings,
 }
 
 class CyclingEscapeButton extends StatefulWidget {
-  final String? text;
   final bool isEnabled;
+  final double size;
+  final String? text;
   final VoidCallback? onClick;
   final CyclingEscapeButtonType type;
 
   const CyclingEscapeButton({
     this.onClick,
     this.text,
+    this.size = 48,
     this.isEnabled = true,
     this.type = CyclingEscapeButtonType.blue,
     Key? key,
@@ -53,6 +56,8 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
         return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconNext;
       case CyclingEscapeButtonType.iconClose:
         return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconClose;
+      case CyclingEscapeButtonType.iconSettings:
+        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconSettings;
     }
   }
 
@@ -86,7 +91,7 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
               Image.asset(
                 _imageAsset,
                 fit: BoxFit.fitHeight,
-                height: 48,
+                height: widget.size,
               ),
               if (widget.text != null) ...[
                 Positioned.fill(
@@ -97,10 +102,12 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
                       top: _isPressed && widget.isEnabled ? 4 : 0,
                       bottom: 8,
                     ),
-                    child: Center(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       child: Text(
                         widget.text ?? '',
                         style: theme.coreTextTheme.labelButtonBig,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),

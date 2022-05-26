@@ -22,6 +22,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToSettings();
+
   void goToResults(List<Sprint> sprints);
 
   void goToGame(PlaySettings playSettings);

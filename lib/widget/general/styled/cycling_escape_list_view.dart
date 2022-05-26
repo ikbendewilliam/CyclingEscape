@@ -11,6 +11,12 @@ class CyclingEscapeListView extends StatefulWidget {
     super.key,
   });
 
+  CyclingEscapeListView.children({
+    required List<Widget> children,
+    super.key,
+  })  : itemCount = children.length,
+        itemBuilder = ((context, index) => children[index]);
+
   @override
   State<CyclingEscapeListView> createState() => _CyclingEscapeListViewState();
 }

@@ -1,15 +1,15 @@
 import 'package:cycling_escape/styles/theme_assets.dart';
-import 'package:cycling_escape/styles/theme_dimens.dart';
-import 'package:cycling_escape/widget/general/svg_icon.dart';
+import 'package:cycling_escape/styles/theme_durations.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:icapps_architecture/icapps_architecture.dart';
 
 class CyclingEscapeCheckBox extends StatelessWidget {
   final bool value;
+  final String text;
   final ValueChanged<bool> onChanged;
 
   const CyclingEscapeCheckBox({
+    required this.text,
     required this.value,
     required this.onChanged,
     Key? key,
@@ -17,32 +17,37 @@ class CyclingEscapeCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (context.isIOSTheme) {
-      return DataProviderWidget(
-        childBuilderTheme: (context, theme) => GestureDetector(
-          onTap: () => onChanged(!value),
-          child: Container(
-            color: Colors.transparent,
-            height: ThemeDimens.padding48,
-            width: ThemeDimens.padding48,
-            child: value
-                ? Center(
-                    child: SvgIcon(
-                      svgAsset: ThemeAssets.buttonIconClose,
-                      color: theme.colorsTheme.accent,
-                      size: ThemeDimens.padding24,
-                    ),
-                  )
-                : Container(),
+    return DataProviderWidget(
+      childBuilderTheme: (context, theme) => GestureDetector(
+        onTap: () => onChanged(!value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            children: [
+              Flexible(
+                child: Text(
+                  text,
+                  style: theme.coreTextTheme.bodySmall,
+                ),
+              ),
+              const SizedBox(width: 8),
+              AnimatedCrossFade(
+                duration: ThemeDurations.shortAnimationDuration,
+                crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                firstChild: Image.asset(
+                  ThemeAssets.switchButtonOn,
+                  height: 32,
+                  fit: BoxFit.fitHeight,
+                ),
+                secondChild: Image.asset(
+                  ThemeAssets.switchButtonOff,
+                  height: 32,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ],
           ),
         ),
-      );
-    }
-    return DataProviderWidget(
-      childBuilderTheme: (context, theme) => Checkbox(
-        value: value,
-        onChanged: (value) => onChanged(value ?? false),
-        activeColor: theme.colorsTheme.accent,
       ),
     );
   }

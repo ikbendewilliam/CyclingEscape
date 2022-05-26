@@ -22,37 +22,52 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
     return ProviderWidget<MainMenuViewModel>(
       create: () => GetIt.I<MainMenuViewModel>()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
-        child: MenuBox(
-          title: 'Cycling Escape',
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 120),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CyclingEscapeButton(
-                  text: 'Continue',
-                  onClick: null,
-                  isEnabled: false,
-                  type: CyclingEscapeButtonType.green,
+        child: Stack(
+          children: [
+            Positioned(
+              child: MenuBox(
+                title: 'Cycling Escape',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 120),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CyclingEscapeButton(
+                        text: 'Continue',
+                        onClick: null,
+                        isEnabled: false,
+                        type: CyclingEscapeButtonType.green,
+                      ),
+                      const CyclingEscapeButton(
+                        text: 'Career',
+                        onClick: null,
+                        type: CyclingEscapeButtonType.yellow,
+                      ),
+                      CyclingEscapeButton(
+                        text: 'Single race',
+                        onClick: viewModel.onSingleRaceClicked,
+                        type: CyclingEscapeButtonType.blue,
+                      ),
+                      CyclingEscapeButton(
+                        text: 'Tour',
+                        onClick: viewModel.onTourClicked,
+                        type: CyclingEscapeButtonType.red,
+                      ),
+                    ],
+                  ),
                 ),
-                const CyclingEscapeButton(
-                  text: 'Career',
-                  onClick: null,
-                  type: CyclingEscapeButtonType.yellow,
-                ),
-                CyclingEscapeButton(
-                  text: 'Single race',
-                  onClick: viewModel.onSingleRaceClicked,
-                  type: CyclingEscapeButtonType.blue,
-                ),
-                CyclingEscapeButton(
-                  text: 'Tour',
-                  onClick: viewModel.onTourClicked,
-                  type: CyclingEscapeButtonType.red,
-                ),
-              ],
+              ),
             ),
-          ),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: CyclingEscapeButton(
+                type: CyclingEscapeButtonType.iconSettings,
+                onClick: viewModel.onSettingsPressed,
+                size: 64,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -63,4 +78,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
 
   @override
   void goToSingleRaceMenu() => MainNavigatorWidget.of(context).goToSingleRaceMenu();
+
+  @override
+  void goToSettings() => MainNavigatorWidget.of(context).goToSettings();
 }

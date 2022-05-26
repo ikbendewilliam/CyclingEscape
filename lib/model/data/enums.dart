@@ -3,17 +3,26 @@ import 'package:cycling_escape/util/locale/localization_keys.dart';
 import 'package:flutter/material.dart';
 
 enum CyclistMovementType {
-  fast(0.5),
-  normal(1),
-  slow(2),
-  skip(0.01);
+  slow(2, LocalizationKeys.settingsCyclistMoveSpeedSlow),
+  normal(1, LocalizationKeys.settingsCyclistMoveSpeedNormal),
+  fast(0.5, LocalizationKeys.settingsCyclistMoveSpeedFast),
+  skip(0.01, LocalizationKeys.settingsCyclistMoveSpeedSkip);
 
   final double timerDuration;
+  final String localizationKey;
 
-  const CyclistMovementType(this.timerDuration);
+  const CyclistMovementType(this.timerDuration, this.localizationKey);
 }
 
-enum CameraMovementType { auto, selectOnly, none }
+enum CameraMovementType {
+  none(LocalizationKeys.settingsCameraAutoMoveDisabled),
+  selectOnly(LocalizationKeys.settingsCameraAutoMoveSelectOnly),
+  auto(LocalizationKeys.settingsCameraAutoMoveSelectAndFollow);
+
+  final String localizationKey;
+
+  const CameraMovementType(this.localizationKey);
+}
 
 enum FollowType { follow, autoFollow, leave }
 
@@ -67,13 +76,14 @@ enum MapLength {
 }
 
 enum DifficultyType {
-  easy(1),
-  normal(0),
-  hard(-1);
+  easy(1, LocalizationKeys.settingsDifficultyEasy),
+  normal(0, LocalizationKeys.settingsDifficultyNormal),
+  hard(-1, LocalizationKeys.settingsDifficultyHard);
 
   final int diceAddition;
+  final String localizationKey;
 
-  const DifficultyType(this.diceAddition);
+  const DifficultyType(this.diceAddition, this.localizationKey);
 }
 
 enum TutorialType {

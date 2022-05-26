@@ -39,13 +39,13 @@ class GameViewModel with ChangeNotifierEx {
 
   Future<void> init(
     GameNavigator navigator,
-    Localization _localizations,
+    Localization localizations,
     PlaySettings playSettings,
     GameManager gameManager,
   ) async {
     _navigator = navigator;
     await gameManager.addListener(GameListener(
-      localizations: _localizations,
+      localizations: localizations,
       spriteManager: _spriteManager,
       openTutorial: _openTutorial,
       localStorage: _localStorage,

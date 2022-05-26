@@ -65,9 +65,15 @@ class ThemeAssets {
 
   static const String buttonIconClose = '$_images/icon_no.png';
 
+  static const String buttonIconSettings = '$_images/icon_settings.png';
+
   static const String scrollbarBackground = '$_images/back_slider.png';
 
   static const String scrollbarForeground = '$_images/slider_front.png';
+
+  static const String switchButtonOn = '$_images/switch_button_on.png';
+
+  static const String switchButtonOff = '$_images/switch_button_off.png';
 
   static const String iconMountain = '$_images/icon_mountain.png';
 

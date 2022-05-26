@@ -207,8 +207,8 @@ class Position {
     connections!.add(pos);
   }
 
-  void addCyclist(Cyclist? _cyclist) {
-    cyclist = _cyclist;
+  void addCyclist(Cyclist? cyclist) {
+    this.cyclist = cyclist;
   }
 
   Cyclist? removeCyclist() {

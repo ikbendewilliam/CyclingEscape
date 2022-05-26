@@ -414,11 +414,12 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
           if (placeBefore!.cyclist!.team!.isPlayer!) {
             openTutorial(TutorialType.follow);
           }
-          if ((minThrow >= 7 && !placeBefore.cyclist!.team!.isPlayer!) || (minThrow >= localStorage.autofollowThreshold && autoFollow && placeBefore.cyclist!.team!.isPlayer!)) {
+          if ((minThrow >= 7 && !placeBefore.cyclist!.team!.isPlayer!) ||
+              (minThrow >= localStorage.autofollowThreshold && (autoFollow || !localStorage.autofollowThresholdAboveAsk) && placeBefore.cyclist!.team!.isPlayer!)) {
             following = true;
             follow();
             unawaited(processGameState(GameState.userWaitCyclistMoving));
-          } else if (placeBefore.cyclist!.team!.isPlayer! && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowAsk)) {
+          } else if (placeBefore.cyclist!.team!.isPlayer! && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowThresholdBelowAsk)) {
             final returnValue = await onSelectFollow();
             switch (returnValue) {
               case FollowType.autoFollow:

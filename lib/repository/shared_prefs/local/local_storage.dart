@@ -14,7 +14,9 @@ abstract class LocalStorage {
 
   int get toursFinished;
 
-  bool get autofollowAsk;
+  bool get autofollowThresholdBelowAsk;
+
+  bool get autofollowThresholdAboveAsk;
 
   CyclistMovementType get cyclistMovement;
 
@@ -26,7 +28,9 @@ abstract class LocalStorage {
 
   set autofollowThreshold(int value);
 
-  set autofollowAsk(bool value);
+  set autofollowThresholdBelowAsk(bool value);
+
+  set autofollowThresholdAboveAsk(bool value);
 
   set cyclistMovement(CyclistMovementType value);
 
@@ -49,7 +53,8 @@ class _LocalStorage implements LocalStorage {
   static const _uninstallCheckKey = 'uninstallCheck';
   static const _appearanceThemeKey = 'appearanceTheme';
   static const _autofollowThresholdKey = 'autofollowThreshold';
-  static const _autofollowAskKey = 'autofollowAsk';
+  static const _autofollowThresholdBelowAskKey = 'autofollowThresholdBelowAsk';
+  static const _autofollowThresholdAboveAskKey = 'autofollowThresholdAboveAsk';
   static const _cyclistMovementKey = 'cyclistMovement';
   static const _cameraMovementKey = 'cameraMovement';
   static const _difficultyKey = 'difficulty';
@@ -63,7 +68,10 @@ class _LocalStorage implements LocalStorage {
   int get autofollowThreshold => _sharedPreferences.getInt(_autofollowThresholdKey) ?? 7;
 
   @override
-  bool get autofollowAsk => _sharedPreferences.getBoolean(_autofollowAskKey) ?? false;
+  bool get autofollowThresholdBelowAsk => _sharedPreferences.getBoolean(_autofollowThresholdBelowAskKey) ?? true;
+
+  @override
+  bool get autofollowThresholdAboveAsk => _sharedPreferences.getBoolean(_autofollowThresholdAboveAskKey) ?? true;
 
   @override
   CyclistMovementType get cyclistMovement {
@@ -110,7 +118,10 @@ class _LocalStorage implements LocalStorage {
   set autofollowThreshold(int value) => _sharedPreferences.saveInt(key: _autofollowThresholdKey, value: value);
 
   @override
-  set autofollowAsk(bool value) => _sharedPreferences.saveBoolean(key: _autofollowAskKey, value: value);
+  set autofollowThresholdBelowAsk(bool value) => _sharedPreferences.saveBoolean(key: _autofollowThresholdBelowAskKey, value: value);
+
+  @override
+  set autofollowThresholdAboveAsk(bool value) => _sharedPreferences.saveBoolean(key: _autofollowThresholdAboveAskKey, value: value);
 
   @override
   set cyclistMovement(CyclistMovementType value) => _sharedPreferences.saveString(key: _cyclistMovementKey, value: value.toString());

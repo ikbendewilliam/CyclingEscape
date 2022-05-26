@@ -1,6 +1,16 @@
 # cycling_escape
 
+// TODO
+Information
+Credits
+Names
+Save race progress
+Tour
+Save tour progress
+Career
+
 ## Assets
+
 bgs: https://thedarkbear.itch.io/3-parallax
 ui: https://graphicriver.net/item/graphical-user-interface-set-for-games/8941743
 cyclist bgs: https://www.pngguru.com/free-transparent-background-png-clipart-veacu/download
@@ -10,16 +20,19 @@ Better cyclists: BART BARTO!
 environment: https://kenney.nl/assets/racing-pack
 
 ## Build release
+
 ```
 flutter build appbundle
 ```
 
 ## Generate json methods
+
 ```
 flutter packages pub run build_runner build
 ```
 
 ## Update icon
+
 ```
 flutter pub run flutter_launcher_icons:main
 ```

@@ -1,5 +1,6 @@
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/styles/theme_durations.dart';
+import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 
@@ -30,59 +31,71 @@ class _ResultsBottomNavigationState extends State<ResultsBottomNavigation> {
     widget.controller.removeListener(_update);
   }
 
-  void _update() {
-    setState(() {});
+  void _update() => setState(() {});
+
+  Widget _item(String icon, String name, Color color) {
+    return DataProviderWidget(
+      childBuilderTheme: (context, theme) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 36,
+              child: Image.asset(
+                icon,
+                fit: BoxFit.contain,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              name,
+              style: theme.coreTextTheme.bodyUltraSmall.copyWith(
+                color: color,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: Stack(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.pages
-                .asMap()
-                .entries
-                .map(
-                  (e) => TouchFeedBack(
-                    onClick: () => widget.controller.animateToPage(
-                      e.key,
-                      duration: ThemeDurations.shortAnimationDuration,
-                      curve: Curves.easeInOut,
-                    ),
-                    child: Image.asset(
-                      e.value.icon,
-                      fit: BoxFit.contain,
-                    ),
+    return Stack(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: widget.pages
+              .asMap()
+              .entries
+              .map(
+                (e) => TouchFeedBack(
+                  onClick: () => widget.controller.animateToPage(
+                    e.key,
+                    duration: ThemeDurations.shortAnimationDuration,
+                    curve: Curves.easeInOut,
                   ),
-                )
-                .toList(),
-          ),
-          IgnorePointer(
-            child: Center(
-              child: ClipPath(
-                clipper: _BottomNavigationClipper(
-                  widget.controller.hasClients ? (widget.controller.page ?? 0) / widget.pages.length : 0,
+                  child: _item(e.value.icon, e.value.name, Colors.white),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: widget.pages
-                      .map(
-                        (e) => Image.asset(
-                          e.icon,
-                          fit: BoxFit.contain,
-                          color: e.color,
-                        ),
-                      )
-                      .toList(),
-                ),
+              )
+              .toList(),
+        ),
+        IgnorePointer(
+          child: Center(
+            child: ClipPath(
+              clipper: _BottomNavigationClipper(
+                widget.controller.hasClients ? (widget.controller.page ?? 0) / widget.pages.length : 0,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: widget.pages.map((e) => _item(e.icon, e.name, e.color)).toList(),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

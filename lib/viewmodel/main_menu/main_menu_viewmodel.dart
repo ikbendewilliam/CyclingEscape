@@ -14,7 +14,10 @@ class MainMenuViewModel with ChangeNotifierEx {
   void onSingleRaceClicked() => _navigator.goToSingleRaceMenu();
 
   void onTourClicked() => _navigator.goToTourMenu();
+
   void onSettingsPressed() => _navigator.goToSettings();
+
+  void onCreditsPressed() => _navigator.goToCredits();
 }
 
 mixin MainMenuNavigator {
@@ -23,4 +26,6 @@ mixin MainMenuNavigator {
   void goToSingleRaceMenu();
 
   void goToSettings();
+
+  void goToCredits();
 }

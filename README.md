@@ -1,13 +1,13 @@
 # cycling_escape
 
 // TODO
-Information
-Credits
-Names
-Save race progress
-Tour
-Save tour progress
-Career
+[x] Credits
+[ ] Information
+[ ] Names
+[ ] Save race progress
+[ ] Tour
+[ ] Save tour progress
+[ ] Career
 
 ## Assets
 

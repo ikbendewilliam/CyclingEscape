@@ -1,4 +1,5 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
+import 'package:cycling_escape/screen/credits/credits_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
 import 'package:cycling_escape/screen/game/game_screen.dart';
@@ -83,10 +84,12 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case CreditsScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CreditsScreen()), settings: settings);
       case SettingsScreen.routeName:
-        return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: SettingsScreen()), settings: settings);
+        return FadeInRoute<void>(child: const FlavorBanner(child: SettingsScreen()), settings: settings);
       case ResultsScreen.routeName:
-        return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: ResultsScreen(sprints: settings.arguments as List<Sprint>)), settings: settings);
+        return FadeInRoute<void>(child: FlavorBanner(child: ResultsScreen(sprints: settings.arguments as List<Sprint>)), settings: settings);
       case GameScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: GameScreen(playSettings: settings.arguments as PlaySettings)), settings: settings);
       case SingleRaceMenuScreen.routeName:
@@ -124,6 +127,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToCredits() => _navigator.pushNamed(CreditsScreen.routeName);
 
   @override
   void goToSettings() => _navigator.pushNamed(SettingsScreen.routeName);

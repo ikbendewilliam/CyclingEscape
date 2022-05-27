@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 //============================================================//
-//THIS FILE IS auto GENERATED. DO NOT EDIT//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 abstract class LocalizationOverrides {
   Future<void> refreshOverrideLocalizations();

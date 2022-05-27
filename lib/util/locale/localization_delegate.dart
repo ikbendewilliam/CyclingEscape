@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 //============================================================//
-//THIS FILE IS auto GENERATED. DO NOT EDIT//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 
 typedef LocaleFilter = bool Function(String languageCode);

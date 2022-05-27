@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 //============================================================//
-//THIS FILE IS auto GENERATED. DO NOT EDIT//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class Localization {
   var _localisedValues = <String, dynamic>{};
@@ -524,6 +524,17 @@ class Localization {
   ///
   /// es:  **'Créditos'**
   String get creditsTitle => _t(LocalizationKeys.creditsTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'This game was developed by WiVe.\n\nThe following people made this possible! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - the background in the menus \nKenney.nl - for the icons and nature \nkidcomic.net - the icon \nSaranai - UI elements'**
+  ///
+  /// nl:  **'Dit spel is ontwikkeld door WiVe.\n\n De volgende mensen hebben dit mede mogelijk gemaakt!\n\nBart barto - renners sprite\nthedarkbear.itch.io/3-parallax - de achtergrond in de menu's\nkenney.nl - voor de icoontjes en natuur\nkidcomic.net - het icon\nSaranai - UI elementen'**
+  ///
+  /// fr:  **'Ce jeu a été développé par WiVe.\n\nLes personnes suivantes ont rendu cela possible ! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - le fond dans les menus \nKenney.nl - pour les icônes et la nature \nkidcomic.net - l'icône \nSaranai - Éléments d'interface utilisateur'**
+  ///
+  /// es:  **'Este juego fue desarrollado por WiVe.\n\nLas siguientes personas lo han hecho posible \n\nBart barto - jinete sprite \nthedarkbear.itch.io/3-parallax - el fondo de los menús \nKenney.nl - para los iconos y la naturaleza \nkidcomic.net - el icono \nSaranai - Elementos de interfaz de usuario'**
+  String get creditsText => _t(LocalizationKeys.creditsText);
 
   /// Translations:
   ///

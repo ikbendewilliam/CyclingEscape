@@ -57,6 +57,8 @@ class ThemeAssets {
 
   static const String buttonIconPressed = '$_images/icon_pressed.png';
 
+  static const String buttonIconInfo = '$_images/icon_help.png';
+
   static const String buttonIconPlus = '$_images/icon_plus.png';
 
   static const String buttonIconMinus = '$_images/icon_minus.png';
@@ -66,6 +68,8 @@ class ThemeAssets {
   static const String buttonIconClose = '$_images/icon_no.png';
 
   static const String buttonIconSettings = '$_images/icon_settings.png';
+
+  static const String buttonIconCredits = '$_images/icon_credits.png';
 
   static const String scrollbarBackground = '$_images/back_slider.png';
 

@@ -41,6 +41,7 @@
   "raceDurationVeryLong": "Très long",
   "tourTitle": "démarrer une visite",
   "creditsTitle": "credits",
+  "creditsText": "Ce jeu a été développé par WiVe.\n\nLes personnes suivantes ont rendu cela possible ! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - le fond dans les menus \nKenney.nl - pour les icônes et la nature \nkidcomic.net - l'icône \nSaranai - Éléments d'interface utilisateur",
   "helpTitle": "help",
   "helpHome1": "Bonjour et bienvenue sur la page d'aide. Vous trouverez la plupart des informations sur le jeu sur cette page. Si vous avez d'autres questions, n'hésitez pas à m'envoyer un mail.",
   "helpHome2": "Si vous aimez le jeu (ou non), faites-le moi savoir en écrivant une critique.",

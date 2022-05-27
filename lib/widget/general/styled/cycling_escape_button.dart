@@ -3,15 +3,22 @@ import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
 
 enum CyclingEscapeButtonType {
-  blue,
-  red,
-  green,
-  yellow,
-  iconPlus,
-  iconMinus,
-  iconNext,
-  iconClose,
-  iconSettings,
+  blue(ThemeAssets.buttonBluePressed, ThemeAssets.buttonBlue),
+  red(ThemeAssets.buttonRedPressed, ThemeAssets.buttonRed),
+  green(ThemeAssets.buttonGreenPressed, ThemeAssets.buttonGreen),
+  yellow(ThemeAssets.buttonYellowPressed, ThemeAssets.buttonYellow),
+  iconInfo(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconInfo),
+  iconPlus(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconPlus),
+  iconMinus(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconMinus),
+  iconNext(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconNext),
+  iconClose(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconClose),
+  iconCredits(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconCredits),
+  iconSettings(ThemeAssets.buttonIconPressed, ThemeAssets.buttonIconSettings);
+
+  final String pressed;
+  final String normal;
+
+  const CyclingEscapeButtonType(this.pressed, this.normal);
 }
 
 class CyclingEscapeButton extends StatefulWidget {
@@ -39,26 +46,7 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
 
   String get _imageAsset {
     if (!widget.isEnabled) return ThemeAssets.buttonDisabled;
-    switch (widget.type) {
-      case CyclingEscapeButtonType.blue:
-        return _isPressed ? ThemeAssets.buttonBluePressed : ThemeAssets.buttonBlue;
-      case CyclingEscapeButtonType.red:
-        return _isPressed ? ThemeAssets.buttonRedPressed : ThemeAssets.buttonRed;
-      case CyclingEscapeButtonType.green:
-        return _isPressed ? ThemeAssets.buttonGreenPressed : ThemeAssets.buttonGreen;
-      case CyclingEscapeButtonType.yellow:
-        return _isPressed ? ThemeAssets.buttonYellowPressed : ThemeAssets.buttonYellow;
-      case CyclingEscapeButtonType.iconPlus:
-        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconPlus;
-      case CyclingEscapeButtonType.iconMinus:
-        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconMinus;
-      case CyclingEscapeButtonType.iconNext:
-        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconNext;
-      case CyclingEscapeButtonType.iconClose:
-        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconClose;
-      case CyclingEscapeButtonType.iconSettings:
-        return _isPressed ? ThemeAssets.buttonIconPressed : ThemeAssets.buttonIconSettings;
-    }
+    return _isPressed ? widget.type.pressed : widget.type.normal;
   }
 
   @override

@@ -58,25 +58,27 @@ class Team {
     }
   }
 
-  Color getColor() {
-    return getColorFromId(numberStart ?? -1);
-  }
+  static int getIdFromCyclistNumber(int number) => number ~/ 10 - 2;
 
-  Color getTextColor() {
-    switch (numberStart) {
+  static Color getTextColorFromId(int id) {
+    switch (id) {
+      case 6:
+      case 7:
+        return Colors.black;
       case 0:
       case 1:
       case 2:
       case 3:
       case 4:
       case 5:
-        return Colors.white;
-      case 6:
-      case 7:
       default:
-        return Colors.black;
+        return Colors.white;
     }
   }
+
+  Color getColor() => getColorFromId(numberStart ?? -1);
+
+  Color getTextColor() => getTextColorFromId(numberStart ?? -1);
 
   Sprite? getSprite(bool versie2) {
     // print({numberStart, numberStart * 2, numberStart * 2 + (versie2 ? 1 : 0)});

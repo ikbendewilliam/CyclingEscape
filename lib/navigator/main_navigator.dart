@@ -1,4 +1,5 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
+import 'package:cycling_escape/screen/change_cyclist_names/change_cyclist_names_screen.dart';
 import 'package:cycling_escape/screen/credits/credits_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
@@ -12,6 +13,7 @@ import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
 import 'package:cycling_escape/screen/tour_menu/tour_menu_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
+import 'package:cycling_escape/widget/dialog/edit_name_dialog.dart';
 import 'package:cycling_escape/widget/general/flavor_banner.dart';
 import 'package:cycling_escape/widget/general/text_scale_factor.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
@@ -84,6 +86,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case ChangeCyclistNamesScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: ChangeCyclistNamesScreen()), settings: settings);
       case CreditsScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: CreditsScreen()), settings: settings);
       case SettingsScreen.routeName:
@@ -129,6 +133,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goBack<T>({T? result}) => _navigator.pop(result);
 
   @override
+  void goToChangeCyclistNames() => _navigator.pushNamed(ChangeCyclistNamesScreen.routeName);
+
+  @override
   void goToCredits() => _navigator.pushNamed(CreditsScreen.routeName);
 
   @override
@@ -147,5 +154,15 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goToTourMenu() => _navigator.pushNamed(TourMenuScreen.routeName);
 
   @override
-  void showCustomDialog<T>({required WidgetBuilder builder}) => showDialog<T>(context: _navigationKey.currentContext!, builder: builder, useRootNavigator: true);
+  Future<String?> showEditNameDialog(String value) => showCustomDialog(
+        builder: (context) => EditNameDialog(initialValue: value),
+      );
+
+  @override
+  Future<T?> showCustomDialog<T>({required WidgetBuilder builder}) => showDialog<T>(
+        context: _navigationKey.currentContext!,
+        builder: builder,
+        useRootNavigator: true,
+        barrierColor: Colors.black,
+      );
 }

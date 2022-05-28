@@ -6,6 +6,7 @@ import 'package:cycling_escape/widget/general/styled/cycling_escape_list_view.da
 import 'package:cycling_escape/widget/menu_background/menu_box.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
 import 'package:cycling_escape/widget/results/results_bottom_navigation.dart';
+import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -24,6 +25,27 @@ class ResultsScreen extends StatefulWidget {
 }
 
 class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigator {
+  String _getValue(ResultsColumn column, int index, ResultData resultData, String? time, String Function(int) numberToName) {
+    switch (column) {
+      case ResultsColumn.rank:
+        return (index + 1).toString();
+      case ResultsColumn.number:
+        return resultData.number.toString();
+      case ResultsColumn.name:
+        return numberToName(resultData.number);
+      case ResultsColumn.team:
+        return resultData.team?.cyclists.first?.number.toString().replaceFirst('1', '0') ?? '';
+      case ResultsColumn.time:
+        return time ?? '';
+      case ResultsColumn.points:
+        return resultData.points == 0 ? '' : resultData.points.toString();
+      case ResultsColumn.mountain:
+        return resultData.mountain == 0 ? '' : resultData.mountain.toString();
+      default:
+        return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<ResultsViewModel>(
@@ -61,10 +83,13 @@ class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigato
                                   child: Row(
                                     children: [
                                       ...?results.type?.columns.map((e) => Expanded(
-                                            child: Image.asset(
-                                              e.icon,
-                                              fit: BoxFit.contain,
-                                            ),
+                                            flex: e.flex,
+                                            child: e.icon == null
+                                                ? const SizedBox.shrink()
+                                                : Image.asset(
+                                                    e.icon!,
+                                                    fit: BoxFit.contain,
+                                                  ),
                                           )),
                                       const SizedBox(width: 40),
                                     ],
@@ -83,7 +108,6 @@ class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigato
                                         final firstTurns = results.data.first!.time;
                                         time = '+${resultData.time - firstTurns}';
                                       }
-                                      final hasColumn = results.type?.columns.contains ?? (_) => false;
                                       return Container(
                                         margin: const EdgeInsets.symmetric(vertical: 4),
                                         padding: const EdgeInsets.symmetric(vertical: 4),
@@ -92,24 +116,25 @@ class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigato
                                           borderRadius: BorderRadius.circular(80),
                                         ),
                                         child: Row(
-                                          children: [
-                                            if (hasColumn(ResultsColumn.rank)) (index + 1).toString(),
-                                            if (hasColumn(ResultsColumn.number)) resultData.number.toString(),
-                                            if (hasColumn(ResultsColumn.team)) resultData.team?.cyclists.first?.number.toString().replaceFirst('1', '0') ?? '',
-                                            if (hasColumn(ResultsColumn.time)) time ?? '',
-                                            if (hasColumn(ResultsColumn.points)) resultData.points == 0 ? '' : resultData.points.toString(),
-                                            if (hasColumn(ResultsColumn.mountain)) resultData.mountain == 0 ? '' : resultData.mountain.toString(),
-                                          ]
-                                              .map(
-                                                (e) => Expanded(
-                                                  child: Text(
-                                                    e,
-                                                    style: theme.coreTextTheme.bodyNormal, // .copyWith(color: resultData.team?.getColor()),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              )
-                                              .toList(),
+                                          children: results.type?.columns.map((e) {
+                                                Widget text = Text(
+                                                  _getValue(e, index, resultData, time, viewModel.numberToName),
+                                                  style: theme.coreTextTheme.bodyNormal.copyWith(color: resultData.team?.getTextColor()),
+                                                  textAlign: e.textAlign,
+                                                );
+                                                if (e.useFittedBox) {
+                                                  text = FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    alignment: e.textAlign == TextAlign.start ? Alignment.centerLeft : Alignment.center,
+                                                    child: text,
+                                                  );
+                                                }
+                                                return Expanded(
+                                                  flex: e.flex,
+                                                  child: text,
+                                                );
+                                              }).toList() ??
+                                              [],
                                         ),
                                       );
                                     },

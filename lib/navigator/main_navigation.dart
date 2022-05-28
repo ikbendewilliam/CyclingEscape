@@ -22,6 +22,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToChangeCyclistNames();
+
   void goToCredits();
 
   void goToSettings();
@@ -33,6 +35,8 @@ abstract class MainNavigation {
   void goToSingleRaceMenu();
 
   void goToTourMenu();
+
+  Future<String?> showEditNameDialog(String value);
 
   void showCustomDialog<T>({required WidgetBuilder builder});
 }

@@ -1,4 +1,5 @@
 import 'package:cycling_escape/model/data/enums.dart';
+import 'package:cycling_escape/navigator/main_navigator.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/screen/base/simple_menu_screen.dart';
 import 'package:cycling_escape/viewmodel/settings/settings_viewmodel.dart';
@@ -78,12 +79,21 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                       onChange: viewModel.difficultyChanged,
                     ),
                     const SizedBox(height: 4),
-                    Center(
-                      child: CyclingEscapeButton(
-                        text: 'Save',
-                        onClick: viewModel.onBackPressed,
-                        type: CyclingEscapeButtonType.green,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CyclingEscapeButton(
+                          text: 'Change cyclist names',
+                          onClick: viewModel.onChangeCyclistNamesPressed,
+                          type: CyclingEscapeButtonType.blue,
+                        ),
+                        const SizedBox(width: 4),
+                        CyclingEscapeButton(
+                          text: 'Save',
+                          onClick: viewModel.onBackPressed,
+                          type: CyclingEscapeButtonType.green,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -94,4 +104,7 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
       ),
     );
   }
+
+  @override
+  void goToChangeCyclistNames() => MainNavigatorWidget.of(context).goToChangeCyclistNames();
 }

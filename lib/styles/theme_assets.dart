@@ -81,6 +81,8 @@ class ThemeAssets {
 
   static const String iconMountain = '$_images/icon_mountain.png';
 
+  static const String iconEdit = '$_images/icon_edit.png';
+
   static const String iconTime = '$_images/icon_time.png';
 
   static const String iconNumber = '$_images/icon_number.png';

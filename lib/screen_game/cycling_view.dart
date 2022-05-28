@@ -105,9 +105,10 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         }
       }
       tempResults = Results(ResultsType.race);
+      teams?.shuffle();
       for (int i = 0; i < playSettings.teams * playSettings.ridersPerTeam; i++) {
         final int teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
-        final Cyclist cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
+        final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
         tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
         teams![teamIndex]!.cyclists.add(cyclist);
         map!.positions![i].addCyclist(cyclist);
@@ -184,15 +185,12 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       }
       final List<int> teamIndexes = [0, 0, 0, 0, 0, 0, 0, 0];
       for (int i = 0; i < maxCyclists; i++) {
-        // int teamIndex = (i % teams.length);
         int teamIndex = (i - (i / activeTour.tour!.teams).floor()) % activeTour.tour!.teams;
         if (teams![teamIndex]!.cyclists.length <= teamIndexes[teamIndex]) {
           teamIndex = 0;
         }
-        final Cyclist cyclist = teams![teamIndex]!.cyclists[teamIndexes[teamIndex]++]!;
-        if (map!.positions!.length < i) {
-          throw Error(); // Out of bounds
-        }
+        final cyclist = teams![teamIndex]!.cyclists[teamIndexes[teamIndex]++]!;
+        if (map!.positions!.length < i) continue; // Out of bounds
         map!.positions![i].addCyclist(cyclist);
         cyclist.lastPosition = map!.positions![i];
       }
@@ -419,7 +417,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
             following = true;
             follow();
             unawaited(processGameState(GameState.userWaitCyclistMoving));
-          } else if (placeBefore.cyclist!.team!.isPlayer! && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowThresholdBelowAsk)) {
+          } else if (placeBefore.cyclist!.team!.isPlayer! && !autoFollow && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowThresholdBelowAsk)) {
             final returnValue = await onSelectFollow();
             switch (returnValue) {
               case FollowType.autoFollow:

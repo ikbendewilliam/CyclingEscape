@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/secure_storage/auth/auth_storage.dart';
@@ -26,6 +28,8 @@ abstract class LocalStorage {
 
   Set<TutorialType> get typesViewed;
 
+  Map<int, String> get cyclistNames;
+
   set autofollowThreshold(int value);
 
   set autofollowThresholdBelowAsk(bool value);
@@ -47,6 +51,8 @@ abstract class LocalStorage {
   ThemeMode getThemeMode();
 
   Future<void> updateThemeMode(ThemeMode themeMode);
+
+  void setCyclistNames(Map<int, String> names);
 }
 
 class _LocalStorage implements LocalStorage {
@@ -55,6 +61,7 @@ class _LocalStorage implements LocalStorage {
   static const _autofollowThresholdKey = 'autofollowThreshold';
   static const _autofollowThresholdBelowAskKey = 'autofollowThresholdBelowAsk';
   static const _autofollowThresholdAboveAskKey = 'autofollowThresholdAboveAsk';
+  static const _cyclistNamesKey = 'cyclistNames';
   static const _cyclistMovementKey = 'cyclistMovement';
   static const _cameraMovementKey = 'cameraMovement';
   static const _difficultyKey = 'difficulty';
@@ -90,6 +97,14 @@ class _LocalStorage implements LocalStorage {
     final value = _sharedPreferences.getString(_difficultyKey) ?? '';
     return DifficultyType.values.firstWhereOrNull((element) => element.toString() == value) ?? DifficultyType.normal;
   }
+
+  @override
+  Map<int, String> get cyclistNames =>
+      _sharedPreferences.getString(_cyclistNamesKey)?.split(',').asMap().map((key, value) {
+        final element = value.split('.');
+        return MapEntry(int.parse(element[0]), utf8.decode(base64Decode(element[1])));
+      }) ??
+      {};
 
   _LocalStorage(this._authStorage, this._sharedPreferences);
 
@@ -144,4 +159,10 @@ class _LocalStorage implements LocalStorage {
 
   @override
   set typesViewed(Set<TutorialType> value) => _sharedPreferences.saveString(key: _typesViewedKey, value: value.map((e) => e.toString()).join(','));
+
+  @override
+  void setCyclistNames(Map<int, String> names) {
+    final encodedNames = names.entries.map((e) => '${e.key}.${base64Encode(utf8.encode(e.value))}').join(',');
+    _sharedPreferences.saveString(key: _cyclistNamesKey, value: encodedNames);
+  }
 }

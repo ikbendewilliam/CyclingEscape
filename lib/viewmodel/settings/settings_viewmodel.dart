@@ -63,7 +63,11 @@ class SettingsViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
+  void onChangeCyclistNamesPressed() => _navigator.goToChangeCyclistNames();
+
   void onBackPressed() => _navigator.goBack<void>();
 }
 
-mixin SettingsNavigator implements BackNavigator {}
+mixin SettingsNavigator implements BackNavigator {
+  void goToChangeCyclistNames();
+}

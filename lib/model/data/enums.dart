@@ -30,10 +30,10 @@ enum MapType { flat, cobble, hills, heavy }
 
 enum ResultsType {
   race(Colors.blue, ThemeAssets.iconRank, ResultsColumn.all),
-  time(Colors.yellow, ThemeAssets.iconTime, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.time]),
-  young(Colors.black, ThemeAssets.iconYoung, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.time]),
-  points(Colors.green, ThemeAssets.iconPoints, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.points]),
-  mountain(Colors.red, ThemeAssets.iconMountain, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.mountain]),
+  time(Colors.yellow, ThemeAssets.iconTime, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.name, ResultsColumn.time]),
+  young(Colors.black, ThemeAssets.iconYoung, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.name, ResultsColumn.time]),
+  points(Colors.green, ThemeAssets.iconPoints, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.name, ResultsColumn.points]),
+  mountain(Colors.red, ThemeAssets.iconMountain, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.name, ResultsColumn.mountain]),
   team(Colors.purple, ThemeAssets.iconTeam, [ResultsColumn.rank, ResultsColumn.team, ResultsColumn.time]);
 
   final Color color;
@@ -46,6 +46,7 @@ enum ResultsType {
 enum ResultsColumn {
   rank(ThemeAssets.iconRank),
   number(ThemeAssets.iconNumber),
+  name(null, flex: 3, textAlign: TextAlign.start, useFittedBox: true),
   time(ThemeAssets.iconTime),
   team(ThemeAssets.iconTeam),
   points(ThemeAssets.iconPoints),
@@ -54,14 +55,23 @@ enum ResultsColumn {
   static const all = [
     rank,
     number,
+    name,
     time,
     points,
     mountain,
   ];
 
-  final String icon;
+  final String? icon;
+  final int flex;
+  final TextAlign textAlign;
+  final bool useFittedBox;
 
-  const ResultsColumn(this.icon);
+  const ResultsColumn(
+    this.icon, {
+    this.flex = 1,
+    this.textAlign = TextAlign.center,
+    this.useFittedBox = false,
+  });
 }
 
 enum MapLength {

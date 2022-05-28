@@ -3,7 +3,10 @@
 // TODO
 [x] Credits
 [ ] Information
-[ ] Names
+[x] Names
+[x] Shuffle teams at the start of the race
+[ ] Sort cyclists using previous results (may be already implemented)
+[ ] Results show who has what jersey
 [ ] Save race progress
 [ ] Tour
 [ ] Save tour progress

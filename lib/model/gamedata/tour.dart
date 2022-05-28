@@ -9,6 +9,8 @@ class Tour {
   final int teams;
   @JsonKey(name: 'ridersPerTeam', required: true, includeIfNull: false)
   final int ridersPerTeam;
+  @JsonKey(name: 'races', required: true, includeIfNull: false)
+  final int races;
   @JsonKey(name: 'mapType', required: true, includeIfNull: false)
   final MapType mapType;
   @JsonKey(name: 'mapLength', required: true, includeIfNull: false)
@@ -17,6 +19,7 @@ class Tour {
   const Tour({
     required this.teams,
     required this.ridersPerTeam,
+    required this.races,
     required this.mapType,
     required this.mapLength,
   });

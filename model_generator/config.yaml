@@ -35,6 +35,9 @@ Tour:
     ridersPerTeam:
       type: int
       required: true
+    races:
+      type: int
+      required: true
     mapType:
       type: MapType
       required: true

@@ -22,6 +22,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToTourSelect();
+
   void goToChangeCyclistNames();
 
   void goToCredits();
@@ -33,8 +35,6 @@ abstract class MainNavigation {
   void goToGame(PlaySettings playSettings);
 
   void goToSingleRaceMenu();
-
-  void goToTourMenu();
 
   Future<String?> showEditNameDialog(String value);
 

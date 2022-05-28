@@ -41,7 +41,7 @@ import '../viewmodel/results/results_viewmodel.dart' as _i29;
 import '../viewmodel/settings/settings_viewmodel.dart' as _i30;
 import '../viewmodel/single_race_menu/single_race_menu_viewmodel.dart' as _i17;
 import '../viewmodel/splash/splash_viewmodel.dart' as _i31;
-import '../viewmodel/tour_menu/tour_menu_viewmodel.dart' as _i19;
+import '../viewmodel/tour_select/tour_select_viewmodel.dart' as _i19;
 import '../widget_game/data/sprite_manager.dart' as _i18;
 import 'injectable.dart' as _i38; // ignore_for_file: unnecessary_lambdas
 
@@ -74,7 +74,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.factory<_i17.SingleRaceMenuViewModel>(
       () => _i17.SingleRaceMenuViewModel());
   gh.singleton<_i18.SpriteManager>(_i18.SpriteManager());
-  gh.factory<_i19.TourMenuViewModel>(() => _i19.TourMenuViewModel());
+  gh.factory<_i19.TourSelectViewModel>(() => _i19.TourSelectViewModel());
   gh.lazySingleton<_i20.CyclingEscapeDatabase>(() => registerModule
       .provideCyclingEscapeDatabase(get<_i7.DatabaseConnection>()));
   gh.lazySingleton<_i5.SharedPreferenceStorage>(

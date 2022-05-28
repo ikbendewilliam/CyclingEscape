@@ -11,7 +11,7 @@ import 'package:cycling_escape/screen/settings/settings_screen.dart';
 import 'package:cycling_escape/screen/single_race_menu/single_race_menu_screen.dart';
 import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
-import 'package:cycling_escape/screen/tour_menu/tour_menu_screen.dart';
+import 'package:cycling_escape/screen/tour_select/tour_select_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/widget/dialog/edit_name_dialog.dart';
 import 'package:cycling_escape/widget/general/flavor_banner.dart';
@@ -86,6 +86,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case TourSelectScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: TourSelectScreen()), settings: settings);
       case ChangeCyclistNamesScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: ChangeCyclistNamesScreen()), settings: settings);
       case CreditsScreen.routeName:
@@ -98,8 +100,6 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: GameScreen(playSettings: settings.arguments as PlaySettings)), settings: settings);
       case SingleRaceMenuScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: SingleRaceMenuScreen()), settings: settings);
-      case TourMenuScreen.routeName:
-        return FadeInRoute<void>(child: const FlavorBanner(child: TourMenuScreen()), settings: settings);
       default:
         return null;
     }
@@ -133,6 +133,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goBack<T>({T? result}) => _navigator.pop(result);
 
   @override
+  void goToTourSelect() => _navigator.pushNamed(TourSelectScreen.routeName);
+
+  @override
   void goToChangeCyclistNames() => _navigator.pushNamed(ChangeCyclistNamesScreen.routeName);
 
   @override
@@ -149,9 +152,6 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);
-
-  @override
-  void goToTourMenu() => _navigator.pushNamed(TourMenuScreen.routeName);
 
   @override
   Future<String?> showEditNameDialog(String value) => showCustomDialog(

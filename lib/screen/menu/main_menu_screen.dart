@@ -91,7 +91,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
   }
 
   @override
-  void goToTourMenu() => MainNavigatorWidget.of(context).goToTourMenu();
+  void goToTourMenu() => MainNavigatorWidget.of(context).goToTourSelect();
 
   @override
   void goToSingleRaceMenu() => MainNavigatorWidget.of(context).goToSingleRaceMenu();

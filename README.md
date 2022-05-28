@@ -1,10 +1,7 @@
 # cycling_escape
 
 // TODO
-[x] Credits
 [ ] Information
-[x] Names
-[x] Shuffle teams at the start of the race
 [ ] Sort cyclists using previous results (may be already implemented)
 [ ] Results show who has what jersey
 [ ] Save race progress

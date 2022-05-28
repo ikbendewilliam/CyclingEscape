@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cycling_escape/navigator/main_navigator.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/screen/base/simple_menu_screen.dart';
@@ -33,7 +31,7 @@ class ChangeCyclistNamesScreenState extends State<ChangeCyclistNamesScreen> with
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(
-            height: (window.physicalSize / window.devicePixelRatio).height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: AspectRatio(
               aspectRatio: 2.1,
               child: Padding(

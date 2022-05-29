@@ -1,11 +1,15 @@
+import 'package:cycling_escape/repository/tour/tour_repository.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class MainMenuViewModel with ChangeNotifierEx {
   late final MainMenuNavigator _navigator;
+  final TourRepository _tourRepository;
 
-  MainMenuViewModel();
+  MainMenuViewModel(
+    this._tourRepository,
+  );
 
   Future<void> init(MainMenuNavigator navigator) async {
     _navigator = navigator;
@@ -13,7 +17,13 @@ class MainMenuViewModel with ChangeNotifierEx {
 
   void onSingleRaceClicked() => _navigator.goToSingleRaceMenu();
 
-  void onTourClicked() => _navigator.goToTourMenu();
+  Future<void> onTourClicked() async {
+    if (_tourRepository.playSettings == null) {
+      _navigator.goToTourSelect();
+    } else {
+      _navigator.goToTourInProgress();
+    }
+  }
 
   void onSettingsPressed() => _navigator.goToSettings();
 
@@ -21,7 +31,9 @@ class MainMenuViewModel with ChangeNotifierEx {
 }
 
 mixin MainMenuNavigator {
-  void goToTourMenu();
+  void goToTourSelect();
+
+  void goToTourInProgress();
 
   void goToSingleRaceMenu();
 

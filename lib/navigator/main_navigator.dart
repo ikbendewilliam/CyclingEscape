@@ -12,6 +12,7 @@ import 'package:cycling_escape/screen/settings/settings_screen.dart';
 import 'package:cycling_escape/screen/single_race_menu/single_race_menu_screen.dart';
 import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
+import 'package:cycling_escape/screen/tour_in_progress/tour_in_progress_screen.dart';
 import 'package:cycling_escape/screen/tour_select/tour_select_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/viewmodel/results/results_viewmodel.dart';
@@ -88,6 +89,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case TourInProgressScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: TourInProgressScreen()), settings: settings);
       case ActiveTourScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: ActiveTourScreen()), settings: settings);
       case TourSelectScreen.routeName:
@@ -135,6 +138,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToTourInProgress() => _navigator.pushNamed(TourInProgressScreen.routeName);
 
   @override
   void goToActiveTour() => _navigator.pushNamed(ActiveTourScreen.routeName);

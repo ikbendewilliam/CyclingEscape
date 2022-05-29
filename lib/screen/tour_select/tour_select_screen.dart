@@ -1,6 +1,5 @@
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/navigator/main_navigator.dart';
-import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/screen/base/simple_menu_screen.dart';
 import 'package:cycling_escape/styles/theme_colors.dart';
 import 'package:cycling_escape/styles/theme_durations.dart';
@@ -22,7 +21,7 @@ class TourSelectScreen extends StatefulWidget {
   TourSelectScreenState createState() => TourSelectScreenState();
 }
 
-class TourSelectScreenState extends State<TourSelectScreen> with BackNavigatorMixin implements TourSelectNavigator {
+class TourSelectScreenState extends State<TourSelectScreen> implements TourSelectNavigator {
   @override
   Widget build(BuildContext context) {
     return ProviderWidget<TourSelectViewModel>(
@@ -102,4 +101,7 @@ class TourSelectScreenState extends State<TourSelectScreen> with BackNavigatorMi
 
   @override
   void goToTourOverview() => MainNavigatorWidget.of(context).goToActiveTour();
+
+  @override
+  void goToMainMenu() => MainNavigatorWidget.of(context).goToHome();
 }

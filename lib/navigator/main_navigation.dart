@@ -22,6 +22,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToTourInProgress();
+
   void goToActiveTour();
 
   void goToTourSelect();

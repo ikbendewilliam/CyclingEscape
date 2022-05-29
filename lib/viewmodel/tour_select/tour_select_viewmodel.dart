@@ -1,5 +1,4 @@
 import 'package:cycling_escape/model/data/enums.dart';
-import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/repository/tour/tour_repository.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
@@ -84,7 +83,7 @@ class TourSelectViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
-  void onBackClicked() => _navigator.goBack<void>();
+  void onBackClicked() => _navigator.goToMainMenu();
 
   Future<void> onStartClicked() async {
     await _tourRepository.startNewTour(PlaySettings(
@@ -99,6 +98,8 @@ class TourSelectViewModel with ChangeNotifierEx {
   }
 }
 
-mixin TourSelectNavigator implements BackNavigator {
+mixin TourSelectNavigator {
+  void goToMainMenu();
+
   void goToTourOverview();
 }

@@ -62,19 +62,7 @@ class GlobalViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
-  Future<void> onSwitchToDutch() async {
-    await _onUpdateLocaleClicked(const Locale('nl'));
-  }
-
-  Future<void> onSwitchToEnglish() async {
-    await _onUpdateLocaleClicked(const Locale('en'));
-  }
-
-  Future<void> onSwitchToSystemLanguage() async {
-    await _onUpdateLocaleClicked(null);
-  }
-
-  Future<void> _onUpdateLocaleClicked(Locale? locale) async {
+  Future<void> onUpdateLocaleClicked(Locale? locale) async {
     await _localeRepo.setCustomLocale(locale);
     _localeDelegate = LocalizationDelegate(newLocale: locale);
     notifyListeners();

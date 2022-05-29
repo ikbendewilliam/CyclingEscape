@@ -1,6 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
+import 'package:cycling_escape/util/locale/localization_delegate.dart';
+import 'package:cycling_escape/viewmodel/global/global_viewmodel.dart';
+import 'package:get_it/get_it.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,6 +12,11 @@ import 'package:injectable/injectable.dart';
 class SettingsViewModel with ChangeNotifierEx {
   late final SettingsNavigator _navigator;
   final LocalStorage _localStorage;
+  final _globalViewModel = GetIt.I<GlobalViewModel>();
+  final locales = [
+    'System',
+    ...LocalizationDelegate.supportedLanguages,
+  ];
 
   int get autofollowThreshold => _localStorage.autofollowThreshold;
 
@@ -18,6 +27,12 @@ class SettingsViewModel with ChangeNotifierEx {
   CameraMovementType get cameraAutoMove => _localStorage.cameraMovement;
 
   int get cameraAutoMoveIndex => CameraMovementType.values.indexOf(cameraAutoMove);
+
+  int get languageIndex {
+    final language = _globalViewModel.locale?.toLanguageTag();
+    if (language == null) return 0;
+    return locales.indexOf(language);
+  }
 
   DifficultyType get difficulty => _localStorage.difficulty;
 
@@ -31,6 +46,11 @@ class SettingsViewModel with ChangeNotifierEx {
 
   Future<void> init(SettingsNavigator navigator) async {
     _navigator = navigator;
+  }
+
+  Future<void> languageChanged(int languageIndex) async {
+    final locale = LocalizationDelegate.supportedLocales.firstWhereOrNull((element) => element.toLanguageTag() == locales[languageIndex]);
+    return _globalViewModel.onUpdateLocaleClicked(locale);
   }
 
   void autofollowThresholdChanged(int value) {

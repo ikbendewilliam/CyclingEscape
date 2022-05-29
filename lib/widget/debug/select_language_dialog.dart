@@ -28,7 +28,7 @@ class SelectLanguageDialog extends StatelessWidget {
                 title: 'localization.generalLabelSystemDefault',
                 selected: globalViewModel.isLanguageSelected(null),
                 onClick: () {
-                  globalViewModel.onSwitchToSystemLanguage();
+                  globalViewModel.onUpdateLocaleClicked(null);
                   goBack();
                 },
               ),
@@ -36,7 +36,7 @@ class SelectLanguageDialog extends StatelessWidget {
                 title: 'English',
                 selected: globalViewModel.isLanguageSelected('en'),
                 onClick: () {
-                  globalViewModel.onSwitchToEnglish();
+                  globalViewModel.onUpdateLocaleClicked(const Locale('en'));
                   goBack();
                 },
               ),
@@ -44,7 +44,23 @@ class SelectLanguageDialog extends StatelessWidget {
                 title: 'Nederlands',
                 selected: globalViewModel.isLanguageSelected('nl'),
                 onClick: () {
-                  globalViewModel.onSwitchToDutch();
+                  globalViewModel.onUpdateLocaleClicked(const Locale('nl'));
+                  goBack();
+                },
+              ),
+              SelectorItem(
+                title: 'Français',
+                selected: globalViewModel.isLanguageSelected('fr'),
+                onClick: () {
+                  globalViewModel.onUpdateLocaleClicked(const Locale('fr'));
+                  goBack();
+                },
+              ),
+              SelectorItem(
+                title: 'Español',
+                selected: globalViewModel.isLanguageSelected('es'),
+                onClick: () {
+                  globalViewModel.onUpdateLocaleClicked(const Locale('es'));
                   goBack();
                 },
               ),

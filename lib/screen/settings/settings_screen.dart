@@ -40,6 +40,13 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                 child: CyclingEscapeListView.children(
                   children: [
                     CyclingEscapeValueButton(
+                      label: 'Language',
+                      value: viewModel.languageIndex,
+                      text: viewModel.locales[viewModel.languageIndex],
+                      onChange: viewModel.languageChanged,
+                      maxValue: viewModel.locales.length - 1,
+                    ),
+                    CyclingEscapeValueButton(
                       label: localization.settingsAutofollowThreshold,
                       value: viewModel.autofollowThreshold,
                       text: viewModel.autofollowThreshold.toString(),

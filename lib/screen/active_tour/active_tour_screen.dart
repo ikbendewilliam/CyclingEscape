@@ -102,18 +102,13 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
                             },
                           ),
                   ),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CyclingEscapeButton(
                         text: 'Main menu',
                         type: CyclingEscapeButtonType.blue,
-                        onClick: viewModel.onClosePressed,
-                      ),
-                      const SizedBox(width: 8),
-                      CyclingEscapeButton(
-                        text: 'Rankings',
-                        type: CyclingEscapeButtonType.yellow,
                         onClick: viewModel.onClosePressed,
                       ),
                       const SizedBox(width: 8),

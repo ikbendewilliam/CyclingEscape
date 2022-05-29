@@ -1,8 +1,11 @@
+import 'package:cycling_escape/model/database/tour_results.dart';
 import 'package:drift/drift.dart';
 
 part 'cycling_escape_database.g.dart';
 
-@DriftDatabase(tables: [])
+@DriftDatabase(tables: [
+  DbTourResultsTable,
+])
 class CyclingEscapeDatabase extends _$CyclingEscapeDatabase {
   CyclingEscapeDatabase(QueryExecutor db) : super(db);
 

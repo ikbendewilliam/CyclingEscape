@@ -1,4 +1,5 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
+import 'package:cycling_escape/screen/active_tour/active_tour_screen.dart';
 import 'package:cycling_escape/screen/change_cyclist_names/change_cyclist_names_screen.dart';
 import 'package:cycling_escape/screen/credits/credits_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
@@ -13,6 +14,7 @@ import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
 import 'package:cycling_escape/screen/tour_select/tour_select_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
+import 'package:cycling_escape/viewmodel/results/results_viewmodel.dart';
 import 'package:cycling_escape/widget/dialog/edit_name_dialog.dart';
 import 'package:cycling_escape/widget/general/flavor_banner.dart';
 import 'package:cycling_escape/widget/general/text_scale_factor.dart';
@@ -86,6 +88,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case ActiveTourScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: ActiveTourScreen()), settings: settings);
       case TourSelectScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: TourSelectScreen()), settings: settings);
       case ChangeCyclistNamesScreen.routeName:
@@ -95,7 +99,7 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case SettingsScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: SettingsScreen()), settings: settings);
       case ResultsScreen.routeName:
-        return FadeInRoute<void>(child: FlavorBanner(child: ResultsScreen(sprints: settings.arguments as List<Sprint>)), settings: settings);
+        return FadeInRoute<void>(child: FlavorBanner(child: ResultsScreen(arguments: settings.arguments as ResultsArguments)), settings: settings);
       case GameScreen.routeName:
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: GameScreen(playSettings: settings.arguments as PlaySettings)), settings: settings);
       case SingleRaceMenuScreen.routeName:
@@ -133,6 +137,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goBack<T>({T? result}) => _navigator.pop(result);
 
   @override
+  void goToActiveTour() => _navigator.pushNamed(ActiveTourScreen.routeName);
+
+  @override
   void goToTourSelect() => _navigator.pushNamed(TourSelectScreen.routeName);
 
   @override
@@ -145,7 +152,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goToSettings() => _navigator.pushNamed(SettingsScreen.routeName);
 
   @override
-  void goToResults(List<Sprint> sprints) => _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: sprints, (route) => false);
+  void goToResults(List<Sprint> sprints, bool isTour) =>
+      _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: ResultsArguments(sprints, isTour), (route) => false);
 
   @override
   void goToGame(PlaySettings playSettings) => _navigator.pushNamed(GameScreen.routeName, arguments: playSettings);

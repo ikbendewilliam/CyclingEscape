@@ -22,6 +22,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToActiveTour();
+
   void goToTourSelect();
 
   void goToChangeCyclistNames();
@@ -30,7 +32,7 @@ abstract class MainNavigation {
 
   void goToSettings();
 
-  void goToResults(List<Sprint> sprints);
+  void goToResults(List<Sprint> sprints, bool isTour);
 
   void goToGame(PlaySettings playSettings);
 

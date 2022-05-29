@@ -1,5 +1,5 @@
 import 'package:cycling_escape/model/data/enums.dart';
-import 'package:cycling_escape/model/gamedata/tour.dart';
+import 'package:cycling_escape/navigator/main_navigator.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/screen/base/simple_menu_screen.dart';
 import 'package:cycling_escape/styles/theme_colors.dart';
@@ -101,7 +101,5 @@ class TourSelectScreenState extends State<TourSelectScreen> with BackNavigatorMi
   }
 
   @override
-  void goToTourOverview(Tour playSettings) {
-    // TODO: implement goToTourOverview
-  }
+  void goToTourOverview() => MainNavigatorWidget.of(context).goToActiveTour();
 }

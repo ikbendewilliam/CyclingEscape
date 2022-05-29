@@ -81,6 +81,7 @@ class SingleRaceMenuViewModel with ChangeNotifierEx {
         _cyclists,
         MapType.values[_raceType],
         MapLength.values[_raceLength],
+        null,
       ));
 }
 

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:cycling_escape/styles/theme_assets.dart';
 import 'package:cycling_escape/util/locale/localization_keys.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,17 @@ enum CameraMovementType {
 
 enum FollowType { follow, autoFollow, leave }
 
-enum MapType { flat, cobble, hills, heavy }
+enum MapType {
+  flat,
+  cobble,
+  hills,
+  heavy;
+
+  static MapType fromMap(String map) => MapType.values.firstWhereOrNull((element) => element.toString() == map) ?? MapType.flat;
+}
 
 enum ResultsType {
+  combined(Colors.white, ThemeAssets.iconRank, []),
   race(Colors.blue, ThemeAssets.iconRank, ResultsColumn.all),
   time(Colors.yellow, ThemeAssets.iconTime, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.name, ResultsColumn.time]),
   young(Colors.black, ThemeAssets.iconYoung, [ResultsColumn.rank, ResultsColumn.number, ResultsColumn.name, ResultsColumn.time]),
@@ -83,6 +92,8 @@ enum MapLength {
   final int segments;
 
   const MapLength(this.segments);
+
+  static MapLength fromMap(String map) => MapLength.values.firstWhereOrNull((element) => element.toString() == map) ?? MapLength.short;
 }
 
 enum DifficultyType {

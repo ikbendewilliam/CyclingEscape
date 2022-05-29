@@ -1,5 +1,5 @@
+import 'package:collection/collection.dart';
 import 'package:cycling_escape/model/data/enums.dart';
-import 'package:cycling_escape/screen_game/results_view.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 
 class Results {
   final ResultsType? type;
-  List<ResultData?> data = [];
+  List<ResultData> data = [];
   int? whiteJersey;
   int? greenJersey;
   int? bouledJersey;
   String? id = UniqueKey().toString();
 
-  Results(this.type, [List<ResultData?>? data, this.whiteJersey, this.greenJersey, this.bouledJersey]) {
+  Results(this.type, [List<ResultData>? data, this.whiteJersey, this.greenJersey, this.bouledJersey]) {
     if (data != null) this.data = data;
   }
 
@@ -27,7 +27,7 @@ class Results {
       return null;
     }
     final Results results = Results(
-      getResultsTypeFromString(json['type'] as String?),
+      ResultsType.values.firstWhereOrNull((e) => e.toString() == json['type'] as String?),
       <ResultData>[],
       json['whiteJersey'] as int?,
       json['greenJersey'] as int?,
@@ -46,7 +46,7 @@ class Results {
     final data = <String, dynamic>{};
     data['id'] = id;
     data['teams'] = type.toString();
-    data['data'] = this.data.map((i) => i!.toJson()).toList();
+    data['data'] = this.data.map((i) => i.toJson()).toList();
     data['whiteJersey'] = whiteJersey;
     data['greenJersey'] = greenJersey;
     data['bouledJersey'] = bouledJersey;

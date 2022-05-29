@@ -1,12 +1,14 @@
 import 'package:cycling_escape/model/data/enums.dart';
-import 'package:cycling_escape/model/gamedata/tour.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
+import 'package:cycling_escape/repository/tour/tour_repository.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
 class TourSelectViewModel with ChangeNotifierEx {
   late final TourSelectNavigator _navigator;
+  final TourRepository _tourRepository;
   var _teams = 4;
   var _races = 3;
   var _cyclists = 4;
@@ -51,7 +53,7 @@ class TourSelectViewModel with ChangeNotifierEx {
 
   bool get showWarning => _teams * _cyclists * (_raceType / 2 + 0.5) * (_raceLength + 0) >= 20;
 
-  TourSelectViewModel();
+  TourSelectViewModel(this._tourRepository);
 
   Future<void> init(TourSelectNavigator navigator) async {
     _navigator = navigator;
@@ -84,15 +86,19 @@ class TourSelectViewModel with ChangeNotifierEx {
 
   void onBackClicked() => _navigator.goBack<void>();
 
-  void onStartClicked() => _navigator.goToTourOverview(Tour(
-        teams: _teams,
-        races: _races,
-        ridersPerTeam: _cyclists,
-        mapType: MapType.values[_raceType],
-        mapLength: MapLength.values[_raceLength],
-      ));
+  Future<void> onStartClicked() async {
+    await _tourRepository.startNewTour(PlaySettings(
+      _teams,
+      _cyclists,
+      MapType.values[_raceType],
+      MapLength.values[_raceLength],
+      null,
+      _races,
+    ));
+    _navigator.goToTourOverview();
+  }
 }
 
 mixin TourSelectNavigator implements BackNavigator {
-  void goToTourOverview(Tour playSettings);
+  void goToTourOverview();
 }

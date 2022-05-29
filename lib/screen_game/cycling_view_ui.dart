@@ -45,7 +45,7 @@ class CyclingViewUI {
       CanvasUtils.drawText(canvas, position, 0, span);
     });
     if (tempResults != null && backgroundText != null) {
-      final ResultData? result = tempResults.data.firstWhereOrNull(((element) => element!.number == cyclist!.number));
+      final ResultData? result = tempResults.data.firstWhereOrNull(((element) => element.number == cyclist!.number));
       final int? time = result?.time;
       final int? rank = result?.rank;
       final int? points = result?.points;

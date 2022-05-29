@@ -75,5 +75,5 @@ class GameScreenState extends State<GameScreen> implements GameNavigator {
   Future<void> goToMainMenu() async => MainNavigatorWidget.of(context).goToHome();
 
   @override
-  Future<void> goToResults(List<Sprint> sprints) async => MainNavigatorWidget.of(context).goToResults(sprints);
+  Future<void> goToResults(List<Sprint> sprints, bool isTour) async => MainNavigatorWidget.of(context).goToResults(sprints, isTour);
 }

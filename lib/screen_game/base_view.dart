@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ abstract class BaseView {
     required this.spriteManager,
   });
 
-  void onAttach();
+  void onAttach({required PlaySettings playSettings});
   void render(Canvas canvas);
   void update(double t);
   void onTapUp(TapUpInfo info);

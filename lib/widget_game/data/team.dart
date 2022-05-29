@@ -13,27 +13,23 @@ class Team {
   bool isPlaceHolder;
 
   Team(this.isPlayer, this.numberStart, SpriteManager? spriteManager, {this.isPlaceHolder = false}) {
-    if (isPlaceHolder) {
-      return;
-    }
-    if (sprites.isEmpty) {
-      sprites.add(spriteManager?.getSprite('cyclists/rood.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/rood2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/blauw.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/blauw2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/zwart.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/zwart2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/groen.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/groen2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/bruin.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/bruin2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/paars.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/paars2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/grijs.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/grijs2.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/limoen.png'));
-      sprites.add(spriteManager?.getSprite('cyclists/limoen2.png'));
-    }
+    if (isPlaceHolder || spriteManager == null || sprites.isNotEmpty) return;
+    sprites.add(spriteManager.getSprite('cyclists/rood.png'));
+    sprites.add(spriteManager.getSprite('cyclists/rood2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/blauw.png'));
+    sprites.add(spriteManager.getSprite('cyclists/blauw2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/zwart.png'));
+    sprites.add(spriteManager.getSprite('cyclists/zwart2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/groen.png'));
+    sprites.add(spriteManager.getSprite('cyclists/groen2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/bruin.png'));
+    sprites.add(spriteManager.getSprite('cyclists/bruin2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/paars.png'));
+    sprites.add(spriteManager.getSprite('cyclists/paars2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/grijs.png'));
+    sprites.add(spriteManager.getSprite('cyclists/grijs2.png'));
+    sprites.add(spriteManager.getSprite('cyclists/limoen.png'));
+    sprites.add(spriteManager.getSprite('cyclists/limoen2.png'));
   }
 
   static Color getColorFromId(int id) {
@@ -122,4 +118,14 @@ class Team {
     }
     return data;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Team && other.numberStart == numberStart;
+  }
+
+  @override
+  int get hashCode => numberStart.hashCode;
 }

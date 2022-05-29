@@ -15,6 +15,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GameViewModel with ChangeNotifierEx {
+  late final bool _isTour;
   late final GameNavigator _navigator;
   final TutorialRepository _tutorialRepository;
   final LocalStorage _localStorage;
@@ -44,6 +45,7 @@ class GameViewModel with ChangeNotifierEx {
     GameManager gameManager,
   ) async {
     _navigator = navigator;
+    _isTour = playSettings.totalRaces != null && playSettings.totalRaces! > 1;
     await gameManager.addListener(GameListener(
       localizations: localizations,
       spriteManager: _spriteManager,
@@ -70,7 +72,7 @@ class GameViewModel with ChangeNotifierEx {
 
   Future<void> _onEndCycling(List<Sprint>? sprints) async {
     if (sprints == null) return _navigator.goToMainMenu();
-    await _navigator.goToResults(sprints);
+    await _navigator.goToResults(sprints, _isTour);
   }
 
   Future<void> _onPause() async {
@@ -129,5 +131,5 @@ class GameViewModel with ChangeNotifierEx {
 mixin GameNavigator {
   Future<void> goToMainMenu();
 
-  Future<void> goToResults(List<Sprint> sprints);
+  Future<void> goToResults(List<Sprint> sprints, bool isTour);
 }

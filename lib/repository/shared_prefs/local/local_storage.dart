@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/secure_storage/auth/auth_storage.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
+import 'package:cycling_escape/widget_game/data/results.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
@@ -16,6 +18,8 @@ abstract class LocalStorage {
 
   int get toursFinished;
 
+  int get completedRaces;
+
   bool get autofollowThresholdBelowAsk;
 
   bool get autofollowThresholdAboveAsk;
@@ -25,6 +29,10 @@ abstract class LocalStorage {
   CameraMovementType get cameraMovement;
 
   DifficultyType get difficulty;
+
+  Results? get tourResults;
+
+  PlaySettings? get playSettings;
 
   Set<TutorialType> get typesViewed;
 
@@ -46,6 +54,8 @@ abstract class LocalStorage {
 
   set toursFinished(int value);
 
+  set completedRaces(int value);
+
   Future<void> checkForNewInstallation();
 
   ThemeMode getThemeMode();
@@ -53,6 +63,12 @@ abstract class LocalStorage {
   Future<void> updateThemeMode(ThemeMode themeMode);
 
   void setCyclistNames(Map<int, String> names);
+
+  void setTourResults(Results results);
+
+  void clearTour();
+
+  void setPlaySettings(PlaySettings? playSettings);
 }
 
 class _LocalStorage implements LocalStorage {
@@ -67,12 +83,18 @@ class _LocalStorage implements LocalStorage {
   static const _difficultyKey = 'difficulty';
   static const _toursFinishedKey = 'toursFinished';
   static const _typesViewedKey = 'typesViewed';
+  static const _tourResultsKey = 'tourResults';
+  static const _playSettingsKey = 'playSettings';
+  static const _completedRacesKey = 'completedRaces';
 
   final AuthStorage _authStorage;
   final SharedPreferenceStorage _sharedPreferences;
 
   @override
   int get autofollowThreshold => _sharedPreferences.getInt(_autofollowThresholdKey) ?? 7;
+
+  @override
+  int get completedRaces => _sharedPreferences.getInt(_completedRacesKey) ?? 0;
 
   @override
   bool get autofollowThresholdBelowAsk => _sharedPreferences.getBoolean(_autofollowThresholdBelowAskKey) ?? true;
@@ -99,12 +121,27 @@ class _LocalStorage implements LocalStorage {
   }
 
   @override
+  Results? get tourResults {
+    final value = _sharedPreferences.getString(_tourResultsKey);
+    if (value == null) return null;
+    final jerseys = value.split(',');
+    return Results(ResultsType.combined, null, int.tryParse(jerseys[0]), int.tryParse(jerseys[1]), int.tryParse(jerseys[2]));
+  }
+
+  @override
   Map<int, String> get cyclistNames =>
       _sharedPreferences.getString(_cyclistNamesKey)?.split(',').asMap().map((key, value) {
         final element = value.split('.');
         return MapEntry(int.parse(element[0]), utf8.decode(base64Decode(element[1])));
       }) ??
       {};
+
+  @override
+  PlaySettings? get playSettings {
+    final settings = _sharedPreferences.getString(_playSettingsKey);
+    if (settings == null) return null;
+    return PlaySettings.fromJson(settings);
+  }
 
   _LocalStorage(this._authStorage, this._sharedPreferences);
 
@@ -131,6 +168,9 @@ class _LocalStorage implements LocalStorage {
 
   @override
   set autofollowThreshold(int value) => _sharedPreferences.saveInt(key: _autofollowThresholdKey, value: value);
+
+  @override
+  set completedRaces(int value) => _sharedPreferences.saveInt(key: _completedRacesKey, value: value);
 
   @override
   set autofollowThresholdBelowAsk(bool value) => _sharedPreferences.saveBoolean(key: _autofollowThresholdBelowAskKey, value: value);
@@ -164,5 +204,26 @@ class _LocalStorage implements LocalStorage {
   void setCyclistNames(Map<int, String> names) {
     final encodedNames = names.entries.map((e) => '${e.key}.${base64Encode(utf8.encode(e.value))}').join(',');
     _sharedPreferences.saveString(key: _cyclistNamesKey, value: encodedNames);
+  }
+
+  @override
+  void setTourResults(Results results) {
+    _sharedPreferences.saveString(key: _tourResultsKey, value: '${results.whiteJersey},${results.greenJersey},${results.bouledJersey}');
+  }
+
+  @override
+  void clearTour() {
+    _sharedPreferences.removeValue(key: _tourResultsKey);
+    _sharedPreferences.removeValue(key: _playSettingsKey);
+    _sharedPreferences.removeValue(key: _completedRacesKey);
+  }
+
+  @override
+  void setPlaySettings(PlaySettings? settings) {
+    if (settings == null) {
+      _sharedPreferences.deleteKey(_playSettingsKey);
+      return;
+    }
+    _sharedPreferences.saveString(key: _playSettingsKey, value: settings.toJson());
   }
 }

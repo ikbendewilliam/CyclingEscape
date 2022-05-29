@@ -9,7 +9,6 @@ import 'package:cycling_escape/screen_game/cycling_view_ui.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/util/map/map_utils.dart';
 import 'package:cycling_escape/util/save/save_util.dart';
-import 'package:cycling_escape/widget_game/data/active_tour.dart';
 import 'package:cycling_escape/widget_game/data/cyclist_place.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
@@ -87,11 +86,62 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   }) : super(spriteManager: spriteManager);
 
   @override
-  void onAttach({PlaySettings? playSettings, ActiveTour? activeTour, int? team, int? playerRiders}) {
-    if (playSettings != null) {
+  void onAttach({required PlaySettings playSettings, int? team}) {
+    final currentResults = playSettings.tourResults;
+    map = MapUtils.generateMap(playSettings, this, spriteManager);
+    mapSize = map!.mapSize;
+    if (currentResults != null) {
+      if (currentResults.data.isNotEmpty) {
+        startResults = currentResults.copy();
+        hasResults = true;
+      } else {
+        hasResults = false;
+      }
+      teams = [];
+      for (int i = 0; i < playSettings.teams; i++) {
+        if (team != null) {
+          if (i == 0) {
+            teams!.add(Team(true, team, spriteManager));
+          } else {
+            teams!.add(Team(false, i == team ? 0 : i, spriteManager));
+          }
+        } else {
+          teams!.add(Team(i == 0, i, spriteManager));
+        }
+      }
+      tempResults = Results(ResultsType.race);
+      currentResults.data.asMap().forEach((key, value) => {value.rank = key});
+      final cyclists = <Cyclist>[];
+      final maxCyclists = playSettings.teams * playSettings.ridersPerTeam;
+      for (var i = 0; i < maxCyclists; i++) {
+        final teamIndex = (i / playSettings.ridersPerTeam).floor();
+        final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
+
+        cyclist.rank = currentResults.data.firstWhereOrNull((element) => element.number == cyclist.number)?.rank ?? i;
+        cyclist.wearsYellowJersey = (cyclist.rank == 0);
+        cyclist.wearsWhiteJersey = currentResults.whiteJersey == cyclist.number;
+        cyclist.wearsGreenJersey = currentResults.greenJersey == cyclist.number;
+        cyclist.wearsBouledJersey = currentResults.bouledJersey == cyclist.number;
+
+        cyclists.add(cyclist);
+        teams![teamIndex]!.cyclists.add(cyclist);
+        tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
+      }
+      cyclists.sort((a, b) => b.rank! - a.rank!);
+
+      final teamIndexes = List<int>.generate(playSettings.teams, (index) => 0);
+      for (int i = 0; i < maxCyclists; i++) {
+        int teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
+        if (teams![teamIndex]!.cyclists.length <= teamIndexes[teamIndex]) {
+          teamIndex = 0;
+        }
+        final cyclist = teams![teamIndex]!.cyclists[teamIndexes[teamIndex]++]!;
+        if (map!.positions!.length < i) continue; // Out of bounds
+        map!.positions![i].addCyclist(cyclist);
+        cyclist.lastPosition = map!.positions![i];
+      }
+    } else {
       hasResults = false;
-      map = MapUtils.generateMap(playSettings, this, spriteManager);
-      mapSize = map!.mapSize;
       teams = [];
       for (int i = 0; i < playSettings.teams; i++) {
         if (team != null) {
@@ -106,112 +156,26 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       }
       tempResults = Results(ResultsType.race);
       teams?.shuffle();
-      for (int i = 0; i < playSettings.teams * playSettings.ridersPerTeam; i++) {
-        final int teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
+      for (var i = 0; i < playSettings.teams * playSettings.ridersPerTeam; i++) {
+        final teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
         final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
         tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
         teams![teamIndex]!.cyclists.add(cyclist);
         map!.positions![i].addCyclist(cyclist);
       }
-    } else if (activeTour != null) {
-      if (activeTour.currentResults!.data.isNotEmpty) {
-        startResults = activeTour.currentResults!.copy();
-        hasResults = true;
-      } else {
-        hasResults = false;
-      }
-      map = MapUtils.generateMap(PlaySettings.fromTour(activeTour.tour!), this, spriteManager);
-      mapSize = map!.mapSize;
-      if (activeTour.teams != null) {
-        teams = activeTour.teams;
-      } else {
-        teams = [];
-        for (int i = 0; i < activeTour.tour!.teams; i++) {
-          if (team != null) {
-            if (i == 0) {
-              teams!.add(Team(true, team, spriteManager));
-            } else {
-              teams!.add(Team(false, i == team ? 0 : i, spriteManager));
-            }
-          } else {
-            teams!.add(Team(i == 0, i, spriteManager));
-          }
-        }
-        activeTour.teams = teams;
-      }
-      int? greenJersey;
-      int? bouledJersey;
-      int? whiteJersey;
-      tempResults = Results(ResultsType.race);
-      if (activeTour.currentResults!.data.isNotEmpty) {
-        greenJersey = activeTour.currentResults!.greenJersey;
-        bouledJersey = activeTour.currentResults!.bouledJersey;
-        whiteJersey = activeTour.currentResults!.whiteJersey;
-        activeTour.currentResults!.data.asMap().forEach((key, value) => {value!.rank = key});
-      }
-      for (final cyclist in activeTour.cyclists) {
-        if (activeTour.currentResults!.data.isNotEmpty) {
-          cyclist!.rank = activeTour.currentResults!.data.firstWhere((element) => element!.number == cyclist.number)!.rank;
-        }
-        cyclist!.lastPosition = null;
-        cyclist.lastUsedOnTurn = 0;
-        cyclist.wearsYellowJersey = (cyclist.rank == 0);
-        cyclist.wearsWhiteJersey = whiteJersey != null && whiteJersey == cyclist.number;
-        cyclist.wearsGreenJersey = greenJersey != null && greenJersey == cyclist.number;
-        cyclist.wearsBouledJersey = bouledJersey != null && bouledJersey == cyclist.number;
-      }
-      activeTour.cyclists.sort((a, b) => b!.rank! - a!.rank!);
-      int maxCyclists = activeTour.tour!.teams * activeTour.tour!.ridersPerTeam;
-      if (playerRiders != null && playerRiders > 0) {
-        maxCyclists = (activeTour.tour!.teams - 1) * activeTour.tour!.ridersPerTeam + playerRiders;
-      }
-      for (int i = 0; i < maxCyclists; i++) {
-        Cyclist? cyclist;
-        int teamIndex = (i / activeTour.tour!.ridersPerTeam).floor();
-        if (playerRiders != null && playerRiders > 0) {
-          teamIndex = 0;
-          if (i >= playerRiders) {
-            teamIndex = ((i - playerRiders) / activeTour.tour!.ridersPerTeam).floor() + 1;
-          }
-        }
-        if (maxCyclists == activeTour.tour!.teams * activeTour.tour!.ridersPerTeam && maxCyclists == activeTour.cyclists.length) {
-          cyclist = activeTour.cyclists[i];
-        } else {
-          cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
-          activeTour.cyclists.add(cyclist);
-          teams![teamIndex]!.cyclists.add(cyclist);
-        }
-        tempResults!.data.add(ResultData(activeTour.tour!.teams * activeTour.tour!.ridersPerTeam - i, 0, 0, 0, cyclist!.number, cyclist.team));
-      }
-      final List<int> teamIndexes = [0, 0, 0, 0, 0, 0, 0, 0];
-      for (int i = 0; i < maxCyclists; i++) {
-        int teamIndex = (i - (i / activeTour.tour!.teams).floor()) % activeTour.tour!.teams;
-        if (teams![teamIndex]!.cyclists.length <= teamIndexes[teamIndex]) {
-          teamIndex = 0;
-        }
-        final cyclist = teams![teamIndex]!.cyclists[teamIndexes[teamIndex]++]!;
-        if (map!.positions!.length < i) continue; // Out of bounds
-        map!.positions![i].addCyclist(cyclist);
-        cyclist.lastPosition = map!.positions![i];
-      }
     }
-    if (playSettings != null || activeTour != null) {
-      inCareer = (playerRiders != null && playerRiders > 0);
-      currentTurn = 0;
-      ended = false;
-      autoFollow = false;
-      offsetStart = Offset.zero;
-      offset = Offset.zero;
-      zoom = 0.5;
-      notifications = [];
-      minZoom = 0.2;
-      handleInBetweenTurns();
-      processGameState(GameState.gameSelectNext);
-    }
+    currentTurn = 0;
+    ended = false;
+    autoFollow = false;
+    offsetStart = Offset.zero;
+    offset = Offset.zero;
+    zoom = 0.5;
+    notifications = [];
+    minZoom = 0.2;
+    handleInBetweenTurns();
+    processGameState(GameState.gameSelectNext);
     createButtons(screenSize != null ? screenSize!.height / 7 : 10);
-    if (openFollowSelect) {
-      processGameState(GameState.userWaitCyclistFollow);
-    }
+    if (openFollowSelect) processGameState(GameState.userWaitCyclistFollow);
     grass ??= spriteManager.getSprite('environment/grass.png');
     grass2 ??= spriteManager.getSprite('environment/grass2.png');
     backgroundNotification ??= spriteManager.getSprite('back_text_04.png');
@@ -363,9 +327,9 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     map!.positions!.where((element) => element.cyclist != null).toList().forEach((cyclistPosition) {
       if (startResults != null) {
         useStartResults = true;
-        startResult = startResults!.data.firstWhereOrNull((element) => element!.number == cyclistPosition.cyclist!.number);
+        startResult = startResults!.data.firstWhereOrNull((element) => element.number == cyclistPosition.cyclist!.number);
       }
-      final ResultData? result = tempResults!.data.firstWhereOrNull(((element) => element!.number == cyclistPosition.cyclist!.number));
+      final ResultData? result = tempResults!.data.firstWhereOrNull(((element) => element.number == cyclistPosition.cyclist!.number));
       if (result != null) {
         result.time = (useStartResults ? startResult!.time : 0) + currentTurn!;
         result.value = useStartResults ? 100.0 - startResult!.rank : cyclistPosition.getValue(false);
@@ -377,9 +341,9 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         }
       }
     });
-    tempResults!.data.sort((a, b) => ((a!.time == b!.time ? b.value! - a.value! : a.time - b.time) * 100).round());
+    tempResults!.data.sort((a, b) => ((a.time == b.time ? b.value! - a.value! : a.time - b.time) * 100).round());
     tempResults!.data.asMap().forEach((key, value) {
-      value!.rank = key + 1;
+      value.rank = key + 1;
     });
   }
 
@@ -544,7 +508,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
           if (sprint.type == SprintType.finish) {
             addNotification('${element.cyclist!.number} Finished ${th(key + 1)}', element.cyclist!.team!.getColor());
           } else if (sprint.getPoints(key) > 0) {
-            final ResultData? result = tempResults!.data.firstWhereOrNull(((r) => r!.number == element.cyclist!.number));
+            final ResultData? result = tempResults!.data.firstWhereOrNull(((r) => r.number == element.cyclist!.number));
             if (result != null) {
               switch (sprint.type) {
                 case SprintType.mountainSprint:

@@ -28,7 +28,7 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Tour overview',
+          title: localization.activeTourTitle,
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(
@@ -38,7 +38,7 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
               child: Column(
                 children: [
                   Text(
-                    'current stadings after race ${viewModel.racesCompleted} of ${viewModel.playSettings.totalRaces}',
+                    localization.activeTourStandings(viewModel.racesCompleted, viewModel.playSettings.totalRaces ?? 1),
                     style: theme.coreTextTheme.bodyNormal,
                   ),
                   const SizedBox(height: 8),
@@ -46,7 +46,6 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
                     height: 32,
                     child: Row(
                       children: [
-                        // TODO Check if mountain results are present
                         ...ResultsType.race.columns.map((e) => Expanded(
                               flex: e.flex,
                               child: e.icon == null
@@ -64,7 +63,7 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
                     child: viewModel.racesCompleted == 0
                         ? Center(
                             child: Text(
-                              'Results will show here after the first race',
+                              localization.activeTourFirstRace,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           )
@@ -86,7 +85,7 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
                               if (index == viewModel.teamResults.length + 1) {
                                 resultData = viewModel.teamResult!;
                                 time = resultData.time.toString();
-                                numberToName = (_) => 'Your team';
+                                numberToName = (_) => localization.yourTeam;
                               } else {
                                 resultData = viewModel.teamResults[index];
                                 time = resultData.rank == 0 ? resultData.time.toString() : '+${resultData.time - viewModel.firstTime}';
@@ -107,20 +106,20 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CyclingEscapeButton(
-                        text: 'Main menu',
+                        text: localization.mainMenuButton,
                         type: CyclingEscapeButtonType.blue,
                         onClick: viewModel.onClosePressed,
                       ),
                       const SizedBox(width: 8),
                       if (viewModel.racesCompleted < (viewModel.playSettings.totalRaces ?? 0)) ...[
                         CyclingEscapeButton(
-                          text: 'Start next race',
+                          text: localization.nextRaceButton,
                           type: CyclingEscapeButtonType.green,
                           onClick: viewModel.onStartRacePressed,
                         ),
                       ] else ...[
                         CyclingEscapeButton(
-                          text: 'Finish',
+                          text: localization.finishButton,
                           type: CyclingEscapeButtonType.green,
                           onClick: viewModel.onFinishPressed,
                         ),

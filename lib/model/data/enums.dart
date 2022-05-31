@@ -28,10 +28,14 @@ enum CameraMovementType {
 enum FollowType { follow, autoFollow, leave }
 
 enum MapType {
-  flat,
-  cobble,
-  hills,
-  heavy;
+  flat(LocalizationKeys.raceTypeFlat),
+  cobble(LocalizationKeys.raceTypeCobbled),
+  hills(LocalizationKeys.raceTypeHilled),
+  heavy(LocalizationKeys.raceTypeHeavy);
+
+  final String localizationKey;
+
+  const MapType(this.localizationKey);
 
   static MapType fromMap(String map) => MapType.values.firstWhereOrNull((element) => element.toString() == map) ?? MapType.flat;
 }
@@ -84,14 +88,15 @@ enum ResultsColumn {
 }
 
 enum MapLength {
-  short(1),
-  medium(20),
-  long(30),
-  veryLong(40);
+  short(10, LocalizationKeys.raceDurationShort),
+  medium(20, LocalizationKeys.raceDurationMedium),
+  long(30, LocalizationKeys.raceDurationLong),
+  veryLong(40, LocalizationKeys.raceDurationVeryLong);
 
   final int segments;
+  final String localizationKey;
 
-  const MapLength(this.segments);
+  const MapLength(this.segments, this.localizationKey);
 
   static MapLength fromMap(String map) => MapLength.values.firstWhereOrNull((element) => element.toString() == map) ?? MapLength.short;
 }

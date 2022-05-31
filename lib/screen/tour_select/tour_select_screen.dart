@@ -28,7 +28,7 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Configure tour',
+          title: localization.tourTitle,
           onClosePressed: viewModel.onBackClicked,
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
@@ -39,14 +39,14 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
                 child: CyclingEscapeListView.children(
                   children: [
                     CyclingEscapeValueButton(
-                      text: 'Teams: ${viewModel.teams}',
+                      text: '${localization.raceTeams} ${viewModel.teams}',
                       onChange: viewModel.setTeams,
                       value: viewModel.teams,
                       minValue: 2,
                       maxValue: 8,
                     ),
                     CyclingEscapeValueButton(
-                      text: 'Cyclists: ${viewModel.teams * viewModel.cyclists}',
+                      text: '${localization.raceRiders} ${viewModel.teams * viewModel.cyclists}',
                       onChange: viewModel.setCyclists,
                       value: viewModel.cyclists,
                       minValue: 1,
@@ -67,7 +67,7 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
                       maxValue: MapLength.values.length - 1,
                     ),
                     CyclingEscapeValueButton(
-                      text: 'races: ${viewModel.races}',
+                      text: '${localization.tourRaces} ${viewModel.races}',
                       onChange: viewModel.setRaces,
                       value: viewModel.races,
                       minValue: 2,
@@ -77,14 +77,14 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
                       opacity: viewModel.showWarning ? 1 : 0,
                       duration: ThemeDurations.shortAnimationDuration,
                       child: Text(
-                        'Warning, this will result in long races!',
+                        localization.longTourWarning,
                         style: theme.coreTextTheme.bodyUltraSmall.copyWith(color: ThemeColors.error),
                       ),
                     ),
                     const SizedBox(height: 4),
                     Center(
                       child: CyclingEscapeButton(
-                        text: 'Start',
+                        text: localization.startButton,
                         onClick: viewModel.onStartClicked,
                         type: CyclingEscapeButtonType.green,
                       ),

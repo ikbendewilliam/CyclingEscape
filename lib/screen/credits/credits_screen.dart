@@ -43,7 +43,7 @@ class CreditsScreenState extends State<CreditsScreen> with BackNavigatorMixin im
                     ),
                   ),
                   CyclingEscapeButton(
-                    text: 'back',
+                    text: localization.backButton,
                     onClick: viewModel.onBackPressed,
                   ),
                 ],

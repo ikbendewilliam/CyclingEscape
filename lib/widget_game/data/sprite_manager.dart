@@ -67,7 +67,7 @@ class SpriteManager {
     spriteNames.add('icon_young.png');
     spriteNames.add('options_back_01.png');
     // spriteNames.add('back_text_02.png');
-    // spriteNames.add('back_text_05.png');
+    spriteNames.add('back_text_05.png');
     // spriteNames.add('back_tour.png');
     // spriteNames.add('icon_credits.png');
     // spriteNames.add('icon_help.png');

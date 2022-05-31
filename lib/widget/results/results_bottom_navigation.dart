@@ -35,8 +35,9 @@ class _ResultsBottomNavigationState extends State<ResultsBottomNavigation> {
 
   Widget _item(String icon, String name, Color color) {
     return DataProviderWidget(
-      childBuilderTheme: (context, theme) => Padding(
+      childBuilderTheme: (context, theme) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 6),
+        width: 48,
         child: Column(
           children: [
             SizedBox(
@@ -48,11 +49,14 @@ class _ResultsBottomNavigationState extends State<ResultsBottomNavigation> {
               ),
             ),
             const SizedBox(height: 2),
-            Text(
-              name,
-              style: theme.coreTextTheme.bodyUltraSmall.copyWith(
-                color: color,
-                fontSize: 10,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                name,
+                style: theme.coreTextTheme.bodyUltraSmall.copyWith(
+                  color: color,
+                  fontSize: 10,
+                ),
               ),
             ),
           ],

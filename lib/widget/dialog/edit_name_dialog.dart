@@ -53,7 +53,7 @@ class _EditNameDialogState extends State<EditNameDialog> {
                       vertical: 8,
                     ),
                     child: Text(
-                      'OK',
+                      localization.okButton,
                       style: theme.inverseCoreTextTheme.bodyNormal,
                     ),
                   ),

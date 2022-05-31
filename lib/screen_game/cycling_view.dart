@@ -13,7 +13,6 @@ import 'package:cycling_escape/widget_game/data/cyclist_place.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/data/results.dart';
-import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:cycling_escape/widget_game/moveable/dice.dart';
@@ -62,7 +61,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   Results? startResults;
   Position? cyclistSelected;
   Position? cyclistLastSelected;
-  GameState? gameState = GameState.gameSelectNext;
+  var gameState = GameState.gameSelectNext;
 
   List<Team?>? teams = [];
   List<Button> buttons = [];
@@ -76,14 +75,14 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   final Future<FollowType> Function() onSelectFollow;
 
   CyclingView({
-    required SpriteManager spriteManager,
+    required super.spriteManager,
     required this.onEndCycling,
     required this.localStorage,
     required this.localizations,
     required this.openTutorial,
     required this.onPause,
     required this.onSelectFollow,
-  }) : super(spriteManager: spriteManager);
+  });
 
   @override
   void onAttach({required PlaySettings playSettings, int? team}) {
@@ -129,16 +128,10 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       }
       cyclists.sort((a, b) => b.rank! - a.rank!);
 
-      final teamIndexes = List<int>.generate(playSettings.teams, (index) => 0);
-      for (int i = 0; i < maxCyclists; i++) {
-        int teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
-        if (teams![teamIndex]!.cyclists.length <= teamIndexes[teamIndex]) {
-          teamIndex = 0;
-        }
-        final cyclist = teams![teamIndex]!.cyclists[teamIndexes[teamIndex]++]!;
-        if (map!.positions!.length < i) continue; // Out of bounds
-        map!.positions![i].addCyclist(cyclist);
-        cyclist.lastPosition = map!.positions![i];
+      for (final entry in cyclists.asMap().entries) {
+        if (map!.positions!.length < entry.key) continue; // Out of bounds
+        map!.positions![entry.key].addCyclist(entry.value);
+        entry.value.lastPosition = map!.positions![entry.key];
       }
     } else {
       hasResults = false;
@@ -347,7 +340,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     });
   }
 
-  Future<void> processGameState(GameState? newState) async {
+  Future<void> processGameState(GameState newState) async {
     if (ended) return;
     gameState = newState;
     switch (gameState) {

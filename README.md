@@ -2,10 +2,7 @@
 
 // TODO
 [ ] Information
-[ ] Sort cyclists using previous results
-[ ] Results show who has what jersey
 [ ] Save race progress
-[ ] Save tour progress
 [ ] Career
 
 ## Assets

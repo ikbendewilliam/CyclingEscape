@@ -19,7 +19,7 @@ class FollowWidget extends StatelessWidget {
       childBuilder: (context, theme, localization) => SimpleScreen(
         transparant: true,
         child: MenuBox(
-          title: 'Follow', // TODO
+          title: localization.followTitle,
           child: Center(
             heightFactor: 1,
             child: Column(

@@ -27,7 +27,7 @@ class ChangeCyclistNamesScreenState extends State<ChangeCyclistNamesScreen> with
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Change Cyclist names',
+          title: localization.changeNamesTitle,
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(

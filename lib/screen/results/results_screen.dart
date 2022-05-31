@@ -35,7 +35,7 @@ class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigato
         },
         child: SimpleMenuScreen(
           child: MenuBox(
-            title: 'Results',
+            title: localization.resultsTitle,
             onClosePressed: viewModel.onClosePressed,
             wide: true,
             child: SizedBox(

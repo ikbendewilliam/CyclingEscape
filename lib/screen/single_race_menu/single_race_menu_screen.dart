@@ -29,35 +29,35 @@ class SingleRaceMenuScreenState extends State<SingleRaceMenuScreen> with BackNav
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Configure race',
+          title: localization.singleRaceTitle,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 120),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CyclingEscapeValueButton(
-                  text: 'Teams: ${viewModel.teams}',
+                  text: '${localization.raceTeams} ${viewModel.teams}',
                   onChange: viewModel.setTeams,
                   value: viewModel.teams,
                   minValue: 2,
                   maxValue: 8,
                 ),
                 CyclingEscapeValueButton(
-                  text: 'Cyclists: ${viewModel.teams * viewModel.cyclists}',
+                  text: '${localization.raceRiders} ${viewModel.teams * viewModel.cyclists}',
                   onChange: viewModel.setCyclists,
                   value: viewModel.cyclists,
                   minValue: 1,
                   maxValue: 5,
                 ),
                 CyclingEscapeValueButton(
-                  text: viewModel.raceType,
+                  text: localization.getTranslation(viewModel.raceType.localizationKey),
                   onChange: viewModel.setRaceType,
                   value: viewModel.raceTypeIndex,
                   minValue: 0,
                   maxValue: MapType.values.length - 1,
                 ),
                 CyclingEscapeValueButton(
-                  text: viewModel.raceLength,
+                  text: localization.getTranslation(viewModel.raceLength.localizationKey),
                   onChange: viewModel.setRaceLength,
                   value: viewModel.raceLengthIndex,
                   minValue: 0,
@@ -67,7 +67,7 @@ class SingleRaceMenuScreenState extends State<SingleRaceMenuScreen> with BackNav
                   opacity: viewModel.showWarning ? 1 : 0,
                   duration: ThemeDurations.shortAnimationDuration,
                   child: Text(
-                    'Warning, this will result in a long race!',
+                    localization.longRaceWarning,
                     style: theme.coreTextTheme.bodyUltraSmall.copyWith(color: ThemeColors.error),
                   ),
                 ),
@@ -76,13 +76,13 @@ class SingleRaceMenuScreenState extends State<SingleRaceMenuScreen> with BackNav
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CyclingEscapeButton(
-                      text: 'Back',
+                      text: localization.backButton,
                       onClick: viewModel.onBackClicked,
                       type: CyclingEscapeButtonType.red,
                     ),
                     const SizedBox(width: 8),
                     CyclingEscapeButton(
-                      text: 'Start',
+                      text: localization.startButton,
                       onClick: viewModel.onStartClicked,
                       type: CyclingEscapeButtonType.green,
                     ),

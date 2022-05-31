@@ -32,24 +32,24 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const CyclingEscapeButton(
-                        text: 'Continue',
+                      CyclingEscapeButton(
+                        text: localization.continueButton,
                         onClick: null,
                         isEnabled: false,
                         type: CyclingEscapeButtonType.green,
                       ),
-                      const CyclingEscapeButton(
-                        text: 'Career',
+                      CyclingEscapeButton(
+                        text: localization.careerButton,
                         onClick: null,
                         type: CyclingEscapeButtonType.yellow,
                       ),
                       CyclingEscapeButton(
-                        text: 'Single race',
+                        text: localization.singleRaceButton,
                         onClick: viewModel.onSingleRaceClicked,
                         type: CyclingEscapeButtonType.blue,
                       ),
                       CyclingEscapeButton(
-                        text: 'Tour',
+                        text: localization.tourButton,
                         onClick: viewModel.onTourClicked,
                         type: CyclingEscapeButtonType.red,
                       ),

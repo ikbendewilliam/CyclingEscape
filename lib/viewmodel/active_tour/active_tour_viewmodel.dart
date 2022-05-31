@@ -44,6 +44,7 @@ class ActiveTourViewModel with ChangeNotifierEx {
     _racesCompleted = _tourRepository.completedRaces;
     _currentResults = await _tourRepository.currentResults;
     _currentResults?.data.sort((a, b) => a.rank.compareTo(b.rank));
+    if (_currentResults?.data.isNotEmpty == true) playSettings.tourResults = _currentResults;
     _calculateTeamResult();
     notifyListeners();
   }

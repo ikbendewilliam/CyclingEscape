@@ -24,7 +24,7 @@ class TourInProgressScreenState extends State<TourInProgressScreen> with BackNav
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Tour in progress',
+          title: localization.tourInProgressTitle,
           onClosePressed: viewModel.onClosePressed,
           child: Container(
             height: MediaQuery.of(context).size.height * 0.6,
@@ -36,17 +36,17 @@ class TourInProgressScreenState extends State<TourInProgressScreen> with BackNav
                 children: [
                   const SizedBox(height: 8),
                   Text(
-                    'There is already a tour in progress, do you want to continue or start a new one?',
+                    localization.tourInProgressText,
                     style: theme.coreTextTheme.bodyNormal,
                   ),
                   const Spacer(),
                   CyclingEscapeButton(
-                    text: 'Continue',
+                    text: localization.continueButton,
                     type: CyclingEscapeButtonType.green,
                     onClick: viewModel.onContinuePressed,
                   ),
                   CyclingEscapeButton(
-                    text: 'Start new tour',
+                    text: localization.startNewTourButton,
                     onClick: viewModel.onNewTourPressed,
                   ),
                 ],

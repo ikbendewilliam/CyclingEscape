@@ -8,8 +8,8 @@ class PlaySettings {
   final int ridersPerTeam;
   final MapType mapType;
   final MapLength mapLength;
-  final Results? tourResults;
   final int? totalRaces;
+  Results? tourResults;
 
   PlaySettings(
     this.teams,

@@ -55,12 +55,12 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                       minValue: 2,
                     ),
                     CyclingEscapeCheckBox(
-                      text: 'Autofollow ask below threshold',
+                      text: localization.settingsAutofollowAskBelowThreshold,
                       value: viewModel.autofollowThresholdBelowAsk,
                       onChanged: viewModel.autofollowThresholdBelowAskChanged,
                     ),
                     CyclingEscapeCheckBox(
-                      text: 'Autofollow ask above threshold',
+                      text: localization.settingsAutofollowAskAboveThreshold,
                       value: viewModel.autofollowThresholdAboveAsk,
                       onChanged: viewModel.autofollowThresholdAboveAskChanged,
                     ),
@@ -90,13 +90,13 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CyclingEscapeButton(
-                          text: 'Change cyclist names',
+                          text: localization.changeNamesButton,
                           onClick: viewModel.onChangeCyclistNamesPressed,
                           type: CyclingEscapeButtonType.blue,
                         ),
                         const SizedBox(width: 4),
                         CyclingEscapeButton(
-                          text: 'Save',
+                          text: localization.saveButton,
                           onClick: viewModel.onBackPressed,
                           type: CyclingEscapeButtonType.green,
                         ),

@@ -144,13 +144,11 @@ class Button {
       aspectRatio = 2;
       scale = 0.7;
     }
-    if (spriteBackground != null) {
-      spriteBackground!.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize, buttonSize) * 1.5);
-    }
+    spriteBackground?.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize, buttonSize) * 1.5);
     if (!isPressed) {
-      sprite!.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
+      sprite?.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     } else {
-      spritePressed!.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
+      spritePressed?.renderCentered(canvas, position: Vector2FromOffset.fromOffset(center), size: Vector2(buttonSize * scale * aspectRatio, buttonSize * scale));
     }
 
     if (text != null) {

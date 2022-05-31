@@ -36,7 +36,7 @@ class TutorialWidget extends StatelessWidget {
                 const Spacer(),
                 CyclingEscapeButton(
                   type: CyclingEscapeButtonType.green,
-                  text: 'Begrepen',
+                  text: localization.tutorialConfirm,
                   onClick: onDismiss,
                 ),
               ],

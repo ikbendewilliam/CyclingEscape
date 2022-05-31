@@ -2,6 +2,7 @@
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
+
   /// Translations:
   ///
   /// en:  **'continue'**
@@ -455,6 +456,193 @@ class LocalizationKeys {
 
   /// Translations:
   ///
+  /// en:  **'Tour overview'**
+  ///
+  /// nl:  **'Touroverzicht'**
+  ///
+  /// fr:  **'Aperçu de la tour'**
+  ///
+  /// es:  **'Resumen del tour'**
+  static const activeTourTitle = 'activeTourTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'current stadings after race [arg1 number] of [arg2 number]'**
+  ///
+  /// nl:  **'huidige stadings na race [arg1 number] of [arg2 number]'**
+  ///
+  /// fr:  **'Classement actuel après la course [arg1 number] de [arg2 number]'**
+  ///
+  /// es:  **'stadings actuales después de la carrera [arg1 number] de [arg2 number]'**
+  static const activeTourStandings = 'activeTourStandings';
+
+  /// Translations:
+  ///
+  /// en:  **'Results will show here after the first race'**
+  ///
+  /// nl:  **'Uitslagen worden hier getoond na de eerste race'**
+  ///
+  /// fr:  **'Les résultats seront affichés ici après la première course'**
+  ///
+  /// es:  **'Los resultados se mostrarán aquí después de la primera carrera'**
+  static const activeTourFirstRace = 'activeTourFirstRace';
+
+  /// Translations:
+  ///
+  /// en:  **'Your team'**
+  ///
+  /// nl:  **'Uw team'**
+  ///
+  /// fr:  **'Votre équipe'**
+  ///
+  /// es:  **'Tu equipo'**
+  static const yourTeam = 'yourTeam';
+
+  /// Translations:
+  ///
+  /// en:  **'Start next race'**
+  ///
+  /// nl:  **'Start volgende race'**
+  ///
+  /// fr:  **'Commencer la prochaine course'**
+  ///
+  /// es:  **'Iniciar la siguiente carrera'**
+  static const nextRaceButton = 'nextRaceButton';
+
+  /// Translations:
+  ///
+  /// en:  **'Finish'**
+  ///
+  /// nl:  **'Finish'**
+  ///
+  /// fr:  **'Finir'**
+  ///
+  /// es:  **'Finish'**
+  static const finishButton = 'finishButton';
+
+  /// Translations:
+  ///
+  /// en:  **'Warning, this will result in a long race!'**
+  ///
+  /// nl:  **'Waarschuwing, dit zal resulteren in een lange race!'**
+  ///
+  /// fr:  **'Avertissement, ceci entraînera une longue course !'**
+  ///
+  /// es:  **'¡Advertencia, esto resultará en una carrera larga!'**
+  static const longRaceWarning = 'longRaceWarning';
+
+  /// Translations:
+  ///
+  /// en:  **'There is already a tour in progress, do you want to continue or start a new one?'**
+  ///
+  /// nl:  **'Er is al een tour aan de gang, wil je doorgaan of een nieuwe starten?'**
+  ///
+  /// fr:  **'Il y a déjà une tour en cours, voulez-vous continuer ou en commencer une nouvelle ?'**
+  ///
+  /// es:  **'Ya hay un tour en curso, ¿quieres continuar o empezar uno nuevo?'**
+  static const tourInProgressText = 'tourInProgressText';
+
+  /// Translations:
+  ///
+  /// en:  **'Start new tour'**
+  ///
+  /// nl:  **'Start nieuwe tour'**
+  ///
+  /// fr:  **'Commencer une nouvelle visite'**
+  ///
+  /// es:  **'Iniciar nuevo tour'**
+  static const startNewTourButton = 'startNewTourButton';
+
+  /// Translations:
+  ///
+  /// en:  **'Warning, this will result in long races!'**
+  ///
+  /// nl:  **'Waarschuwing, dit zal resulteren in lange tochten!'**
+  ///
+  /// fr:  **'Attention, ceci entraînera des courses longues !'**
+  ///
+  /// es:  **'¡Advertencia, esto resultará en carreras largas!'**
+  static const longTourWarning = 'longTourWarning';
+
+  /// Translations:
+  ///
+  /// en:  **'back'**
+  ///
+  /// nl:  **'back'**
+  ///
+  /// fr:  **'Retour'**
+  ///
+  /// es:  **'back'**
+  static const backButton = 'backButton';
+
+  /// Translations:
+  ///
+  /// en:  **'start'**
+  ///
+  /// nl:  **'start'**
+  ///
+  /// fr:  **'start'**
+  ///
+  /// es:  **'start'**
+  static const startButton = 'startButton';
+
+  /// Translations:
+  ///
+  /// en:  **'races:'**
+  ///
+  /// nl:  **'races:'**
+  ///
+  /// fr:  **'courses:'**
+  ///
+  /// es:  **'carreras:'**
+  static const tourRaces = 'tourRaces';
+
+  /// Translations:
+  ///
+  /// en:  **'Understood'**
+  ///
+  /// nl:  **'Begrepen'**
+  ///
+  /// fr:  **'Compris'**
+  ///
+  /// es:  **'Entendido'**
+  static const tutorialConfirm = 'tutorialConfirm';
+
+  /// Translations:
+  ///
+  /// en:  **'OK'**
+  ///
+  /// nl:  **'OK'**
+  ///
+  /// fr:  **'OK'**
+  ///
+  /// es:  **'OK'**
+  static const okButton = 'okButton';
+
+  /// Translations:
+  ///
+  /// en:  **'Autofollow ask above threshold'**
+  ///
+  /// nl:  **'Autofollow vragen boven drempel'**
+  ///
+  /// fr:  **'Autofollow demander au-dessus du seuil'**
+  ///
+  /// es:  **'Autofollow pedir por encima del umbral'**
+  static const settingsAutofollowAskAboveThreshold = 'settingsAutofollowAskAboveThreshold';
+
+  /// Translations:
+  ///
+  /// en:  **'Change cyclist names'**
+  ///
+  /// nl:  **'Wijzig namen'**
+  ///
+  /// fr:  **'Changer les noms des cyclistes'**
+  ///
+  /// es:  **'Cambiar nombres de ciclistas'**
+  static const changeNamesButton = 'changeNamesButton';
+
+  /// Translations:
+  ///
   /// en:  **'credits'**
   ///
   /// nl:  **'credits'**
@@ -474,6 +662,39 @@ class LocalizationKeys {
   ///
   /// es:  **'Este juego fue desarrollado por WiVe.\n\nLas siguientes personas lo han hecho posible \n\nBart barto - jinete sprite \nthedarkbear.itch.io/3-parallax - el fondo de los menús \nKenney.nl - para los iconos y la naturaleza \nkidcomic.net - el icono \nSaranai - Elementos de interfaz de usuario'**
   static const creditsText = 'creditsText';
+
+  /// Translations:
+  ///
+  /// en:  **'Change Cyclist names'**
+  ///
+  /// nl:  **'Wijzig namen'**
+  ///
+  /// fr:  **'Changer les noms des cyclistes'**
+  ///
+  /// es:  **'Cambiar nombres de ciclistas'**
+  static const changeNamesTitle = 'changeNamesTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Tour in progress'**
+  ///
+  /// nl:  **'Tour in uitvoering'**
+  ///
+  /// fr:  **'Tour en cours'**
+  ///
+  /// es:  **'Tour en progreso'**
+  static const tourInProgressTitle = 'tourInProgressTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Follow'**
+  ///
+  /// nl:  **'Volgen'**
+  ///
+  /// fr:  **'Suivez'**
+  ///
+  /// es:  **'Seguir'**
+  static const followTitle = 'followTitle';
 
   /// Translations:
   ///
@@ -1651,4 +1872,5 @@ class LocalizationKeys {
   ///
   /// es:  **'Equipo'**
   static const resultsTeamTitle = 'resultsTeamTitle';
+
 }

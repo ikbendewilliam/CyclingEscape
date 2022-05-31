@@ -20,12 +20,11 @@ class Localization {
 
   Localization({required this.locale});
 
-  static Future<Localization> load(
-    Locale locale, {
+  static Future<Localization> load(Locale locale, {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
-  }) async {
+    }) async {
     final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
       return localizations;
@@ -516,6 +515,193 @@ class Localization {
 
   /// Translations:
   ///
+  /// en:  **'Tour overview'**
+  ///
+  /// nl:  **'Touroverzicht'**
+  ///
+  /// fr:  **'Aperçu de la tour'**
+  ///
+  /// es:  **'Resumen del tour'**
+  String get activeTourTitle => _t(LocalizationKeys.activeTourTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'current stadings after race [arg1 number] of [arg2 number]'**
+  ///
+  /// nl:  **'huidige stadings na race [arg1 number] of [arg2 number]'**
+  ///
+  /// fr:  **'Classement actuel après la course [arg1 number] de [arg2 number]'**
+  ///
+  /// es:  **'stadings actuales después de la carrera [arg1 number] de [arg2 number]'**
+  String activeTourStandings(num arg1, num arg2) => _t(LocalizationKeys.activeTourStandings, args: <dynamic>[arg1, arg2]);
+
+  /// Translations:
+  ///
+  /// en:  **'Results will show here after the first race'**
+  ///
+  /// nl:  **'Uitslagen worden hier getoond na de eerste race'**
+  ///
+  /// fr:  **'Les résultats seront affichés ici après la première course'**
+  ///
+  /// es:  **'Los resultados se mostrarán aquí después de la primera carrera'**
+  String get activeTourFirstRace => _t(LocalizationKeys.activeTourFirstRace);
+
+  /// Translations:
+  ///
+  /// en:  **'Your team'**
+  ///
+  /// nl:  **'Uw team'**
+  ///
+  /// fr:  **'Votre équipe'**
+  ///
+  /// es:  **'Tu equipo'**
+  String get yourTeam => _t(LocalizationKeys.yourTeam);
+
+  /// Translations:
+  ///
+  /// en:  **'Start next race'**
+  ///
+  /// nl:  **'Start volgende race'**
+  ///
+  /// fr:  **'Commencer la prochaine course'**
+  ///
+  /// es:  **'Iniciar la siguiente carrera'**
+  String get nextRaceButton => _t(LocalizationKeys.nextRaceButton);
+
+  /// Translations:
+  ///
+  /// en:  **'Finish'**
+  ///
+  /// nl:  **'Finish'**
+  ///
+  /// fr:  **'Finir'**
+  ///
+  /// es:  **'Finish'**
+  String get finishButton => _t(LocalizationKeys.finishButton);
+
+  /// Translations:
+  ///
+  /// en:  **'Warning, this will result in a long race!'**
+  ///
+  /// nl:  **'Waarschuwing, dit zal resulteren in een lange race!'**
+  ///
+  /// fr:  **'Avertissement, ceci entraînera une longue course !'**
+  ///
+  /// es:  **'¡Advertencia, esto resultará en una carrera larga!'**
+  String get longRaceWarning => _t(LocalizationKeys.longRaceWarning);
+
+  /// Translations:
+  ///
+  /// en:  **'There is already a tour in progress, do you want to continue or start a new one?'**
+  ///
+  /// nl:  **'Er is al een tour aan de gang, wil je doorgaan of een nieuwe starten?'**
+  ///
+  /// fr:  **'Il y a déjà une tour en cours, voulez-vous continuer ou en commencer une nouvelle ?'**
+  ///
+  /// es:  **'Ya hay un tour en curso, ¿quieres continuar o empezar uno nuevo?'**
+  String get tourInProgressText => _t(LocalizationKeys.tourInProgressText);
+
+  /// Translations:
+  ///
+  /// en:  **'Start new tour'**
+  ///
+  /// nl:  **'Start nieuwe tour'**
+  ///
+  /// fr:  **'Commencer une nouvelle visite'**
+  ///
+  /// es:  **'Iniciar nuevo tour'**
+  String get startNewTourButton => _t(LocalizationKeys.startNewTourButton);
+
+  /// Translations:
+  ///
+  /// en:  **'Warning, this will result in long races!'**
+  ///
+  /// nl:  **'Waarschuwing, dit zal resulteren in lange tochten!'**
+  ///
+  /// fr:  **'Attention, ceci entraînera des courses longues !'**
+  ///
+  /// es:  **'¡Advertencia, esto resultará en carreras largas!'**
+  String get longTourWarning => _t(LocalizationKeys.longTourWarning);
+
+  /// Translations:
+  ///
+  /// en:  **'back'**
+  ///
+  /// nl:  **'back'**
+  ///
+  /// fr:  **'Retour'**
+  ///
+  /// es:  **'back'**
+  String get backButton => _t(LocalizationKeys.backButton);
+
+  /// Translations:
+  ///
+  /// en:  **'start'**
+  ///
+  /// nl:  **'start'**
+  ///
+  /// fr:  **'start'**
+  ///
+  /// es:  **'start'**
+  String get startButton => _t(LocalizationKeys.startButton);
+
+  /// Translations:
+  ///
+  /// en:  **'races:'**
+  ///
+  /// nl:  **'races:'**
+  ///
+  /// fr:  **'courses:'**
+  ///
+  /// es:  **'carreras:'**
+  String get tourRaces => _t(LocalizationKeys.tourRaces);
+
+  /// Translations:
+  ///
+  /// en:  **'Understood'**
+  ///
+  /// nl:  **'Begrepen'**
+  ///
+  /// fr:  **'Compris'**
+  ///
+  /// es:  **'Entendido'**
+  String get tutorialConfirm => _t(LocalizationKeys.tutorialConfirm);
+
+  /// Translations:
+  ///
+  /// en:  **'OK'**
+  ///
+  /// nl:  **'OK'**
+  ///
+  /// fr:  **'OK'**
+  ///
+  /// es:  **'OK'**
+  String get okButton => _t(LocalizationKeys.okButton);
+
+  /// Translations:
+  ///
+  /// en:  **'Autofollow ask above threshold'**
+  ///
+  /// nl:  **'Autofollow vragen boven drempel'**
+  ///
+  /// fr:  **'Autofollow demander au-dessus du seuil'**
+  ///
+  /// es:  **'Autofollow pedir por encima del umbral'**
+  String get settingsAutofollowAskAboveThreshold => _t(LocalizationKeys.settingsAutofollowAskAboveThreshold);
+
+  /// Translations:
+  ///
+  /// en:  **'Change cyclist names'**
+  ///
+  /// nl:  **'Wijzig namen'**
+  ///
+  /// fr:  **'Changer les noms des cyclistes'**
+  ///
+  /// es:  **'Cambiar nombres de ciclistas'**
+  String get changeNamesButton => _t(LocalizationKeys.changeNamesButton);
+
+  /// Translations:
+  ///
   /// en:  **'credits'**
   ///
   /// nl:  **'credits'**
@@ -535,6 +721,39 @@ class Localization {
   ///
   /// es:  **'Este juego fue desarrollado por WiVe.\n\nLas siguientes personas lo han hecho posible \n\nBart barto - jinete sprite \nthedarkbear.itch.io/3-parallax - el fondo de los menús \nKenney.nl - para los iconos y la naturaleza \nkidcomic.net - el icono \nSaranai - Elementos de interfaz de usuario'**
   String get creditsText => _t(LocalizationKeys.creditsText);
+
+  /// Translations:
+  ///
+  /// en:  **'Change Cyclist names'**
+  ///
+  /// nl:  **'Wijzig namen'**
+  ///
+  /// fr:  **'Changer les noms des cyclistes'**
+  ///
+  /// es:  **'Cambiar nombres de ciclistas'**
+  String get changeNamesTitle => _t(LocalizationKeys.changeNamesTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Tour in progress'**
+  ///
+  /// nl:  **'Tour in uitvoering'**
+  ///
+  /// fr:  **'Tour en cours'**
+  ///
+  /// es:  **'Tour en progreso'**
+  String get tourInProgressTitle => _t(LocalizationKeys.tourInProgressTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Follow'**
+  ///
+  /// nl:  **'Volgen'**
+  ///
+  /// fr:  **'Suivez'**
+  ///
+  /// es:  **'Seguir'**
+  String get followTitle => _t(LocalizationKeys.followTitle);
 
   /// Translations:
   ///
@@ -1714,4 +1933,5 @@ class Localization {
   String get resultsTeamTitle => _t(LocalizationKeys.resultsTeamTitle);
 
   String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+
 }

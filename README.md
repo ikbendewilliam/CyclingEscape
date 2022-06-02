@@ -4,6 +4,7 @@
 [ ] Information
 [ ] Save race progress
 [ ] Career
+[ ] Preload images
 
 ## Assets
 

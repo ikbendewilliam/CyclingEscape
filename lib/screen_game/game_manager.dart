@@ -6,6 +6,7 @@ import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart'
 import 'package:cycling_escape/screen_game/cycling_view.dart';
 import 'package:cycling_escape/util/canvas/canvas_utils.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
+import 'package:cycling_escape/util/save/save_util.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
@@ -54,37 +55,57 @@ class GameManager with Game, ScaleDetector, TapDetector {
 
   Future<void> addListener(GameListener listener) async {
     _listener = listener;
-    _view = CyclingView(
+    _canStartLoading.complete();
+  }
+
+  @override
+  Future<void> onLoad() async {
+    await _load();
+    return super.onLoad();
+  }
+
+  Future<void> _onPause() async {
+    _listener?.onPause();
+    SaveUtil.saveCyclingView(view);
+  }
+
+  Future<void> _load() async {
+    await _canStartLoading.future; // Wait for the listener to be added
+    await _listener!.spriteManager.loadSprites();
+    if (_listener?.playSettings.loadGame == true) {
+      _view = SaveUtil.loadCyclingView(
+        spriteManager: _listener!.spriteManager,
+        onEndCycling: _onEndCycling,
+        localStorage: _listener!.localStorage,
+        localizations: _listener!.localizations,
+        openTutorial: _listener!.openTutorial,
+        onSelectFollow: _listener!.onSelectFollow,
+        onPause: _onPause,
+      );
+    }
+    _view ??= CyclingView(
       spriteManager: _listener!.spriteManager,
-      onEndCycling: _listener!.onEndCycling,
+      onEndCycling: _onEndCycling,
       localStorage: _listener!.localStorage,
       localizations: _listener!.localizations,
       openTutorial: _listener!.openTutorial,
       onSelectFollow: _listener!.onSelectFollow,
       onPause: _onPause,
     );
-    _canStartLoading.complete();
-  }
-
-  @override
-  Future<void>? onLoad() async {
-    await _load();
-    return super.onLoad();
-  }
-
-  Future<void> _load() async {
-    await _canStartLoading.future; // Wait for the listener to be added
-    await _listener!.spriteManager.loadSprites();
+    view.resize(size.toSize());
     view.onAttach(playSettings: _listener!.playSettings);
     view.resize(size.toSize());
     _loading = false;
   }
 
-  void _onPause() => _listener?.onPause();
+  Future<void> _onEndCycling(List<Sprint>? sprints) async {
+    _listener?.onEndCycling(sprints);
+    await SaveUtil.clearCyclingView();
+  }
 
   @override
   void onGameResize(Vector2 size) {
-    view.resize(size.toSize());
+    _view?.resize(size.toSize());
     super.onGameResize(size);
   }
 
@@ -118,7 +139,7 @@ class GameManager with Game, ScaleDetector, TapDetector {
   @override
   void lifecycleStateChange(AppLifecycleState state) {
     if (state == AppLifecycleState.inactive && !view.ended && view.map != null) {
-      // SaveUtil.saveCyclingView(view); // TODO: Save cycling view
+      SaveUtil.saveCyclingView(view);
     }
   }
 

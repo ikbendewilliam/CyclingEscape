@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:cycling_escape/repository/debug/debug_repository.dart';
 import 'package:cycling_escape/repository/locale/locale_repository.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
+import 'package:cycling_escape/styles/theme_assets.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/util/locale/localization_delegate.dart';
@@ -36,10 +39,11 @@ class GlobalViewModel with ChangeNotifierEx {
 
   bool get showsTranslationKeys => _showsTranslationKeys;
 
-  Future<void> init() async {
+  Future<void> init(BuildContext context) async {
     _initLocale();
     _initTargetPlatform();
     _getThemeMode();
+    _preloadImages(context);
     AutoOrientation.landscapeAutoMode();
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
@@ -55,6 +59,11 @@ class GlobalViewModel with ChangeNotifierEx {
       _localeDelegate = LocalizationDelegate(newLocale: locale);
       notifyListeners();
     }
+  }
+
+  void _preloadImages(BuildContext context) {
+    imageCache.maximumSize = 256 + ThemeAssets.all.length;
+    ThemeAssets.all.map((image) => precacheImage(AssetImage(image), context));
   }
 
   void _getThemeMode() {

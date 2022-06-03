@@ -10,6 +10,7 @@ class PlaySettings {
   final MapLength mapLength;
   final int? totalRaces;
   Results? tourResults;
+  final bool loadGame;
 
   PlaySettings(
     this.teams,
@@ -18,7 +19,16 @@ class PlaySettings {
     this.mapLength,
     this.tourResults, [
     this.totalRaces = 1,
-  ]);
+  ]) : loadGame = false;
+
+  PlaySettings.load()
+      : loadGame = true,
+        teams = 1,
+        ridersPerTeam = 1,
+        mapType = MapType.flat,
+        mapLength = MapLength.short,
+        tourResults = null,
+        totalRaces = null;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'teams': teams,

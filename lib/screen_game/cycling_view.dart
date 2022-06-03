@@ -13,6 +13,7 @@ import 'package:cycling_escape/widget_game/data/cyclist_place.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/data/results.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:cycling_escape/widget_game/moveable/dice.dart';
@@ -85,88 +86,93 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   });
 
   @override
-  void onAttach({required PlaySettings playSettings, int? team}) {
+  void onAttach({
+    required PlaySettings playSettings,
+    int? team,
+  }) {
     final currentResults = playSettings.tourResults;
-    map = MapUtils.generateMap(playSettings, this, spriteManager);
-    mapSize = map!.mapSize;
-    if (currentResults != null) {
-      if (currentResults.data.isNotEmpty) {
-        startResults = currentResults.copy();
-        hasResults = true;
+    if (map == null) {
+      map = MapUtils.generateMap(playSettings, this, spriteManager);
+      mapSize = map!.mapSize;
+      if (currentResults != null) {
+        if (currentResults.data.isNotEmpty) {
+          startResults = currentResults.copy();
+          hasResults = true;
+        } else {
+          hasResults = false;
+        }
+        teams = [];
+        for (int i = 0; i < playSettings.teams; i++) {
+          if (team != null) {
+            if (i == 0) {
+              teams!.add(Team(true, team, spriteManager));
+            } else {
+              teams!.add(Team(false, i == team ? 0 : i, spriteManager));
+            }
+          } else {
+            teams!.add(Team(i == 0, i, spriteManager));
+          }
+        }
+        tempResults = Results(ResultsType.race);
+        currentResults.data.asMap().forEach((key, value) => {value.rank = key});
+        final cyclists = <Cyclist>[];
+        final maxCyclists = playSettings.teams * playSettings.ridersPerTeam;
+        for (var i = 0; i < maxCyclists; i++) {
+          final teamIndex = (i / playSettings.ridersPerTeam).floor();
+          final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
+
+          cyclist.rank = currentResults.data.firstWhereOrNull((element) => element.number == cyclist.number)?.rank ?? i;
+          cyclist.wearsYellowJersey = (cyclist.rank == 0);
+          cyclist.wearsWhiteJersey = currentResults.whiteJersey == cyclist.number;
+          cyclist.wearsGreenJersey = currentResults.greenJersey == cyclist.number;
+          cyclist.wearsBouledJersey = currentResults.bouledJersey == cyclist.number;
+
+          cyclists.add(cyclist);
+          teams![teamIndex]!.cyclists.add(cyclist);
+          tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
+        }
+        cyclists.sort((a, b) => b.rank! - a.rank!);
+
+        for (final entry in cyclists.asMap().entries) {
+          if (map!.positions!.length < entry.key) continue; // Out of bounds
+          map!.positions![entry.key].addCyclist(entry.value);
+          entry.value.lastPosition = map!.positions![entry.key];
+        }
       } else {
         hasResults = false;
-      }
-      teams = [];
-      for (int i = 0; i < playSettings.teams; i++) {
-        if (team != null) {
-          if (i == 0) {
-            teams!.add(Team(true, team, spriteManager));
+        teams = [];
+        for (int i = 0; i < playSettings.teams; i++) {
+          if (team != null) {
+            if (i == 0) {
+              teams!.add(Team(true, team, spriteManager));
+            } else {
+              teams!.add(Team(false, i == team ? 0 : i, spriteManager));
+            }
           } else {
-            teams!.add(Team(false, i == team ? 0 : i, spriteManager));
+            teams!.add(Team(i == 0, i, spriteManager));
           }
-        } else {
-          teams!.add(Team(i == 0, i, spriteManager));
+        }
+        tempResults = Results(ResultsType.race);
+        teams?.shuffle();
+        for (var i = 0; i < playSettings.teams * playSettings.ridersPerTeam; i++) {
+          final teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
+          final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
+          tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
+          teams![teamIndex]!.cyclists.add(cyclist);
+          map!.positions![i].addCyclist(cyclist);
         }
       }
-      tempResults = Results(ResultsType.race);
-      currentResults.data.asMap().forEach((key, value) => {value.rank = key});
-      final cyclists = <Cyclist>[];
-      final maxCyclists = playSettings.teams * playSettings.ridersPerTeam;
-      for (var i = 0; i < maxCyclists; i++) {
-        final teamIndex = (i / playSettings.ridersPerTeam).floor();
-        final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
-
-        cyclist.rank = currentResults.data.firstWhereOrNull((element) => element.number == cyclist.number)?.rank ?? i;
-        cyclist.wearsYellowJersey = (cyclist.rank == 0);
-        cyclist.wearsWhiteJersey = currentResults.whiteJersey == cyclist.number;
-        cyclist.wearsGreenJersey = currentResults.greenJersey == cyclist.number;
-        cyclist.wearsBouledJersey = currentResults.bouledJersey == cyclist.number;
-
-        cyclists.add(cyclist);
-        teams![teamIndex]!.cyclists.add(cyclist);
-        tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
-      }
-      cyclists.sort((a, b) => b.rank! - a.rank!);
-
-      for (final entry in cyclists.asMap().entries) {
-        if (map!.positions!.length < entry.key) continue; // Out of bounds
-        map!.positions![entry.key].addCyclist(entry.value);
-        entry.value.lastPosition = map!.positions![entry.key];
-      }
-    } else {
-      hasResults = false;
-      teams = [];
-      for (int i = 0; i < playSettings.teams; i++) {
-        if (team != null) {
-          if (i == 0) {
-            teams!.add(Team(true, team, spriteManager));
-          } else {
-            teams!.add(Team(false, i == team ? 0 : i, spriteManager));
-          }
-        } else {
-          teams!.add(Team(i == 0, i, spriteManager));
-        }
-      }
-      tempResults = Results(ResultsType.race);
-      teams?.shuffle();
-      for (var i = 0; i < playSettings.teams * playSettings.ridersPerTeam; i++) {
-        final teamIndex = (i - (i / playSettings.teams).floor()) % playSettings.teams;
-        final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
-        tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
-        teams![teamIndex]!.cyclists.add(cyclist);
-        map!.positions![i].addCyclist(cyclist);
-      }
+      currentTurn = 0;
+      ended = false;
+      autoFollow = false;
+      offsetStart = Offset.zero;
+      offset = Offset.zero;
+      zoom = 0.5;
+      notifications = [];
+      minZoom = 0.2;
+      handleInBetweenTurns();
+      processGameState(GameState.gameSelectNext);
     }
-    currentTurn = 0;
-    ended = false;
-    autoFollow = false;
-    offsetStart = Offset.zero;
-    offset = Offset.zero;
-    zoom = 0.5;
-    notifications = [];
-    minZoom = 0.2;
-    handleInBetweenTurns();
-    processGameState(GameState.gameSelectNext);
     createButtons(screenSize != null ? screenSize!.height / 7 : 10);
     if (openFollowSelect) processGameState(GameState.userWaitCyclistFollow);
     grass ??= spriteManager.getSprite('environment/grass.png');
@@ -222,8 +228,25 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     movingCyclist?.render(canvas, movingCyclist!.movingOffset! * tileSize, tileSize / 3, movingCyclist!.movingAngle);
     canvas.restore();
 
-    CyclingViewUI.render(canvas, tileSize, screenSize, dice, dice2, buttons, notifications, backgroundNotification, backgroundText, iconTime, iconRank, iconPoints, iconMountain,
-        movingCyclist ?? cyclistSelected!.cyclist, tempResults, diceValueCooldown, diceValue);
+    CyclingViewUI.render(
+      canvas: canvas,
+      tileSize: tileSize,
+      screenSize: screenSize,
+      dice: dice,
+      dice2: dice2,
+      buttons: buttons,
+      notifications: notifications,
+      backgroundNotification: backgroundNotification,
+      backgroundText: backgroundText,
+      iconTime: iconTime,
+      iconRank: iconRank,
+      iconPoints: iconPoints,
+      iconMountain: iconMountain,
+      cyclist: movingCyclist ?? cyclistSelected!.cyclist,
+      tempResults: tempResults,
+      diceValueCooldown: diceValueCooldown,
+      diceValue: diceValue,
+    );
   }
 
   @override
@@ -642,172 +665,182 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     }
   }
 
-  // static CyclingView? fromJson(Map<String, dynamic>? json, SpriteManager spriteManager, Function onEndCycling, NavigateType navigate, Settings localStorage,
-  //     Localization localizations, Function openTutorial) {
-  //   final List<Position?> existingPositions = [];
-  //   final List<Sprint?> existingSprints = [];
-  //   final List<Cyclist?> existingCyclists = [];
-  //   final List<Team?> existingTeams = [];
+  static CyclingView? fromJson({
+    required Map<String, dynamic>? json,
+    required SpriteManager spriteManager,
+    required LocalStorage localStorage,
+    required VoidCallback onPause,
+    required Localization localizations,
+    required ValueChanged<List<Sprint>?> onEndCycling,
+    required ValueChanged<TutorialType> openTutorial,
+    required Future<FollowType> Function() onSelectFollow,
+  }) {
+    final List<Position?> existingPositions = [];
+    final List<Sprint?> existingSprints = [];
+    final List<Cyclist?> existingCyclists = [];
+    final List<Team?> existingTeams = [];
+    if (json == null || json['map'] == null) return null;
 
-  //   if (json == null || json['map'] == null) {
-  //     return null;
-  //   }
-  //   final CyclingView cyclingView = CyclingView(spriteManager, onEndCycling, navigate, localStorage, localizations, openTutorial);
-  //   if (json['teams'] != null) {
-  //     cyclingView.teams = [];
-  //     for (final j in json['teams']) {
-  //       cyclingView.teams!.add(Team.fromJson(j as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager));
-  //     }
-  //   }
-  //   cyclingView.map = GameMap.fromJson(json['map'] as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView);
-  //   cyclingView.diceValue = json['diceValue'] as int;
-  //   cyclingView.currentTurn = json['currentTurn'] as int;
-  //   cyclingView.grid = json['grid'] == true;
-  //   cyclingView.ended = json['ended'] as bool?;
-  //   cyclingView.moving = json['moving'] as bool?;
-  //   cyclingView.autoFollow = json['autoFollow'] as bool?;
-  //   cyclingView.hasResults = json['hasResults'] as bool?;
-  //   cyclingView.openFollowSelect = json['openFollowSelect'] as bool?;
-  //   cyclingView.dice = Dice.fromJson(json['dice'] as Map<String, dynamic>?, cyclingView, spriteManager);
-  //   cyclingView.dice2 = Dice.fromJson(json['dice2'] as Map<String, dynamic>?, cyclingView, spriteManager);
-  //   cyclingView.worldSize = SaveUtil.sizeFromJson(json['worldSize'] as Map<String, dynamic>?);
-  //   cyclingView.mapSize = SaveUtil.sizeFromJson(json['mapSize'] as Map<String, dynamic>?);
-  //   cyclingView.offset = SaveUtil.offsetFromJson(json['offset'] as Map<String, dynamic>?)!;
-  //   cyclingView.zoom = json['zoom'] as double;
-  //   cyclingView.inCareer = json['inCareer'] as bool?;
-  //   cyclingView.movingTimer = json['movingTimer'] as double;
-  //   cyclingView.tileSize = json['tileSize'] as double? ?? 1.0;
-  //   cyclingView.cyclistMoved = json['cyclistMoved'] as double?;
-  //   cyclingView.diceValueCooldown = json['diceValueCooldown'] as double;
-  //   cyclingView.movingCyclist = Cyclist.fromJson(json['movingCyclist'] as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager);
-  //   cyclingView.tempResults = Results.fromJson(json['tempResults'] as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager);
-  //   cyclingView.startResults = Results.fromJson(json['startResults'] as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager);
-  //   cyclingView.cyclistSelected =
-  //       Position.fromJson(json['cyclistSelected'] as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView);
-  //   cyclingView.cyclistLastSelected =
-  //       Position.fromJson(json['cyclistLastSelected'] as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView);
-  //   cyclingView.gameState = getGameStateFromString(json['gameState'] as String?);
-  //   cyclingView.careerRaceType = RaceType.fromJson(json['careerRaceType'] as Map<String, dynamic>?);
-  //   cyclingView.followSelect = json['followSelect'] as FollowSelect?;
+    final cyclingView = CyclingView(
+      spriteManager: spriteManager,
+      onEndCycling: onEndCycling,
+      localStorage: localStorage,
+      localizations: localizations,
+      openTutorial: openTutorial,
+      onPause: onPause,
+      onSelectFollow: onSelectFollow,
+    );
+    if (json['teams'] != null) {
+      cyclingView.teams = [];
+      for (final j in json['teams']) {
+        cyclingView.teams!.add(Team.fromJson(j as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager));
+      }
+    }
+    cyclingView.map = GameMap.fromJson(json['map'] as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView);
+    cyclingView.diceValue = json['diceValue'] as int?;
+    cyclingView.currentTurn = json['currentTurn'] as int?;
+    cyclingView.grid = json['grid'] == true;
+    cyclingView.ended = json['ended'] as bool;
+    cyclingView.moving = json['moving'] as bool;
+    cyclingView.autoFollow = json['autoFollow'] as bool;
+    cyclingView.hasResults = json['hasResults'] as bool;
+    cyclingView.openFollowSelect = json['openFollowSelect'] as bool;
+    cyclingView.dice = Dice.fromJson(json['dice'] as Map<String, dynamic>?, cyclingView, spriteManager);
+    cyclingView.dice2 = Dice.fromJson(json['dice2'] as Map<String, dynamic>?, cyclingView, spriteManager);
+    cyclingView.worldSize = SaveUtil.sizeFromJson(json['worldSize'] as Map<String, dynamic>?);
+    cyclingView.mapSize = SaveUtil.sizeFromJson(json['mapSize'] as Map<String, dynamic>?);
+    cyclingView.offset = SaveUtil.offsetFromJson(json['offset'] as Map<String, dynamic>?)!;
+    cyclingView.zoom = json['zoom'] as double;
+    cyclingView.inCareer = json['inCareer'] as bool;
+    cyclingView.movingTimer = json['movingTimer'] as double;
+    cyclingView.tileSize = json['tileSize'] as double? ?? 1.0;
+    cyclingView.cyclistMoved = json['cyclistMoved'] as double?;
+    cyclingView.diceValueCooldown = json['diceValueCooldown'] as double;
+    cyclingView.movingCyclist = Cyclist.fromJson(json['movingCyclist'] as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager);
+    cyclingView.tempResults = Results.fromJson(json['tempResults'] as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager);
+    cyclingView.startResults = Results.fromJson(json['startResults'] as Map<String, dynamic>?, existingCyclists, existingTeams, spriteManager);
+    cyclingView.cyclistSelected =
+        Position.fromJson(json['cyclistSelected'] as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView);
+    cyclingView.cyclistLastSelected =
+        Position.fromJson(json['cyclistLastSelected'] as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView);
+    cyclingView.gameState = getGameStateFromString(json['gameState'] as String?);
 
-  //   if (json['moveAnimation'] != null) {
-  //     cyclingView.moveAnimation = [];
-  //     for (final j in json['moveAnimation']) {
-  //       cyclingView.moveAnimation!
-  //           .add(Position.fromJson(j as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView));
-  //     }
-  //   }
+    if (json['moveAnimation'] != null) {
+      cyclingView.moveAnimation = [];
+      for (final j in json['moveAnimation']) {
+        cyclingView.moveAnimation!
+            .add(Position.fromJson(j as Map<String, dynamic>?, existingPositions, existingSprints, existingCyclists, existingTeams, spriteManager, cyclingView));
+      }
+    }
 
-  //   if (json['notifications'] != null) {
-  //     cyclingView.notifications = [];
-  //     for (final j in json['notifications']) {
-  //       cyclingView.notifications.add(Notification.fromJson(j as Map<String, dynamic>));
-  //     }
-  //   }
+    if (json['notifications'] != null) {
+      cyclingView.notifications = [];
+      for (final j in json['notifications']) {
+        cyclingView.notifications.add(Notification.fromJson(j as Map<String, dynamic>));
+      }
+    }
 
-  //   for (final element in cyclingView.tempResults?.data ?? <ResultData?>[]) {
-  //     if (element!.team!.isPlaceHolder) {
-  //       element.team = existingTeams.firstWhere((existing) => existing!.id == element.team!.id, orElse: () => element.team);
-  //     }
-  //   }
-  //   for (final element in cyclingView.startResults?.data ?? <ResultData?>[]) {
-  //     if (element!.team!.isPlaceHolder) {
-  //       element.team = existingTeams.firstWhere((existing) => existing!.id == element.team!.id, orElse: () => element.team);
-  //     }
-  //   }
-  //   cyclingView.map!.sprints?.forEach((sprint) {
-  //     for (final element in sprint.cyclistPlaces) {
-  //       if (element!.cyclist!.isPlaceHolder) {
-  //         element.cyclist = existingCyclists.firstWhere((existing) => existing!.id == element.cyclist!.id, orElse: () => element.cyclist);
-  //       }
-  //     }
-  //   });
-  //   for (final element in existingPositions) {
-  //     if (element!.cyclist?.isPlaceHolder == true) {
-  //       element.cyclist = existingCyclists.firstWhere((existing) => existing!.id == element.cyclist!.id, orElse: () => element.cyclist);
-  //     }
-  //     if (element.sprint?.isPlaceHolder == true) {
-  //       element.sprint = existingSprints.firstWhere((existing) => existing!.id == element.sprint!.id, orElse: () => element.sprint);
-  //     }
-  //     for (int i = 0; i < element.connections!.length; i++) {
-  //       if (element.connections![i]!.isPlaceHolder) {
-  //         element.connections![i] = existingPositions.firstWhere((existing) => existing!.id == element.connections![i]!.id, orElse: () => element.connections![i]);
-  //       }
-  //     }
-  //     for (int i = 0; i < element.route!.length; i++) {
-  //       if (element.route![i]!.isPlaceHolder) {
-  //         element.route![i] = existingPositions.firstWhere((existing) => existing!.id == element.route![i]!.id, orElse: () => element.route![i]);
-  //       }
-  //     }
-  //   }
-  //   for (final element in existingCyclists) {
-  //     if (element!.team!.isPlaceHolder) {
-  //       element.team = existingTeams.firstWhere((existing) => existing!.id == element.team!.id, orElse: () => element.team);
-  //     }
-  //     if (element.lastPosition?.isPlaceHolder == true) {
-  //       element.lastPosition = existingPositions.firstWhere((existing) => existing!.id == element.lastPosition!.id, orElse: () => element.lastPosition);
-  //     }
-  //   }
-  //   for (final team in existingTeams) {
-  //     for (int i = 0; i < team!.cyclists.length; i++) {
-  //       if (team.cyclists[i]!.isPlaceHolder) {
-  //         team.cyclists[i] = existingCyclists.firstWhere((existing) => existing!.id == team.cyclists[i]!.id, orElse: () => team.cyclists[i]);
-  //       }
-  //     }
-  //   }
+    for (final element in cyclingView.tempResults?.data ?? <ResultData?>[]) {
+      if (element!.team!.isPlaceHolder) {
+        element.team = existingTeams.firstWhere((existing) => existing!.id == element.team!.id, orElse: () => element.team);
+      }
+    }
+    for (final element in cyclingView.startResults?.data ?? <ResultData?>[]) {
+      if (element!.team!.isPlaceHolder) {
+        element.team = existingTeams.firstWhere((existing) => existing!.id == element.team!.id, orElse: () => element.team);
+      }
+    }
+    cyclingView.map!.sprints?.forEach((sprint) {
+      for (final element in sprint.cyclistPlaces) {
+        if (element!.cyclist!.isPlaceHolder) {
+          element.cyclist = existingCyclists.firstWhere((existing) => existing!.id == element.cyclist!.id, orElse: () => element.cyclist);
+        }
+      }
+    });
+    for (final element in existingPositions) {
+      if (element!.cyclist?.isPlaceHolder == true) {
+        element.cyclist = existingCyclists.firstWhere((existing) => existing!.id == element.cyclist!.id, orElse: () => element.cyclist);
+      }
+      if (element.sprint?.isPlaceHolder == true) {
+        element.sprint = existingSprints.firstWhere((existing) => existing!.id == element.sprint!.id, orElse: () => element.sprint);
+      }
+      for (int i = 0; i < element.connections!.length; i++) {
+        if (element.connections![i]!.isPlaceHolder) {
+          element.connections![i] = existingPositions.firstWhere((existing) => existing!.id == element.connections![i]!.id, orElse: () => element.connections![i]);
+        }
+      }
+      for (int i = 0; i < element.route!.length; i++) {
+        if (element.route![i]!.isPlaceHolder) {
+          element.route![i] = existingPositions.firstWhere((existing) => existing!.id == element.route![i]!.id, orElse: () => element.route![i]);
+        }
+      }
+    }
+    for (final element in existingCyclists) {
+      if (element!.team!.isPlaceHolder) {
+        element.team = existingTeams.firstWhere((existing) => existing!.id == element.team!.id, orElse: () => element.team);
+      }
+      if (element.lastPosition?.isPlaceHolder == true) {
+        element.lastPosition = existingPositions.firstWhere((existing) => existing!.id == element.lastPosition!.id, orElse: () => element.lastPosition);
+      }
+    }
+    for (final team in existingTeams) {
+      for (int i = 0; i < team!.cyclists.length; i++) {
+        if (team.cyclists[i]!.isPlaceHolder) {
+          team.cyclists[i] = existingCyclists.firstWhere((existing) => existing!.id == team.cyclists[i]!.id, orElse: () => team.cyclists[i]);
+        }
+      }
+    }
 
-  //   return cyclingView;
-  // }
+    return cyclingView;
+  }
 
-  // Map<String, dynamic> toJson() {
-  //   final data = <String, dynamic>{};
-  //   data['grid'] = grid;
-  //   data['diceValue'] = diceValue;
-  //   data['currentTurn'] = currentTurn;
-  //   data['ended'] = ended;
-  //   data['moving'] = moving;
-  //   data['autoFollow'] = autoFollow;
-  //   data['hasResults'] = hasResults;
-  //   data['openFollowSelect'] = followSelect != null;
-  //   data['zoom'] = zoom;
-  //   data['inCareer'] = inCareer;
-  //   data['movingTimer'] = movingTimer;
-  //   data['cyclistMoved'] = cyclistMoved;
-  //   data['diceValueCooldown'] = diceValueCooldown;
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['grid'] = grid;
+    data['diceValue'] = diceValue;
+    data['currentTurn'] = currentTurn;
+    data['ended'] = ended;
+    data['moving'] = moving;
+    data['autoFollow'] = autoFollow;
+    data['hasResults'] = hasResults;
+    data['openFollowSelect'] = openFollowSelect;
+    data['zoom'] = zoom;
+    data['inCareer'] = inCareer;
+    data['movingTimer'] = movingTimer;
+    data['cyclistMoved'] = cyclistMoved;
+    data['diceValueCooldown'] = diceValueCooldown;
 
-  //   data['careerRaceType'] = careerRaceType?.toJson();
+    data['offset'] = SaveUtil.offsetToJson(offset);
+    data['worldSize'] = SaveUtil.sizeToJson(worldSize);
+    data['mapSize'] = SaveUtil.sizeToJson(mapSize);
 
-  //   data['offset'] = SaveUtil.offsetToJson(offset);
-  //   data['worldSize'] = SaveUtil.sizeToJson(worldSize);
-  //   data['mapSize'] = SaveUtil.sizeToJson(mapSize);
+    data['gameState'] = gameState.toString();
 
-  //   data['gameState'] = gameState.toString();
+    data['dice'] = dice != null ? dice!.toJson() : null;
+    data['dice2'] = dice2 != null ? dice2!.toJson() : null;
+    data['map'] = map != null ? map!.toJson() : null;
+    data['movingCyclist'] = movingCyclist != null ? movingCyclist!.toJson(true) : null;
+    data['tempResults'] = tempResults != null ? tempResults!.toJson() : null;
+    data['startResults'] = startResults != null ? startResults!.toJson() : null;
+    data['cyclistSelected'] = cyclistSelected != null ? cyclistSelected!.toJson(true) : null;
+    data['cyclistLastSelected'] = cyclistLastSelected != null ? cyclistLastSelected!.toJson(true) : null;
 
-  //   data['dice'] = dice != null ? dice!.toJson() : null;
-  //   data['dice2'] = dice2 != null ? dice2!.toJson() : null;
-  //   data['map'] = map != null ? map!.toJson() : null;
-  //   data['movingCyclist'] = movingCyclist != null ? movingCyclist!.toJson(true) : null;
-  //   data['tempResults'] = tempResults != null ? tempResults!.toJson() : null;
-  //   data['startResults'] = startResults != null ? startResults!.toJson() : null;
-  //   data['cyclistSelected'] = cyclistSelected != null ? cyclistSelected!.toJson(true) : null;
-  //   data['cyclistLastSelected'] = cyclistLastSelected != null ? cyclistLastSelected!.toJson(true) : null;
+    data['teams'] = teams?.map((i) => i!.toJson(false)).toList();
+    data['moveAnimation'] = moveAnimation?.map((i) => i!.toJson(true)).toList();
+    data['notifications'] = notifications.map((i) => i.toJson()).toList();
 
-  //   data['teams'] = teams?.map((i) => i!.toJson(false)).toList();
-  //   data['moveAnimation'] = moveAnimation?.map((i) => i!.toJson(true)).toList();
-  //   data['notifications'] = notifications.map((i) => i.toJson()).toList();
-
-  //   return data;
-  // }
+    return data;
+  }
 }
 
-// GameState? getGameStateFromString(String? gameStateAsString) {
-//   for (final GameState element in GameState.values) {
-//     if (element.toString() == gameStateAsString) {
-//       return element;
-//     }
-//   }
-//   return null;
-// }
+GameState getGameStateFromString(String? gameStateAsString) {
+  for (final GameState element in GameState.values) {
+    if (element.toString() == gameStateAsString) {
+      return element;
+    }
+  }
+  return GameState.gameSelectNext;
+}
 
 enum GameState {
   userInputDiceStart,

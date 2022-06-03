@@ -22,11 +22,11 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
-  void goToTourInProgress();
+  Future<void> goToTourInProgress();
 
   void goToActiveTour();
 
-  void goToTourSelect();
+  Future<void> goToTourSelect();
 
   void goToChangeCyclistNames();
 
@@ -36,9 +36,9 @@ abstract class MainNavigation {
 
   void goToResults(List<Sprint> sprints, bool isTour);
 
-  void goToGame(PlaySettings playSettings);
+  Future<void> goToGame(PlaySettings playSettings);
 
-  void goToSingleRaceMenu();
+  Future<void> goToSingleRaceMenu();
 
   Future<String?> showEditNameDialog(String value);
 

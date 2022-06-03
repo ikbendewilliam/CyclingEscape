@@ -45,7 +45,12 @@ class GameViewModel with ChangeNotifierEx {
     GameManager gameManager,
   ) async {
     _navigator = navigator;
-    _isTour = playSettings.totalRaces != null && playSettings.totalRaces! > 1;
+    if (playSettings.loadGame) {
+      _isTour = _localStorage.isCurrentGameTour;
+    } else {
+      _isTour = playSettings.totalRaces != null && playSettings.totalRaces! > 1;
+      _localStorage.isCurrentGameTour = _isTour;
+    }
     await gameManager.addListener(GameListener(
       localizations: localizations,
       spriteManager: _spriteManager,

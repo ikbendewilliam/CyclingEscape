@@ -22,6 +22,8 @@ abstract class LocalStorage {
 
   bool get autofollowThresholdBelowAsk;
 
+  bool get isCurrentGameTour;
+
   bool get autofollowThresholdAboveAsk;
 
   CyclistMovementType get cyclistMovement;
@@ -41,6 +43,8 @@ abstract class LocalStorage {
   set autofollowThreshold(int value);
 
   set autofollowThresholdBelowAsk(bool value);
+
+  set isCurrentGameTour(bool value);
 
   set autofollowThresholdAboveAsk(bool value);
 
@@ -86,6 +90,7 @@ class _LocalStorage implements LocalStorage {
   static const _tourResultsKey = 'tourResults';
   static const _playSettingsKey = 'playSettings';
   static const _completedRacesKey = 'completedRaces';
+  static const _isCurrentGameTourKey = 'isCurrentGameTour';
 
   final AuthStorage _authStorage;
   final SharedPreferenceStorage _sharedPreferences;
@@ -98,6 +103,9 @@ class _LocalStorage implements LocalStorage {
 
   @override
   bool get autofollowThresholdBelowAsk => _sharedPreferences.getBoolean(_autofollowThresholdBelowAskKey) ?? true;
+
+  @override
+  bool get isCurrentGameTour => _sharedPreferences.getBoolean(_isCurrentGameTourKey) ?? true;
 
   @override
   bool get autofollowThresholdAboveAsk => _sharedPreferences.getBoolean(_autofollowThresholdAboveAskKey) ?? true;
@@ -174,6 +182,9 @@ class _LocalStorage implements LocalStorage {
 
   @override
   set autofollowThresholdBelowAsk(bool value) => _sharedPreferences.saveBoolean(key: _autofollowThresholdBelowAskKey, value: value);
+
+  @override
+  set isCurrentGameTour(bool value) => _sharedPreferences.saveBoolean(key: _isCurrentGameTourKey, value: value);
 
   @override
   set autofollowThresholdAboveAsk(bool value) => _sharedPreferences.saveBoolean(key: _autofollowThresholdAboveAskKey, value: value);

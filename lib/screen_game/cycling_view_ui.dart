@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/screen_game/cycling_view.dart';
 import 'package:cycling_escape/util/canvas/canvas_utils.dart';
+import 'package:cycling_escape/widget_game/data/result_data.dart';
 import 'package:cycling_escape/widget_game/data/results.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:cycling_escape/widget_game/moveable/dice.dart';
@@ -9,24 +10,33 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart' hide Notification;
 
 class CyclingViewUI {
-  static void render(
-      Canvas canvas,
-      double? tileSize,
-      Size? screenSize,
-      Dice? dice,
-      Dice? dice2,
-      List<Button> buttons,
-      List<Notification> notifications,
-      Sprite? backgroundNotification,
-      Sprite? backgroundText,
-      Sprite? iconTime,
-      Sprite? iconRank,
-      Sprite? iconPoints,
-      Sprite? iconMountain,
-      Cyclist? cyclist,
-      Results? tempResults,
-      double diceValueCooldown,
-      int? diceValue) {
+  static ResultData? result;
+  static ResultData? minTime;
+  static String? time;
+  static int? rank;
+  static int? points;
+  static int? mp;
+  static Offset? lastPositionP1;
+
+  static void render({
+    required Canvas canvas,
+    required double? tileSize,
+    required Size? screenSize,
+    required Dice? dice,
+    required Dice? dice2,
+    required List<Button> buttons,
+    required List<Notification> notifications,
+    required Sprite? backgroundNotification,
+    required Sprite? backgroundText,
+    required Sprite? iconTime,
+    required Sprite? iconRank,
+    required Sprite? iconPoints,
+    required Sprite? iconMountain,
+    required Cyclist? cyclist,
+    required Results? tempResults,
+    required double diceValueCooldown,
+    required int? diceValue,
+  }) {
     dice?.render(canvas, Offset(screenSize!.width / 2 - tileSize! * 2, screenSize.height / 2 - tileSize / 2), tileSize);
     dice2?.render(canvas, Offset(screenSize!.width / 2 + tileSize! * 2, screenSize.height / 2 - tileSize / 2), tileSize);
     for (final button in buttons) {
@@ -40,13 +50,20 @@ class CyclingViewUI {
       CanvasUtils.drawText(canvas, position, 0, span);
     });
     if (tempResults != null) {
-      final result = tempResults.data.firstWhereOrNull(((element) => element.number == cyclist?.number));
-      final time = result?.time;
-      final rank = result?.rank;
-      final points = result?.points;
-      final mp = result?.mountain;
-      backgroundText?.render(canvas,
-          position: Vector2(screenSize!.width / 2 - tileSize! * 3.1, screenSize.height - tileSize * 0.75), size: Vector2(tileSize * 6.2, tileSize * 0.75));
+      if (cyclist?.lastPosition?.p1 != lastPositionP1) {
+        lastPositionP1 = cyclist?.lastPosition?.p1;
+        result = tempResults.data.firstWhereOrNull(((element) => element.number == cyclist?.number));
+        minTime = tempResults.data.reduce(((a, b) => a.time < b.time ? a : b));
+        time = result?.rank == 1 ? result?.time.toString() : '+${(result?.time ?? 0) - minTime!.time}';
+        rank = result?.rank;
+        points = result?.points;
+        mp = result?.mountain;
+      }
+      backgroundText?.render(
+        canvas,
+        position: Vector2(screenSize!.width / 2 - tileSize! * 3.1, screenSize.height - tileSize * 0.75),
+        size: Vector2(tileSize * 6.2, tileSize * 0.75),
+      );
 
       var position = Offset(screenSize!.width / 2 - tileSize! * 1.75, screenSize.height - tileSize * 0.58);
       var span = TextSpan(style: const TextStyle(color: Colors.white, fontSize: 14.0, fontFamily: 'SaranaiGame'), text: '$rank');

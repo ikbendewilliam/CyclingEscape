@@ -23,7 +23,13 @@ class Dice {
 
   final DiceListener listener;
 
-  Dice(this.spriteManager, this.listener, {bool generate = true, required DifficultyType difficulty, bool? isPlayer}) {
+  Dice(
+    this.spriteManager,
+    this.listener, {
+    bool generate = true,
+    required DifficultyType difficulty,
+    bool? isPlayer,
+  }) {
     sprites = spriteManager.getDiceSpriteSheet();
     if (generate) {
       // 1, 2, 3, 4, 5, 6 respectivly
@@ -165,36 +171,45 @@ class Dice {
     }
   }
 
-  // static Dice? fromJson(Map<String, dynamic>? json, DiceListener listener, SpriteManager spriteManager) {
-  //   if (json == null) {
-  //     return null;
-  //   }
-  //   final Dice dice = Dice(spriteManager, listener, generate: false);
-  //   dice.diceValue = json['diceValue'] as int?;
-  //   dice.direction = json['direction'] as int;
-  //   dice.currentIndex = json['currentIndex'] as int;
-  //   dice.endIndex = json['endIndex'] as int;
-  //   dice.directionCountDown = json['directionCountDown'] as int;
-  //   dice.rolling = json['rolling'] as bool;
-  //   dice.angle = json['angle'] as double;
-  //   dice.scale = json['scale'] as double;
-  //   dice.countdown = json['countdown'] as double;
-  //   dice.diceAnimation = json['diceAnimation'] != null ? List<int>.from(json['diceAnimation'] as List) : [];
-  //   return dice;
-  // }
+  static Dice? fromJson(
+    Map<String, dynamic>? json,
+    DiceListener listener,
+    SpriteManager spriteManager,
+  ) {
+    if (json == null) {
+      return null;
+    }
+    final Dice dice = Dice(
+      spriteManager,
+      listener,
+      generate: false,
+      difficulty: DifficultyType.normal,
+    );
+    dice.diceValue = json['diceValue'] as int?;
+    dice.direction = json['direction'] as int;
+    dice.currentIndex = json['currentIndex'] as int;
+    dice.endIndex = json['endIndex'] as int;
+    dice.directionCountDown = json['directionCountDown'] as int;
+    dice.rolling = json['rolling'] as bool;
+    dice.angle = json['angle'] as double;
+    dice.scale = json['scale'] as double;
+    dice.countdown = json['countdown'] as double;
+    dice.diceAnimation = json['diceAnimation'] != null ? List<int>.from(json['diceAnimation'] as List) : [];
+    return dice;
+  }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    // data['diceValue'] = diceValue;
-    // data['direction'] = direction;
-    // data['currentIndex'] = currentIndex;
-    // data['endIndex'] = endIndex;
-    // data['directionCountDown'] = directionCountDown;
-    // data['rolling'] = rolling;
-    // data['angle'] = angle;
-    // data['scale'] = scale;
-    // data['countdown'] = countdown;
-    // data['diceAnimation'] = diceAnimation;
+    data['diceValue'] = diceValue;
+    data['direction'] = direction;
+    data['currentIndex'] = currentIndex;
+    data['endIndex'] = endIndex;
+    data['directionCountDown'] = directionCountDown;
+    data['rolling'] = rolling;
+    data['angle'] = angle;
+    data['scale'] = scale;
+    data['countdown'] = countdown;
+    data['diceAnimation'] = diceAnimation;
     return data;
   }
 }

@@ -1,55 +1,56 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:cycling_escape/model/data/enums.dart';
+import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
+import 'package:cycling_escape/screen_game/cycling_view.dart';
+import 'package:cycling_escape/util/locale/localization.dart';
+import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
+import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveUtil {
-  // static void saveTour(ActiveTour activeTour) async {
-  //   final prefs = GetIt.I<SharedPreferences>();
-  //   await prefs.setString('be.wive.cyclingescape.activeTour', jsonEncode(activeTour.toJson()));
-  // }
+  static const _cyclingViewKey = 'be.wive.cyclingescape.cyclingView';
 
-  // static Future<ActiveTour?> loadTour(SpriteManager spriteManager) async {
-  //   final prefs = GetIt.I<SharedPreferences>();
-  //   if (!prefs.containsKey('be.wive.cyclingescape.activeTour')) {
-  //     return null;
-  //   }
-  //   return ActiveTour.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeTour') ?? '') as Map<String, dynamic>, spriteManager);
-  // }
-
-  static Future<void> clearTour() async {
+  static void saveCyclingView(CyclingView cyclingView) async {
     final prefs = GetIt.I<SharedPreferences>();
-    await prefs.remove('be.wive.cyclingescape.activeTour');
+    await prefs.setString(_cyclingViewKey, jsonEncode(cyclingView.toJson()));
   }
 
-  // static void saveCyclingView(CyclingView cyclingView) async {
-  //   final prefs = GetIt.I<SharedPreferences>();
-  //   await prefs.setString('be.wive.cyclingescape.activeGame', jsonEncode(cyclingView.toJson()));
-  // }
-
-  // static Future<CyclingView?> loadCyclingView(
-  //   SpriteManager spriteManager,
-  //   Function cyclingEnded,
-  //   Localization localizations,
-  //   Function openTutorial,
-  // ) async {
-  //   final prefs = GetIt.I<SharedPreferences>();
-  //   if (!prefs.containsKey('be.wive.cyclingescape.activeGame')) {
-  //     return null;
-  //   }
-  //   return CyclingView.fromJson(jsonDecode(prefs.getString('be.wive.cyclingescape.activeGame') ?? '') as Map<String, dynamic>, spriteManager, cyclingEnded, navigate, settings,
-  //       localizations, openTutorial);
-  // }
-
-  static Future<bool> hasCyclingView() async {
+  static CyclingView? loadCyclingView({
+    required SpriteManager spriteManager,
+    required LocalStorage localStorage,
+    required VoidCallback onPause,
+    required Localization localizations,
+    required ValueChanged<List<Sprint>?> onEndCycling,
+    required ValueChanged<TutorialType> openTutorial,
+    required Future<FollowType> Function() onSelectFollow,
+  }) {
     final prefs = GetIt.I<SharedPreferences>();
-    return prefs.containsKey('be.wive.cyclingescape.activeGame');
+    if (!prefs.containsKey(_cyclingViewKey)) return null;
+    return CyclingView.fromJson(
+      json: jsonDecode(prefs.getString(_cyclingViewKey) ?? '') as Map<String, dynamic>,
+      spriteManager: spriteManager,
+      localStorage: localStorage,
+      onPause: onPause,
+      localizations: localizations,
+      onEndCycling: onEndCycling,
+      openTutorial: openTutorial,
+      onSelectFollow: onSelectFollow,
+    );
+  }
+
+  static bool get hasCyclingView {
+    final prefs = GetIt.I<SharedPreferences>();
+    return prefs.containsKey(_cyclingViewKey);
   }
 
   static Future<void> clearCyclingView() async {
     final prefs = GetIt.I<SharedPreferences>();
-    await prefs.remove('be.wive.cyclingescape.activeGame');
+    await prefs.remove(_cyclingViewKey);
   }
 
   static Offset? offsetFromJson(Map<String, dynamic>? json) => json == null ? null : Offset(json['dx'] as double, json['dy'] as double);

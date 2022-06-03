@@ -140,13 +140,13 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goBack<T>({T? result}) => _navigator.pop(result);
 
   @override
-  void goToTourInProgress() => _navigator.pushNamed(TourInProgressScreen.routeName);
+  Future<void> goToTourInProgress() => _navigator.pushNamed(TourInProgressScreen.routeName);
 
   @override
   void goToActiveTour() => _navigator.pushNamed(ActiveTourScreen.routeName);
 
   @override
-  void goToTourSelect() => _navigator.pushNamed(TourSelectScreen.routeName);
+  Future<void> goToTourSelect() => _navigator.pushNamed(TourSelectScreen.routeName);
 
   @override
   void goToChangeCyclistNames() => _navigator.pushNamed(ChangeCyclistNamesScreen.routeName);
@@ -162,10 +162,10 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: ResultsArguments(sprints, isTour), (route) => false);
 
   @override
-  void goToGame(PlaySettings playSettings) => _navigator.pushNamed(GameScreen.routeName, arguments: playSettings);
+  Future<void> goToGame(PlaySettings playSettings) => _navigator.pushNamed(GameScreen.routeName, arguments: playSettings);
 
   @override
-  void goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);
+  Future<void> goToSingleRaceMenu() => _navigator.pushNamed(SingleRaceMenuScreen.routeName);
 
   @override
   Future<String?> showEditNameDialog(String value) => showCustomDialog(

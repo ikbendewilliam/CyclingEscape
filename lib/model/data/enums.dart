@@ -110,6 +110,8 @@ enum DifficultyType {
   final String localizationKey;
 
   const DifficultyType(this.diceAddition, this.localizationKey);
+
+  static DifficultyType fromJson(String? value) => DifficultyType.values.firstWhereOrNull((element) => element.toString() == value) ?? DifficultyType.normal;
 }
 
 enum TutorialType {

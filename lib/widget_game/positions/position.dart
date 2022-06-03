@@ -233,9 +233,7 @@ class Position {
     }
     if (existingPositions.isNotEmpty) {
       final Position? c = existingPositions.firstWhereOrNull(((element) => element?.id == json['id']));
-      if (c != null) {
-        return c;
-      }
+      if (c != null) return c;
     }
     if (json['id'] != null && json['segment'] == null) {
       final Position placeholder = Position(Offset.zero, Offset.zero, listener, false, 0, 0, 0, 0, 0, false, 0, 0, false, PositionType.flat, isPlaceHolder: true);

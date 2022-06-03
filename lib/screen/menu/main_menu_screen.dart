@@ -4,6 +4,7 @@ import 'package:cycling_escape/viewmodel/main_menu/main_menu_viewmodel.dart';
 import 'package:cycling_escape/widget/general/styled/cycling_escape_button.dart';
 import 'package:cycling_escape/widget/menu_background/menu_box.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
+import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -34,8 +35,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
                     children: [
                       CyclingEscapeButton(
                         text: localization.continueButton,
-                        onClick: null,
-                        isEnabled: false,
+                        onClick: viewModel.onContinueClick,
+                        isEnabled: viewModel.hasGameAvailable,
                         type: CyclingEscapeButtonType.green,
                       ),
                       CyclingEscapeButton(
@@ -91,17 +92,20 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
   }
 
   @override
-  void goToTourSelect() => MainNavigatorWidget.of(context).goToTourSelect();
+  Future<void> goToTourSelect() => MainNavigatorWidget.of(context).goToTourSelect();
 
   @override
-  void goToTourInProgress() => MainNavigatorWidget.of(context).goToTourInProgress();
+  Future<void> goToTourInProgress() => MainNavigatorWidget.of(context).goToTourInProgress();
 
   @override
-  void goToSingleRaceMenu() => MainNavigatorWidget.of(context).goToSingleRaceMenu();
+  Future<void> goToSingleRaceMenu() => MainNavigatorWidget.of(context).goToSingleRaceMenu();
 
   @override
   void goToSettings() => MainNavigatorWidget.of(context).goToSettings();
 
   @override
   void goToCredits() => MainNavigatorWidget.of(context).goToCredits();
+
+  @override
+  Future<void> goToGame() => MainNavigatorWidget.of(context).goToGame(PlaySettings.load());
 }

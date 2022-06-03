@@ -22,6 +22,14 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToCareerSelectRiders();
+
+  void goToCareerCalendar();
+
+  void goToCareerStandings();
+
+  Future<void> goToCareerOverview();
+
   Future<void> goToTourInProgress();
 
   void goToActiveTour();

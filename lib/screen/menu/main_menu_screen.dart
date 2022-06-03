@@ -41,7 +41,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
                       ),
                       CyclingEscapeButton(
                         text: localization.careerButton,
-                        onClick: null,
+                        onClick: viewModel.onCareerClicked,
                         type: CyclingEscapeButtonType.yellow,
                       ),
                       CyclingEscapeButton(
@@ -93,6 +93,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
 
   @override
   Future<void> goToTourSelect() => MainNavigatorWidget.of(context).goToTourSelect();
+
+  @override
+  Future<void> goToCareerOverview() => MainNavigatorWidget.of(context).goToCareerOverview();
 
   @override
   Future<void> goToTourInProgress() => MainNavigatorWidget.of(context).goToTourInProgress();

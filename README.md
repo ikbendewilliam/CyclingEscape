@@ -2,7 +2,6 @@
 
 // TODO
 [ ] Information
-[ ] Save race progress
 [ ] Career
 
 ## Assets

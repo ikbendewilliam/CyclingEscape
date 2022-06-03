@@ -1,5 +1,9 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
 import 'package:cycling_escape/screen/active_tour/active_tour_screen.dart';
+import 'package:cycling_escape/screen/career_calendar/career_calendar_screen.dart';
+import 'package:cycling_escape/screen/career_overview/career_overview_screen.dart';
+import 'package:cycling_escape/screen/career_select_riders/career_select_riders_screen.dart';
+import 'package:cycling_escape/screen/career_standings/career_standings_screen.dart';
 import 'package:cycling_escape/screen/change_cyclist_names/change_cyclist_names_screen.dart';
 import 'package:cycling_escape/screen/credits/credits_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
@@ -89,6 +93,14 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case CareerSelectRidersScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CareerSelectRidersScreen()), settings: settings);
+      case CareerCalendarScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CareerCalendarScreen()), settings: settings);
+      case CareerStandingsScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CareerStandingsScreen()), settings: settings);
+      case CareerOverviewScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CareerOverviewScreen()), settings: settings);
       case TourInProgressScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: TourInProgressScreen()), settings: settings);
       case ActiveTourScreen.routeName:
@@ -138,6 +150,18 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToCareerSelectRiders() => _navigator.pushNamed(CareerSelectRidersScreen.routeName);
+
+  @override
+  void goToCareerCalendar() => _navigator.pushNamed(CareerCalendarScreen.routeName);
+
+  @override
+  void goToCareerStandings() => _navigator.pushNamed(CareerStandingsScreen.routeName);
+
+  @override
+  Future<void> goToCareerOverview() => _navigator.pushNamed(CareerOverviewScreen.routeName);
 
   @override
   Future<void> goToTourInProgress() => _navigator.pushNamed(TourInProgressScreen.routeName);

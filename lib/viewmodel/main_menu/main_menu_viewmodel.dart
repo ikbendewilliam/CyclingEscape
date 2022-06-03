@@ -23,6 +23,11 @@ class MainMenuViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
+  Future<void> onCareerClicked() async {
+    await _navigator.goToCareerOverview();
+    notifyListeners();
+  }
+
   Future<void> onSingleRaceClicked() async {
     await _navigator.goToSingleRaceMenu();
     notifyListeners();
@@ -46,6 +51,8 @@ mixin MainMenuNavigator {
   Future<void> goToTourSelect();
 
   Future<void> goToGame();
+
+  Future<void> goToCareerOverview();
 
   Future<void> goToTourInProgress();
 

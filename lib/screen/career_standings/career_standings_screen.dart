@@ -22,7 +22,7 @@ class CareerStandingsScreenState extends State<CareerStandingsScreen> with BackN
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: localization.activeTourTitle,
+          title: 'Rankings',
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(

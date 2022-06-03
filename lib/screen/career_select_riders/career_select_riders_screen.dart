@@ -22,7 +22,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: localization.activeTourTitle,
+          title: 'Select your riders',
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(

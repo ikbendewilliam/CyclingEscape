@@ -23,7 +23,7 @@ class CareerOverviewScreenState extends State<CareerOverviewScreen> implements C
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: localization.activeTourTitle,
+          title: 'career',
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(

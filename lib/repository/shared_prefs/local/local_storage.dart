@@ -73,6 +73,10 @@ abstract class LocalStorage {
   void clearTour();
 
   void setPlaySettings(PlaySettings? playSettings);
+
+  int get eventsCompleted;
+
+  set eventsCompleted(int value);
 }
 
 class _LocalStorage implements LocalStorage {
@@ -89,6 +93,7 @@ class _LocalStorage implements LocalStorage {
   static const _typesViewedKey = 'typesViewed';
   static const _tourResultsKey = 'tourResults';
   static const _playSettingsKey = 'playSettings';
+  static const _eventsCompletedKey = 'eventsCompleted';
   static const _completedRacesKey = 'completedRaces';
   static const _isCurrentGameTourKey = 'isCurrentGameTour';
 
@@ -237,4 +242,10 @@ class _LocalStorage implements LocalStorage {
     }
     _sharedPreferences.saveString(key: _playSettingsKey, value: settings.toJson());
   }
+
+  @override
+  int get eventsCompleted => _sharedPreferences.getInt(_eventsCompletedKey) ?? 0;
+
+  @override
+  set eventsCompleted(int value) => _sharedPreferences.saveInt(key: _eventsCompletedKey, value: value);
 }

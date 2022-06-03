@@ -1,6 +1,7 @@
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/screen/base/simple_menu_screen.dart';
 import 'package:cycling_escape/viewmodel/career_calendar/career_calendar_viewmodel.dart';
+import 'package:cycling_escape/widget/general/styled/cycling_escape_list_view.dart';
 import 'package:cycling_escape/widget/menu_background/menu_box.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: localization.activeTourTitle,
+          title: 'Calendar',
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(
@@ -30,7 +31,65 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
             child: AspectRatio(
               aspectRatio: 2.1,
               child: Column(
-                children: const [],
+                children: [
+                  Row(
+                    children: const [
+                      Expanded(
+                        child: Text('no.'),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Text('Name'),
+                      ),
+                      SizedBox(width: 4),
+                      Expanded(
+                        child: Text('Races'),
+                      ),
+                      Expanded(
+                        child: Text('Points'),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text('Winner'),
+                      ),
+                      SizedBox(width: 48),
+                    ],
+                  ),
+                  Expanded(
+                    child: CyclingEscapeListView(
+                      itemCount: viewModel.calendarEvents.length,
+                      itemBuilder: (context, index) {
+                        final event = viewModel.calendarEvents[index];
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: Text(event.id.toString()),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(localization.getTranslation(event.localizationKey)),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(event.playSettings.totalRaces.toString()),
+                            ),
+                            Expanded(
+                              child: Text(event.points.toString()),
+                            ),
+                            const Expanded(
+                              flex: 2,
+                              child: Text('-'),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

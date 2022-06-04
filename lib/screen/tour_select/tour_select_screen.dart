@@ -33,7 +33,7 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
             child: AspectRatio(
-              aspectRatio: 1.3,
+              aspectRatio: 1.25,
               child: Padding(
                 padding: const EdgeInsets.only(left: 48, top: 16, bottom: 8),
                 child: CyclingEscapeListView.children(

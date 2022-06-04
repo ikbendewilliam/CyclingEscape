@@ -4,6 +4,7 @@ import 'package:cycling_escape/viewmodel/career_calendar/career_calendar_viewmod
 import 'package:cycling_escape/widget/general/styled/cycling_escape_list_view.dart';
 import 'package:cycling_escape/widget/menu_background/menu_box.dart';
 import 'package:cycling_escape/widget/provider/provider_widget.dart';
+import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,26 +34,42 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
               child: Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
-                        child: Text('no.'),
+                        child: Text(
+                          'no.',
+                          style: theme.coreTextTheme.bodyNormal,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       Expanded(
                         flex: 3,
-                        child: Text('Name'),
+                        child: Text(
+                          'Name',
+                          style: theme.coreTextTheme.bodyNormal,
+                        ),
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Expanded(
-                        child: Text('Races'),
+                        child: Text(
+                          'Races',
+                          style: theme.coreTextTheme.bodyNormal,
+                        ),
                       ),
                       Expanded(
-                        child: Text('Points'),
+                        child: Text(
+                          'Points',
+                          style: theme.coreTextTheme.bodyNormal,
+                        ),
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text('Winner'),
+                        child: Text(
+                          'Winner',
+                          style: theme.coreTextTheme.bodyNormal,
+                        ),
                       ),
-                      SizedBox(width: 48),
+                      const SizedBox(width: 48),
                     ],
                   ),
                   Expanded(
@@ -60,31 +77,57 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                       itemCount: viewModel.calendarEvents.length,
                       itemBuilder: (context, index) {
                         final event = viewModel.calendarEvents[index];
-                        return Row(
-                          children: [
-                            Expanded(
-                              child: Text(event.id.toString()),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerLeft,
-                                child: Text(localization.getTranslation(event.localizationKey)),
+                        final color = event.winner == null ? theme.colorsTheme.inverseText : Team.getTextColorFromId(Team.getIdFromCyclistNumber(event.winner!));
+                        final backgroundColor = event.winner == null ? Colors.white : Team.getColorFromId(Team.getIdFromCyclistNumber(event.winner!));
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: backgroundColor,
+                            borderRadius: BorderRadius.circular(80),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  event.id.toString(),
+                                  style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 4),
-                            Expanded(
-                              child: Text(event.playSettings.totalRaces.toString()),
-                            ),
-                            Expanded(
-                              child: Text(event.points.toString()),
-                            ),
-                            const Expanded(
-                              flex: 2,
-                              child: Text('-'),
-                            ),
-                          ],
+                              Expanded(
+                                flex: 3,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    localization.getTranslation(event.localizationKey),
+                                    style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  event.playSettings.totalRaces.toString(),
+                                  style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  event.points.toString(),
+                                  style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  viewModel.numberToName(event.winner),
+                                  style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       },
                     ),

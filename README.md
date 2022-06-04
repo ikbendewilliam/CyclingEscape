@@ -1,8 +1,16 @@
 # cycling_escape
 
 // TODO
+[ ] Career - go back to career screen after race
+[ ] Career - go back to career screen after tour
+[ ] Career - update global standings
+[ ] Career - show overview of your standings
+[ ] Career - show standings screen
+[ ] Show version somewhere
+[ ] V2 dialog
 [ ] Information
-[ ] Career
+[ ] Check different resolutions/devices
+[ ] Check update migration
 
 ## Assets
 

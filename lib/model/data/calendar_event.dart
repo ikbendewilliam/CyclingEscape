@@ -5,8 +5,9 @@ class CalendarEvent {
   final PlaySettings playSettings;
   final String localizationKey;
   final int points;
+  int? winner;
 
-  const CalendarEvent(
+  CalendarEvent(
     this.id,
     this.localizationKey,
     this.points,

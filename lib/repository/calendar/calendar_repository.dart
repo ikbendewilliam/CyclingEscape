@@ -1,3 +1,4 @@
+import 'package:cycling_escape/database/career/career_calendar_dao_storage.dart';
 import 'package:cycling_escape/model/data/calendar_event.dart';
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
@@ -7,9 +8,14 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 abstract class CalendarRepository {
   @factoryMethod
-  factory CalendarRepository(LocalStorage localStorage) = _CalendarRepository;
+  factory CalendarRepository(
+    LocalStorage localStorage,
+    CareerCalendarDaoStorage calendarDaoStorage,
+  ) = _CalendarRepository;
 
-  List<CalendarEvent> get calendarEvents;
+  Future<List<CalendarEvent>> get calendarEvents;
+
+  Future<void> saveResults(List<CalendarEvent> event);
 
   int get eventsCompleted;
 
@@ -58,9 +64,13 @@ class _CalendarRepository implements CalendarRepository {
   ];
 
   final LocalStorage _localStorage;
+  final CareerCalendarDaoStorage _calendarDaoStorage;
 
   @override
-  List<CalendarEvent> get calendarEvents => _events;
+  Future<List<CalendarEvent>> get calendarEvents async {
+    await _calendarDaoStorage.getAllWinners(_events);
+    return _events;
+  }
 
   @override
   int get eventsCompleted => _localStorage.eventsCompleted;
@@ -68,5 +78,11 @@ class _CalendarRepository implements CalendarRepository {
   @override
   set eventsCompleted(int value) => _localStorage.eventsCompleted = value;
 
-  _CalendarRepository(this._localStorage);
+  _CalendarRepository(
+    this._localStorage,
+    this._calendarDaoStorage,
+  );
+
+  @override
+  Future<void> saveResults(List<CalendarEvent> events) => _calendarDaoStorage.saveResults(events);
 }

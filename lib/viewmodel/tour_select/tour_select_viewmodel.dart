@@ -22,33 +22,11 @@ class TourSelectViewModel with ChangeNotifierEx {
 
   int get raceTypeIndex => _raceType;
 
-  String get raceType {
-    switch (MapType.values[_raceType]) {
-      case MapType.flat:
-        return 'Flat';
-      case MapType.cobble:
-        return 'Cobbled';
-      case MapType.hills:
-        return 'Hilled';
-      case MapType.heavy:
-        return 'Heavy';
-    }
-  }
+  String get raceTypeKey => MapType.values[_raceType].localizationKey;
 
   int get raceLengthIndex => _raceLength;
 
-  String get raceLength {
-    switch (MapLength.values[_raceLength]) {
-      case MapLength.short:
-        return 'Short';
-      case MapLength.medium:
-        return 'Medium';
-      case MapLength.long:
-        return 'Long';
-      case MapLength.veryLong:
-        return 'Very long';
-    }
-  }
+  String get raceLengthKey => MapLength.values[_raceLength].localizationKey;
 
   bool get showWarning => _teams * _cyclists * (_raceType / 2 + 0.5) * (_raceLength + 0) >= 20;
 

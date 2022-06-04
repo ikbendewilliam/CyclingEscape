@@ -53,14 +53,14 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
                       maxValue: 5,
                     ),
                     CyclingEscapeValueButton(
-                      text: viewModel.raceType,
+                      text: localization.getTranslation(viewModel.raceTypeKey),
                       onChange: viewModel.setRaceType,
                       value: viewModel.raceTypeIndex,
                       minValue: 0,
                       maxValue: MapType.values.length - 1,
                     ),
                     CyclingEscapeValueButton(
-                      text: viewModel.raceLength,
+                      text: localization.getTranslation(viewModel.raceLengthKey),
                       onChange: viewModel.setRaceLength,
                       value: viewModel.raceLengthIndex,
                       minValue: 0,
@@ -71,7 +71,7 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
                       onChange: viewModel.setRaces,
                       value: viewModel.races,
                       minValue: 2,
-                      maxValue: 8,
+                      maxValue: 10,
                     ),
                     AnimatedOpacity(
                       opacity: viewModel.showWarning ? 1 : 0,

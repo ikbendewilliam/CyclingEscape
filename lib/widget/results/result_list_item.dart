@@ -1,6 +1,7 @@
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
+import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:flutter/widgets.dart';
 
 class ResultListItem extends StatelessWidget {
@@ -12,10 +13,10 @@ class ResultListItem extends StatelessWidget {
 
   const ResultListItem({
     required this.index,
-    required this.time,
     required this.resultData,
     required this.columns,
     required this.numberToName,
+    this.time,
     super.key,
   });
 
@@ -47,14 +48,14 @@ class ResultListItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
-          color: resultData.team?.getColor(),
+          color: resultData.team?.getColor() ?? Team.getColorFromId(Team.getIdFromCyclistNumber(resultData.number)),
           borderRadius: BorderRadius.circular(80),
         ),
         child: Row(
           children: columns?.map((e) {
                 Widget text = Text(
                   _getValue(e),
-                  style: theme.coreTextTheme.bodyNormal.copyWith(color: resultData.team?.getTextColor()),
+                  style: theme.coreTextTheme.bodyNormal.copyWith(color: resultData.team?.getTextColor() ?? Team.getTextColorFromId(Team.getIdFromCyclistNumber(resultData.number))),
                   textAlign: e.textAlign,
                 );
                 if (e.useFittedBox) {

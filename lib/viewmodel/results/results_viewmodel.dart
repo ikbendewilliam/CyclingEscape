@@ -1,4 +1,5 @@
 import 'package:cycling_escape/model/data/enums.dart';
+import 'package:cycling_escape/repository/career/career_repository.dart';
 import 'package:cycling_escape/repository/name/name_repository.dart';
 import 'package:cycling_escape/repository/tour/tour_repository.dart';
 import 'package:cycling_escape/util/extension/list_sprint_extensions.dart';
@@ -14,8 +15,10 @@ class ResultsViewModel with ChangeNotifierEx {
   late final controller = PageController();
   final NameRepository _nameRepository;
   final TourRepository _tourRepository;
+  final CareerRepository _careerRepository;
   final _names = <int, String>{};
   late final bool _isTour;
+  late final bool _isCareer;
   List<Results>? _results;
 
   List<Results> get results => _results ?? [];
@@ -25,11 +28,13 @@ class ResultsViewModel with ChangeNotifierEx {
   ResultsViewModel(
     this._nameRepository,
     this._tourRepository,
+    this._careerRepository,
   );
 
   Future<void> init(ResultsNavigator navigator, ResultsArguments arguments) async {
     _navigator = navigator;
     _isTour = arguments.isTour;
+    _isCareer = arguments.isCareer;
     Results? results;
     if (_isTour) results = await _tourRepository.currentResults;
     final combinedResults = arguments.sprints.calculateResults(currentResults: results)..removeWhere((element) => element.data.isEmpty);
@@ -40,13 +45,22 @@ class ResultsViewModel with ChangeNotifierEx {
       await _tourRepository.saveResults(combinedResults.firstWhere((element) => element.type == ResultsType.combined));
     }
     notifyListeners();
+    if (_isCareer && (!_isTour || _tourRepository.completedRaces == _tourRepository.playSettings?.totalRaces)) {
+      await _careerRepository.updateResults(combinedResults);
+    }
   }
 
-  void onClosePressed() => _isTour ? _navigator.goToActiveTour() : _navigator.goToMainMenu();
+  void onClosePressed() {
+    if (_isTour) return _navigator.goToActiveTour();
+    if (_isCareer) return _navigator.goToCareerOverview();
+    _navigator.goToMainMenu();
+  }
 }
 
 mixin ResultsNavigator {
   void goToMainMenu();
+
+  void goToCareerOverview();
 
   void goToActiveTour();
 }
@@ -54,6 +68,11 @@ mixin ResultsNavigator {
 class ResultsArguments {
   final List<Sprint> sprints;
   final bool isTour;
+  final bool isCareer;
 
-  ResultsArguments(this.sprints, this.isTour);
+  ResultsArguments(
+    this.sprints,
+    this.isTour,
+    this.isCareer,
+  );
 }

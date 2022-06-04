@@ -86,8 +86,12 @@ class SettingsViewModel with ChangeNotifierEx {
   void onChangeCyclistNamesPressed() => _navigator.goToChangeCyclistNames();
 
   void onBackPressed() => _navigator.goBack<void>();
+
+  void onDebugClicked() => _navigator.goToDebug();
 }
 
 mixin SettingsNavigator implements BackNavigator {
   void goToChangeCyclistNames();
+
+  void goToDebug();
 }

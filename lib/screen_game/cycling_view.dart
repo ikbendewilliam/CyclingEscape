@@ -266,8 +266,8 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
       } else {
         movingTimer -= t;
       }
-      movingCyclist!.moveTo(max(0, 1 - movingTimer / startTimer), moveAnimation);
-      if (movingCyclist!.movingOffset!.isFinite && localStorage.cameraMovement == CameraMovementType.auto) {
+      movingCyclist?.moveTo(max(0, 1 - movingTimer / startTimer), moveAnimation);
+      if (movingCyclist?.movingOffset!.isFinite == true && localStorage.cameraMovement == CameraMovementType.auto) {
         offset = -(movingCyclist!.movingOffset! * tileSize - Offset(screenSize!.width, screenSize!.height) / 2 / zoom);
       }
       if (movingTimer <= 0) {
@@ -378,7 +378,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         cyclistLastSelected = moveAnimation!.first;
         cyclistSelected = moveAnimation!.last;
         cyclistSelected!.addCyclist(movingCyclist);
-        cyclistSelected!.cyclist!.lastUsedOnTurn = (cyclistSelected!.cyclist!.lastUsedOnTurn ?? 0) + 1;
+        cyclistSelected!.cyclist?.lastUsedOnTurn = (cyclistSelected!.cyclist!.lastUsedOnTurn ?? 0) + 1;
         movingCyclist = null;
         unawaited(processGameState(GameState.userWaitCyclistFollow));
         break;

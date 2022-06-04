@@ -2,6 +2,7 @@ import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/navigator/main_navigator.dart';
 import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:cycling_escape/screen/base/simple_menu_screen.dart';
+import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/viewmodel/settings/settings_viewmodel.dart';
 import 'package:cycling_escape/widget/general/styled/cycling_escape_button.dart';
 import 'package:cycling_escape/widget/general/styled/cycling_escape_checkbox.dart';
@@ -102,6 +103,15 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                         ),
                       ],
                     ),
+                    if (FlavorConfig.isDev()) ...[
+                      Center(
+                        child: CyclingEscapeButton(
+                          text: 'debug',
+                          onClick: viewModel.onDebugClicked,
+                          type: CyclingEscapeButtonType.blue,
+                        ),
+                      ),
+                    ]
                   ],
                 ),
               ),
@@ -114,4 +124,7 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
 
   @override
   void goToChangeCyclistNames() => MainNavigatorWidget.of(context).goToChangeCyclistNames();
+
+  @override
+  void goToDebug() => MainNavigatorWidget.of(context).goToDebug();
 }

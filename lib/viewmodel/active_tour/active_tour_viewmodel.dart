@@ -71,12 +71,15 @@ class ActiveTourViewModel with ChangeNotifierEx {
 
   Future<void> onFinishPressed() async {
     await _tourRepository.tourFinished();
+    if (_playSettings.isCareer) return _navigator.goToCareerOverview();
     _navigator.goToMainMenu();
   }
 }
 
 mixin ActiveTourNavigator {
   void goToMainMenu();
+
+  void goToCareerOverview();
 
   void goToRace(PlaySettings playSettings);
 }

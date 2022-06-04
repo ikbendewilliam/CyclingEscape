@@ -11,6 +11,7 @@ class PlaySettings {
   final int? totalRaces;
   Results? tourResults;
   final bool loadGame;
+  bool isCareer = false;
 
   PlaySettings(
     this.teams,
@@ -19,6 +20,7 @@ class PlaySettings {
     this.mapLength,
     this.tourResults, [
     this.totalRaces = 1,
+    this.isCareer = false,
   ]) : loadGame = false;
 
   PlaySettings.load()
@@ -36,6 +38,7 @@ class PlaySettings {
         'mapType': mapType.toString(),
         'mapLength': mapLength.toString(),
         'totalRaces': totalRaces,
+        'isCareer': isCareer,
       };
 
   factory PlaySettings.fromMap(Map<String, dynamic> map) {
@@ -46,6 +49,7 @@ class PlaySettings {
       MapLength.fromMap(map['mapLength'] as String),
       null,
       map['totalRaces'] as int,
+      map['isCareer'] as bool,
     );
   }
 

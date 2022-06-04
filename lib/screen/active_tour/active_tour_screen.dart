@@ -125,7 +125,7 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
                         ),
                       ],
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -137,6 +137,9 @@ class ActiveTourScreenState extends State<ActiveTourScreen> implements ActiveTou
 
   @override
   void goToMainMenu() => MainNavigatorWidget.of(context).goToHome();
+
+  @override
+  void goToCareerOverview() => MainNavigatorWidget.of(context).goToCareerOverview();
 
   @override
   void goToRace(PlaySettings playSettings) => MainNavigatorWidget.of(context).goToGame(playSettings);

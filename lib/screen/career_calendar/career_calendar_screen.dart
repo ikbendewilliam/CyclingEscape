@@ -77,8 +77,9 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                       itemCount: viewModel.calendarEvents.length,
                       itemBuilder: (context, index) {
                         final event = viewModel.calendarEvents[index];
-                        final color = event.winner == null ? theme.colorsTheme.inverseText : Team.getTextColorFromId(Team.getIdFromCyclistNumber(event.winner!));
-                        final backgroundColor = event.winner == null ? Colors.white : Team.getColorFromId(Team.getIdFromCyclistNumber(event.winner!));
+                        final color =
+                            event.winner == null || event.winner == 0 ? theme.colorsTheme.inverseText : Team.getTextColorFromId(Team.getIdFromCyclistNumber(event.winner!));
+                        final backgroundColor = event.winner == null || event.winner == 0 ? Colors.white : Team.getColorFromId(Team.getIdFromCyclistNumber(event.winner!));
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 4),
                           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -121,9 +122,12 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Text(
-                                  viewModel.numberToName(event.winner),
-                                  style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    viewModel.numberToName(event.winner),
+                                    style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                  ),
                                 ),
                               ),
                             ],

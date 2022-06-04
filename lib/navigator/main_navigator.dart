@@ -182,8 +182,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
   void goToSettings() => _navigator.pushNamed(SettingsScreen.routeName);
 
   @override
-  void goToResults(List<Sprint> sprints, bool isTour) =>
-      _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: ResultsArguments(sprints, isTour), (route) => false);
+  void goToResults(List<Sprint> sprints, bool isTour, bool isCareer) =>
+      _navigator.pushNamedAndRemoveUntil(ResultsScreen.routeName, arguments: ResultsArguments(sprints, isTour, isCareer), (route) => false);
 
   @override
   Future<void> goToGame(PlaySettings playSettings) => _navigator.pushNamed(GameScreen.routeName, arguments: playSettings);

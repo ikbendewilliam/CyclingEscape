@@ -42,7 +42,7 @@ abstract class MainNavigation {
 
   void goToSettings();
 
-  void goToResults(List<Sprint> sprints, bool isTour);
+  void goToResults(List<Sprint> sprints, bool isTour, bool isCareer);
 
   Future<void> goToGame(PlaySettings playSettings);
 

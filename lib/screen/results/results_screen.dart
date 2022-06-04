@@ -119,5 +119,8 @@ class ResultsScreenState extends State<ResultsScreen> implements ResultsNavigato
   void goToMainMenu() => MainNavigatorWidget.of(context).goToHome();
 
   @override
+  void goToCareerOverview() => MainNavigatorWidget.of(context).goToCareerOverview();
+
+  @override
   void goToActiveTour() => MainNavigatorWidget.of(context).goToActiveTour();
 }

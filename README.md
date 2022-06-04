@@ -2,6 +2,7 @@
 
 // TODO
 [ ] Career - show overview of your standings
+[ ] Career - ranking sort individual
 [ ] Career - end of season
 [ ] Career - reset season
 [ ] some more translations

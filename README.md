@@ -4,7 +4,7 @@
 [t] Settings - close button
 [t] Career - reset season
 [t] Career - end of season
-[ ] some more translations
+[t] some more translations
 [ ] Working scroll bar
 [ ] Holes in the road
 [ ] Crash?!?

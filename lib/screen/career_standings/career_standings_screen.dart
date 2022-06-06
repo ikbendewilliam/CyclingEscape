@@ -29,7 +29,7 @@ class CareerStandingsScreenState extends State<CareerStandingsScreen> with BackN
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Rankings',
+          title: localization.careerStandingsTitle,
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(
@@ -39,14 +39,14 @@ class CareerStandingsScreenState extends State<CareerStandingsScreen> with BackN
               child: viewModel.racesCompleted == 0
                   ? Center(
                       child: Text(
-                        'Complete the first race to see results',
+                        localization.careerStandingsNoRacesCompleted,
                         style: theme.coreTextTheme.bodyNormal,
                       ),
                     )
                   : Column(
                       children: [
                         Text(
-                          'results after ${viewModel.racesCompleted} races',
+                          localization.careerStandingsRacesCompleted(viewModel.racesCompleted),
                           style: theme.coreTextTheme.bodyNormal,
                         ),
                         const SizedBox(height: 8),

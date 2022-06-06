@@ -24,7 +24,7 @@ class CareerResetScreenState extends State<CareerResetScreen> with BackNavigator
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'reset Career',
+          title: localization.careerResetTitle,
           wide: true,
           onClosePressed: viewModel.onCancelPressed,
           child: AspectRatio(
@@ -32,18 +32,18 @@ class CareerResetScreenState extends State<CareerResetScreen> with BackNavigator
             child: Column(
               children: [
                 Text(
-                  'This will reset your career. Are you sure?',
+                  localization.careerResetMessage,
                   style: theme.coreTextTheme.bodyNormal,
                 ),
                 const SizedBox(height: 8),
                 CyclingEscapeButton(
-                  text: 'reset',
+                  text: localization.careerResetButton,
                   onClick: viewModel.onResetPressed,
                   type: CyclingEscapeButtonType.red,
                 ),
                 const SizedBox(height: 8),
                 CyclingEscapeButton(
-                  text: 'Go back',
+                  text: localization.careerResetBack,
                   onClick: viewModel.onCancelPressed,
                   type: CyclingEscapeButtonType.green,
                 ),

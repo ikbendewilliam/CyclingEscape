@@ -27,7 +27,7 @@ class CareerOverviewScreenState extends State<CareerOverviewScreen> implements C
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'career',
+          title: localization.careerOverviewTitle,
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(
@@ -62,7 +62,7 @@ class CareerOverviewScreenState extends State<CareerOverviewScreen> implements C
                     child: viewModel.currentResults.isEmpty
                         ? Center(
                             child: Text(
-                              'Complete a tour to see your ranking',
+                              localization.careerOverviewNoResults,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           )
@@ -102,32 +102,32 @@ class CareerOverviewScreenState extends State<CareerOverviewScreen> implements C
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CyclingEscapeButton(
-                        text: 'Rankings',
+                        text: localization.careerOverviewRankings,
                         onClick: viewModel.onRankingsPressed,
                         type: CyclingEscapeButtonType.yellow,
                       ),
                       const SizedBox(width: 8),
                       CyclingEscapeButton(
-                        text: 'Calendar',
+                        text: localization.careerOverviewCalendar,
                         onClick: viewModel.onCalendarPressed,
                         type: CyclingEscapeButtonType.blue,
                       ),
                       const SizedBox(width: 8),
                       if (viewModel.isFinished) ...[
                         CyclingEscapeButton(
-                          text: 'Finish',
+                          text: localization.careerOverviewFinish,
                           onClick: viewModel.onFinishPressed,
                           type: CyclingEscapeButtonType.green,
                         ),
                       ] else ...[
                         CyclingEscapeButton(
-                          text: 'Reset',
+                          text: localization.careerOverviewReset,
                           onClick: viewModel.onResetPressed,
                           type: CyclingEscapeButtonType.red,
                         ),
                         const SizedBox(width: 8),
                         CyclingEscapeButton(
-                          text: 'Next Race',
+                          text: localization.careerOverviewStartNext,
                           onClick: viewModel.onNextRacePressed,
                           type: CyclingEscapeButtonType.green,
                         ),

@@ -23,41 +23,39 @@ class CareerFinishScreenState extends State<CareerFinishScreen> implements Caree
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'End of your career',
+          title: localization.careerFinishTitle,
           wide: true,
           child: AspectRatio(
             aspectRatio: 2.1,
             child: Column(
               children: [
                 Text(
-                  viewModel.hasWonSingle ? 'You have the best rider in the world! Congratulations!' : 'The best rider in the world belongs to another team...',
+                  viewModel.hasWonSingle ? localization.careerSingleWon : localization.careerSingleLost,
                   style: theme.coreTextTheme.bodyNormal,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Your best rider has ${viewModel.singlePoints} points',
+                  localization.careerSinglePoints(viewModel.singlePoints),
                   style: theme.coreTextTheme.bodyNormal,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  viewModel.hasWonTeam ? 'You have the best team in the world! Congratulations!' : 'Another team is better...',
+                  viewModel.hasWonTeam ? localization.careerTeamWon : localization.careerTeamLost,
                   style: theme.coreTextTheme.bodyNormal,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Your team has ${viewModel.teamPoints} points',
+                  localization.careerTeamPoints(viewModel.teamPoints),
                   style: theme.coreTextTheme.bodyNormal,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  viewModel.hasWonSingle && viewModel.hasWonTeam
-                      ? 'You have won the career mode! Congratulations! Feel free to share your score and try to defeat other players\' best score'
-                      : 'You didn\'t win them all... Continue to reset the career mode and try again!',
+                  viewModel.hasWonSingle && viewModel.hasWonTeam ? localization.careerTotalWon : localization.careerTotalLost,
                   style: theme.coreTextTheme.bodyNormal,
                 ),
                 const SizedBox(height: 8),
                 CyclingEscapeButton(
-                  text: 'Continue',
+                  text: localization.continueButton,
                   onClick: viewModel.onFinishPressed,
                   type: CyclingEscapeButtonType.green,
                 ),

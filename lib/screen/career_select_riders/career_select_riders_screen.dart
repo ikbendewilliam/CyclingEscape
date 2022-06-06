@@ -27,7 +27,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
         final event = viewModel.calendarEvent;
         return SimpleMenuScreen(
           child: MenuBox(
-            title: 'Start next event',
+            title: localization.careerSelectRidersTitle,
             onClosePressed: viewModel.onClosePressed,
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.7,
@@ -40,7 +40,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'no.',
+                              localization.careerStandingsNumber,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -58,7 +58,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Name',
+                              localization.careerStandingsName,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -80,7 +80,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Races',
+                              localization.careerStandingsRaces,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -98,7 +98,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Points',
+                              localization.careerStandingsPoints,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -116,7 +116,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Length',
+                              localization.raceDuration,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -134,7 +134,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Type',
+                              localization.raceType,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -152,7 +152,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Teams',
+                              localization.raceTeams,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),
@@ -170,7 +170,7 @@ class CareerSelectRidersScreenState extends State<CareerSelectRidersScreen> with
                         children: [
                           Expanded(
                             child: Text(
-                              'Riders',
+                              localization.raceRiders,
                               style: theme.coreTextTheme.bodyNormal,
                             ),
                           ),

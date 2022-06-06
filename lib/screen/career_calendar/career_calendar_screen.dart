@@ -24,7 +24,7 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
       create: () => GetIt.I()..init(this),
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
-          title: 'Calendar',
+          title: localization.careerCalendarTitle,
           onClosePressed: viewModel.onClosePressed,
           wide: true,
           child: SizedBox(
@@ -37,7 +37,7 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                     children: [
                       Expanded(
                         child: Text(
-                          'no.',
+                          localization.careerStandingsNumber,
                           style: theme.coreTextTheme.bodyNormal,
                           textAlign: TextAlign.center,
                         ),
@@ -45,27 +45,27 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Name',
+                          localization.careerStandingsName,
                           style: theme.coreTextTheme.bodyNormal,
                         ),
                       ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          'Races',
+                          localization.careerStandingsRaces,
                           style: theme.coreTextTheme.bodyNormal,
                         ),
                       ),
                       Expanded(
                         child: Text(
-                          'Points',
+                          localization.careerStandingsPoints,
                           style: theme.coreTextTheme.bodyNormal,
                         ),
                       ),
                       Expanded(
                         flex: 2,
                         child: Text(
-                          'Winner',
+                          localization.careerStandingsWinner,
                           style: theme.coreTextTheme.bodyNormal,
                         ),
                       ),

@@ -302,17 +302,6 @@ class LocalizationKeys {
 
   /// Translations:
   ///
-  /// en:  **'Races:'**
-  ///
-  /// nl:  **'Races:'**
-  ///
-  /// fr:  **'Courses:'**
-  ///
-  /// es:  **'Carreras:'**
-  static const races = 'races';
-
-  /// Translations:
-  ///
   /// en:  **'Teams:'**
   ///
   /// nl:  **'Teams:'**
@@ -1875,409 +1864,739 @@ class LocalizationKeys {
 
   /// Translations:
   ///
-  /// en:  **'Tour Down Under'**
+  /// en:  **'End of your career'**
   ///
-  /// nl:  **'Tour Down Under'**
+  /// nl:  **'Einde van je carrière'**
   ///
-  /// fr:  **'Tour Down Under'**
+  /// fr:  **'End of your career'**
   ///
-  /// es:  **'Tour Down Under'**
+  /// es:  **'Fin de carrera'**
+  static const careerFinishTitle = 'careerFinishTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Reset career'**
+  ///
+  /// nl:  **'Carrière resetten'**
+  ///
+  /// fr:  **'Réinitialisation de la carrière'**
+  ///
+  /// es:  **'Reiniciar carrera'**
+  static const careerResetTitle = 'careerResetTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Start next event'**
+  ///
+  /// nl:  **'Start volgende evenement'**
+  ///
+  /// fr:  **'Début de la prochaine épreuve'**
+  ///
+  /// es:  **'Empezar el siguiente evento'**
+  static const careerSelectRidersTitle = 'careerSelectRidersTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Rankings'**
+  ///
+  /// nl:  **'Ranglijsten'**
+  ///
+  /// fr:  **'Rankings'**
+  ///
+  /// es:  **'Rankings'**
+  static const careerStandingsTitle = 'careerStandingsTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Calendar'**
+  ///
+  /// nl:  **'Kalender'**
+  ///
+  /// fr:  **'Calendar'**
+  ///
+  /// es:  **'Calendario'**
+  static const careerCalendarTitle = 'careerCalendarTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Career'**
+  ///
+  /// nl:  **'Carrière'**
+  ///
+  /// fr:  **'Career'**
+  ///
+  /// es:  **'career'**
+  static const careerOverviewTitle = 'careerOverviewTitle';
+
+  /// Translations:
+  ///
+  /// en:  **'Complete the first race to see results'**
+  ///
+  /// nl:  **'Voltooi de eerste race om resultaten te zien'**
+  ///
+  /// fr:  **'Terminez la première course pour voir les résultats'**
+  ///
+  /// es:  **'Completa la primera carrera para ver los resultados'**
+  static const careerStandingsNoRacesCompleted = 'careerStandingsNoRacesCompleted';
+
+  /// Translations:
+  ///
+  /// en:  **'results after [arg1 number] races'**
+  ///
+  /// nl:  **'resultaten na [arg1 number] races'**
+  ///
+  /// fr:  **'Résultats après [arg1 number] courses'**
+  ///
+  /// es:  **'resultados después de [arg1 number] carreras'**
+  static const careerStandingsRacesCompleted = 'careerStandingsRacesCompleted';
+
+  /// Translations:
+  ///
+  /// en:  **'no.'**
+  ///
+  /// nl:  **'nee'**
+  ///
+  /// fr:  **'no.'**
+  ///
+  /// es:  **'no'**
+  static const careerStandingsNumber = 'careerStandingsNumber';
+
+  /// Translations:
+  ///
+  /// en:  **'name'**
+  ///
+  /// nl:  **'name'**
+  ///
+  /// fr:  **'nom'**
+  ///
+  /// es:  **'nombre'**
+  static const careerStandingsName = 'careerStandingsName';
+
+  /// Translations:
+  ///
+  /// en:  **'Races'**
+  ///
+  /// nl:  **'Races'**
+  ///
+  /// fr:  **'Races'**
+  ///
+  /// es:  **'Races'**
+  static const careerStandingsRaces = 'careerStandingsRaces';
+
+  /// Translations:
+  ///
+  /// en:  **'Points'**
+  ///
+  /// nl:  **'Punten'**
+  ///
+  /// fr:  **'Points'**
+  ///
+  /// es:  **'Puntos'**
+  static const careerStandingsPoints = 'careerStandingsPoints';
+
+  /// Translations:
+  ///
+  /// en:  **'Winner'**
+  ///
+  /// nl:  **'Winnaar'**
+  ///
+  /// fr:  **'Winner'**
+  ///
+  /// es:  **'Winner'**
+  static const careerStandingsWinner = 'careerStandingsWinner';
+
+  /// Translations:
+  ///
+  /// en:  **'You have the best rider in the world! Congratulations!'**
+  ///
+  /// nl:  **'Je hebt de beste renner van de wereld! Gefeliciteerd!'**
+  ///
+  /// fr:  **'Vous avez le meilleur coureur du monde ! Félicitations !'**
+  ///
+  /// es:  **'¡Tienes al mejor piloto del mundo! Enhorabuena!'**
+  static const careerSingleWon = 'careerSingleWon';
+
+  /// Translations:
+  ///
+  /// en:  **'The best rider in the world belongs to another team...'**
+  ///
+  /// nl:  **'De beste renner van de wereld hoort bij een ander team...'**
+  ///
+  /// fr:  **'Le meilleur coureur du monde appartient à une autre équipe...'**
+  ///
+  /// es:  **'El mejor piloto del mundo pertenece a otro equipo...'**
+  static const careerSingleLost = 'careerSingleLost';
+
+  /// Translations:
+  ///
+  /// en:  **'Your best rider has [arg1 number] points'**
+  ///
+  /// nl:  **'Je beste renner heeft [arg1 number] punten'**
+  ///
+  /// fr:  **'Votre meilleur coureur a [arg1 number] points'**
+  ///
+  /// es:  **'Tu mejor piloto tiene [arg1 number] puntos'**
+  static const careerSinglePoints = 'careerSinglePoints';
+
+  /// Translations:
+  ///
+  /// en:  **'You have the best team in the world! Congratulations!'**
+  ///
+  /// nl:  **'Je hebt het beste team ter wereld! Gefeliciteerd!'**
+  ///
+  /// fr:  **'Vous avez la meilleure équipe du monde ! Félicitations !'**
+  ///
+  /// es:  **'¡Tienes el mejor equipo del mundo! Enhorabuena!'**
+  static const careerTeamWon = 'careerTeamWon';
+
+  /// Translations:
+  ///
+  /// en:  **'Another team has done better...'**
+  ///
+  /// nl:  **'Een andere ploeg heeft het beter gedaan...'**
+  ///
+  /// fr:  **'Une autre équipe a fait mieux...'**
+  ///
+  /// es:  **'Otro equipo lo ha hecho mejor...'**
+  static const careerTeamLost = 'careerTeamLost';
+
+  /// Translations:
+  ///
+  /// en:  **'Your team has [arg1 number] points'**
+  ///
+  /// nl:  **'Jouw team heeft [arg1 number] punten'**
+  ///
+  /// fr:  **'Votre équipe a [arg1 number] points'**
+  ///
+  /// es:  **'Tu equipo tiene [arg1 number] puntos'**
+  static const careerTeamPoints = 'careerTeamPoints';
+
+  /// Translations:
+  ///
+  /// en:  **'You have won the career mode! Congratulations! Feel free to share your score and try to defeat other players' best score'**
+  ///
+  /// nl:  **'Je hebt de career mode gewonnen! Gefeliciteerd! Voel je vrij om je score te delen en probeer de beste score van andere spelers te verslaan'**
+  ///
+  /// fr:  **'Vous avez gagné le mode carrière ! Félicitations ! N'hésitez pas à partager votre score et à essayer de battre le meilleur score des autres joueurs'**
+  ///
+  /// es:  **'¡Has ganado el modo carrera! ¡Enhorabuena! No dudes en compartir tu puntuación e intentar derrotar la mejor puntuación de otros jugadores'**
+  static const careerTotalWon = 'careerTotalWon';
+
+  /// Translations:
+  ///
+  /// en:  **'You didn't win both the single and team ranking... Press continue to reset the career mode and try again!'**
+  ///
+  /// nl:  **'Je hebt niet zowel het single- als het teamklassement gewonnen.... Druk op continue om de carrièremodus te resetten en het opnieuw te proberen!'**
+  ///
+  /// fr:  **'Vous n'avez pas gagné le classement individuel et par équipe... Appuyez sur continue pour réinitialiser le mode carrière et réessayez !'**
+  ///
+  /// es:  **'No has ganado la clasificación individual y por equipos... Pulsa continuar para reiniciar el modo carrera e inténtalo de nuevo!'**
+  static const careerTotalLost = 'careerTotalLost';
+
+  /// Translations:
+  ///
+  /// en:  **'Complete a tour to see your ranking'**
+  ///
+  /// nl:  **'Voltooi een tour om je klassement te zien'**
+  ///
+  /// fr:  **'Terminez un tour pour voir votre classement'**
+  ///
+  /// es:  **'Completa un recorrido para ver tu clasificación'**
+  static const careerOverviewNoResults = 'careerOverviewNoResults';
+
+  /// Translations:
+  ///
+  /// en:  **'This will reset your career. Are you sure?'**
+  ///
+  /// nl:  **'Dit zal je carrière resetten. Weet je het zeker?'**
+  ///
+  /// fr:  **'Ceci va réinitialiser votre carrière. Are you sure ?'**
+  ///
+  /// es:  **'Esto reiniciará tu carrera. ¿Estás seguro?'**
+  static const careerResetMessage = 'careerResetMessage';
+
+  /// Translations:
+  ///
+  /// en:  **'Rankings'**
+  ///
+  /// nl:  **'Rankings'**
+  ///
+  /// fr:  **'Rankings'**
+  ///
+  /// es:  **'Rankings'**
+  static const careerOverviewRankings = 'careerOverviewRankings';
+
+  /// Translations:
+  ///
+  /// en:  **'Calendar'**
+  ///
+  /// nl:  **'Kalender'**
+  ///
+  /// fr:  **'Calendar'**
+  ///
+  /// es:  **'Calendario'**
+  static const careerOverviewCalendar = 'careerOverviewCalendar';
+
+  /// Translations:
+  ///
+  /// en:  **'Finish'**
+  ///
+  /// nl:  **'Finish'**
+  ///
+  /// fr:  **'Finish'**
+  ///
+  /// es:  **'Finish'**
+  static const careerOverviewFinish = 'careerOverviewFinish';
+
+  /// Translations:
+  ///
+  /// en:  **'Reset'**
+  ///
+  /// nl:  **'Reset'**
+  ///
+  /// fr:  **'Reset'**
+  ///
+  /// es:  **'Reset'**
+  static const careerOverviewReset = 'careerOverviewReset';
+
+  /// Translations:
+  ///
+  /// en:  **'Reset'**
+  ///
+  /// nl:  **'Reset'**
+  ///
+  /// fr:  **'Reset'**
+  ///
+  /// es:  **'Reset'**
+  static const careerResetButton = 'careerResetButton';
+
+  /// Translations:
+  ///
+  /// en:  **'Go back'**
+  ///
+  /// nl:  **'Ga terug'**
+  ///
+  /// fr:  **'Go back'**
+  ///
+  /// es:  **'Volver'**
+  static const careerResetBack = 'careerResetBack';
+
+  /// Translations:
+  ///
+  /// en:  **'Next Race'**
+  ///
+  /// nl:  **'Volgende Race'**
+  ///
+  /// fr:  **'Next Race'**
+  ///
+  /// es:  **'CarreraSiguiente'**
+  static const careerOverviewStartNext = 'careerOverviewStartNext';
+
+  /// Translations:
+  ///
+  /// en:  **'Tour up above'**
+  ///
+  /// nl:  **'Tour hierboven'**
+  ///
+  /// fr:  **'Tour en haut'**
+  ///
+  /// es:  **'Tour arriba'**
   static const calendarEvent1 = 'calendarEvent1';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Valencia'**
+  /// en:  **'Tour of Valor'**
   ///
-  /// nl:  **'Ronde van Valencia'**
+  /// nl:  **'Tour of Valor'**
   ///
-  /// fr:  **'Tour de Valence'**
+  /// fr:  **'Tour of Valor'**
   ///
-  /// es:  **'Vuelta a Valencia'**
+  /// es:  **'Tour of Valor'**
   static const calendarEvent2 = 'calendarEvent2';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Dubai'**
+  /// en:  **'Tour of the desert'**
   ///
-  /// nl:  **'Ronde van Dubai'**
+  /// nl:  **'Ronde door de woestijn'**
   ///
-  /// fr:  **'Tour de Dubaï'**
+  /// fr:  **'Tour du désert'**
   ///
-  /// es:  **'Tour de Dubai'**
+  /// es:  **'Recorrido por el desierto'**
   static const calendarEvent3 = 'calendarEvent3';
 
   /// Translations:
   ///
-  /// en:  **'Ruta del Sol'**
+  /// en:  **'Tour of the sun'**
   ///
-  /// nl:  **'Ruta del Sol'**
+  /// nl:  **'Ronde van de zon'**
   ///
-  /// fr:  **'Ruta del Sol'**
+  /// fr:  **'Tour du soleil'**
   ///
-  /// es:  **'Ruta del Sol'**
+  /// es:  **'Tour del sol'**
   static const calendarEvent4 = 'calendarEvent4';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Abu Dhabi'**
+  /// en:  **'Tour of Persia'**
   ///
-  /// nl:  **'Ronde van Abu Dhabi'**
+  /// nl:  **'Ronde door Perzië'**
   ///
-  /// fr:  **'Tour d'Abu Dhabi'**
+  /// fr:  **'Tour de la Perse'**
   ///
-  /// es:  **'Tour de Abu Dhabi'**
+  /// es:  **'Tour de Persia'**
   static const calendarEvent5 = 'calendarEvent5';
 
   /// Translations:
   ///
-  /// en:  **'Omloop Het Nieuwsblad'**
+  /// en:  **'Circulation of the news paper'**
   ///
-  /// nl:  **'Omloop Het Nieuwsblad'**
+  /// nl:  **'Circulatie van de nieuwskrant'**
   ///
-  /// fr:  **'Omloop Het Nieuwsblad'**
+  /// fr:  **'Circulation du journal'**
   ///
-  /// es:  **'Omloop Het Nieuwsblad'**
+  /// es:  **'Circulación del periódico'**
   static const calendarEvent6 = 'calendarEvent6';
 
   /// Translations:
   ///
-  /// en:  **'Kuurne - Brussels - Kuurne'**
+  /// en:  **'Brussels - Kuurne - Brussels'**
   ///
-  /// nl:  **'Kuurne - Brussel - Kuurne'**
+  /// nl:  **'Brussel - Kuurne - Brussel'**
   ///
-  /// fr:  **'Kuurne - Bruxelles - Kuurne'**
+  /// fr:  **'Bruxelles - Kuurne - Bruxelles'**
   ///
-  /// es:  **'Kuurne - Bruselas - Kuurne'**
+  /// es:  **'Bruselas - Kuurne - Bruselas'**
   static const calendarEvent7 = 'calendarEvent7';
 
   /// Translations:
   ///
-  /// en:  **'Strade Bianche'**
+  /// en:  **'Street of Bianche'**
   ///
-  /// nl:  **'Strade Bianche'**
+  /// nl:  **'Straat van Bianche'**
   ///
-  /// fr:  **'Strade Bianche'**
+  /// fr:  **'Rue de Bianche'**
   ///
-  /// es:  **'Strade Bianche'**
+  /// es:  **'Calle de Bianche'**
   static const calendarEvent8 = 'calendarEvent8';
 
   /// Translations:
   ///
-  /// en:  **'Paris - Nice'**
+  /// en:  **'Nice Paris'**
   ///
-  /// nl:  **'Parijs - Nice'**
+  /// nl:  **'Nice Parijs'**
   ///
-  /// fr:  **'Paris - Nice'**
+  /// fr:  **'Nice Paris'**
   ///
-  /// es:  **'París - Niza'**
+  /// es:  **'Niza - París'**
   static const calendarEvent9 = 'calendarEvent9';
 
   /// Translations:
   ///
-  /// en:  **'Tirreno-Adriatico'**
+  /// en:  **'Tirreno-Andromeda'**
   ///
-  /// nl:  **'Tirreno-Adriatico'**
+  /// nl:  **'Tirreno-Andromeda'**
   ///
-  /// fr:  **'Tirreno-Adriatico'**
+  /// fr:  **'Tirreno-Andromeda'**
   ///
-  /// es:  **'Tirreno-Adriatico'**
+  /// es:  **'Tirreno-Andrómeda'**
   static const calendarEvent10 = 'calendarEvent10';
 
   /// Translations:
   ///
-  /// en:  **'Milan-San Remo'**
+  /// en:  **'Milan-Remi'**
   ///
-  /// nl:  **'Milaan-San Remo'**
+  /// nl:  **'Milaan-Remi'**
   ///
-  /// fr:  **'Milan-San Remo'**
+  /// fr:  **'Milan-Remi'**
   ///
-  /// es:  **'Milán-San Remo'**
+  /// es:  **'Milán-Remi'**
   static const calendarEvent11 = 'calendarEvent11';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Catalonia'**
+  /// en:  **'Tour of Catan'**
   ///
-  /// nl:  **'Ronde van Catalonië'**
+  /// nl:  **'Ronde van Catan'**
   ///
-  /// fr:  **'Tour de Catalogne'**
+  /// fr:  **'Tour de Catane'**
   ///
-  /// es:  **'Vuelta a Cataluña'**
+  /// es:  **'Vuelta a Catán'**
   static const calendarEvent12 = 'calendarEvent12';
 
   /// Translations:
   ///
-  /// en:  **'E3 Harelbeke'**
+  /// en:  **'E17 Harelbeke'**
   ///
-  /// nl:  **'E3 Harelbeke'**
+  /// nl:  **'E17 Harelbeke'**
   ///
-  /// fr:  **'E3 Harelbeke'**
+  /// fr:  **'E17 Harelbeke'**
   ///
-  /// es:  **'E3 Harelbeke'**
+  /// es:  **'E17 Harelbeke'**
   static const calendarEvent13 = 'calendarEvent13';
 
   /// Translations:
   ///
-  /// en:  **'Gent - Wevelgem'**
+  /// en:  **'Gents - Weasel'**
   ///
-  /// nl:  **'Gent - Wevelgem'**
+  /// nl:  **'Gents - Wezel'**
   ///
-  /// fr:  **'Gent - Wevelgem'**
+  /// fr:  **'Gents - Weasel'**
   ///
-  /// es:  **'Gent - Wevelgem'**
+  /// es:  **'Gents - Weasel'**
   static const calendarEvent14 = 'calendarEvent14';
 
   /// Translations:
   ///
-  /// en:  **'Dwars door Vlaanderen'**
+  /// en:  **'Straight through Belgium'**
   ///
-  /// nl:  **'Dwars door Vlaanderen'**
+  /// nl:  **'Dwars door België'**
   ///
-  /// fr:  **'Dwars door Vlaanderen'**
+  /// fr:  **'Tout droit à travers la Belgique'**
   ///
-  /// es:  **'Dwars door Vlaanderen'**
+  /// es:  **'Recta a través de Bélgica'**
   static const calendarEvent15 = 'calendarEvent15';
 
   /// Translations:
   ///
-  /// en:  **'Volta Limburg Classic'**
+  /// en:  **'Classic Limburg'**
   ///
-  /// nl:  **'Volta Limburg Classic'**
+  /// nl:  **'Klassiek Limburg'**
   ///
-  /// fr:  **'Volta Limburg Classic'**
+  /// fr:  **'Classic Limburg'**
   ///
-  /// es:  **'Volta Limburg Classic'**
+  /// es:  **'Limburgo clásico'**
   static const calendarEvent16 = 'calendarEvent16';
 
   /// Translations:
   ///
-  /// en:  **'Ronde van Vlaanderen'**
+  /// en:  **'Tour around Flanders'**
   ///
-  /// nl:  **'Ronde van Vlaanderen'**
+  /// nl:  **'Rondje Vlaanderen'**
   ///
-  /// fr:  **'Ronde van Vlaanderen'**
+  /// fr:  **'Tour des Flandres'**
   ///
-  /// es:  **'Ronde van Vlaanderen'**
+  /// es:  **'Vuelta a Flandes'**
   static const calendarEvent17 = 'calendarEvent17';
 
   /// Translations:
   ///
-  /// en:  **'Tour of the Basque Country'**
+  /// en:  **'Tour of Basket'**
   ///
-  /// nl:  **'Ronde van het Baskenland'**
+  /// nl:  **'Rondje basket'**
   ///
-  /// fr:  **'Tour du Pays basque'**
+  /// fr:  **'Tour du Panier'**
   ///
-  /// es:  **'Vuelta al País Vasco'**
+  /// es:  **'Vuelta a la cesta'**
   static const calendarEvent18 = 'calendarEvent18';
 
   /// Translations:
   ///
-  /// en:  **'Paris - Roubaix'**
+  /// en:  **'Rubble from Paris'**
   ///
-  /// nl:  **'Parijs - Roubaix'**
+  /// nl:  **'Puinhoop van Parijs'**
   ///
-  /// fr:  **'Paris - Roubaix'**
+  /// fr:  **'Décombres de Paris'**
   ///
-  /// es:  **'París - Roubaix'**
+  /// es:  **'Escombros de París'**
   static const calendarEvent19 = 'calendarEvent19';
 
   /// Translations:
   ///
-  /// en:  **'Brabantse Pijl'**
+  /// en:  **'Arrow of Brabant'**
   ///
-  /// nl:  **'Brabantse Pijl'**
+  /// nl:  **'Pijl van Brabant'**
   ///
-  /// fr:  **'Brabantse Pijl'**
+  /// fr:  **'Flèche de Brabant'**
   ///
-  /// es:  **'Brabantse Pijl'**
+  /// es:  **'Flecha de Brabante'**
   static const calendarEvent20 = 'calendarEvent20';
 
   /// Translations:
   ///
-  /// en:  **'Amstel Gold Race'**
+  /// en:  **'Gold Beer Race'**
   ///
-  /// nl:  **'Amstel Gold Race'**
+  /// nl:  **'Goudbierrace'**
   ///
-  /// fr:  **'Amstel Gold Race'**
+  /// fr:  **'Gold Beer Race'**
   ///
-  /// es:  **'Amstel Gold Race'**
+  /// es:  **'Carrera de la Cerveza de Oro'**
   static const calendarEvent21 = 'calendarEvent21';
 
   /// Translations:
   ///
-  /// en:  **'Tour of the Alps'**
+  /// en:  **'Touring the Alps'**
   ///
-  /// nl:  **'Ronde van de Alpen'**
+  /// nl:  **'Toeren door de Alpen'**
   ///
-  /// fr:  **'Tour des Alpes'**
+  /// fr:  **'Touring the Alps'**
   ///
-  /// es:  **'Tour de los Alpes'**
+  /// es:  **'Vuelta a los Alpes'**
   static const calendarEvent22 = 'calendarEvent22';
 
   /// Translations:
   ///
-  /// en:  **'Walloon Arrow'**
+  /// en:  **'Arrow of Walloon'**
   ///
-  /// nl:  **'Waalse Pijl'**
+  /// nl:  **'Pijl van Wallonië'**
   ///
-  /// fr:  **'Flèche Wallonne'**
+  /// fr:  **'Flèche de Wallonie'**
   ///
-  /// es:  **'Flecha Valona'**
+  /// es:  **'Flecha de Valonia'**
   static const calendarEvent23 = 'calendarEvent23';
 
   /// Translations:
   ///
-  /// en:  **'Liège-Bastogne-Liège'**
+  /// en:  **'Bastogne-Liège-Bastogne'**
   ///
-  /// nl:  **'Luik-Bastenaken-Luik'**
+  /// nl:  **'Bastenaken-Luik-Bastenaken'**
   ///
-  /// fr:  **'Liège-Bastogne-Liège'**
+  /// fr:  **'Bastogne-Liège-Bastogne'**
   ///
-  /// es:  **'Lieja-Bastogne-Lieja'**
+  /// es:  **'Bastogne-Liège-Bastogne'**
   static const calendarEvent24 = 'calendarEvent24';
 
   /// Translations:
   ///
-  /// en:  **'Tour de Romandie'**
+  /// en:  **'Tour de Romantic'**
   ///
-  /// nl:  **'Ronde van Romandië'**
+  /// nl:  **'Ronde van de romantiek'**
   ///
-  /// fr:  **'Tour de Romandie'**
+  /// fr:  **'Tour de Romantique'**
   ///
-  /// es:  **'Tour de Romandía'**
+  /// es:  **'Tour de Romantic'**
   static const calendarEvent25 = 'calendarEvent25';
 
   /// Translations:
   ///
-  /// en:  **'Giro d'Italia'**
+  /// en:  **'Giro in Italic'**
   ///
-  /// nl:  **'Giro d'Italia'**
+  /// nl:  **'Giro in Italic'**
   ///
-  /// fr:  **'Giro d'Italia'**
+  /// fr:  **'Giro in Italic'**
   ///
-  /// es:  **'Giro de Italia'**
+  /// es:  **'Giro en Itálica'**
   static const calendarEvent26 = 'calendarEvent26';
 
   /// Translations:
   ///
-  /// en:  **'Tour of California'**
+  /// en:  **'Tour of Californication'**
   ///
-  /// nl:  **'Ronde van Californië'**
+  /// nl:  **'Ronde van Californication'**
   ///
-  /// fr:  **'Tour de Californie'**
+  /// fr:  **'Tour of Californication'**
   ///
   /// es:  **'Tour de California'**
   static const calendarEvent27 = 'calendarEvent27';
 
   /// Translations:
   ///
-  /// en:  **'Critérium du Dauphiné'**
+  /// en:  **'Critérium of Delphine'**
   ///
-  /// nl:  **'Critérium du Dauphiné'**
+  /// nl:  **'Critérium van Delphine'**
   ///
-  /// fr:  **'Critérium du Dauphiné'**
+  /// fr:  **'Critérium de la Delphine'**
   ///
-  /// es:  **'Critérium du Dauphiné'**
+  /// es:  **'Critérium de Delphine'**
   static const calendarEvent28 = 'calendarEvent28';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Switzerland'**
+  /// en:  **'Tour of Swiss knives'**
   ///
-  /// nl:  **'Ronde van Zwitserland'**
+  /// nl:  **'Ronde van zwiterse messen'**
   ///
-  /// fr:  **'Tour de Suisse'**
+  /// fr:  **'Tour des couteaux suisses'**
   ///
-  /// es:  **'Vuelta a Suiza'**
+  /// es:  **'Tour de los cuchillos suizos'**
   static const calendarEvent29 = 'calendarEvent29';
 
   /// Translations:
   ///
-  /// en:  **'Tour de France'**
+  /// en:  **'Tour de France cheese'**
   ///
-  /// nl:  **'Tour de France'**
+  /// nl:  **'Tour de France kaas'**
   ///
-  /// fr:  **'Tour de France'**
+  /// fr:  **'Tour de France des fromages'**
   ///
-  /// es:  **'Tour de Francia'**
+  /// es:  **'Tour de Francia del queso'**
   static const calendarEvent30 = 'calendarEvent30';
 
   /// Translations:
   ///
-  /// en:  **'Clásica San Sebastián'**
+  /// en:  **'Classic Sebastian'**
   ///
-  /// nl:  **'Clásica San Sebastián'**
+  /// nl:  **'Klassieker Sebastian'**
   ///
-  /// fr:  **'Clásica San Sebastián'**
+  /// fr:  **'Classic Sebastian'**
   ///
-  /// es:  **'Clásica San Sebastián'**
+  /// es:  **'Clásico de Sebastián'**
   static const calendarEvent31 = 'calendarEvent31';
 
   /// Translations:
   ///
-  /// en:  **'Binckbank Tour'**
+  /// en:  **'Binck or bank Tour'**
   ///
-  /// nl:  **'Binckbank Tour'**
+  /// nl:  **'Binck of bank Tour'**
   ///
-  /// fr:  **'Binckbank Tour'**
+  /// fr:  **'Binck ou le Tour des banques'**
   ///
-  /// es:  **'Binckbank Tour'**
+  /// es:  **'Tour de Binck o del banco'**
   static const calendarEvent32 = 'calendarEvent32';
 
   /// Translations:
   ///
-  /// en:  **'Vuelta a España'**
+  /// en:  **'Tour of pain'**
   ///
-  /// nl:  **'Vuelta a España'**
+  /// nl:  **'Ronde van de pijn'**
   ///
-  /// fr:  **'Vuelta a España'**
+  /// fr:  **'Tour de la douleur'**
   ///
-  /// es:  **'Vuelta a España'**
+  /// es:  **'Tour del dolor'**
   static const calendarEvent33 = 'calendarEvent33';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Britain'**
+  /// en:  **'Tour of the Queen'**
   ///
-  /// nl:  **'Ronde van Groot-Brittannië'**
+  /// nl:  **'Ronde van de Koningin'**
   ///
-  /// fr:  **'Tour de Grande-Bretagne'**
+  /// fr:  **'Tour de la Reine'**
   ///
-  /// es:  **'Tour of Britain'**
+  /// es:  **'Tour de la Reina'**
   static const calendarEvent34 = 'calendarEvent34';
 
   /// Translations:
   ///
-  /// en:  **'Grand Prix of Quebec'**
+  /// en:  **'Great price of Queue'**
   ///
-  /// nl:  **'Grote Prijs van Québec'**
+  /// nl:  **'Grote prijs van de wachtrij'**
   ///
-  /// fr:  **'Grand Prix du Québec'**
+  /// fr:  **'Grand prix de la Queue'**
   ///
-  /// es:  **'Gran Premio de Quebec'**
+  /// es:  **'Gran precio de la cola'**
   static const calendarEvent35 = 'calendarEvent35';
 
   /// Translations:
   ///
-  /// en:  **'Montreal Grand Prix'**
+  /// en:  **'Great price of Moutain'**
   ///
-  /// nl:  **'Grote Prijs van Montreal'**
+  /// nl:  **'Grote prijs van de berg'**
   ///
-  /// fr:  **'Grand Prix de Montréal'**
+  /// fr:  **'Grand prix de la Montagne'**
   ///
-  /// es:  **'Gran Premio de Montreal'**
+  /// es:  **'Gran precio de la Montaña'**
   static const calendarEvent36 = 'calendarEvent36';
 
   /// Translations:
   ///
-  /// en:  **'Tour of Lombardy'**
+  /// en:  **'Tour of Lombard'**
   ///
-  /// nl:  **'Ronde van Lombardije'**
+  /// nl:  **'Ronde van Lombard'**
   ///
-  /// fr:  **'Tour de Lombardie'**
+  /// fr:  **'Tour de Lombard'**
   ///
-  /// es:  **'Tour de Lombardía'**
+  /// es:  **'Vuelta a Lombard'**
   static const calendarEvent37 = 'calendarEvent37';
 
 }

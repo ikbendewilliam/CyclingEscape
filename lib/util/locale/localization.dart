@@ -361,17 +361,6 @@ class Localization {
 
   /// Translations:
   ///
-  /// en:  **'Races:'**
-  ///
-  /// nl:  **'Races:'**
-  ///
-  /// fr:  **'Courses:'**
-  ///
-  /// es:  **'Carreras:'**
-  String get races => _t(LocalizationKeys.races);
-
-  /// Translations:
-  ///
   /// en:  **'Teams:'**
   ///
   /// nl:  **'Teams:'**
@@ -1934,409 +1923,739 @@ class Localization {
 
   /// Translations:
   ///
-  /// en:  **'Tour Down Under'**
+  /// en:  **'End of your career'**
   ///
-  /// nl:  **'Tour Down Under'**
+  /// nl:  **'Einde van je carrière'**
   ///
-  /// fr:  **'Tour Down Under'**
+  /// fr:  **'End of your career'**
   ///
-  /// es:  **'Tour Down Under'**
+  /// es:  **'Fin de carrera'**
+  String get careerFinishTitle => _t(LocalizationKeys.careerFinishTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Reset career'**
+  ///
+  /// nl:  **'Carrière resetten'**
+  ///
+  /// fr:  **'Réinitialisation de la carrière'**
+  ///
+  /// es:  **'Reiniciar carrera'**
+  String get careerResetTitle => _t(LocalizationKeys.careerResetTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Start next event'**
+  ///
+  /// nl:  **'Start volgende evenement'**
+  ///
+  /// fr:  **'Début de la prochaine épreuve'**
+  ///
+  /// es:  **'Empezar el siguiente evento'**
+  String get careerSelectRidersTitle => _t(LocalizationKeys.careerSelectRidersTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Rankings'**
+  ///
+  /// nl:  **'Ranglijsten'**
+  ///
+  /// fr:  **'Rankings'**
+  ///
+  /// es:  **'Rankings'**
+  String get careerStandingsTitle => _t(LocalizationKeys.careerStandingsTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Calendar'**
+  ///
+  /// nl:  **'Kalender'**
+  ///
+  /// fr:  **'Calendar'**
+  ///
+  /// es:  **'Calendario'**
+  String get careerCalendarTitle => _t(LocalizationKeys.careerCalendarTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Career'**
+  ///
+  /// nl:  **'Carrière'**
+  ///
+  /// fr:  **'Career'**
+  ///
+  /// es:  **'career'**
+  String get careerOverviewTitle => _t(LocalizationKeys.careerOverviewTitle);
+
+  /// Translations:
+  ///
+  /// en:  **'Complete the first race to see results'**
+  ///
+  /// nl:  **'Voltooi de eerste race om resultaten te zien'**
+  ///
+  /// fr:  **'Terminez la première course pour voir les résultats'**
+  ///
+  /// es:  **'Completa la primera carrera para ver los resultados'**
+  String get careerStandingsNoRacesCompleted => _t(LocalizationKeys.careerStandingsNoRacesCompleted);
+
+  /// Translations:
+  ///
+  /// en:  **'results after [arg1 number] races'**
+  ///
+  /// nl:  **'resultaten na [arg1 number] races'**
+  ///
+  /// fr:  **'Résultats après [arg1 number] courses'**
+  ///
+  /// es:  **'resultados después de [arg1 number] carreras'**
+  String careerStandingsRacesCompleted(num arg1) => _t(LocalizationKeys.careerStandingsRacesCompleted, args: <dynamic>[arg1]);
+
+  /// Translations:
+  ///
+  /// en:  **'no.'**
+  ///
+  /// nl:  **'nee'**
+  ///
+  /// fr:  **'no.'**
+  ///
+  /// es:  **'no'**
+  String get careerStandingsNumber => _t(LocalizationKeys.careerStandingsNumber);
+
+  /// Translations:
+  ///
+  /// en:  **'name'**
+  ///
+  /// nl:  **'name'**
+  ///
+  /// fr:  **'nom'**
+  ///
+  /// es:  **'nombre'**
+  String get careerStandingsName => _t(LocalizationKeys.careerStandingsName);
+
+  /// Translations:
+  ///
+  /// en:  **'Races'**
+  ///
+  /// nl:  **'Races'**
+  ///
+  /// fr:  **'Races'**
+  ///
+  /// es:  **'Races'**
+  String get careerStandingsRaces => _t(LocalizationKeys.careerStandingsRaces);
+
+  /// Translations:
+  ///
+  /// en:  **'Points'**
+  ///
+  /// nl:  **'Punten'**
+  ///
+  /// fr:  **'Points'**
+  ///
+  /// es:  **'Puntos'**
+  String get careerStandingsPoints => _t(LocalizationKeys.careerStandingsPoints);
+
+  /// Translations:
+  ///
+  /// en:  **'Winner'**
+  ///
+  /// nl:  **'Winnaar'**
+  ///
+  /// fr:  **'Winner'**
+  ///
+  /// es:  **'Winner'**
+  String get careerStandingsWinner => _t(LocalizationKeys.careerStandingsWinner);
+
+  /// Translations:
+  ///
+  /// en:  **'You have the best rider in the world! Congratulations!'**
+  ///
+  /// nl:  **'Je hebt de beste renner van de wereld! Gefeliciteerd!'**
+  ///
+  /// fr:  **'Vous avez le meilleur coureur du monde ! Félicitations !'**
+  ///
+  /// es:  **'¡Tienes al mejor piloto del mundo! Enhorabuena!'**
+  String get careerSingleWon => _t(LocalizationKeys.careerSingleWon);
+
+  /// Translations:
+  ///
+  /// en:  **'The best rider in the world belongs to another team...'**
+  ///
+  /// nl:  **'De beste renner van de wereld hoort bij een ander team...'**
+  ///
+  /// fr:  **'Le meilleur coureur du monde appartient à une autre équipe...'**
+  ///
+  /// es:  **'El mejor piloto del mundo pertenece a otro equipo...'**
+  String get careerSingleLost => _t(LocalizationKeys.careerSingleLost);
+
+  /// Translations:
+  ///
+  /// en:  **'Your best rider has [arg1 number] points'**
+  ///
+  /// nl:  **'Je beste renner heeft [arg1 number] punten'**
+  ///
+  /// fr:  **'Votre meilleur coureur a [arg1 number] points'**
+  ///
+  /// es:  **'Tu mejor piloto tiene [arg1 number] puntos'**
+  String careerSinglePoints(num arg1) => _t(LocalizationKeys.careerSinglePoints, args: <dynamic>[arg1]);
+
+  /// Translations:
+  ///
+  /// en:  **'You have the best team in the world! Congratulations!'**
+  ///
+  /// nl:  **'Je hebt het beste team ter wereld! Gefeliciteerd!'**
+  ///
+  /// fr:  **'Vous avez la meilleure équipe du monde ! Félicitations !'**
+  ///
+  /// es:  **'¡Tienes el mejor equipo del mundo! Enhorabuena!'**
+  String get careerTeamWon => _t(LocalizationKeys.careerTeamWon);
+
+  /// Translations:
+  ///
+  /// en:  **'Another team has done better...'**
+  ///
+  /// nl:  **'Een andere ploeg heeft het beter gedaan...'**
+  ///
+  /// fr:  **'Une autre équipe a fait mieux...'**
+  ///
+  /// es:  **'Otro equipo lo ha hecho mejor...'**
+  String get careerTeamLost => _t(LocalizationKeys.careerTeamLost);
+
+  /// Translations:
+  ///
+  /// en:  **'Your team has [arg1 number] points'**
+  ///
+  /// nl:  **'Jouw team heeft [arg1 number] punten'**
+  ///
+  /// fr:  **'Votre équipe a [arg1 number] points'**
+  ///
+  /// es:  **'Tu equipo tiene [arg1 number] puntos'**
+  String careerTeamPoints(num arg1) => _t(LocalizationKeys.careerTeamPoints, args: <dynamic>[arg1]);
+
+  /// Translations:
+  ///
+  /// en:  **'You have won the career mode! Congratulations! Feel free to share your score and try to defeat other players' best score'**
+  ///
+  /// nl:  **'Je hebt de career mode gewonnen! Gefeliciteerd! Voel je vrij om je score te delen en probeer de beste score van andere spelers te verslaan'**
+  ///
+  /// fr:  **'Vous avez gagné le mode carrière ! Félicitations ! N'hésitez pas à partager votre score et à essayer de battre le meilleur score des autres joueurs'**
+  ///
+  /// es:  **'¡Has ganado el modo carrera! ¡Enhorabuena! No dudes en compartir tu puntuación e intentar derrotar la mejor puntuación de otros jugadores'**
+  String get careerTotalWon => _t(LocalizationKeys.careerTotalWon);
+
+  /// Translations:
+  ///
+  /// en:  **'You didn't win both the single and team ranking... Press continue to reset the career mode and try again!'**
+  ///
+  /// nl:  **'Je hebt niet zowel het single- als het teamklassement gewonnen.... Druk op continue om de carrièremodus te resetten en het opnieuw te proberen!'**
+  ///
+  /// fr:  **'Vous n'avez pas gagné le classement individuel et par équipe... Appuyez sur continue pour réinitialiser le mode carrière et réessayez !'**
+  ///
+  /// es:  **'No has ganado la clasificación individual y por equipos... Pulsa continuar para reiniciar el modo carrera e inténtalo de nuevo!'**
+  String get careerTotalLost => _t(LocalizationKeys.careerTotalLost);
+
+  /// Translations:
+  ///
+  /// en:  **'Complete a tour to see your ranking'**
+  ///
+  /// nl:  **'Voltooi een tour om je klassement te zien'**
+  ///
+  /// fr:  **'Terminez un tour pour voir votre classement'**
+  ///
+  /// es:  **'Completa un recorrido para ver tu clasificación'**
+  String get careerOverviewNoResults => _t(LocalizationKeys.careerOverviewNoResults);
+
+  /// Translations:
+  ///
+  /// en:  **'This will reset your career. Are you sure?'**
+  ///
+  /// nl:  **'Dit zal je carrière resetten. Weet je het zeker?'**
+  ///
+  /// fr:  **'Ceci va réinitialiser votre carrière. Are you sure ?'**
+  ///
+  /// es:  **'Esto reiniciará tu carrera. ¿Estás seguro?'**
+  String get careerResetMessage => _t(LocalizationKeys.careerResetMessage);
+
+  /// Translations:
+  ///
+  /// en:  **'Rankings'**
+  ///
+  /// nl:  **'Rankings'**
+  ///
+  /// fr:  **'Rankings'**
+  ///
+  /// es:  **'Rankings'**
+  String get careerOverviewRankings => _t(LocalizationKeys.careerOverviewRankings);
+
+  /// Translations:
+  ///
+  /// en:  **'Calendar'**
+  ///
+  /// nl:  **'Kalender'**
+  ///
+  /// fr:  **'Calendar'**
+  ///
+  /// es:  **'Calendario'**
+  String get careerOverviewCalendar => _t(LocalizationKeys.careerOverviewCalendar);
+
+  /// Translations:
+  ///
+  /// en:  **'Finish'**
+  ///
+  /// nl:  **'Finish'**
+  ///
+  /// fr:  **'Finish'**
+  ///
+  /// es:  **'Finish'**
+  String get careerOverviewFinish => _t(LocalizationKeys.careerOverviewFinish);
+
+  /// Translations:
+  ///
+  /// en:  **'Reset'**
+  ///
+  /// nl:  **'Reset'**
+  ///
+  /// fr:  **'Reset'**
+  ///
+  /// es:  **'Reset'**
+  String get careerOverviewReset => _t(LocalizationKeys.careerOverviewReset);
+
+  /// Translations:
+  ///
+  /// en:  **'Reset'**
+  ///
+  /// nl:  **'Reset'**
+  ///
+  /// fr:  **'Reset'**
+  ///
+  /// es:  **'Reset'**
+  String get careerResetButton => _t(LocalizationKeys.careerResetButton);
+
+  /// Translations:
+  ///
+  /// en:  **'Go back'**
+  ///
+  /// nl:  **'Ga terug'**
+  ///
+  /// fr:  **'Go back'**
+  ///
+  /// es:  **'Volver'**
+  String get careerResetBack => _t(LocalizationKeys.careerResetBack);
+
+  /// Translations:
+  ///
+  /// en:  **'Next Race'**
+  ///
+  /// nl:  **'Volgende Race'**
+  ///
+  /// fr:  **'Next Race'**
+  ///
+  /// es:  **'CarreraSiguiente'**
+  String get careerOverviewStartNext => _t(LocalizationKeys.careerOverviewStartNext);
+
+  /// Translations:
+  ///
+  /// en:  **'Tour up above'**
+  ///
+  /// nl:  **'Tour hierboven'**
+  ///
+  /// fr:  **'Tour en haut'**
+  ///
+  /// es:  **'Tour arriba'**
   String get calendarEvent1 => _t(LocalizationKeys.calendarEvent1);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Valencia'**
+  /// en:  **'Tour of Valor'**
   ///
-  /// nl:  **'Ronde van Valencia'**
+  /// nl:  **'Tour of Valor'**
   ///
-  /// fr:  **'Tour de Valence'**
+  /// fr:  **'Tour of Valor'**
   ///
-  /// es:  **'Vuelta a Valencia'**
+  /// es:  **'Tour of Valor'**
   String get calendarEvent2 => _t(LocalizationKeys.calendarEvent2);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Dubai'**
+  /// en:  **'Tour of the desert'**
   ///
-  /// nl:  **'Ronde van Dubai'**
+  /// nl:  **'Ronde door de woestijn'**
   ///
-  /// fr:  **'Tour de Dubaï'**
+  /// fr:  **'Tour du désert'**
   ///
-  /// es:  **'Tour de Dubai'**
+  /// es:  **'Recorrido por el desierto'**
   String get calendarEvent3 => _t(LocalizationKeys.calendarEvent3);
 
   /// Translations:
   ///
-  /// en:  **'Ruta del Sol'**
+  /// en:  **'Tour of the sun'**
   ///
-  /// nl:  **'Ruta del Sol'**
+  /// nl:  **'Ronde van de zon'**
   ///
-  /// fr:  **'Ruta del Sol'**
+  /// fr:  **'Tour du soleil'**
   ///
-  /// es:  **'Ruta del Sol'**
+  /// es:  **'Tour del sol'**
   String get calendarEvent4 => _t(LocalizationKeys.calendarEvent4);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Abu Dhabi'**
+  /// en:  **'Tour of Persia'**
   ///
-  /// nl:  **'Ronde van Abu Dhabi'**
+  /// nl:  **'Ronde door Perzië'**
   ///
-  /// fr:  **'Tour d'Abu Dhabi'**
+  /// fr:  **'Tour de la Perse'**
   ///
-  /// es:  **'Tour de Abu Dhabi'**
+  /// es:  **'Tour de Persia'**
   String get calendarEvent5 => _t(LocalizationKeys.calendarEvent5);
 
   /// Translations:
   ///
-  /// en:  **'Omloop Het Nieuwsblad'**
+  /// en:  **'Circulation of the news paper'**
   ///
-  /// nl:  **'Omloop Het Nieuwsblad'**
+  /// nl:  **'Circulatie van de nieuwskrant'**
   ///
-  /// fr:  **'Omloop Het Nieuwsblad'**
+  /// fr:  **'Circulation du journal'**
   ///
-  /// es:  **'Omloop Het Nieuwsblad'**
+  /// es:  **'Circulación del periódico'**
   String get calendarEvent6 => _t(LocalizationKeys.calendarEvent6);
 
   /// Translations:
   ///
-  /// en:  **'Kuurne - Brussels - Kuurne'**
+  /// en:  **'Brussels - Kuurne - Brussels'**
   ///
-  /// nl:  **'Kuurne - Brussel - Kuurne'**
+  /// nl:  **'Brussel - Kuurne - Brussel'**
   ///
-  /// fr:  **'Kuurne - Bruxelles - Kuurne'**
+  /// fr:  **'Bruxelles - Kuurne - Bruxelles'**
   ///
-  /// es:  **'Kuurne - Bruselas - Kuurne'**
+  /// es:  **'Bruselas - Kuurne - Bruselas'**
   String get calendarEvent7 => _t(LocalizationKeys.calendarEvent7);
 
   /// Translations:
   ///
-  /// en:  **'Strade Bianche'**
+  /// en:  **'Street of Bianche'**
   ///
-  /// nl:  **'Strade Bianche'**
+  /// nl:  **'Straat van Bianche'**
   ///
-  /// fr:  **'Strade Bianche'**
+  /// fr:  **'Rue de Bianche'**
   ///
-  /// es:  **'Strade Bianche'**
+  /// es:  **'Calle de Bianche'**
   String get calendarEvent8 => _t(LocalizationKeys.calendarEvent8);
 
   /// Translations:
   ///
-  /// en:  **'Paris - Nice'**
+  /// en:  **'Nice Paris'**
   ///
-  /// nl:  **'Parijs - Nice'**
+  /// nl:  **'Nice Parijs'**
   ///
-  /// fr:  **'Paris - Nice'**
+  /// fr:  **'Nice Paris'**
   ///
-  /// es:  **'París - Niza'**
+  /// es:  **'Niza - París'**
   String get calendarEvent9 => _t(LocalizationKeys.calendarEvent9);
 
   /// Translations:
   ///
-  /// en:  **'Tirreno-Adriatico'**
+  /// en:  **'Tirreno-Andromeda'**
   ///
-  /// nl:  **'Tirreno-Adriatico'**
+  /// nl:  **'Tirreno-Andromeda'**
   ///
-  /// fr:  **'Tirreno-Adriatico'**
+  /// fr:  **'Tirreno-Andromeda'**
   ///
-  /// es:  **'Tirreno-Adriatico'**
+  /// es:  **'Tirreno-Andrómeda'**
   String get calendarEvent10 => _t(LocalizationKeys.calendarEvent10);
 
   /// Translations:
   ///
-  /// en:  **'Milan-San Remo'**
+  /// en:  **'Milan-Remi'**
   ///
-  /// nl:  **'Milaan-San Remo'**
+  /// nl:  **'Milaan-Remi'**
   ///
-  /// fr:  **'Milan-San Remo'**
+  /// fr:  **'Milan-Remi'**
   ///
-  /// es:  **'Milán-San Remo'**
+  /// es:  **'Milán-Remi'**
   String get calendarEvent11 => _t(LocalizationKeys.calendarEvent11);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Catalonia'**
+  /// en:  **'Tour of Catan'**
   ///
-  /// nl:  **'Ronde van Catalonië'**
+  /// nl:  **'Ronde van Catan'**
   ///
-  /// fr:  **'Tour de Catalogne'**
+  /// fr:  **'Tour de Catane'**
   ///
-  /// es:  **'Vuelta a Cataluña'**
+  /// es:  **'Vuelta a Catán'**
   String get calendarEvent12 => _t(LocalizationKeys.calendarEvent12);
 
   /// Translations:
   ///
-  /// en:  **'E3 Harelbeke'**
+  /// en:  **'E17 Harelbeke'**
   ///
-  /// nl:  **'E3 Harelbeke'**
+  /// nl:  **'E17 Harelbeke'**
   ///
-  /// fr:  **'E3 Harelbeke'**
+  /// fr:  **'E17 Harelbeke'**
   ///
-  /// es:  **'E3 Harelbeke'**
+  /// es:  **'E17 Harelbeke'**
   String get calendarEvent13 => _t(LocalizationKeys.calendarEvent13);
 
   /// Translations:
   ///
-  /// en:  **'Gent - Wevelgem'**
+  /// en:  **'Gents - Weasel'**
   ///
-  /// nl:  **'Gent - Wevelgem'**
+  /// nl:  **'Gents - Wezel'**
   ///
-  /// fr:  **'Gent - Wevelgem'**
+  /// fr:  **'Gents - Weasel'**
   ///
-  /// es:  **'Gent - Wevelgem'**
+  /// es:  **'Gents - Weasel'**
   String get calendarEvent14 => _t(LocalizationKeys.calendarEvent14);
 
   /// Translations:
   ///
-  /// en:  **'Dwars door Vlaanderen'**
+  /// en:  **'Straight through Belgium'**
   ///
-  /// nl:  **'Dwars door Vlaanderen'**
+  /// nl:  **'Dwars door België'**
   ///
-  /// fr:  **'Dwars door Vlaanderen'**
+  /// fr:  **'Tout droit à travers la Belgique'**
   ///
-  /// es:  **'Dwars door Vlaanderen'**
+  /// es:  **'Recta a través de Bélgica'**
   String get calendarEvent15 => _t(LocalizationKeys.calendarEvent15);
 
   /// Translations:
   ///
-  /// en:  **'Volta Limburg Classic'**
+  /// en:  **'Classic Limburg'**
   ///
-  /// nl:  **'Volta Limburg Classic'**
+  /// nl:  **'Klassiek Limburg'**
   ///
-  /// fr:  **'Volta Limburg Classic'**
+  /// fr:  **'Classic Limburg'**
   ///
-  /// es:  **'Volta Limburg Classic'**
+  /// es:  **'Limburgo clásico'**
   String get calendarEvent16 => _t(LocalizationKeys.calendarEvent16);
 
   /// Translations:
   ///
-  /// en:  **'Ronde van Vlaanderen'**
+  /// en:  **'Tour around Flanders'**
   ///
-  /// nl:  **'Ronde van Vlaanderen'**
+  /// nl:  **'Rondje Vlaanderen'**
   ///
-  /// fr:  **'Ronde van Vlaanderen'**
+  /// fr:  **'Tour des Flandres'**
   ///
-  /// es:  **'Ronde van Vlaanderen'**
+  /// es:  **'Vuelta a Flandes'**
   String get calendarEvent17 => _t(LocalizationKeys.calendarEvent17);
 
   /// Translations:
   ///
-  /// en:  **'Tour of the Basque Country'**
+  /// en:  **'Tour of Basket'**
   ///
-  /// nl:  **'Ronde van het Baskenland'**
+  /// nl:  **'Rondje basket'**
   ///
-  /// fr:  **'Tour du Pays basque'**
+  /// fr:  **'Tour du Panier'**
   ///
-  /// es:  **'Vuelta al País Vasco'**
+  /// es:  **'Vuelta a la cesta'**
   String get calendarEvent18 => _t(LocalizationKeys.calendarEvent18);
 
   /// Translations:
   ///
-  /// en:  **'Paris - Roubaix'**
+  /// en:  **'Rubble from Paris'**
   ///
-  /// nl:  **'Parijs - Roubaix'**
+  /// nl:  **'Puinhoop van Parijs'**
   ///
-  /// fr:  **'Paris - Roubaix'**
+  /// fr:  **'Décombres de Paris'**
   ///
-  /// es:  **'París - Roubaix'**
+  /// es:  **'Escombros de París'**
   String get calendarEvent19 => _t(LocalizationKeys.calendarEvent19);
 
   /// Translations:
   ///
-  /// en:  **'Brabantse Pijl'**
+  /// en:  **'Arrow of Brabant'**
   ///
-  /// nl:  **'Brabantse Pijl'**
+  /// nl:  **'Pijl van Brabant'**
   ///
-  /// fr:  **'Brabantse Pijl'**
+  /// fr:  **'Flèche de Brabant'**
   ///
-  /// es:  **'Brabantse Pijl'**
+  /// es:  **'Flecha de Brabante'**
   String get calendarEvent20 => _t(LocalizationKeys.calendarEvent20);
 
   /// Translations:
   ///
-  /// en:  **'Amstel Gold Race'**
+  /// en:  **'Gold Beer Race'**
   ///
-  /// nl:  **'Amstel Gold Race'**
+  /// nl:  **'Goudbierrace'**
   ///
-  /// fr:  **'Amstel Gold Race'**
+  /// fr:  **'Gold Beer Race'**
   ///
-  /// es:  **'Amstel Gold Race'**
+  /// es:  **'Carrera de la Cerveza de Oro'**
   String get calendarEvent21 => _t(LocalizationKeys.calendarEvent21);
 
   /// Translations:
   ///
-  /// en:  **'Tour of the Alps'**
+  /// en:  **'Touring the Alps'**
   ///
-  /// nl:  **'Ronde van de Alpen'**
+  /// nl:  **'Toeren door de Alpen'**
   ///
-  /// fr:  **'Tour des Alpes'**
+  /// fr:  **'Touring the Alps'**
   ///
-  /// es:  **'Tour de los Alpes'**
+  /// es:  **'Vuelta a los Alpes'**
   String get calendarEvent22 => _t(LocalizationKeys.calendarEvent22);
 
   /// Translations:
   ///
-  /// en:  **'Walloon Arrow'**
+  /// en:  **'Arrow of Walloon'**
   ///
-  /// nl:  **'Waalse Pijl'**
+  /// nl:  **'Pijl van Wallonië'**
   ///
-  /// fr:  **'Flèche Wallonne'**
+  /// fr:  **'Flèche de Wallonie'**
   ///
-  /// es:  **'Flecha Valona'**
+  /// es:  **'Flecha de Valonia'**
   String get calendarEvent23 => _t(LocalizationKeys.calendarEvent23);
 
   /// Translations:
   ///
-  /// en:  **'Liège-Bastogne-Liège'**
+  /// en:  **'Bastogne-Liège-Bastogne'**
   ///
-  /// nl:  **'Luik-Bastenaken-Luik'**
+  /// nl:  **'Bastenaken-Luik-Bastenaken'**
   ///
-  /// fr:  **'Liège-Bastogne-Liège'**
+  /// fr:  **'Bastogne-Liège-Bastogne'**
   ///
-  /// es:  **'Lieja-Bastogne-Lieja'**
+  /// es:  **'Bastogne-Liège-Bastogne'**
   String get calendarEvent24 => _t(LocalizationKeys.calendarEvent24);
 
   /// Translations:
   ///
-  /// en:  **'Tour de Romandie'**
+  /// en:  **'Tour de Romantic'**
   ///
-  /// nl:  **'Ronde van Romandië'**
+  /// nl:  **'Ronde van de romantiek'**
   ///
-  /// fr:  **'Tour de Romandie'**
+  /// fr:  **'Tour de Romantique'**
   ///
-  /// es:  **'Tour de Romandía'**
+  /// es:  **'Tour de Romantic'**
   String get calendarEvent25 => _t(LocalizationKeys.calendarEvent25);
 
   /// Translations:
   ///
-  /// en:  **'Giro d'Italia'**
+  /// en:  **'Giro in Italic'**
   ///
-  /// nl:  **'Giro d'Italia'**
+  /// nl:  **'Giro in Italic'**
   ///
-  /// fr:  **'Giro d'Italia'**
+  /// fr:  **'Giro in Italic'**
   ///
-  /// es:  **'Giro de Italia'**
+  /// es:  **'Giro en Itálica'**
   String get calendarEvent26 => _t(LocalizationKeys.calendarEvent26);
 
   /// Translations:
   ///
-  /// en:  **'Tour of California'**
+  /// en:  **'Tour of Californication'**
   ///
-  /// nl:  **'Ronde van Californië'**
+  /// nl:  **'Ronde van Californication'**
   ///
-  /// fr:  **'Tour de Californie'**
+  /// fr:  **'Tour of Californication'**
   ///
   /// es:  **'Tour de California'**
   String get calendarEvent27 => _t(LocalizationKeys.calendarEvent27);
 
   /// Translations:
   ///
-  /// en:  **'Critérium du Dauphiné'**
+  /// en:  **'Critérium of Delphine'**
   ///
-  /// nl:  **'Critérium du Dauphiné'**
+  /// nl:  **'Critérium van Delphine'**
   ///
-  /// fr:  **'Critérium du Dauphiné'**
+  /// fr:  **'Critérium de la Delphine'**
   ///
-  /// es:  **'Critérium du Dauphiné'**
+  /// es:  **'Critérium de Delphine'**
   String get calendarEvent28 => _t(LocalizationKeys.calendarEvent28);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Switzerland'**
+  /// en:  **'Tour of Swiss knives'**
   ///
-  /// nl:  **'Ronde van Zwitserland'**
+  /// nl:  **'Ronde van zwiterse messen'**
   ///
-  /// fr:  **'Tour de Suisse'**
+  /// fr:  **'Tour des couteaux suisses'**
   ///
-  /// es:  **'Vuelta a Suiza'**
+  /// es:  **'Tour de los cuchillos suizos'**
   String get calendarEvent29 => _t(LocalizationKeys.calendarEvent29);
 
   /// Translations:
   ///
-  /// en:  **'Tour de France'**
+  /// en:  **'Tour de France cheese'**
   ///
-  /// nl:  **'Tour de France'**
+  /// nl:  **'Tour de France kaas'**
   ///
-  /// fr:  **'Tour de France'**
+  /// fr:  **'Tour de France des fromages'**
   ///
-  /// es:  **'Tour de Francia'**
+  /// es:  **'Tour de Francia del queso'**
   String get calendarEvent30 => _t(LocalizationKeys.calendarEvent30);
 
   /// Translations:
   ///
-  /// en:  **'Clásica San Sebastián'**
+  /// en:  **'Classic Sebastian'**
   ///
-  /// nl:  **'Clásica San Sebastián'**
+  /// nl:  **'Klassieker Sebastian'**
   ///
-  /// fr:  **'Clásica San Sebastián'**
+  /// fr:  **'Classic Sebastian'**
   ///
-  /// es:  **'Clásica San Sebastián'**
+  /// es:  **'Clásico de Sebastián'**
   String get calendarEvent31 => _t(LocalizationKeys.calendarEvent31);
 
   /// Translations:
   ///
-  /// en:  **'Binckbank Tour'**
+  /// en:  **'Binck or bank Tour'**
   ///
-  /// nl:  **'Binckbank Tour'**
+  /// nl:  **'Binck of bank Tour'**
   ///
-  /// fr:  **'Binckbank Tour'**
+  /// fr:  **'Binck ou le Tour des banques'**
   ///
-  /// es:  **'Binckbank Tour'**
+  /// es:  **'Tour de Binck o del banco'**
   String get calendarEvent32 => _t(LocalizationKeys.calendarEvent32);
 
   /// Translations:
   ///
-  /// en:  **'Vuelta a España'**
+  /// en:  **'Tour of pain'**
   ///
-  /// nl:  **'Vuelta a España'**
+  /// nl:  **'Ronde van de pijn'**
   ///
-  /// fr:  **'Vuelta a España'**
+  /// fr:  **'Tour de la douleur'**
   ///
-  /// es:  **'Vuelta a España'**
+  /// es:  **'Tour del dolor'**
   String get calendarEvent33 => _t(LocalizationKeys.calendarEvent33);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Britain'**
+  /// en:  **'Tour of the Queen'**
   ///
-  /// nl:  **'Ronde van Groot-Brittannië'**
+  /// nl:  **'Ronde van de Koningin'**
   ///
-  /// fr:  **'Tour de Grande-Bretagne'**
+  /// fr:  **'Tour de la Reine'**
   ///
-  /// es:  **'Tour of Britain'**
+  /// es:  **'Tour de la Reina'**
   String get calendarEvent34 => _t(LocalizationKeys.calendarEvent34);
 
   /// Translations:
   ///
-  /// en:  **'Grand Prix of Quebec'**
+  /// en:  **'Great price of Queue'**
   ///
-  /// nl:  **'Grote Prijs van Québec'**
+  /// nl:  **'Grote prijs van de wachtrij'**
   ///
-  /// fr:  **'Grand Prix du Québec'**
+  /// fr:  **'Grand prix de la Queue'**
   ///
-  /// es:  **'Gran Premio de Quebec'**
+  /// es:  **'Gran precio de la cola'**
   String get calendarEvent35 => _t(LocalizationKeys.calendarEvent35);
 
   /// Translations:
   ///
-  /// en:  **'Montreal Grand Prix'**
+  /// en:  **'Great price of Moutain'**
   ///
-  /// nl:  **'Grote Prijs van Montreal'**
+  /// nl:  **'Grote prijs van de berg'**
   ///
-  /// fr:  **'Grand Prix de Montréal'**
+  /// fr:  **'Grand prix de la Montagne'**
   ///
-  /// es:  **'Gran Premio de Montreal'**
+  /// es:  **'Gran precio de la Montaña'**
   String get calendarEvent36 => _t(LocalizationKeys.calendarEvent36);
 
   /// Translations:
   ///
-  /// en:  **'Tour of Lombardy'**
+  /// en:  **'Tour of Lombard'**
   ///
-  /// nl:  **'Ronde van Lombardije'**
+  /// nl:  **'Ronde van Lombard'**
   ///
-  /// fr:  **'Tour de Lombardie'**
+  /// fr:  **'Tour de Lombard'**
   ///
-  /// es:  **'Tour de Lombardía'**
+  /// es:  **'Vuelta a Lombard'**
   String get calendarEvent37 => _t(LocalizationKeys.calendarEvent37);
 
   String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);

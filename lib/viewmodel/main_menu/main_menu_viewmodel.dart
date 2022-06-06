@@ -44,6 +44,8 @@ class MainMenuViewModel with ChangeNotifierEx {
 
   void onSettingsPressed() => _navigator.goToSettings();
 
+  void onInfoPressed() => _navigator.goToInfo();
+
   void onCreditsPressed() => _navigator.goToCredits();
 }
 
@@ -59,6 +61,8 @@ mixin MainMenuNavigator {
   Future<void> goToSingleRaceMenu();
 
   void goToSettings();
+
+  void goToInfo();
 
   void goToCredits();
 }

@@ -11,6 +11,7 @@ import 'package:cycling_escape/screen/credits/credits_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_platform_selector_screen.dart';
 import 'package:cycling_escape/screen/debug/debug_screen.dart';
 import 'package:cycling_escape/screen/game/game_screen.dart';
+import 'package:cycling_escape/screen/information/information_screen.dart';
 import 'package:cycling_escape/screen/license/license_screen.dart';
 import 'package:cycling_escape/screen/menu/main_menu_screen.dart';
 import 'package:cycling_escape/screen/results/results_screen.dart';
@@ -95,6 +96,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case InformationScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: InformationScreen()), settings: settings);
       case CareerFinishScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: CareerFinishScreen()), settings: settings);
       case CareerResetScreen.routeName:
@@ -156,6 +159,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToInformation() => _navigator.pushNamed(InformationScreen.routeName);
 
   @override
   void goToCareerFinish() => _navigator.pushNamed(CareerFinishScreen.routeName);

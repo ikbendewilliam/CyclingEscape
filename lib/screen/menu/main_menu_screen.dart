@@ -65,22 +65,19 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const CyclingEscapeButton(
+                  CyclingEscapeButton(
                     type: CyclingEscapeButtonType.iconInfo,
-                    // onClick: viewModel.onCreditsPressed,
-                    size: 48,
+                    onClick: viewModel.onInfoPressed,
                   ),
                   const SizedBox(width: 8),
                   CyclingEscapeButton(
                     type: CyclingEscapeButtonType.iconCredits,
                     onClick: viewModel.onCreditsPressed,
-                    size: 48,
                   ),
                   const SizedBox(width: 8),
                   CyclingEscapeButton(
                     type: CyclingEscapeButtonType.iconSettings,
                     onClick: viewModel.onSettingsPressed,
-                    size: 48,
                   ),
                 ],
               ),
@@ -105,6 +102,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> implements MainMenuNavi
 
   @override
   void goToSettings() => MainNavigatorWidget.of(context).goToSettings();
+
+  @override
+  void goToInfo() => MainNavigatorWidget.of(context).goToInformation();
 
   @override
   void goToCredits() => MainNavigatorWidget.of(context).goToCredits();

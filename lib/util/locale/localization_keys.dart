@@ -2194,6 +2194,28 @@ class LocalizationKeys {
 
   /// Translations:
   ///
+  /// en:  **'Join the discord server:'**
+  ///
+  /// nl:  **'Word lid van de discord server:'**
+  ///
+  /// fr:  **'Rejoindre le serveur discord:'**
+  ///
+  /// es:  **'Únase al servidor de discordia:'**
+  static const discordServerIntro = 'discordServerIntro';
+
+  /// Translations:
+  ///
+  /// en:  **'https://discord.gg/yNneVMy7Ff'**
+  ///
+  /// nl:  **'https://discord.gg/yNneVMy7Ff'**
+  ///
+  /// fr:  **'https://discord.gg/yNneVMy7Ff'**
+  ///
+  /// es:  **'https://discord.gg/yNneVMy7Ff'**
+  static const discordServerUrl = 'discordServerUrl';
+
+  /// Translations:
+  ///
   /// en:  **'Tour up above'**
   ///
   /// nl:  **'Tour hierboven'**

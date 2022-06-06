@@ -9,7 +9,7 @@
 [ ] Holes in the road
 [ ] Crash?!?
 [ ] V2 dialog
-[ ] Information? -> Discord?
+[t] Information? -> Discord?
 [ ] Check different resolutions/devices
 [ ] Check update migration
 [ ] Prod crashlytics

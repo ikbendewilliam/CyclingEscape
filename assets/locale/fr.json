@@ -199,6 +199,8 @@
   "careerResetButton" : "Reset",
   "careerResetBack" : "Go back",
   "careerOverviewStartNext" : "Next Race",
+  "discordServerIntro": "Rejoindre le serveur discord:",
+  "discordServerUrl": "https://discord.gg/yNneVMy7Ff",
   "calendarEvent1" : "Tour en haut",
   "calendarEvent2" : "Tour of Valor",
   "calendarEvent3" : "Tour du désert",

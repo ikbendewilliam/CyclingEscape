@@ -7,6 +7,7 @@ import 'package:cycling_escape/viewmodel/global/global_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 @injectable
 class SettingsViewModel with ChangeNotifierEx {
@@ -17,6 +18,7 @@ class SettingsViewModel with ChangeNotifierEx {
     'System',
     ...LocalizationDelegate.supportedLanguages,
   ];
+  String _version = '';
 
   int get autofollowThreshold => _localStorage.autofollowThreshold;
 
@@ -42,10 +44,15 @@ class SettingsViewModel with ChangeNotifierEx {
 
   bool get autofollowThresholdAboveAsk => _localStorage.autofollowThresholdAboveAsk;
 
+  String get version => _version;
+
   SettingsViewModel(this._localStorage);
 
   Future<void> init(SettingsNavigator navigator) async {
     _navigator = navigator;
+    final packageInfo = await PackageInfo.fromPlatform();
+    _version = '${packageInfo.version}+${packageInfo.buildNumber}';
+    notifyListeners();
   }
 
   Future<void> languageChanged(int languageIndex) async {

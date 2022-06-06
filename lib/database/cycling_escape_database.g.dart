@@ -605,12 +605,14 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
   final int points;
   final int rank;
   final int? teamNumberStart;
+  final bool teamIsPlayer;
   DbCareerResults(
       {required this.number,
       required this.time,
       required this.points,
       required this.rank,
-      this.teamNumberStart});
+      this.teamNumberStart,
+      required this.teamIsPlayer});
   factory DbCareerResults.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -625,6 +627,8 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
           .mapFromDatabaseResponse(data['${effectivePrefix}rank'])!,
       teamNumberStart: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}team_number_start']),
+      teamIsPlayer: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}team_is_player'])!,
     );
   }
   @override
@@ -637,6 +641,7 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
     if (!nullToAbsent || teamNumberStart != null) {
       map['team_number_start'] = Variable<int?>(teamNumberStart);
     }
+    map['team_is_player'] = Variable<bool>(teamIsPlayer);
     return map;
   }
 
@@ -649,6 +654,7 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
       teamNumberStart: teamNumberStart == null && nullToAbsent
           ? const Value.absent()
           : Value(teamNumberStart),
+      teamIsPlayer: Value(teamIsPlayer),
     );
   }
 
@@ -661,6 +667,7 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
       points: serializer.fromJson<int>(json['points']),
       rank: serializer.fromJson<int>(json['rank']),
       teamNumberStart: serializer.fromJson<int?>(json['teamNumberStart']),
+      teamIsPlayer: serializer.fromJson<bool>(json['teamIsPlayer']),
     );
   }
   @override
@@ -672,6 +679,7 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
       'points': serializer.toJson<int>(points),
       'rank': serializer.toJson<int>(rank),
       'teamNumberStart': serializer.toJson<int?>(teamNumberStart),
+      'teamIsPlayer': serializer.toJson<bool>(teamIsPlayer),
     };
   }
 
@@ -680,13 +688,15 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
           int? time,
           int? points,
           int? rank,
-          int? teamNumberStart}) =>
+          int? teamNumberStart,
+          bool? teamIsPlayer}) =>
       DbCareerResults(
         number: number ?? this.number,
         time: time ?? this.time,
         points: points ?? this.points,
         rank: rank ?? this.rank,
         teamNumberStart: teamNumberStart ?? this.teamNumberStart,
+        teamIsPlayer: teamIsPlayer ?? this.teamIsPlayer,
       );
   @override
   String toString() {
@@ -695,13 +705,15 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
           ..write('time: $time, ')
           ..write('points: $points, ')
           ..write('rank: $rank, ')
-          ..write('teamNumberStart: $teamNumberStart')
+          ..write('teamNumberStart: $teamNumberStart, ')
+          ..write('teamIsPlayer: $teamIsPlayer')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(number, time, points, rank, teamNumberStart);
+  int get hashCode =>
+      Object.hash(number, time, points, rank, teamNumberStart, teamIsPlayer);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -710,7 +722,8 @@ class DbCareerResults extends DataClass implements Insertable<DbCareerResults> {
           other.time == this.time &&
           other.points == this.points &&
           other.rank == this.rank &&
-          other.teamNumberStart == this.teamNumberStart);
+          other.teamNumberStart == this.teamNumberStart &&
+          other.teamIsPlayer == this.teamIsPlayer);
 }
 
 class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
@@ -719,12 +732,14 @@ class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
   final Value<int> points;
   final Value<int> rank;
   final Value<int?> teamNumberStart;
+  final Value<bool> teamIsPlayer;
   const DbCareerResultsTableCompanion({
     this.number = const Value.absent(),
     this.time = const Value.absent(),
     this.points = const Value.absent(),
     this.rank = const Value.absent(),
     this.teamNumberStart = const Value.absent(),
+    this.teamIsPlayer = const Value.absent(),
   });
   DbCareerResultsTableCompanion.insert({
     this.number = const Value.absent(),
@@ -732,15 +747,18 @@ class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
     required int points,
     required int rank,
     this.teamNumberStart = const Value.absent(),
+    required bool teamIsPlayer,
   })  : time = Value(time),
         points = Value(points),
-        rank = Value(rank);
+        rank = Value(rank),
+        teamIsPlayer = Value(teamIsPlayer);
   static Insertable<DbCareerResults> custom({
     Expression<int>? number,
     Expression<int>? time,
     Expression<int>? points,
     Expression<int>? rank,
     Expression<int?>? teamNumberStart,
+    Expression<bool>? teamIsPlayer,
   }) {
     return RawValuesInsertable({
       if (number != null) 'number': number,
@@ -748,6 +766,7 @@ class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
       if (points != null) 'points': points,
       if (rank != null) 'rank': rank,
       if (teamNumberStart != null) 'team_number_start': teamNumberStart,
+      if (teamIsPlayer != null) 'team_is_player': teamIsPlayer,
     });
   }
 
@@ -756,13 +775,15 @@ class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
       Value<int>? time,
       Value<int>? points,
       Value<int>? rank,
-      Value<int?>? teamNumberStart}) {
+      Value<int?>? teamNumberStart,
+      Value<bool>? teamIsPlayer}) {
     return DbCareerResultsTableCompanion(
       number: number ?? this.number,
       time: time ?? this.time,
       points: points ?? this.points,
       rank: rank ?? this.rank,
       teamNumberStart: teamNumberStart ?? this.teamNumberStart,
+      teamIsPlayer: teamIsPlayer ?? this.teamIsPlayer,
     );
   }
 
@@ -784,6 +805,9 @@ class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
     if (teamNumberStart.present) {
       map['team_number_start'] = Variable<int?>(teamNumberStart.value);
     }
+    if (teamIsPlayer.present) {
+      map['team_is_player'] = Variable<bool>(teamIsPlayer.value);
+    }
     return map;
   }
 
@@ -794,7 +818,8 @@ class DbCareerResultsTableCompanion extends UpdateCompanion<DbCareerResults> {
           ..write('time: $time, ')
           ..write('points: $points, ')
           ..write('rank: $rank, ')
-          ..write('teamNumberStart: $teamNumberStart')
+          ..write('teamNumberStart: $teamNumberStart, ')
+          ..write('teamIsPlayer: $teamIsPlayer')
           ..write(')'))
         .toString();
   }
@@ -831,9 +856,17 @@ class $DbCareerResultsTableTable extends DbCareerResultsTable
   late final GeneratedColumn<int?> teamNumberStart = GeneratedColumn<int?>(
       'team_number_start', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _teamIsPlayerMeta =
+      const VerificationMeta('teamIsPlayer');
+  @override
+  late final GeneratedColumn<bool?> teamIsPlayer = GeneratedColumn<bool?>(
+      'team_is_player', aliasedName, false,
+      type: const BoolType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'CHECK (team_is_player IN (0, 1))');
   @override
   List<GeneratedColumn> get $columns =>
-      [number, time, points, rank, teamNumberStart];
+      [number, time, points, rank, teamNumberStart, teamIsPlayer];
   @override
   String get aliasedName => _alias ?? 'db_career_results_table';
   @override
@@ -870,6 +903,14 @@ class $DbCareerResultsTableTable extends DbCareerResultsTable
           _teamNumberStartMeta,
           teamNumberStart.isAcceptableOrUnknown(
               data['team_number_start']!, _teamNumberStartMeta));
+    }
+    if (data.containsKey('team_is_player')) {
+      context.handle(
+          _teamIsPlayerMeta,
+          teamIsPlayer.isAcceptableOrUnknown(
+              data['team_is_player']!, _teamIsPlayerMeta));
+    } else if (isInserting) {
+      context.missing(_teamIsPlayerMeta);
     }
     return context;
   }

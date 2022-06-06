@@ -19,6 +19,8 @@ abstract class CareerRepository {
   Future<void> updateResults(List<Results> results);
 
   Future<List<ResultData>> get currentResults;
+
+  Future<void> reset();
 }
 
 class _CareerRepository implements CareerRepository {
@@ -79,4 +81,10 @@ class _CareerRepository implements CareerRepository {
 
   @override
   Future<List<ResultData>> get currentResults => _careerResultsDaoStorage.getAllResults();
+
+  @override
+  Future<void> reset() => Future.wait([
+        _careerResultsDaoStorage.saveResults([]),
+        _calendarRepository.reset(),
+      ]);
 }

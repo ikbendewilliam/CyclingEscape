@@ -20,10 +20,12 @@ abstract class CalendarRepository {
   int get eventsCompleted;
 
   set eventsCompleted(int value);
+
+  Future<void> reset();
 }
 
 class _CalendarRepository implements CalendarRepository {
-  static final List<CalendarEvent> _events = [
+  final _events = [
     CalendarEvent(1, 'calendarEvent1', 500, PlaySettings(3, 2, MapType.flat, MapLength.medium, null, 3, true)), // "Tour Down Under"
     CalendarEvent(2, 'calendarEvent2', 300, PlaySettings(3, 3, MapType.hills, MapLength.medium, null, 3, true)), // "Tour of Valencia"
     CalendarEvent(3, 'calendarEvent3', 400, PlaySettings(4, 2, MapType.flat, MapLength.long, null, 3, true)), // "Tour of Dubai"
@@ -85,4 +87,13 @@ class _CalendarRepository implements CalendarRepository {
 
   @override
   Future<void> saveResults(List<CalendarEvent> events) => _calendarDaoStorage.saveResults(events);
+
+  @override
+  Future<void> reset() async {
+    eventsCompleted = 0;
+    for (final element in _events) {
+      element.winner = null;
+    }
+    await saveResults(_events);
+  }
 }

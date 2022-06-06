@@ -17,6 +17,8 @@ class DbCareerResultsTable extends Table {
   IntColumn get rank => integer()();
 
   IntColumn get teamNumberStart => integer().nullable()();
+
+  BoolColumn get teamIsPlayer => boolean()();
 }
 
 extension DbCareerResultsExtension on DbCareerResults {
@@ -26,7 +28,7 @@ extension DbCareerResultsExtension on DbCareerResults {
         points,
         0,
         number,
-        Team(false, teamNumberStart, null),
+        Team(teamIsPlayer, teamNumberStart, null),
         0,
       );
 }
@@ -38,5 +40,6 @@ extension ResultDataExtension on ResultData {
         points: points,
         rank: rank,
         teamNumberStart: team?.numberStart,
+        teamIsPlayer: team?.isPlayer ?? false,
       );
 }

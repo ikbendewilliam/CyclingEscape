@@ -3,7 +3,6 @@ import 'package:cycling_escape/repository/calendar/calendar_repository.dart';
 import 'package:cycling_escape/repository/career/career_repository.dart';
 import 'package:cycling_escape/repository/name/name_repository.dart';
 import 'package:cycling_escape/widget_game/data/result_data.dart';
-import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:flutter/material.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
@@ -32,7 +31,9 @@ class CareerStandingsViewModel with ChangeNotifierEx {
 
   Future<void> init(CareerStandingsNavigator navigator) async {
     _navigator = navigator;
-    _currentResults.addAll(await _careerRepository.currentResults);
+    _currentResults
+      ..addAll(await _careerRepository.currentResults)
+      ..sort((a, b) => b.points.compareTo(a.points));
     _calculateTeamResults();
     notifyListeners();
   }
@@ -40,10 +41,10 @@ class CareerStandingsViewModel with ChangeNotifierEx {
   String numberToName(int? number) => (number == null ? null : _nameRepository.names[number]) ?? '-';
 
   void _calculateTeamResults() {
-    final List<Team?> teams = _currentResults.map((element) => element.team).toList();
+    final teams = _currentResults.map((element) => element.team).toList();
     for (final team in teams) {
       if (_teamResults.where((element) => element.team == team).isEmpty) {
-        final ResultData resultData = ResultData();
+        final resultData = ResultData();
         _currentResults.where((element) => element.team == team).forEach((element) => resultData.points += element.points);
         resultData.team = team;
         _teamResults.add(resultData);

@@ -1,18 +1,18 @@
 # cycling_escape
 
 // TODO
-[ ] Career - show overview of your standings
-[ ] Career - ranking sort individual
-[ ] Career - end of season
-[ ] Career - reset season
+[t] Settings - close button
+[t] Career - reset season
+[t] Career - end of season
 [ ] some more translations
 [ ] Working scroll bar
 [ ] Holes in the road
-[ ] Show version somewhere
+[ ] Crash?!?
 [ ] V2 dialog
-[ ] Information
+[ ] Information? -> Discord?
 [ ] Check different resolutions/devices
 [ ] Check update migration
+[ ] Prod crashlytics
 
 ## Assets
 

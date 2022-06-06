@@ -30,6 +30,7 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
       childBuilderWithViewModel: (context, viewModel, theme, localization) => SimpleMenuScreen(
         child: MenuBox(
           title: localization.settingsTitle,
+          onClosePressed: viewModel.onBackPressed,
           wide: true,
           child: Container(
             padding: const EdgeInsets.only(left: 48, right: 48, bottom: 16),
@@ -85,6 +86,12 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                       text: localization.getTranslation(viewModel.difficulty.localizationKey),
                       maxValue: DifficultyType.values.length - 1,
                       onChange: viewModel.difficultyChanged,
+                    ),
+                    Center(
+                      child: Text(
+                        viewModel.version,
+                        style: theme.coreTextTheme.bodyUltraSmall,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Row(

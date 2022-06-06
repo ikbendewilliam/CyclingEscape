@@ -130,6 +130,7 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                                   ),
                                 ),
                               ),
+                              const SizedBox(width: 8),
                             ],
                           ),
                         );

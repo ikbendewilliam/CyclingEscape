@@ -1,7 +1,9 @@
 import 'package:cycling_escape/navigator/main_navigation.dart';
 import 'package:cycling_escape/screen/active_tour/active_tour_screen.dart';
 import 'package:cycling_escape/screen/career_calendar/career_calendar_screen.dart';
+import 'package:cycling_escape/screen/career_finish/career_finish_screen.dart';
 import 'package:cycling_escape/screen/career_overview/career_overview_screen.dart';
+import 'package:cycling_escape/screen/career_reset/career_reset_screen.dart';
 import 'package:cycling_escape/screen/career_select_riders/career_select_riders_screen.dart';
 import 'package:cycling_escape/screen/career_standings/career_standings_screen.dart';
 import 'package:cycling_escape/screen/change_cyclist_names/change_cyclist_names_screen.dart';
@@ -93,6 +95,10 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case CareerFinishScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CareerFinishScreen()), settings: settings);
+      case CareerResetScreen.routeName:
+        return FadeInRoute<void>(child: const FlavorBanner(child: CareerResetScreen()), settings: settings);
       case CareerSelectRidersScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: CareerSelectRidersScreen()), settings: settings);
       case CareerCalendarScreen.routeName:
@@ -150,6 +156,12 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToCareerFinish() => _navigator.pushNamed(CareerFinishScreen.routeName);
+
+  @override
+  void goToCareerReset() => _navigator.pushNamed(CareerResetScreen.routeName);
 
   @override
   void goToCareerSelectRiders() => _navigator.pushNamed(CareerSelectRidersScreen.routeName);

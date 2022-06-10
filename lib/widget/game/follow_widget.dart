@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 
 class FollowWidget extends StatelessWidget {
   final ValueChanged<FollowType> onFollow;
+  final String followAmount;
 
   const FollowWidget({
     required this.onFollow,
+    required this.followAmount,
     super.key,
   });
 
@@ -25,6 +27,11 @@ class FollowWidget extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text(
+                  '${localization.followAmount} $followAmount',
+                  style: theme.coreTextTheme.bodyNormal,
+                ),
+                const SizedBox(height: 8),
                 CyclingEscapeButton(
                   type: CyclingEscapeButtonType.green,
                   text: localization.followFollow,

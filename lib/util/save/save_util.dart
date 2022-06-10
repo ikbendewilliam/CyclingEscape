@@ -27,7 +27,7 @@ class SaveUtil {
     required Localization localizations,
     required ValueChanged<List<Sprint>?> onEndCycling,
     required ValueChanged<TutorialType> openTutorial,
-    required Future<FollowType> Function() onSelectFollow,
+    required SelectFollow onSelectFollow,
   }) {
     final prefs = GetIt.I<SharedPreferences>();
     if (!prefs.containsKey(_cyclingViewKey)) return null;

@@ -5,7 +5,6 @@
 [t] Crash?!?
 [ ] Working scroll bar
 [ ] Icon
-[ ] Follow show number
 [ ] Check different resolutions/devices
 [ ] Check update migration
 [ ] Prod crashlytics

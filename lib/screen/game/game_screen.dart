@@ -52,7 +52,10 @@ class GameScreenState extends State<GameScreen> implements GameNavigator {
                     );
                   }
                   if (viewModel.showFollowDialog) {
-                    return FollowWidget(onFollow: viewModel.onFollow);
+                    return FollowWidget(
+                      onFollow: viewModel.onFollow,
+                      followAmount: viewModel.followAmount,
+                    );
                   }
                   if (viewModel.isPaused) {
                     return PauseWidget(

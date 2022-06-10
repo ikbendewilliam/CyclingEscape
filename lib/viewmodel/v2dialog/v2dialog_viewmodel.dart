@@ -1,4 +1,3 @@
-import 'package:cycling_escape/navigator/mixin/back_navigator.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 

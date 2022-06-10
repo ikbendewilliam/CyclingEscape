@@ -23,7 +23,7 @@ class GameListener {
   final VoidCallback onPause;
   final SpriteManager spriteManager;
   final ValueNotifier<bool> isPaused;
-  final Future<FollowType> Function() onSelectFollow;
+  final SelectFollow onSelectFollow;
   final ValueChanged<TutorialType> openTutorial;
   final ValueChanged<List<Sprint>?> onEndCycling;
 

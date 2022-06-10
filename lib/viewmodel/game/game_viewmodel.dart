@@ -24,6 +24,7 @@ class GameViewModel with ChangeNotifierEx {
   final _isPaused = ValueNotifier(false);
   TutorialType? _tutorialType;
   Completer<FollowType>? _completer;
+  int _followAmount = 0;
 
   bool get isPaused => _isPaused.value;
 
@@ -32,6 +33,8 @@ class GameViewModel with ChangeNotifierEx {
   bool get ignorePointer => isPaused || _tutorialType != null;
 
   bool get showFollowDialog => _completer != null;
+
+  String get followAmount => _followAmount.toString();
 
   GameViewModel(
     this._tutorialRepository,
@@ -94,7 +97,8 @@ class GameViewModel with ChangeNotifierEx {
     notifyListeners();
   }
 
-  Future<FollowType> _onSelectFollow() async {
+  Future<FollowType> _onSelectFollow(int followAmount) async {
+    _followAmount = followAmount;
     _completer = Completer();
     _isPaused.value = true;
     notifyListeners();

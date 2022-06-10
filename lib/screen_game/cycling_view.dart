@@ -25,6 +25,8 @@ import 'package:flame/components.dart' hide PositionType;
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 
+typedef SelectFollow = Future<FollowType> Function(int minThrow);
+
 class CyclingView extends BaseView implements PositionListener, DiceListener {
   int? diceValue;
   int? currentTurn = 0;
@@ -73,7 +75,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   final Localization localizations;
   final ValueChanged<List<Sprint>?> onEndCycling;
   final ValueChanged<TutorialType> openTutorial;
-  final Future<FollowType> Function() onSelectFollow;
+  final SelectFollow onSelectFollow;
 
   CyclingView({
     required super.spriteManager,
@@ -398,7 +400,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
             follow();
             unawaited(processGameState(GameState.userWaitCyclistMoving));
           } else if (placeBefore.cyclist!.team!.isPlayer! && !autoFollow && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowThresholdBelowAsk)) {
-            final returnValue = await onSelectFollow();
+            final returnValue = await onSelectFollow(minThrow);
             switch (returnValue) {
               case FollowType.autoFollow:
                 autoFollow = true;
@@ -673,7 +675,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     required Localization localizations,
     required ValueChanged<List<Sprint>?> onEndCycling,
     required ValueChanged<TutorialType> openTutorial,
-    required Future<FollowType> Function() onSelectFollow,
+    required SelectFollow onSelectFollow,
   }) {
     final List<Position?> existingPositions = [];
     final List<Sprint?> existingSprints = [];

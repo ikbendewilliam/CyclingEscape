@@ -22,6 +22,8 @@ abstract class MainNavigation {
 
   void goBack<T>({T? result});
 
+  void goToV2dialog();
+
   void goToInformation();
 
   void goToCareerFinish();

@@ -52,9 +52,7 @@ class MenuBackgroundDataContainer with ChangeNotifier {
 
   void removeTicker() {
     final value = _animationController?.value;
-    while (_tickers.isNotEmpty && !_tickers.last.mounted) {
-      _tickers.removeLast();
-    }
+    _tickers.removeWhere((element) => !element.mounted);
     _animationController?.dispose();
     _animationController = null;
     if (_tickers.isEmpty) return;

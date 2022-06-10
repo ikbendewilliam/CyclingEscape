@@ -2275,6 +2275,17 @@ class Localization {
 
   /// Translations:
   ///
+  /// en:  **'Welcom to version 2.0! \n I've made many changes to the game and hope you like it. \n You are now able to choice a different language in settings. \n Career has been revamped and you now have 37 races/tours with a global ranking. Try to win the single and team ranking and be the best in the world! \n Cyclists now have names, you can change them in settings. Feel free to give your own spin to it or even add yourself! \n If you have any questions or ideas, please join the discord server (i button on home).'**
+  ///
+  /// nl:  **'Welkom bij versie 2.0! \n Ik heb veel veranderingen in het spel aangebracht en ik hoop dat jullie het leuk vinden. \n Je kunt nu een andere taal kiezen in de instellingen. \n De carrière is vernieuwd en je hebt nu 37 races/rondes met een globaal klassement. Probeer het individuele en teamklassement te winnen en de beste van de wereld te worden! \n Renners hebben nu namen, je kunt ze veranderen in de instellingen. Voel je vrij om er je eigen draai aan te geven of zelfs jezelf toe te voegen! \n Als je vragen of ideeën hebt, kom dan naar de discord server (i knop op home).'**
+  ///
+  /// fr:  **'Bienvenue à la version 2.0 ! \n J'ai apporté de nombreuses modifications au jeu et j'espère qu'il vous plaira. \n Vous pouvez maintenant choisir une langue différente dans les paramètres. \n La carrière a été revue et vous avez maintenant 37 courses/tours avec un classement mondial. Essayez de gagner le classement individuel et par équipe et soyez le meilleur au monde ! \n Les cyclistes ont maintenant des noms, vous pouvez les changer dans les paramètres. N'hésitez pas à leur donner votre propre style ou même à vous ajouter ! \n Si vous avez des questions ou des idées, n'hésitez pas à rejoindre le serveur discord (bouton i sur l'accueil).'**
+  ///
+  /// es:  **'¡Bienvenidos a la versión 2.0! \n He hecho muchos cambios en el juego y espero que os guste. \n Ahora puedes elegir un idioma diferente en los ajustes. \n La carrera ha sido renovada y ahora tienes 37 carreras/tours con una clasificación global. Intenta ganar la clasificación individual y por equipos y sé el mejor del mundo. \n Los ciclistas ahora tienen nombres, puedes cambiarlos en la configuración. ¡Siéntete libre de darle tu propio giro o incluso añadirte a ti mismo! \n Si tienes alguna pregunta o idea, únete al servidor de discordia (botón i en la home)'**
+  String get v2dialogText => _t(LocalizationKeys.v2dialogText);
+
+  /// Translations:
+  ///
   /// en:  **'Tour up above'**
   ///
   /// nl:  **'Tour hierboven'**

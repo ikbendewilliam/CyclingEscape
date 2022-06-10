@@ -35,13 +35,13 @@ class MenuBox extends StatelessWidget {
               padding: const EdgeInsets.all(16).add(const EdgeInsets.only(top: 32)),
               child: child,
             ),
-            Positioned(
-              top: title!.length > 8 ? -12 : -13,
-              bottom: null,
-              height: 48,
-              child: Stack(
-                children: [
-                  if (title != null) ...[
+            if (title != null) ...[
+              Positioned(
+                top: title!.length > 8 ? -12 : -13,
+                bottom: null,
+                height: 48,
+                child: Stack(
+                  children: [
                     Image.asset(
                       title!.length > 8 ? ThemeAssets.menuHeaderBigger : ThemeAssets.menuHeader,
                     ),
@@ -58,9 +58,9 @@ class MenuBox extends StatelessWidget {
                       ),
                     ),
                   ],
-                ],
+                ),
               ),
-            ),
+            ],
             if (onClosePressed != null)
               Positioned(
                 top: 10,

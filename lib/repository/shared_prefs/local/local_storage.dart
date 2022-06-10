@@ -60,7 +60,7 @@ abstract class LocalStorage {
 
   set completedRaces(int value);
 
-  Future<void> checkForNewInstallation();
+  Future<bool> checkForNewInstallation();
 
   ThemeMode getThemeMode();
 
@@ -159,12 +159,12 @@ class _LocalStorage implements LocalStorage {
   _LocalStorage(this._authStorage, this._sharedPreferences);
 
   @override
-  Future<void> checkForNewInstallation() async {
+  Future<bool> checkForNewInstallation() async {
     final result = _sharedPreferences.getBoolean(_uninstallCheckKey);
-    if (result == null) {
-      await _sharedPreferences.saveBoolean(key: _uninstallCheckKey, value: true);
-      await _authStorage.clear();
-    }
+    if (result != null) return false;
+    await _sharedPreferences.saveBoolean(key: _uninstallCheckKey, value: true);
+    await _authStorage.clear();
+    return true;
   }
 
   @override

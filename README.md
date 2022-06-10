@@ -4,8 +4,8 @@
 [t] Career - end of season
 [t] Crash?!?
 [ ] Working scroll bar
-[ ] V2 dialog
 [ ] Icon
+[ ] Follow show number
 [ ] Check different resolutions/devices
 [ ] Check update migration
 [ ] Prod crashlytics

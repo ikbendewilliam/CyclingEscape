@@ -21,6 +21,7 @@ import 'package:cycling_escape/screen/splash/splash_screen.dart';
 import 'package:cycling_escape/screen/theme_mode/theme_mode_selector.dart';
 import 'package:cycling_escape/screen/tour_in_progress/tour_in_progress_screen.dart';
 import 'package:cycling_escape/screen/tour_select/tour_select_screen.dart';
+import 'package:cycling_escape/screen/v2dialog/v2dialog_screen.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/viewmodel/results/results_viewmodel.dart';
 import 'package:cycling_escape/widget/dialog/edit_name_dialog.dart';
@@ -96,6 +97,8 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
       case 'test_route':
         if (!FlavorConfig.isInTest()) return null;
         return MaterialPageRoute<void>(builder: (context) => FlavorBanner(child: Container(color: Colors.grey)), settings: settings);
+      case V2dialogScreen.routeName:
+        return MaterialPageRoute<void>(builder: (context) => const FlavorBanner(child: V2dialogScreen()), settings: settings);
       case InformationScreen.routeName:
         return FadeInRoute<void>(child: const FlavorBanner(child: InformationScreen()), settings: settings);
       case CareerFinishScreen.routeName:
@@ -159,6 +162,9 @@ class MainNavigatorWidgetState extends State<MainNavigatorWidget> with MainNavig
 
   @override
   void goBack<T>({T? result}) => _navigator.pop(result);
+
+  @override
+  void goToV2dialog() => _navigator.pushNamed(V2dialogScreen.routeName);
 
   @override
   void goToInformation() => _navigator.pushNamed(InformationScreen.routeName);

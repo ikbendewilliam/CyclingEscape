@@ -9,11 +9,14 @@ class SplashViewModel with ChangeNotifierEx {
   SplashViewModel(this._localStorage);
 
   Future<void> init(SplashNavigator navigator) async {
-    await _localStorage.checkForNewInstallation();
+    final isNew = await _localStorage.checkForNewInstallation();
+    if (isNew) return navigator.goToDialogV2();
     navigator.goToHome();
   }
 }
 
 abstract class SplashNavigator {
   void goToHome();
+
+  void goToDialogV2();
 }

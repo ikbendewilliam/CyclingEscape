@@ -1,15 +1,11 @@
 # cycling_escape
 
 // TODO
-[t] Settings - close button
-[t] Career - reset season
 [t] Career - end of season
-[t] some more translations
+[t] Crash?!?
 [ ] Working scroll bar
-[ ] Holes in the road
-[ ] Crash?!?
 [ ] V2 dialog
-[t] Information? -> Discord?
+[ ] Icon
 [ ] Check different resolutions/devices
 [ ] Check update migration
 [ ] Prod crashlytics

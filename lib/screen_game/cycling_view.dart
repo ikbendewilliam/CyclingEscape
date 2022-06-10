@@ -134,9 +134,9 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         cyclists.sort((a, b) => b.rank! - a.rank!);
 
         for (final entry in cyclists.asMap().entries) {
-          if (map!.positions!.length < entry.key) continue; // Out of bounds
-          map!.positions![entry.key].addCyclist(entry.value);
-          entry.value.lastPosition = map!.positions![entry.key];
+          if (map!.positions.length < entry.key) continue; // Out of bounds
+          map!.positions[entry.key].addCyclist(entry.value);
+          entry.value.lastPosition = map!.positions[entry.key];
         }
       } else {
         hasResults = false;
@@ -159,7 +159,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
           final cyclist = Cyclist(teams![teamIndex], (2 + teams![teamIndex]!.numberStart!) * 10 + (teams![teamIndex]!.cyclists.length + 1), 1, spriteManager);
           tempResults!.data.add(ResultData(playSettings.teams * playSettings.ridersPerTeam - i, 0, 0, 0, cyclist.number, cyclist.team));
           teams![teamIndex]!.cyclists.add(cyclist);
-          map!.positions![i].addCyclist(cyclist);
+          map!.positions[i].addCyclist(cyclist);
         }
       }
       currentTurn = 0;
@@ -340,7 +340,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     }
     bool useStartResults = false;
     ResultData? startResult;
-    map!.positions!.where((element) => element.cyclist != null).toList().forEach((cyclistPosition) {
+    map!.positions.where((element) => element.cyclist != null).toList().forEach((cyclistPosition) {
       if (startResults != null) {
         useStartResults = true;
         startResult = startResults!.data.firstWhereOrNull((element) => element.number == cyclistPosition.cyclist!.number);
@@ -493,7 +493,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
 
   bool handleInBetweenTurns() {
     bool removed = false;
-    for (final position in map!.positions!) {
+    for (final position in map!.positions) {
       if (position.cyclist != null) {
         if (position.cyclist!.lastPosition != null) {
           List<Sprint?> sprints = MapUtils.getSprintsBetween(position.cyclist!.lastPosition!, position);
@@ -560,7 +560,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   void selectNextCyclist() {
     Position? nextPosition;
     double nextValue = 0;
-    map!.positions!.where((element) => element.cyclist != null).forEach((positionWithCyclist) {
+    map!.positions.where((element) => element.cyclist != null).forEach((positionWithCyclist) {
       final value = positionWithCyclist.getValue(true);
       if (nextValue < value || nextPosition == null) {
         nextValue = value;
@@ -623,7 +623,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   }
 
   void checkBounds() {
-    zoom.clamp(minZoom, maxZoom);
+    zoom = zoom.clamp(minZoom, maxZoom);
     if (offset.dx > worldSize!.width - screenSize!.width / zoom) {
       offset += Offset(offset.dx - worldSize!.width + screenSize!.width / zoom, 0);
     }

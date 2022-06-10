@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/model/data/enums.dart';
-import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/sprite_manager.dart';
 import 'package:cycling_escape/widget_game/positions/game_map.dart';
@@ -17,19 +16,18 @@ import 'package:cycling_escape/widget_game/positions/sprint.dart';
 
 class MapUtils {
   final PositionListener listener;
+  static final _random = Random();
   int currentSegment = 0;
   int fieldValue = 0;
   double currentAngle = 0;
   double jOffset = 0;
   Offset currentPosition;
   Sprint? nextSprint;
-  PositionType currentPositionType = PositionType.flat;
-  List<Sprint> sprints = [];
-  List<Position>? mapPositions;
+  var currentPositionType = PositionType.flat;
+  var sprints = <Sprint>[];
+  var mapPositions = <Position>[];
 
-  MapUtils(this.listener, this.currentPosition) {
-    mapPositions = [];
-  }
+  MapUtils(this.listener, this.currentPosition);
 
   void moveWithoutAdding(Offset offset, double jOffset) {
     currentPosition += offset;
@@ -44,19 +42,21 @@ class MapUtils {
   }
 
   void addStraight(int length, int width, {bool reverseJ = false}) {
-    final List<Position> positions = [];
-    const double dx = 2;
-    const double dy = 2;
-    for (int i = 0; i < length; i++) {
-      for (int j = 0; j < width; j++) {
-        final int jAccent = reverseJ ? width - j - 1 : j;
-        double fieldValue = 0;
-        final Offset p1 = Offset(currentPosition.dx + dx * i * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
-            currentPosition.dy + dy * i * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2));
+    final positions = <Position>[];
+    const dx = 2;
+    const dy = 2;
+    for (var i = 0; i < length; i++) {
+      for (var j = 0; j < width; j++) {
+        final jAccent = reverseJ ? width - j - 1 : j;
+        var fieldValue = 0.0;
+        final p1 = Offset(
+          currentPosition.dx + dx * i * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
+          currentPosition.dy + dy * i * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2),
+        );
         switch (currentPositionType) {
           case PositionType.cobble:
-            final String t = (p1.dx * p1.dy / 61667).toString();
-            final int x = int.parse(t.toString().substring(t.length - 6, t.length - 5));
+            final t = (p1.dx * p1.dy / 61667).toString();
+            final x = int.parse(t.toString().substring(t.length - 6, t.length - 5));
             fieldValue = x < 4 ? -1 : (x < 7 ? -2 : (x < 9 ? -3 : -4));
             break;
           case PositionType.uphill:
@@ -69,70 +69,97 @@ class MapUtils {
             fieldValue = 0;
         }
         positions.add(Position(
-            p1,
-            Offset(currentPosition.dx + (dx * (i + 1)) * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
-                currentPosition.dy + (dy * (i + 1)) * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2)),
-            listener,
-            i == length - 1,
-            currentSegment,
-            i * 1.0,
-            i / length * 100,
-            jAccent + jOffset,
-            0,
-            false,
-            0,
-            0,
-            false,
-            currentPositionType,
-            fieldValue: fieldValue,
-            sprint: nextSprint));
+          p1,
+          Offset(
+            currentPosition.dx + (dx * (i + 1)) * cos(currentAngle) + dx * (j / 2) * cos(currentAngle + pi / 2),
+            currentPosition.dy + (dy * (i + 1)) * sin(currentAngle) + dy * (j / 2) * sin(currentAngle + pi / 2),
+          ),
+          listener,
+          i == length - 1,
+          currentSegment,
+          i * 1.0,
+          i / length * 100,
+          jAccent + jOffset,
+          0,
+          false,
+          0,
+          0,
+          false,
+          currentPositionType,
+          fieldValue: fieldValue,
+          sprint: nextSprint,
+        ));
       }
       nextSprint = null;
     }
-    currentPosition += Offset(dx * length * cos(currentAngle), dy * length * sin(currentAngle));
+    currentPosition += Offset(
+      dx * length * cos(currentAngle),
+      dy * length * sin(currentAngle),
+    );
     currentSegment++;
-    mapPositions!.addAll(positions);
+    mapPositions.addAll(positions);
   }
 
   void addCorner(double deltaAngle, int width, double radius) {
-    final List<Position> positions = [];
-    final double endAngle = currentAngle + deltaAngle;
-    final bool clockwise = deltaAngle < 0;
-    for (int j = 0; j < width; j++) {
-      final int jAccent = clockwise ? width - j - 1 : j;
-      final Offset segmentStart = currentPosition + Offset(-j * sin(currentAngle), j * cos(currentAngle));
-      positions
-          .addAll(_addCornerSegment(segmentStart, currentAngle + (clockwise ? pi : 0), endAngle + (clockwise ? pi : 0), radius - jAccent, clockwise, currentSegment, j + jOffset));
+    final positions = <Position>[];
+    final endAngle = currentAngle + deltaAngle;
+    final clockwise = deltaAngle < 0;
+    for (var j = 0; j < width; j++) {
+      final jAccent = clockwise ? width - j - 1 : j;
+      final segmentStart = currentPosition + Offset(-j * sin(currentAngle), j * cos(currentAngle));
+      positions.addAll(_addCornerSegment(
+        segmentStart,
+        currentAngle + (clockwise ? pi : 0),
+        endAngle + (clockwise ? pi : 0),
+        radius - jAccent,
+        clockwise,
+        currentSegment,
+        j + jOffset,
+      ));
     }
     nextSprint = null;
     final double radiusAccent = radius - (clockwise ? width - 1 : 0);
-    currentPosition += Offset(radiusAccent * cos(currentAngle - pi / 2), radiusAccent * sin(currentAngle - pi / 2)) * (clockwise ? 1 : -1);
-    currentPosition += Offset(radiusAccent * cos(endAngle - pi / 2), radiusAccent * sin(endAngle - pi / 2)) * (clockwise ? -1 : 1);
+    currentPosition += Offset(
+          radiusAccent * cos(currentAngle - pi / 2),
+          radiusAccent * sin(currentAngle - pi / 2),
+        ) *
+        (clockwise ? 1 : -1);
+    currentPosition += Offset(
+          radiusAccent * cos(endAngle - pi / 2),
+          radiusAccent * sin(endAngle - pi / 2),
+        ) *
+        (clockwise ? -1 : 1);
     currentSegment++;
     currentAngle = endAngle;
-    mapPositions!.addAll(positions);
+    mapPositions.addAll(positions);
   }
 
-  List<Position> _addCornerSegment(Offset start, double startAngle, double endAngle, double radius, bool clockwise, int segment, double j) {
-    final List<Position> positions = [];
-    final double length = radius * (startAngle - endAngle).abs();
-    final int numberOfPositions = (length / 2).floor();
-    final double centerAngle = (startAngle + endAngle) / 2;
-    final double maxAngle = (startAngle - centerAngle).abs();
-    final double istart = -(numberOfPositions % 2) / 2 + 0.5;
-    final Offset centerOfCorner = start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
-    final int imax = (numberOfPositions / 2).ceil();
-    for (double i = istart; i < imax; i++) {
-      for (int k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
-        final double startAngle2 = centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
-        final double angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
-        final Offset offset = Offset(cos(angle), sin(angle)) * length / 2 / numberOfPositions.toDouble();
-
-        final double radiusPart = pow(pow(radius, 2) - (pow(offset.dx, 2) + pow(offset.dy, 2)), 1 / 2) as double;
-
-        final Offset center = centerOfCorner + Offset(radiusPart * sin(angle), -radiusPart * cos(angle));
-        Offset p1 = center + offset * k.toDouble();
-        Offset p2 = center - offset * k.toDouble();
+  List<Position> _addCornerSegment(
+    Offset start,
+    double startAngle,
+    double endAngle,
+    double radius,
+    bool clockwise,
+    int segment,
+    double j,
+  ) {
+    final positions = <Position>[];
+    final double length = max(2, radius * (startAngle - endAngle).abs());
+    final numberOfPositions = length ~/ 2;
+    final centerAngle = (startAngle + endAngle) / 2;
+    final maxAngle = (startAngle - centerAngle).abs();
+    final istart = -(numberOfPositions % 2) / 2 + 0.5;
+    final centerOfCorner = start + Offset(-radius * sin(startAngle), radius * cos(startAngle));
+    final imax = (numberOfPositions / 2).ceil();
+    for (var i = istart; i < imax; i++) {
+      for (var k = -1; (k <= 1 && i > 0) || (k == -1 && i == 0); k += 2) {
+        final startAngle2 = centerAngle + maxAngle * (i + 0.5) * k / (numberOfPositions / 2);
+        final angle = centerAngle + maxAngle * i * k / (numberOfPositions / 2);
+        final offset = Offset(cos(angle), sin(angle)) * length / 2 / numberOfPositions.toDouble();
+        final radiusPart = pow(pow(radius, 2) - (pow(offset.dx, 2) + pow(offset.dy, 2)), 1 / 2) as double;
+        final center = centerOfCorner + Offset(radiusPart * sin(angle), -radiusPart * cos(angle));
+        var p1 = center + offset * k.toDouble();
+        var p2 = center - offset * k.toDouble();
 
         if (!clockwise) {
           // For text purposes
@@ -141,9 +168,9 @@ class MapUtils {
         }
         int iAccent;
         if (istart == 0.5) {
-          iAccent = (numberOfPositions / 2).floor() - k * i.ceil() + (k == -1 ? -1 : 0);
+          iAccent = numberOfPositions ~/ 2 - k * i.ceil() + (k == -1 ? -1 : 0);
         } else {
-          iAccent = (numberOfPositions / 2).floor() - i.floor() * k;
+          iAccent = numberOfPositions ~/ 2 - i.floor() * k;
         }
         if (!clockwise) {
           iAccent = numberOfPositions - iAccent - 1;
@@ -151,8 +178,8 @@ class MapUtils {
         double fieldValue = 0;
         switch (currentPositionType) {
           case PositionType.cobble:
-            final String t = (p1.dx * p1.dy / 61667).toString();
-            final int x = int.parse(t.toString().substring(t.length - 6, t.length - 5));
+            final t = (p1.dx * p1.dy / 61667).toString();
+            final x = int.parse(t.toString().substring(t.length - 6, t.length - 5));
             fieldValue = x < 4 ? -1 : (x < 7 ? -2 : (x < 9 ? -3 : -4));
             break;
           case PositionType.uphill:
@@ -195,18 +222,18 @@ class MapUtils {
     }
   }
 
-  List<Position>? generatePositions() {
-    MapUtils.connectPositions(mapPositions!);
+  List<Position> generatePositions() {
+    MapUtils.connectPositions(mapPositions);
     return mapPositions;
   }
 
   static void connectPositions(List<Position> positions) {
-    final List<List<Position>?> segments = [];
+    final segments = <List<Position>?>[];
     for (final element in positions) {
       if (segments.isEmpty) {
         segments.add([element]);
       } else {
-        final List<Position>? segment = segments.firstWhereOrNull(((a) => a!.firstWhereOrNull((b) => b.segment == element.segment) != null));
+        final segment = segments.firstWhereOrNull(((a) => a!.firstWhereOrNull((b) => b.segment == element.segment) != null));
         if (segment != null) {
           segment.add(element);
         } else {
@@ -215,13 +242,10 @@ class MapUtils {
       }
     }
     for (final segment in segments) {
-      final int segmentId = segment!.first.segment;
-      final List<Position>? nextSegment = segments
+      final segmentId = segment!.first.segment;
+      final nextSegment = segments
           .firstWhereOrNull(((a) => a!.first.segment == segmentId + 1 || (a.firstWhereOrNull((element) => element.segment == segmentId + 2 && element.sprint != null) != null)));
-      var nextSegmentPositions = <Position>[];
-      if (nextSegment != null) {
-        nextSegmentPositions = nextSegment.where((position) => position.i < 1).toList();
-      }
+      final nextSegmentPositions = nextSegment?.where((position) => position.i < 1).toList() ?? [];
       for (final position in segment) {
         if (position.isLast) {
           position.connections = nextSegmentPositions.where((element) => (element.j - position.j).abs() <= 1).toList();
@@ -237,11 +261,17 @@ class MapUtils {
     }
   }
 
-  static bool isInside(Offset point, Offset p1, Offset p2, double width, double angle) {
-    final Offset center = (p1 + p2) / 2;
-    final Offset rotatedPoint = rotatePoint(point - center, -angle);
-    final Offset rotatedPoint1 = rotatePoint(p1 - center, -angle);
-    final Offset rotatedPoint2 = rotatePoint(p2 - center, -angle);
+  static bool isInside(
+    Offset point,
+    Offset p1,
+    Offset p2,
+    double width,
+    double angle,
+  ) {
+    final center = (p1 + p2) / 2;
+    final rotatedPoint = rotatePoint(point - center, -angle);
+    final rotatedPoint1 = rotatePoint(p1 - center, -angle);
+    final rotatedPoint2 = rotatePoint(p2 - center, -angle);
     return isInsideLine(rotatedPoint, rotatedPoint1, rotatedPoint2, width);
   }
 
@@ -283,21 +313,21 @@ class MapUtils {
       }
       return [positionFound];
     } else {
-      final Position currentPosition = startPosition;
+      final currentPosition = startPosition;
       if (currentPosition.connections!.isNotEmpty && currentPosition.getValue(false) < position!.getValue(false)) {
         if (currentPosition.connections!.contains(position) && currentPosition.j == position.j) {
-          final List<Position?> route = [currentPosition];
+          final route = [currentPosition];
           return route;
         } else {
           // priorityPosition is for nicer animation/movement of cyclists
-          final Position? priorityPosition = currentPosition.connections?.firstWhereOrNull(((element) => element?.j == currentPosition.j));
+          final priorityPosition = currentPosition.connections?.firstWhereOrNull(((element) => element?.j == currentPosition.j));
           if (priorityPosition != null) {
             currentPosition.connections!.insert(0, priorityPosition);
             currentPosition.connections!.removeAt(currentPosition.connections!.lastIndexOf(priorityPosition));
           }
-          for (int i = 0; i < currentPosition.connections!.length; i++) {
+          for (var i = 0; i < currentPosition.connections!.length; i++) {
             if (currentPosition.connections![i]!.cyclist == null || !emptyPosition) {
-              final List<Position?> routeFound = findPlaceBefore(
+              final routeFound = findPlaceBefore(
                 position,
                 maxDepth,
                 emptyPosition,
@@ -327,7 +357,7 @@ class MapUtils {
     route.add(currentPosition);
     if (currentPosition!.connections!.isNotEmpty) {
       if (route.length - 1 > maxValue) {
-        double bestValue = 0;
+        var bestValue = 0.0;
         Position? bestPosition;
         for (final element in currentPosition.connections!) {
           if (element!.cyclist == null && (bestPosition == null || element.getValue(false) > bestValue)) {
@@ -340,17 +370,17 @@ class MapUtils {
         }
         return route;
       } else {
-        double bestValue = 0;
+        var bestValue = 0.0;
         List<Position?>? bestRoute;
         // priorityPosition is for nicer animation/movement of cyclists
-        final Position? priorityPosition = currentPosition.connections?.firstWhereOrNull(((element) => element?.j == currentPosition.j));
+        final priorityPosition = currentPosition.connections?.firstWhereOrNull(((element) => element?.j == currentPosition.j));
         if (priorityPosition != null) {
           currentPosition.connections!.insert(0, priorityPosition);
           currentPosition.connections!.removeAt(currentPosition.connections!.lastIndexOf(priorityPosition));
         }
-        for (int i = 0; i < currentPosition.connections!.length; i++) {
+        for (var i = 0; i < currentPosition.connections!.length; i++) {
           if (currentPosition.connections![i]!.cyclist == null) {
-            final List<Position?>? maxValueRoute = findMaxValue(currentPosition.connections![i], maxValue, route.toList());
+            final maxValueRoute = findMaxValue(currentPosition.connections![i], maxValue, route.toList());
             if (maxValueRoute != null && (bestRoute == null || maxValueRoute.last!.getValue(false) > bestValue)) {
               bestValue = maxValueRoute.last!.getValue(false);
               bestRoute = maxValueRoute;
@@ -372,9 +402,9 @@ class MapUtils {
     } else if (start!.getValue(false) > end.getValue(false)) {
       return 9999;
     } else {
-      double shortestDistance = 9999;
+      var shortestDistance = 9999.9;
       for (final element in start.connections!) {
-        final double distance = calculateDistance(element, end, currentDistance: currentDistance + 1, minDistance: minDistance);
+        final distance = calculateDistance(element, end, currentDistance: currentDistance + 1, minDistance: minDistance);
         if (distance < shortestDistance) {
           shortestDistance = distance;
         }
@@ -384,27 +414,29 @@ class MapUtils {
   }
 
   static GameMap generateMap(PlaySettings playSettings, PositionListener listener, SpriteManager spriteManager) {
-    final MapUtils newMap = MapUtils(listener, const Offset(0, 4));
+    final newMap = MapUtils(listener, const Offset(0, 4));
 
-    newMap.addStraight(playSettings.ridersPerTeam, max(playSettings.teams, 3));
-    newMap.addSprint(max(playSettings.teams, 3), SprintType.start);
+    const minLength = 3;
+    const maxLength = 10;
+    const minWidth = 3;
+    const maxWidth = 8;
+    const preferredMaxWidth = 5;
+    var width = playSettings.teams.clamp(minWidth, maxWidth);
 
-    int width = max(playSettings.teams, 3);
-    const int minLength = 3;
-    const int maxLength = 8;
-    const int minWidth = 3;
-    const int maxWidth = 8;
+    newMap.addStraight((playSettings.ridersPerTeam * playSettings.teams / width).ceil().clamp(1, maxLength), width);
+    newMap.addSprint(width, SprintType.start);
+
     double angle = 0;
-    final List<double> angles = [pi / 4, pi / 3];
-    const double minAngle = -pi / 2;
-    const double maxAngle = pi / 2;
-    late final int segmentLength = playSettings.mapLength.segments;
-    PositionType positionType = PositionType.flat;
+    final angles = [pi / 4, pi / 3];
+    const minAngle = -pi / 2;
+    const maxAngle = pi / 2;
+    late final segmentLength = playSettings.mapLength.segments;
+    var positionType = PositionType.flat;
     int? fieldValue;
 
-    for (int i = 0; i < segmentLength; i++) {
-      if (Random().nextDouble() > 0.9) {
-        double change = Random().nextBool() ? -1 : 1;
+    for (var i = 0; i < segmentLength; i++) {
+      if (_random.nextDouble() > 0.9 || width > preferredMaxWidth) {
+        var change = width > preferredMaxWidth || _random.nextBool() ? -1.0 : 1.0;
         width += change.floor();
         if (width > maxWidth || width < minWidth) {
           change = -change;
@@ -423,20 +455,20 @@ class MapUtils {
         } else {
           fieldValue--;
           if (fieldValue <= 0) {
-            positionType = Random().nextBool() && playSettings.mapType == MapType.heavy ? PositionType.cobble : PositionType.flat;
+            positionType = _random.nextBool() && playSettings.mapType == MapType.heavy ? PositionType.cobble : PositionType.flat;
             fieldValue = null;
           }
         }
         newMap.setPositionType(positionType, fieldValue);
       }
-      if (Random().nextBool()) {
+      if (_random.nextBool()) {
         // Is straight
-        final int length = Random().nextInt(maxLength - minLength) + minLength;
+        final int length = _random.nextInt(maxLength - minLength) + minLength;
         newMap.addStraight(length, width);
       } else {
-        final int radius = Random().nextInt(4) + (7.0 + width / 2).ceil();
-        int a = Random().nextBool() ? -1 : 1;
-        final int angleIndex = Random().nextInt(angles.length);
+        final int radius = _random.nextInt(4) + (7.0 + width / 2).ceil();
+        int a = _random.nextBool() ? -1 : 1;
+        final int angleIndex = _random.nextInt(angles.length);
         final double deltaAngle = angles[angleIndex];
         if (angle + deltaAngle * a > maxAngle || angle + deltaAngle * a < minAngle) {
           a = -a;
@@ -444,24 +476,23 @@ class MapUtils {
         angle += deltaAngle * a;
         newMap.addCorner(deltaAngle * a, width, radius + 0.0);
       }
-      if (i % 7 == 0 && i < segmentLength * 0.8 && i > segmentLength * 0.2 && Random().nextDouble() < 0.3 && positionType != PositionType.uphill) {
+      if (i % 7 == 0 && i < segmentLength * 0.8 && i > segmentLength * 0.2 && _random.nextDouble() < 0.3 && positionType != PositionType.uphill) {
         newMap.addSprint(width, SprintType.sprint);
       }
-      if (playSettings.mapType != MapType.flat && i % 3 == 0 && Random().nextDouble() < 0.2) {
+      if (playSettings.mapType != MapType.flat && i % 3 == 0 && _random.nextDouble() < 0.2) {
         switch (positionType) {
           case PositionType.flat:
-            positionType = (Random().nextBool() && playSettings.mapType == MapType.heavy) || playSettings.mapType == MapType.hills ? PositionType.uphill : PositionType.cobble;
+            positionType = (_random.nextBool() && playSettings.mapType == MapType.heavy) || playSettings.mapType == MapType.hills ? PositionType.uphill : PositionType.cobble;
             break;
           case PositionType.uphill:
             positionType = PositionType.downhill;
-            if (i < segmentLength * 0.8 && i > segmentLength * 0.2 && Random().nextDouble() < 0.7) {
+            if (i < segmentLength * 0.8 && i > segmentLength * 0.2 && _random.nextDouble() < 0.7) {
               newMap.addSprint(width, SprintType.mountainSprint);
             }
             break;
           case PositionType.cobble:
-            positionType = (Random().nextBool() && playSettings.mapType == MapType.heavy) || playSettings.mapType == MapType.hills ? PositionType.uphill : PositionType.flat;
+            positionType = (_random.nextBool() && playSettings.mapType == MapType.heavy) || playSettings.mapType == MapType.hills ? PositionType.uphill : PositionType.flat;
             break;
-
           case PositionType.downhill:
           default:
           // On Downhill do nothing
@@ -474,56 +505,9 @@ class MapUtils {
         newMap.setPositionType(positionType, fieldValue);
       }
     }
-
     newMap.addSprint(width, SprintType.finish);
     newMap.addStraight(12, width);
-    final List<Position>? positions = newMap.generatePositions();
-    final GameMap map = GameMap(positions, newMap.sprints, spriteManager);
-
-    return map;
-  }
-}
-
-MapType getMapTypeFromString(String mapTypeAsString) {
-  for (final MapType element in MapType.values) {
-    if (element.toString() == mapTypeAsString) {
-      return element;
-    }
-  }
-  throw Exception("Incorrect mapTypeAsString $mapTypeAsString");
-}
-
-MapLength getMapLengthFromString(String mapLengthAsString) {
-  for (final MapLength element in MapLength.values) {
-    if (element.toString() == mapLengthAsString) {
-      return element;
-    }
-  }
-  throw Exception("Incorrect mapLengthAsString $mapLengthAsString");
-}
-
-String mapTypeAsString(MapType maptype, Localization localizations) {
-  switch (maptype) {
-    case MapType.flat:
-      return localizations.raceTypeFlat;
-    case MapType.cobble:
-      return localizations.raceTypeCobbled;
-    case MapType.hills:
-      return localizations.raceTypeHilled;
-    case MapType.heavy:
-      return localizations.raceTypeHeavy;
-  }
-}
-
-String mapLengthAsString(MapLength mapLength, Localization localizations) {
-  switch (mapLength) {
-    case MapLength.short:
-      return localizations.raceDurationShort;
-    case MapLength.medium:
-      return localizations.raceDurationMedium;
-    case MapLength.long:
-      return localizations.raceDurationLong;
-    case MapLength.veryLong:
-      return localizations.raceDurationVeryLong;
+    final positions = newMap.generatePositions();
+    return GameMap(positions, newMap.sprints, spriteManager);
   }
 }

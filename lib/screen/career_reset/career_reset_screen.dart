@@ -27,27 +27,31 @@ class CareerResetScreenState extends State<CareerResetScreen> with BackNavigator
           title: localization.careerResetTitle,
           wide: true,
           onClosePressed: viewModel.onCancelPressed,
-          child: AspectRatio(
-            aspectRatio: 2.1,
-            child: Column(
-              children: [
-                Text(
-                  localization.careerResetMessage,
-                  style: theme.coreTextTheme.bodyNormal,
-                ),
-                const SizedBox(height: 8),
-                CyclingEscapeButton(
-                  text: localization.careerResetButton,
-                  onClick: viewModel.onResetPressed,
-                  type: CyclingEscapeButtonType.red,
-                ),
-                const SizedBox(height: 8),
-                CyclingEscapeButton(
-                  text: localization.careerResetBack,
-                  onClick: viewModel.onCancelPressed,
-                  type: CyclingEscapeButtonType.green,
-                ),
-              ],
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: AspectRatio(
+              aspectRatio: 2.22,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    localization.careerResetMessage,
+                    style: theme.coreTextTheme.bodyNormal,
+                  ),
+                  const SizedBox(height: 8),
+                  CyclingEscapeButton(
+                    text: localization.careerResetButton,
+                    onClick: viewModel.onResetPressed,
+                    type: CyclingEscapeButtonType.red,
+                  ),
+                  const SizedBox(height: 8),
+                  CyclingEscapeButton(
+                    text: localization.careerResetBack,
+                    onClick: viewModel.onCancelPressed,
+                    type: CyclingEscapeButtonType.green,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

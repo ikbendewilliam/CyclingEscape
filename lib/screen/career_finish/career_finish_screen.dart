@@ -25,41 +25,45 @@ class CareerFinishScreenState extends State<CareerFinishScreen> implements Caree
         child: MenuBox(
           title: localization.careerFinishTitle,
           wide: true,
-          child: AspectRatio(
-            aspectRatio: 2.1,
-            child: Column(
-              children: [
-                Text(
-                  viewModel.hasWonSingle ? localization.careerSingleWon : localization.careerSingleLost,
-                  style: theme.coreTextTheme.bodyNormal,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  localization.careerSinglePoints(viewModel.singlePoints),
-                  style: theme.coreTextTheme.bodyNormal,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  viewModel.hasWonTeam ? localization.careerTeamWon : localization.careerTeamLost,
-                  style: theme.coreTextTheme.bodyNormal,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  localization.careerTeamPoints(viewModel.teamPoints),
-                  style: theme.coreTextTheme.bodyNormal,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  viewModel.hasWonSingle && viewModel.hasWonTeam ? localization.careerTotalWon : localization.careerTotalLost,
-                  style: theme.coreTextTheme.bodyNormal,
-                ),
-                const SizedBox(height: 8),
-                CyclingEscapeButton(
-                  text: localization.continueButton,
-                  onClick: viewModel.onFinishPressed,
-                  type: CyclingEscapeButtonType.green,
-                ),
-              ],
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: AspectRatio(
+              aspectRatio: 2.22,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    viewModel.hasWonSingle ? localization.careerSingleWon : localization.careerSingleLost,
+                    style: theme.coreTextTheme.bodyNormal,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    localization.careerSinglePoints(viewModel.singlePoints),
+                    style: theme.coreTextTheme.bodyNormal,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    viewModel.hasWonTeam ? localization.careerTeamWon : localization.careerTeamLost,
+                    style: theme.coreTextTheme.bodyNormal,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    localization.careerTeamPoints(viewModel.teamPoints),
+                    style: theme.coreTextTheme.bodyNormal,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    viewModel.hasWonSingle && viewModel.hasWonTeam ? localization.careerTotalWon : localization.careerTotalLost,
+                    style: theme.coreTextTheme.bodyNormal,
+                  ),
+                  const SizedBox(height: 8),
+                  CyclingEscapeButton(
+                    text: localization.continueButton,
+                    onClick: viewModel.onFinishPressed,
+                    type: CyclingEscapeButtonType.green,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

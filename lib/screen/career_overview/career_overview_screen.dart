@@ -112,14 +112,19 @@ class CareerOverviewScreenState extends State<CareerOverviewScreen> implements C
                         onClick: viewModel.onCalendarPressed,
                         type: CyclingEscapeButtonType.blue,
                       ),
-                      const SizedBox(width: 8),
                       if (viewModel.isFinished) ...[
                         CyclingEscapeButton(
                           text: localization.careerOverviewFinish,
                           onClick: viewModel.onFinishPressed,
                           type: CyclingEscapeButtonType.green,
                         ),
-                      ] else ...[
+                      ],
+                    ],
+                  ),
+                  if (!viewModel.isFinished) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         CyclingEscapeButton(
                           text: localization.careerOverviewReset,
                           onClick: viewModel.onResetPressed,
@@ -132,8 +137,8 @@ class CareerOverviewScreenState extends State<CareerOverviewScreen> implements C
                           type: CyclingEscapeButtonType.green,
                         ),
                       ],
-                    ],
-                  )
+                    ),
+                  ],
                 ],
               ),
             ),

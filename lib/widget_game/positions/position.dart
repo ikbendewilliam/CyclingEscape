@@ -9,6 +9,7 @@ import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/moveable/cyclist.dart';
 import 'package:cycling_escape/widget_game/positions/sprint.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 const borderWidth = 0.05;
 
@@ -28,7 +29,7 @@ class Position {
   final PositionType? positionType;
   final PositionListener? listener;
 
-  String id = UniqueKey().toString();
+  String id = const Uuid().v4();
   Offset p1;
   Offset p2;
   double fieldValue;
@@ -226,14 +227,20 @@ class Position {
     }
   }
 
-  static Position? fromJson(Map<String, dynamic>? json, List<Position?> existingPositions, List<Sprint?> existingSprints, List<Cyclist?> existingCyclists,
-      List<Team?> existingTeams, SpriteManager? spriteManager, PositionListener? listener) {
-    if (json == null) {
-      return null;
-    }
+  static Position? fromJson(
+    Map<String, dynamic>? json,
+    List<Position?> existingPositions,
+    List<Sprint?> existingSprints,
+    List<Cyclist?> existingCyclists,
+    List<Team?> existingTeams,
+    SpriteManager? spriteManager,
+    PositionListener? listener,
+  ) {
+    if (json == null) return null;
+
     if (existingPositions.isNotEmpty) {
-      final Position? c = existingPositions.firstWhereOrNull(((element) => element?.id == json['id']));
-      if (c != null) return c;
+      final existingPosition = existingPositions.firstWhereOrNull(((element) => element?.id == json['id']));
+      if (existingPosition != null) return existingPosition;
     }
     if (json['id'] != null && json['segment'] == null) {
       final Position placeholder = Position(Offset.zero, Offset.zero, listener, false, 0, 0, 0, 0, 0, false, 0, 0, false, PositionType.flat, isPlaceHolder: true);

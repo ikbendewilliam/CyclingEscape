@@ -36,7 +36,7 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
             padding: const EdgeInsets.only(left: 48, right: 48, bottom: 16),
             height: MediaQuery.of(context).size.height * 0.7,
             child: AspectRatio(
-              aspectRatio: 2.1,
+              aspectRatio: 1.9,
               child: Padding(
                 padding: const EdgeInsets.only(left: 48),
                 child: CyclingEscapeListView.children(

@@ -5,7 +5,7 @@
 [t] Crash?!?
 [t] Prod crashlytics
 [t] Check different resolutions/devices
-[ ] Working scroll bar
+[t] Working scroll bar
 [ ] Check update migration
 
 ## Assets

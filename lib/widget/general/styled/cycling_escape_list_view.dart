@@ -61,6 +61,19 @@ class _CyclingEscapeListViewState extends State<CyclingEscapeListView> {
                 ),
               ),
             ),
+            Positioned.fill(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final height = constraints.maxHeight;
+                  final sliderHeight = constraints.maxWidth / 263 * 278;
+                  return GestureDetector(
+                    onPanUpdate: (details) => controller.jumpTo(
+                      controller.offset + details.delta.dy * controller.position.maxScrollExtent / (height - sliderHeight),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ],

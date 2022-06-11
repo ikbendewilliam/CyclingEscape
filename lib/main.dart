@@ -1,23 +1,33 @@
-import 'package:CyclingEscape/views/gameManager.dart';
-import 'package:device_preview/device_preview.dart';
-import 'package:flame/util.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cycling_escape/app.dart';
+import 'package:cycling_escape/di/environments.dart';
+import 'package:cycling_escape/di/injectable.dart';
+import 'package:cycling_escape/main_common.dart';
+import 'package:cycling_escape/util/env/flavor_config.dart';
+import 'package:cycling_escape/util/inspector/database_inspector.dart';
+import 'package:cycling_escape/util/inspector/local_storage_inspector.dart';
+import 'package:cycling_escape/util/inspector/niddler.dart';
 import 'package:flutter/material.dart';
 
-const disableDevicePreview = true;
+Future<void> main() async {
+  await wrapMain(() async {
+    await initNiddler();
+    const values = FlavorValues(
+      baseUrl: 'https://jsonplaceholder.typicode.com/',
+      logNetworkInfo: true,
+      showFullErrorMessages: true,
+    );
+    FlavorConfig(
+      flavor: Flavor.dev,
+      name: 'DEV',
+      color: Colors.red,
+      values: values,
+    );
+    // ignore: avoid_print
+    print('Starting app from main.dart');
+    await configureDependencies(Environments.dev);
+    await addDatabaseInspector();
+    await initAllStorageInspectors();
 
-void main() async {
-  GameManager gameManager = new GameManager();
-  runApp(app(gameManager.widget));
-  Util flameUtil = Util();
-  await flameUtil.fullScreen();
-  await flameUtil.setLandscape();
-  gameManager.load();
+    startApp();
+  });
 }
-
-Widget app(Widget gameWidget) => disableDevicePreview
-    ? gameWidget
-    : DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => gameWidget, // Wrap your app
-      );

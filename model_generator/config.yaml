@@ -1,0 +1,47 @@
+MapType:
+  path: data/enums.dart
+  type: custom
+
+MapLength:
+  path: data/enums.dart
+  type: custom
+
+Career:
+  path: gamedata
+  properties:
+    riders:
+      type: int
+      required: true
+      non_final: true
+    rankingTypes:
+      type: int
+      required: true
+      non_final: true
+    raceTypes:
+      type: int
+      required: true
+      non_final: true
+    cash:
+      type: int
+      required: true
+      non_final: true
+
+Tour:
+  path: gamedata
+  properties:
+    teams:
+      type: int
+      required: true
+    ridersPerTeam:
+      type: int
+      required: true
+    races:
+      type: int
+      required: true
+    mapType:
+      type: MapType
+      required: true
+    mapLength:
+      type: MapLength
+      required: true
+

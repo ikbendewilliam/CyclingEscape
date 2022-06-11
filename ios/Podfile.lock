@@ -178,7 +178,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
   FirebaseCrashlytics: 40efbd81157dae307ec95612fa1328347284d2c2
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: 405776dd0763d7e32a8f989d4e271ca1317d080c
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
@@ -195,6 +195,6 @@ SPEC CHECKSUMS:
   sqlite3_flutter_libs: 83a1fbbabdcee09e4e34511bb246136a8a97c9d6
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
-PODFILE CHECKSUM: 1a42fdc2d828984566428323b82c33c8c42140ba
+PODFILE CHECKSUM: 925f8c2d2487d50996a234a1ff34a3bb54759bdf
 
 COCOAPODS: 1.11.2

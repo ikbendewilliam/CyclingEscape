@@ -1,13 +1,5 @@
 # cycling_escape
 
-// TODO
-[t] Career - end of season
-[t] Crash?!?
-[t] Prod crashlytics
-[t] Check different resolutions/devices
-[t] Working scroll bar
-[ ] Check update migration
-
 ## Assets
 
 bgs: https://thedarkbear.itch.io/3-parallax

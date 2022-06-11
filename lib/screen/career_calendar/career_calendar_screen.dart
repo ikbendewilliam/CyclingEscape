@@ -36,12 +36,16 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                   Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          localization.careerStandingsNumber,
-                          style: theme.coreTextTheme.bodyNormal,
-                          textAlign: TextAlign.center,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            localization.careerStandingsNumber,
+                            style: theme.coreTextTheme.bodyNormal,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
+                      const SizedBox(width: 4),
                       Expanded(
                         flex: 3,
                         child: Text(
@@ -51,17 +55,25 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                       ),
                       const SizedBox(width: 4),
                       Expanded(
-                        child: Text(
-                          localization.careerStandingsRaces,
-                          style: theme.coreTextTheme.bodyNormal,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            localization.careerStandingsRaces,
+                            style: theme.coreTextTheme.bodyNormal,
+                          ),
                         ),
                       ),
+                      const SizedBox(width: 4),
                       Expanded(
-                        child: Text(
-                          localization.careerStandingsPoints,
-                          style: theme.coreTextTheme.bodyNormal,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            localization.careerStandingsPoints,
+                            style: theme.coreTextTheme.bodyNormal,
+                          ),
                         ),
                       ),
+                      const SizedBox(width: 4),
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -69,7 +81,7 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                           style: theme.coreTextTheme.bodyNormal,
                         ),
                       ),
-                      const SizedBox(width: 48),
+                      const SizedBox(width: 36),
                     ],
                   ),
                   Expanded(
@@ -107,23 +119,25 @@ class CareerCalendarScreenState extends State<CareerCalendarScreen> with BackNav
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
                                   event.playSettings.totalRaces.toString(),
                                   style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 child: Text(
                                   event.points.toString(),
                                   style: theme.coreTextTheme.bodyNormal.copyWith(color: color),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 flex: 2,
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
                                   child: Text(
                                     viewModel.numberToName(event.winner),
                                     style: theme.coreTextTheme.bodyNormal.copyWith(color: color),

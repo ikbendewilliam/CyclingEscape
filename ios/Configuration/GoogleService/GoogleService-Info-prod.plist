@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>44020173560-pjv321sop3eq7hm0qc4jv3q1q5ivtbe8.apps.googleusercontent.com</string>
+	<string>44020173560-bpju4h94bm0r349utb95f0gplbiek604.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.44020173560-pjv321sop3eq7hm0qc4jv3q1q5ivtbe8</string>
+	<string>com.googleusercontent.apps.44020173560-bpju4h94bm0r349utb95f0gplbiek604</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAU7v0cPXn8llqIB9uYeqoQPQQ7wXmfP30</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>be.wive.cyclingescape.debug</string>
+	<string>be.wive.cyclingescape</string>
 	<key>PROJECT_ID</key>
 	<string>cycling-escape</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:44020173560:ios:c5f80afa63d0fb0ab3c90d</string>
+	<string>1:44020173560:ios:a1b88cdd627a34e5b3c90d</string>
 </dict>
 </plist>

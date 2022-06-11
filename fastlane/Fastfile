@@ -113,7 +113,7 @@ lane :prod_android do
   prepareBuild
   buildAppBundleAndroid(flavor: 'prod')
   sh("echo","Uploading to Google Play is disabled.")
-  #deployToPlayStore(flavor: 'prod', package_name: 'com.icapps.fluttertemplate')
+  #deployToPlayStore(flavor: 'prod', package_name: 'be.wive.cyclingescape')
   add_tag                 # Add tag
   git_reset
 end
@@ -163,7 +163,7 @@ end
 private_lane :prod_ios_build do
   buildAppIOSOnly(flavor: 'prod')
   sh("echo","Enter `apple_id` in the prod_ios_build lane")
-  #buildAndDeployToAppStore(flavor: 'prod', configuration: 'Release-prod', identifier: 'com.icapps.fluttertemplate', apple_id: '')
+  #buildAndDeployToAppStore(flavor: 'prod', configuration: 'Release-prod', identifier: 'be.wive.cyclingescape', apple_id: '')
 end
 
 ## The analysis_options_all_files is used to check that all files can compile. even the once ignored in the original analysis_options.yaml
@@ -261,10 +261,10 @@ private_lane :buildIosAppStore do |options|
       export_options: {
         method: 'app-store',
         provisioningProfiles: {
-            "com.icapps.fluttertemplate.dev" => "Flutter Template Debug",
-            "com.icapps.fluttertemplate.alpha" => "Flutter Template Alpha",
-            "com.icapps.fluttertemplate.beta" => "Flutter Template Beta",
-            "com.icapps.fluttertemplate" => "Flutter Template Production"
+            "be.wive.cyclingescape.dev" => "Flutter Template Debug",
+            "be.wive.cyclingescape.alpha" => "Flutter Template Alpha",
+            "be.wive.cyclingescape.beta" => "Flutter Template Beta",
+            "be.wive.cyclingescape" => "Flutter Template Production"
         }
       }
     )

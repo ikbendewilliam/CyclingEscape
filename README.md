@@ -3,10 +3,10 @@
 // TODO
 [t] Career - end of season
 [t] Crash?!?
+[t] Prod crashlytics
+[t] Check different resolutions/devices
 [ ] Working scroll bar
-[ ] Check different resolutions/devices
 [ ] Check update migration
-[ ] Prod crashlytics
 
 ## Assets
 

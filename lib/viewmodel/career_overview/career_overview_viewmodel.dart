@@ -58,7 +58,7 @@ class CareerOverviewViewModel with ChangeNotifierEx {
     teamResults
       ..sort((a, b) => b.points.compareTo(a.points))
       ..asMap().forEach((key, value) => value.rank = key);
-    _teamResult = teamResults.firstWhere((team) => team.team?.isPlayer == true);
+    _teamResult = teamResults.firstWhereOrNull((team) => team.team?.isPlayer == true);
   }
 
   void onFinishPressed() => _navigator.goToCareerFinish();

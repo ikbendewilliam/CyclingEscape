@@ -1,0 +1,6 @@
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Shared.xcconfig"
+PRODUCT_BUNDLE_IDENTIFIER=be.wive.cyclingescape
+CFBundleName=Cycling Escape
+FLUTTER_TARGET=lib/main_prod.dart
+PROVISIONING_PROFILE_SPECIFIER=Cycling Escape

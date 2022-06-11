@@ -31,11 +31,11 @@ class TourSelectScreenState extends State<TourSelectScreen> implements TourSelec
           title: localization.tourTitle,
           onClosePressed: viewModel.onBackClicked,
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.75,
             child: AspectRatio(
               aspectRatio: 1.25,
               child: Padding(
-                padding: const EdgeInsets.only(left: 48, top: 16, bottom: 8),
+                padding: const EdgeInsets.only(left: 36, top: 16, bottom: 8),
                 child: CyclingEscapeListView.children(
                   children: [
                     CyclingEscapeValueButton(

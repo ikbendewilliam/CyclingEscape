@@ -41,8 +41,10 @@ FutureOr<R>? wrapMain<R>(FutureOr<R> Function() appCode) {
       print(trace);
     }
 
-    if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
-      FirebaseCrashlytics.instance.recordError(object, trace);
-    }
+    try {
+      if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+        FirebaseCrashlytics.instance.recordError(object, trace);
+      }
+    } catch (_) {}
   });
 }

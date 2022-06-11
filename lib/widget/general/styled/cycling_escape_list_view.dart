@@ -42,7 +42,7 @@ class _CyclingEscapeListViewState extends State<CyclingEscapeListView> {
             physics: const BouncingScrollPhysics(),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 4),
         Stack(
           children: [
             Image.asset(

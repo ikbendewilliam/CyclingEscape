@@ -68,6 +68,7 @@
 **ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/.last_build_id
+*.mobileprovision
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

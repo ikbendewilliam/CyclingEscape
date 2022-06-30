@@ -2,7 +2,6 @@ import 'package:cycling_escape/database/career/career_calendar_dao_storage.dart'
 import 'package:cycling_escape/model/data/calendar_event.dart';
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
-import 'package:cycling_escape/util/env/flavor_config.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,7 +26,6 @@ abstract class CalendarRepository {
 
 class _CalendarRepository implements CalendarRepository {
   final _events = [
-    if (!FlavorConfig.isProd()) CalendarEvent(0, 'debug', 0, PlaySettings(2, 2, MapType.flat, MapLength.debug, null, 1, true)),
     CalendarEvent(1, 'calendarEvent1', 500, PlaySettings(3, 2, MapType.flat, MapLength.medium, null, 3, true)), // "Tour Down Under"
     CalendarEvent(2, 'calendarEvent2', 300, PlaySettings(3, 3, MapType.hills, MapLength.medium, null, 3, true)), // "Tour of Valencia"
     CalendarEvent(3, 'calendarEvent3', 400, PlaySettings(4, 2, MapType.flat, MapLength.long, null, 3, true)), // "Tour of Dubai"

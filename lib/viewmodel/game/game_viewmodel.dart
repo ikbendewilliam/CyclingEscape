@@ -58,7 +58,6 @@ class GameViewModel with ChangeNotifierEx {
       _localStorage.isCurrentGameCareer = playSettings.isCareer;
     }
     _isCareer = playSettings.isCareer;
-    print('_isCareer: $_isCareer');
     await gameManager.addListener(GameListener(
       localizations: localizations,
       spriteManager: _spriteManager,

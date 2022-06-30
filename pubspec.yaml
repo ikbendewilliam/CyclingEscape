@@ -18,7 +18,7 @@ dependencies:
   drift_inspector: ^1.0.0
   firebase_core: ^1.10.5
   firebase_crashlytics: ^2.4.3
-  flame: ^1.1.1
+  flame: ^1.2.0
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.3.0

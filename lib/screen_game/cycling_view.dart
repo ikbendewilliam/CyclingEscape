@@ -30,13 +30,12 @@ typedef SelectFollow = Future<FollowType> Function(int minThrow);
 class CyclingView extends BaseView implements PositionListener, DiceListener {
   int? diceValue;
   int? currentTurn = 0;
-  bool grid = false;
-  bool ended = false;
-  bool moving = false;
-  bool inCareer = false;
-  bool autoFollow = false;
-  bool hasResults = false;
-  bool openFollowSelect = false;
+  var grid = false;
+  var ended = false;
+  var moving = false;
+  var autoFollow = false;
+  var hasResults = false;
+  var openFollowSelect = false;
   Dice? dice, dice2;
   Size? worldSize = const Size(1, 1);
   Size? mapSize = const Size(1, 1);
@@ -340,14 +339,14 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     if (cyclistSelected == null || cyclistSelected!.cyclist == null) {
       return;
     }
-    bool useStartResults = false;
+    var useStartResults = false;
     ResultData? startResult;
     map!.positions.where((element) => element.cyclist != null).toList().forEach((cyclistPosition) {
       if (startResults != null) {
         useStartResults = true;
         startResult = startResults!.data.firstWhereOrNull((element) => element.number == cyclistPosition.cyclist!.number);
       }
-      final ResultData? result = tempResults!.data.firstWhereOrNull(((element) => element.number == cyclistPosition.cyclist!.number));
+      final result = tempResults!.data.firstWhereOrNull(((element) => element.number == cyclistPosition.cyclist!.number));
       if (result != null) {
         result.time = (useStartResults ? startResult!.time : 0) + currentTurn!;
         result.value = useStartResults ? 100.0 - startResult!.rank : cyclistPosition.getValue(false);
@@ -385,9 +384,9 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
         unawaited(processGameState(GameState.userWaitCyclistFollow));
         break;
       case GameState.userWaitCyclistFollow:
-        bool following = false;
-        final int minThrow = canFollow();
-        final Position? placeBefore = getPlaceBefore();
+        var following = false;
+        final minThrow = canFollow();
+        final placeBefore = getPlaceBefore();
         if (minThrow <= 0 && placeBefore?.cyclist?.team?.isPlayer == true) {
           openTutorial(TutorialType.noFollowAvailable);
         } else if (minThrow > 0) {
@@ -400,6 +399,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
             follow();
             unawaited(processGameState(GameState.userWaitCyclistMoving));
           } else if (placeBefore.cyclist!.team!.isPlayer! && !autoFollow && (minThrow >= localStorage.autofollowThreshold || localStorage.autofollowThresholdBelowAsk)) {
+            openFollowSelect = true;
             final returnValue = await onSelectFollow(minThrow);
             switch (returnValue) {
               case FollowType.autoFollow:
@@ -419,6 +419,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
                 unawaited(processGameState(GameState.gameSelectNext));
             }
             following = true;
+            openFollowSelect = false;
           }
           if (autoFollow) openTutorial(TutorialType.follow);
         }
@@ -463,11 +464,11 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
 
   // -1 if you cannot follow, int for min to throw to follow
   int canFollow() {
-    final Position? placeBefore = getPlaceBefore();
+    final placeBefore = getPlaceBefore();
     if (placeBefore == null || placeBefore.cyclist == null) {
       return -1;
     }
-    final List<Position?> routeBeforeEnd = MapUtils.findPlaceBefore(cyclistSelected, cyclistMoved, true, startPosition: placeBefore);
+    final routeBeforeEnd = MapUtils.findPlaceBefore(cyclistSelected, cyclistMoved, true, startPosition: placeBefore);
     if (routeBeforeEnd.isEmpty) {
       return -1;
     }
@@ -482,7 +483,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   }
 
   void follow() {
-    final Position? lastSelectedAccent = getPlaceBefore();
+    final lastSelectedAccent = getPlaceBefore();
     if (lastSelectedAccent == null || lastSelectedAccent.cyclist == null) {
       return;
     }
@@ -526,7 +527,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
           if (sprint.type == SprintType.finish) {
             addNotification('${element.cyclist!.number} Finished ${th(key + 1)}', element.cyclist!.team!.getColor());
           } else if (sprint.getPoints(key) > 0) {
-            final ResultData? result = tempResults!.data.firstWhereOrNull(((r) => r.number == element.cyclist!.number));
+            final result = tempResults!.data.firstWhereOrNull(((r) => r.number == element.cyclist!.number));
             if (result != null) {
               switch (sprint.type) {
                 case SprintType.mountainSprint:
@@ -677,10 +678,10 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     required ValueChanged<TutorialType> openTutorial,
     required SelectFollow onSelectFollow,
   }) {
-    final List<Position?> existingPositions = [];
-    final List<Sprint?> existingSprints = [];
-    final List<Cyclist?> existingCyclists = [];
-    final List<Team?> existingTeams = [];
+    final existingPositions = <Position?>[];
+    final existingSprints = <Sprint?>[];
+    final existingCyclists = <Cyclist?>[];
+    final existingTeams = <Team?>[];
     if (json == null || json['map'] == null) return null;
 
     final cyclingView = CyclingView(
@@ -713,7 +714,6 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     cyclingView.mapSize = SaveUtil.sizeFromJson(json['mapSize'] as Map<String, dynamic>?);
     cyclingView.offset = SaveUtil.offsetFromJson(json['offset'] as Map<String, dynamic>?)!;
     cyclingView.zoom = json['zoom'] as double;
-    cyclingView.inCareer = json['inCareer'] as bool;
     cyclingView.movingTimer = json['movingTimer'] as double;
     cyclingView.tileSize = json['tileSize'] as double? ?? 1.0;
     cyclingView.cyclistMoved = json['cyclistMoved'] as double?;
@@ -807,7 +807,6 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
     data['hasResults'] = hasResults;
     data['openFollowSelect'] = openFollowSelect;
     data['zoom'] = zoom;
-    data['inCareer'] = inCareer;
     data['movingTimer'] = movingTimer;
     data['cyclistMoved'] = cyclistMoved;
     data['diceValueCooldown'] = diceValueCooldown;
@@ -836,7 +835,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
 }
 
 GameState getGameStateFromString(String? gameStateAsString) {
-  for (final GameState element in GameState.values) {
+  for (final element in GameState.values) {
     if (element.toString() == gameStateAsString) {
       return element;
     }

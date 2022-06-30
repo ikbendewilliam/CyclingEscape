@@ -88,6 +88,7 @@ enum ResultsColumn {
 }
 
 enum MapLength {
+  debug(1, LocalizationKeys.raceDurationShort),
   short(10, LocalizationKeys.raceDurationShort),
   medium(20, LocalizationKeys.raceDurationMedium),
   long(30, LocalizationKeys.raceDurationLong),

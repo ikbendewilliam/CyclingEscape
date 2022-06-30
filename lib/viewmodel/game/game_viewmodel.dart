@@ -51,11 +51,14 @@ class GameViewModel with ChangeNotifierEx {
     _navigator = navigator;
     if (playSettings.loadGame) {
       _isTour = _localStorage.isCurrentGameTour;
+      playSettings.isCareer = _localStorage.isCurrentGameCareer;
     } else {
       _isTour = playSettings.totalRaces != null && playSettings.totalRaces! > 1;
       _localStorage.isCurrentGameTour = _isTour;
+      _localStorage.isCurrentGameCareer = playSettings.isCareer;
     }
     _isCareer = playSettings.isCareer;
+    print('_isCareer: $_isCareer');
     await gameManager.addListener(GameListener(
       localizations: localizations,
       spriteManager: _spriteManager,
@@ -65,8 +68,6 @@ class GameViewModel with ChangeNotifierEx {
       onPause: _onPause,
       isPaused: _isPaused,
       onSelectFollow: _onSelectFollow,
-      playerTeam: null, // TODO
-      career: null, // TODO
       playSettings: playSettings,
     ));
   }

@@ -8,6 +8,7 @@ import 'package:cycling_escape/widget_game/data/team.dart';
 import 'package:cycling_escape/widget_game/positions/position.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class Cyclist {
   final int number;
@@ -27,7 +28,7 @@ class Cyclist {
   Sprite? cyclistGreenJerseySprite;
   Sprite? cyclistBouledJerseySprite;
   Position? lastPosition;
-  String? id = UniqueKey().toString();
+  String id = const Uuid().v4();
 
   Cyclist(this.team, this.number, this.rank, SpriteManager? spriteManager, {this.isPlaceHolder = false}) {
     if (isPlaceHolder) {
@@ -105,7 +106,7 @@ class Cyclist {
       json['rank'] as int?,
       spriteManager,
     );
-    cyclist.id = json['id'] as String?;
+    cyclist.id = json['id'] as String;
     existingCyclists.add(cyclist);
 
     cyclist.lastUsedOnTurn = json['lastUsedOnTurn'] as int?;

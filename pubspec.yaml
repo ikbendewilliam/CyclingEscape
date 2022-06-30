@@ -1,7 +1,7 @@
 name: cycling_escape
 description: A Cycling game by WiVe
 
-version: 2.0.0+20
+version: 2.0.1+21
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
   drift_inspector: ^1.0.0
   firebase_core: ^1.10.5
   firebase_crashlytics: ^2.4.3
-  flame: ^1.1.1
+  flame: ^1.2.0
   flutter:
     sdk: flutter
   flutter_cache_manager: ^3.3.0

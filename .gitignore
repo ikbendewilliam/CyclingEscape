@@ -95,3 +95,4 @@ Gemfile.lock
 .fvm/flutter_sdk
 /lib/generated_plugin_registrant.dart
 /test/coverage_helper_test.dart
+android/key.properties

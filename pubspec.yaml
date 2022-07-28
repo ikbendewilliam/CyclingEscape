@@ -40,6 +40,7 @@ dependencies:
   retrofit: ^3.0.0
   scroll_when_needed: ^2.0.0
   shared_preferences: ^2.0.11
+  sqlite3: 1.7.2
   sqlite3_flutter_libs: ^0.5.2
   synchronized: ^3.0.0+2
   storage_inspector: ^0.1.1
@@ -72,6 +73,7 @@ flutter:
     - assets/fonts/
     - assets/icon/
     - assets/locale/
+    - assets/dll/
   fonts:
     - family: SaranaiGame
       fonts:

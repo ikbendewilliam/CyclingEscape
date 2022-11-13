@@ -6,6 +6,7 @@ import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/shared_prefs/local/local_storage.dart';
 import 'package:cycling_escape/screen_game/base_view.dart';
 import 'package:cycling_escape/screen_game/cycling_view_ui.dart';
+import 'package:cycling_escape/util/audio/audio_controller.dart';
 import 'package:cycling_escape/util/locale/localization.dart';
 import 'package:cycling_escape/util/map/map_utils.dart';
 import 'package:cycling_escape/util/save/save_util.dart';
@@ -24,6 +25,7 @@ import 'package:cycling_escape/widget_game/ui/button.dart';
 import 'package:flame/components.dart' hide PositionType;
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 typedef SelectFollow = Future<FollowType> Function(int minThrow);
 
@@ -599,6 +601,7 @@ class CyclingView extends BaseView implements PositionListener, DiceListener {
   }
 
   void startDice() {
+    GetIt.I<AudioController>().playDice();
     dice!.start();
     dice2!.start();
   }

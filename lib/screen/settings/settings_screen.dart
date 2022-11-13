@@ -66,6 +66,16 @@ class SettingsScreenState extends State<SettingsScreen> with BackNavigatorMixin 
                       value: viewModel.autofollowThresholdAboveAsk,
                       onChanged: viewModel.autofollowThresholdAboveAskChanged,
                     ),
+                    CyclingEscapeCheckBox(
+                      text: localization.settingsEnableMusic,
+                      value: viewModel.enableMusic,
+                      onChanged: viewModel.enableMusicChanged,
+                    ),
+                    CyclingEscapeCheckBox(
+                      text: localization.settingsEnableSound,
+                      value: viewModel.enableSound,
+                      onChanged: viewModel.enableSoundChanged,
+                    ),
                     CyclingEscapeValueButton(
                       label: localization.settingsCyclistMoveSpeed,
                       value: viewModel.cyclistMoveSpeedIndex,

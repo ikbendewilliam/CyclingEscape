@@ -621,6 +621,28 @@ class LocalizationKeys {
 
   /// Translations:
   ///
+  /// en:  **'Music'**
+  ///
+  /// nl:  **'Muziek'**
+  ///
+  /// fr:  **'Musique'**
+  ///
+  /// es:  **'Música'**
+  static const settingsEnableMusic = 'settingsEnableMusic';
+
+  /// Translations:
+  ///
+  /// en:  **'Sound'**
+  ///
+  /// nl:  **'Geluid'**
+  ///
+  /// fr:  **'Son'**
+  ///
+  /// es:  **'Sonido'**
+  static const settingsEnableSound = 'settingsEnableSound';
+
+  /// Translations:
+  ///
   /// en:  **'Change cyclist names'**
   ///
   /// nl:  **'Wijzig namen'**
@@ -643,13 +665,13 @@ class LocalizationKeys {
 
   /// Translations:
   ///
-  /// en:  **'This game was developed by WiVe.\n\nThe following people made this possible! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - the background in the menus \nKenney.nl - for the icons and nature \nkidcomic.net - the icon \nSaranai - UI elements'**
+  /// en:  **'This game was developed by WiVe.\n\nThe following people made this possible! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - the background in the menus \nKenney.nl - for the icons and nature \nkidcomic.net - the icon \nSaranai - UI elements\nchosic.com/free-music/all/ (Komiku) - Music\nPixabay (102706) - Dice throw sound\nzapsplat.com - Button press sound'**
   ///
-  /// nl:  **'Dit spel is ontwikkeld door WiVe.\n\n De volgende mensen hebben dit mede mogelijk gemaakt!\n\nBart barto - renners sprite\nthedarkbear.itch.io/3-parallax - de achtergrond in de menu's\nkenney.nl - voor de icoontjes en natuur\nkidcomic.net - het icon\nSaranai - UI elementen'**
+  /// nl:  **'Dit spel is ontwikkeld door WiVe.\n\n De volgende mensen hebben dit mede mogelijk gemaakt!\n\nBart barto - renners sprite\nthedarkbear.itch.io/3-parallax - de achtergrond in de menu's\nkenney.nl - voor de icoontjes en natuur\nkidcomic.net - het icon\nSaranai - UI elementen\nchosic.com/free-music/all/ (Komiku) - Music\nPixabay (102706) - Dice throw sound\nzapsplat.com - Button press sound'**
   ///
-  /// fr:  **'Ce jeu a été développé par WiVe.\n\nLes personnes suivantes ont rendu cela possible ! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - le fond dans les menus \nKenney.nl - pour les icônes et la nature \nkidcomic.net - l'icône \nSaranai - Éléments d'interface utilisateur'**
+  /// fr:  **'Ce jeu a été développé par WiVe.\n\nLes personnes suivantes ont rendu cela possible ! \n\nBart barto - riders sprite \nthedarkbear.itch.io/3-parallax - le fond dans les menus \nKenney.nl - pour les icônes et la nature \nkidcomic.net - l'icône \nSaranai - Éléments d'interface utilisateur\nchosic.com/free-music/all/ (Komiku) - Music\nPixabay (102706) - Dice throw sound\nzapsplat.com - Button press sound'**
   ///
-  /// es:  **'Este juego fue desarrollado por WiVe.\n\nLas siguientes personas lo han hecho posible \n\nBart barto - jinete sprite \nthedarkbear.itch.io/3-parallax - el fondo de los menús \nKenney.nl - para los iconos y la naturaleza \nkidcomic.net - el icono \nSaranai - Elementos de interfaz de usuario'**
+  /// es:  **'Este juego fue desarrollado por WiVe.\n\nLas siguientes personas lo han hecho posible \n\nBart barto - jinete sprite \nthedarkbear.itch.io/3-parallax - el fondo de los menús \nKenney.nl - para los iconos y la naturaleza \nkidcomic.net - el icono \nSaranai - Elementos de interfaz de usuario\nchosic.com/free-music/all/ (Komiku) - Music\nPixabay (102706) - Dice throw sound\nzapsplat.com - Button press sound'**
   static const creditsText = 'creditsText';
 
   /// Translations:

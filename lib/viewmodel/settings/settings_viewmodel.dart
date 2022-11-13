@@ -48,6 +48,10 @@ class SettingsViewModel with ChangeNotifierEx {
 
   SettingsViewModel(this._localStorage);
 
+  bool get enableSound => _localStorage.soundEnabled;
+
+  bool get enableMusic => _localStorage.musicEnabled;
+
   Future<void> init(SettingsNavigator navigator) async {
     _navigator = navigator;
     final packageInfo = await PackageInfo.fromPlatform();
@@ -95,6 +99,16 @@ class SettingsViewModel with ChangeNotifierEx {
   void onBackPressed() => _navigator.goBack<void>();
 
   void onDebugClicked() => _navigator.goToDebug();
+
+  void enableSoundChanged(bool value) {
+    _localStorage.soundEnabled = value;
+    notifyListeners();
+  }
+
+  void enableMusicChanged(bool value) {
+    _localStorage.musicEnabled = value;
+    notifyListeners();
+  }
 }
 
 mixin SettingsNavigator implements BackNavigator {

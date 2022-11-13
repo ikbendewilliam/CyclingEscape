@@ -4,7 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-import 'package:dio/dio.dart' as _i53;
+import 'package:dio/dio.dart' as _i54;
 import 'package:drift/drift.dart' as _i7;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i9;
 import 'package:get_it/get_it.dart' as _i1;
@@ -16,8 +16,8 @@ import '../database/career/calendar_results_dao_storage.dart' as _i25;
 import '../database/career/career_calendar_dao_storage.dart' as _i24;
 import '../database/cycling_escape_database.dart' as _i21;
 import '../database/tour_results/tour_results_dao_storage.dart' as _i22;
-import '../repository/calendar/calendar_repository.dart' as _i39;
-import '../repository/career/career_repository.dart' as _i41;
+import '../repository/calendar/calendar_repository.dart' as _i40;
+import '../repository/career/career_repository.dart' as _i42;
 import '../repository/debug/debug_repository.dart' as _i26;
 import '../repository/locale/locale_repository.dart' as _i29;
 import '../repository/name/name_repository.dart' as _i30;
@@ -27,32 +27,33 @@ import '../repository/secure_storage/secure_storage.dart' as _i15;
 import '../repository/shared_prefs/local/local_storage.dart' as _i28;
 import '../repository/tour/tour_repository.dart' as _i35;
 import '../repository/tutorial/tutorial_repository.dart' as _i37;
+import '../util/audio/audio_controller.dart' as _i39;
 import '../util/cache/cache_controller.dart' as _i4;
 import '../util/cache/cache_controlling.dart' as _i3;
 import '../util/interceptor/network_auth_interceptor.dart' as _i31;
 import '../util/interceptor/network_error_interceptor.dart' as _i13;
 import '../util/interceptor/network_log_interceptor.dart' as _i14;
-import '../util/interceptor/network_refresh_interceptor.dart' as _i49;
+import '../util/interceptor/network_refresh_interceptor.dart' as _i50;
 import '../viewmodel/active_tour/active_tour_viewmodel.dart' as _i38;
-import '../viewmodel/career_calendar/career_calendar_viewmodel.dart' as _i40;
-import '../viewmodel/career_finish/career_finish_viewmodel.dart' as _i51;
-import '../viewmodel/career_overview/career_overview_viewmodel.dart' as _i52;
-import '../viewmodel/career_reset/career_reset_viewmodel.dart' as _i42;
+import '../viewmodel/career_calendar/career_calendar_viewmodel.dart' as _i41;
+import '../viewmodel/career_finish/career_finish_viewmodel.dart' as _i52;
+import '../viewmodel/career_overview/career_overview_viewmodel.dart' as _i53;
+import '../viewmodel/career_reset/career_reset_viewmodel.dart' as _i43;
 import '../viewmodel/career_select_riders/career_select_riders_viewmodel.dart'
-    as _i43;
-import '../viewmodel/career_standings/career_standings_viewmodel.dart' as _i44;
+    as _i44;
+import '../viewmodel/career_standings/career_standings_viewmodel.dart' as _i45;
 import '../viewmodel/change_cyclist_names/change_cyclist_names_viewmodel.dart'
-    as _i45;
+    as _i46;
 import '../viewmodel/credits/credits_viewmodel.dart' as _i6;
 import '../viewmodel/debug/debug_platform_selector_viewmodel.dart' as _i8;
 import '../viewmodel/debug/debug_viewmodel.dart' as _i27;
-import '../viewmodel/game/game_viewmodel.dart' as _i46;
-import '../viewmodel/global/global_viewmodel.dart' as _i47;
+import '../viewmodel/game/game_viewmodel.dart' as _i47;
+import '../viewmodel/global/global_viewmodel.dart' as _i48;
 import '../viewmodel/information/information_viewmodel.dart' as _i10;
 import '../viewmodel/license/license_viewmodel.dart' as _i11;
-import '../viewmodel/main_menu/main_menu_viewmodel.dart' as _i48;
+import '../viewmodel/main_menu/main_menu_viewmodel.dart' as _i49;
 import '../viewmodel/menu_background/menu_background_viewmodel.dart' as _i12;
-import '../viewmodel/results/results_viewmodel.dart' as _i50;
+import '../viewmodel/results/results_viewmodel.dart' as _i51;
 import '../viewmodel/settings/settings_viewmodel.dart' as _i33;
 import '../viewmodel/single_race_menu/single_race_menu_viewmodel.dart' as _i17;
 import '../viewmodel/splash/splash_viewmodel.dart' as _i34;
@@ -60,7 +61,7 @@ import '../viewmodel/tour_in_progress/tour_in_progress_viewmodel.dart' as _i19;
 import '../viewmodel/tour_select/tour_select_viewmodel.dart' as _i36;
 import '../viewmodel/v2dialog/v2dialog_viewmodel.dart' as _i20;
 import '../widget_game/data/sprite_manager.dart' as _i18;
-import 'injectable.dart' as _i54; // ignore_for_file: unnecessary_lambdas
+import 'injectable.dart' as _i55; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -135,54 +136,56 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i37.TutorialRepository(get<_i28.LocalStorage>()));
   gh.factory<_i38.ActiveTourViewModel>(() => _i38.ActiveTourViewModel(
       get<_i35.TourRepository>(), get<_i30.NameRepository>()));
-  gh.lazySingleton<_i39.CalendarRepository>(() => _i39.CalendarRepository(
+  gh.singleton<_i39.AudioController>(
+      _i39.AudioController(get<_i28.LocalStorage>()));
+  gh.lazySingleton<_i40.CalendarRepository>(() => _i40.CalendarRepository(
       get<_i28.LocalStorage>(), get<_i24.CareerCalendarDaoStorage>()));
-  gh.factory<_i40.CareerCalendarViewModel>(() => _i40.CareerCalendarViewModel(
-      get<_i39.CalendarRepository>(), get<_i30.NameRepository>()));
-  gh.lazySingleton<_i41.CareerRepository>(() => _i41.CareerRepository(
-      get<_i25.CareerResultsDaoStorage>(), get<_i39.CalendarRepository>()));
-  gh.factory<_i42.CareerResetViewModel>(
-      () => _i42.CareerResetViewModel(get<_i41.CareerRepository>()));
-  gh.factory<_i43.CareerSelectRidersViewModel>(() =>
-      _i43.CareerSelectRidersViewModel(
-          get<_i39.CalendarRepository>(), get<_i35.TourRepository>()));
-  gh.factory<_i44.CareerStandingsViewModel>(() => _i44.CareerStandingsViewModel(
-      get<_i41.CareerRepository>(),
-      get<_i39.CalendarRepository>(),
+  gh.factory<_i41.CareerCalendarViewModel>(() => _i41.CareerCalendarViewModel(
+      get<_i40.CalendarRepository>(), get<_i30.NameRepository>()));
+  gh.lazySingleton<_i42.CareerRepository>(() => _i42.CareerRepository(
+      get<_i25.CareerResultsDaoStorage>(), get<_i40.CalendarRepository>()));
+  gh.factory<_i43.CareerResetViewModel>(
+      () => _i43.CareerResetViewModel(get<_i42.CareerRepository>()));
+  gh.factory<_i44.CareerSelectRidersViewModel>(() =>
+      _i44.CareerSelectRidersViewModel(
+          get<_i40.CalendarRepository>(), get<_i35.TourRepository>()));
+  gh.factory<_i45.CareerStandingsViewModel>(() => _i45.CareerStandingsViewModel(
+      get<_i42.CareerRepository>(),
+      get<_i40.CalendarRepository>(),
       get<_i30.NameRepository>()));
-  gh.factory<_i45.ChangeCyclistNamesViewModel>(
-      () => _i45.ChangeCyclistNamesViewModel(get<_i30.NameRepository>()));
-  gh.factory<_i46.GameViewModel>(() => _i46.GameViewModel(
+  gh.factory<_i46.ChangeCyclistNamesViewModel>(
+      () => _i46.ChangeCyclistNamesViewModel(get<_i30.NameRepository>()));
+  gh.factory<_i47.GameViewModel>(() => _i47.GameViewModel(
       get<_i37.TutorialRepository>(),
       get<_i28.LocalStorage>(),
       get<_i18.SpriteManager>()));
-  gh.singleton<_i47.GlobalViewModel>(_i47.GlobalViewModel(
+  gh.singleton<_i48.GlobalViewModel>(_i48.GlobalViewModel(
       get<_i29.LocaleRepository>(),
       get<_i26.DebugRepository>(),
       get<_i28.LocalStorage>()));
-  gh.factory<_i48.MainMenuViewModel>(
-      () => _i48.MainMenuViewModel(get<_i35.TourRepository>()));
-  gh.singleton<_i49.NetworkRefreshInterceptor>(
-      _i49.NetworkRefreshInterceptor(get<_i32.RefreshRepository>()));
-  gh.factory<_i50.ResultsViewModel>(() => _i50.ResultsViewModel(
+  gh.factory<_i49.MainMenuViewModel>(() => _i49.MainMenuViewModel(
+      get<_i35.TourRepository>(), get<_i39.AudioController>()));
+  gh.singleton<_i50.NetworkRefreshInterceptor>(
+      _i50.NetworkRefreshInterceptor(get<_i32.RefreshRepository>()));
+  gh.factory<_i51.ResultsViewModel>(() => _i51.ResultsViewModel(
       get<_i30.NameRepository>(),
       get<_i35.TourRepository>(),
-      get<_i41.CareerRepository>()));
-  gh.factory<_i51.CareerFinishViewModel>(
-      () => _i51.CareerFinishViewModel(get<_i41.CareerRepository>()));
-  gh.factory<_i52.CareerOverviewViewModel>(() => _i52.CareerOverviewViewModel(
-      get<_i41.CareerRepository>(),
-      get<_i39.CalendarRepository>(),
+      get<_i42.CareerRepository>()));
+  gh.factory<_i52.CareerFinishViewModel>(
+      () => _i52.CareerFinishViewModel(get<_i42.CareerRepository>()));
+  gh.factory<_i53.CareerOverviewViewModel>(() => _i53.CareerOverviewViewModel(
+      get<_i42.CareerRepository>(),
+      get<_i40.CalendarRepository>(),
       get<_i30.NameRepository>()));
   gh.lazySingleton<_i5.CombiningSmartInterceptor>(() =>
       registerModule.provideCombiningSmartInterceptor(
           get<_i14.NetworkLogInterceptor>(),
           get<_i31.NetworkAuthInterceptor>(),
           get<_i13.NetworkErrorInterceptor>(),
-          get<_i49.NetworkRefreshInterceptor>()));
-  gh.lazySingleton<_i53.Dio>(
+          get<_i50.NetworkRefreshInterceptor>()));
+  gh.lazySingleton<_i54.Dio>(
       () => registerModule.provideDio(get<_i5.CombiningSmartInterceptor>()));
   return get;
 }
 
-class _$RegisterModule extends _i54.RegisterModule {}
+class _$RegisterModule extends _i55.RegisterModule {}

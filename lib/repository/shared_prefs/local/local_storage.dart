@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:cycling_escape/model/data/enums.dart';
 import 'package:cycling_escape/repository/secure_storage/auth/auth_storage.dart';
+import 'package:cycling_escape/util/audio/audio_controller.dart';
 import 'package:cycling_escape/widget_game/data/play_settings.dart';
 import 'package:cycling_escape/widget_game/data/results.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
 
@@ -33,6 +35,10 @@ abstract class LocalStorage {
   CameraMovementType get cameraMovement;
 
   DifficultyType get difficulty;
+
+  bool get soundEnabled;
+
+  bool get musicEnabled;
 
   Results? get tourResults;
 
@@ -63,6 +69,10 @@ abstract class LocalStorage {
   set toursFinished(int value);
 
   set completedRaces(int value);
+
+  set soundEnabled(bool value);
+
+  set musicEnabled(bool value);
 
   Future<bool> checkForNewInstallation();
 
@@ -101,6 +111,8 @@ class _LocalStorage implements LocalStorage {
   static const _completedRacesKey = 'completedRaces';
   static const _isCurrentGameTourKey = 'isCurrentGameTour';
   static const _isCurrentGameCareerKey = 'isCurrentGameCareer';
+  static const _soundEnabledKey = 'soundEnabled';
+  static const _musicEnabledKey = 'musicEnabled';
 
   final AuthStorage _authStorage;
   final SharedPreferenceStorage _sharedPreferences;
@@ -122,6 +134,12 @@ class _LocalStorage implements LocalStorage {
 
   @override
   bool get autofollowThresholdAboveAsk => _sharedPreferences.getBoolean(_autofollowThresholdAboveAskKey) ?? true;
+
+  @override
+  bool get soundEnabled => _sharedPreferences.getBoolean(_soundEnabledKey) ?? true;
+
+  @override
+  bool get musicEnabled => _sharedPreferences.getBoolean(_musicEnabledKey) ?? true;
 
   @override
   CyclistMovementType get cyclistMovement {
@@ -226,6 +244,20 @@ class _LocalStorage implements LocalStorage {
 
   @override
   set typesViewed(Set<TutorialType> value) => _sharedPreferences.saveString(key: _typesViewedKey, value: value.map((e) => e.toString()).join(','));
+
+  @override
+  set soundEnabled(bool value) => _sharedPreferences.saveBoolean(key: _soundEnabledKey, value: value);
+
+  @override
+  set musicEnabled(bool value) {
+    _sharedPreferences.saveBoolean(key: _musicEnabledKey, value: value);
+    final audioController = GetIt.I<AudioController>();
+    if (value) {
+      audioController.playBackgroundMusic();
+    } else {
+      audioController.stopBackgroundMusic();
+    }
+  }
 
   @override
   void setCyclistNames(Map<int, String> names) {

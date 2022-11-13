@@ -1,7 +1,7 @@
 name: cycling_escape
 description: A Cycling game by WiVe
 
-version: 2.0.1+21
+version: 2.0.2+22
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -9,6 +9,7 @@ environment:
 dependencies:
   analyzer: ^3.0.0
   app_review: ^2.1.1+1
+  audio_session: ^0.1.10
   auto_orientation: ^2.2.1
   collection: ^1.15.0
   device_info: ^2.0.3
@@ -31,6 +32,7 @@ dependencies:
   injectable: ^1.4.1
   intl: ^0.17.0
   json_annotation: ^4.4.0
+  just_audio: ^0.9.30
   niddler_dart: ^1.5.0
   package_info_plus: ^1.4.2 
   path: ^1.8.0
@@ -66,6 +68,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/audio/
     - assets/images/
     - assets/images/cyclists/
     - assets/images/environment/

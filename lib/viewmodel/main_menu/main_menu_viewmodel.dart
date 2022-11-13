@@ -1,4 +1,5 @@
 import 'package:cycling_escape/repository/tour/tour_repository.dart';
+import 'package:cycling_escape/util/audio/audio_controller.dart';
 import 'package:cycling_escape/util/save/save_util.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 import 'package:injectable/injectable.dart';
@@ -7,15 +8,18 @@ import 'package:injectable/injectable.dart';
 class MainMenuViewModel with ChangeNotifierEx {
   late final MainMenuNavigator _navigator;
   final TourRepository _tourRepository;
+  final AudioController _audioController;
 
   bool get hasGameAvailable => SaveUtil.hasCyclingView;
 
   MainMenuViewModel(
     this._tourRepository,
+    this._audioController,
   );
 
   Future<void> init(MainMenuNavigator navigator) async {
     _navigator = navigator;
+    _audioController.playBackgroundMusic();
   }
 
   Future<void> onContinueClick() async {

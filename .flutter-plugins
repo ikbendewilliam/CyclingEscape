@@ -1,5 +1,6 @@
 # This is a generated file; do not edit or check into version control.
 app_review=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/app_review-2.1.1+1/
+audio_session=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/audio_session-0.1.10/
 auto_orientation=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/auto_orientation-2.2.1/
 connectivity_plus=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/connectivity_plus-2.3.0/
 connectivity_plus_linux=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/connectivity_plus_linux-1.3.0/
@@ -20,6 +21,8 @@ flutter_secure_storage_linux=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartl
 flutter_secure_storage_macos=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_macos-1.1.0/
 flutter_secure_storage_web=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_web-1.0.2/
 flutter_secure_storage_windows=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_windows-1.1.2/
+just_audio=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/just_audio-0.9.30/
+just_audio_web=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/just_audio_web-0.4.7/
 package_info=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/package_info-2.0.2/
 package_info_plus=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/package_info_plus-1.4.2/
 package_info_plus_linux=/Users/williamverhaeghe/.pub-cache/hosted/pub.dartlang.org/package_info_plus_linux-1.0.5/

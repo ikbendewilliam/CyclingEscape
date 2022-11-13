@@ -10,6 +10,9 @@ Get it on [Android](https://play.google.com/store/apps/details?id=be.wive.cyclin
 - icon: https://icons8.com/iconizer/en/search/1/collection:Olympic_Games
 - Better cyclists: BART BARTO!
 - environment: https://kenney.nl/assets/racing-pack
+- Music: https://www.chosic.com/free-music/all/ (Komiku)
+- Dice throw from Pixabay (102706)
+- Button press from https://www.zapsplat.com
 
 ## Build release
 

@@ -1,6 +1,8 @@
 import 'package:cycling_escape/styles/theme_assets.dart';
+import 'package:cycling_escape/util/audio/audio_controller.dart';
 import 'package:cycling_escape/widget/provider/data_provider_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 enum CyclingEscapeButtonType {
   blue(ThemeAssets.buttonBluePressed, ThemeAssets.buttonBlue),
@@ -66,6 +68,7 @@ class _CyclingEscapeButtonState extends State<CyclingEscapeButton> {
             setState(() {
               _isPressed = false;
             });
+            GetIt.I<AudioController>().playButtonPress();
             widget.onClick?.call();
           },
           onPanUpdate: (details) {

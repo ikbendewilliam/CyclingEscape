@@ -1,6 +1,6 @@
 # cycling_escape
 
-Get it on [Android](https://play.google.com/store/apps/details?id=be.wive.cyclingescape) or [iOS](https://apps.apple.com/us/app/cycling-escape/id1553634302#?platform=iphone)
+No longer available through the stores, but available as web app at https://cycling-escape.web.app/
 
 ## Assets
 - bgs: https://thedarkbear.itch.io/3-parallax

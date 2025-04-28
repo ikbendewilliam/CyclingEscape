@@ -3,8 +3,6 @@ import 'package:cycling_escape/di/environments.dart';
 import 'package:cycling_escape/di/injectable.dart';
 import 'package:cycling_escape/main_common.dart';
 import 'package:cycling_escape/util/env/flavor_config.dart';
-import 'package:cycling_escape/util/inspector/database_inspector.dart';
-import 'package:cycling_escape/util/inspector/local_storage_inspector.dart';
 import 'package:cycling_escape/util/inspector/niddler.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +23,6 @@ Future<void> main() async {
     // ignore: avoid_print
     print('Starting app from main.dart');
     await configureDependencies(Environments.dev);
-    await addDatabaseInspector();
-    await initAllStorageInspectors();
 
     startApp();
   });

@@ -93,5 +93,7 @@ Gemfile.lock
 
 # Fvm
 .fvm/flutter_sdk
-/lib/generated_plugin_registrant.dart
 /test/coverage_helper_test.dart
+web/index.html
+.flutter-plugins
+public/

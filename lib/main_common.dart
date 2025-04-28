@@ -4,10 +4,12 @@ import 'package:cycling_escape/architecture.dart';
 import 'package:cycling_escape/util/web/app_configurator.dart' if (dart.library.html) 'package:cycling_escape/util/web/app_configurator_web.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:icapps_architecture/icapps_architecture.dart';
 
 Future<void> _setupCrashLogging() async {
+  if (kIsWeb) return;
   await Firebase.initializeApp();
   if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) unawaited(FirebaseCrashlytics.instance.sendUnsentReports());
   final originalOnError = FlutterError.onError;

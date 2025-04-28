@@ -10,7 +10,8 @@
             "type": "dart",
             "program": "lib/main.dart",
             "args": [
-                "--flavor=dev"
+                "--flavor=dev",
+                "--dart-define=FLAVOR=dev",
             ]
         },
        {

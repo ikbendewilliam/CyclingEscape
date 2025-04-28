@@ -1,4 +1,4 @@
 {
-    "dart.flutterSdkPath": "/Users/williamverhaeghe/fvm/versions/3.3.5",
-    "java.configuration.updateBuildConfiguration": "automatic"
+  "dart.flutterSdkPath": ".fvm/versions/3.3.5",
+  "java.configuration.updateBuildConfiguration": "automatic"
 }

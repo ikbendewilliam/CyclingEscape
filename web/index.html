@@ -101,21 +101,20 @@
     }
   </script>
 
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
-  <script>
-    var firebaseConfig = {
-      apiKey: '...',
-      authDomain: '...',
-      databaseURL: '...',
-      projectId: '...',
-      storageBucket: '...',
-      messagingSenderId: '...',
-      appId: '...',
-    }
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+  <script type="module">
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuiML-XGpDaLph7fFu6V23GOQPFh8ty8A",
+      authDomain: "cycling-escape.firebaseapp.com",
+      projectId: "cycling-escape",
+      storageBucket: "cycling-escape.firebasestorage.app",
+      messagingSenderId: "44020173560",
+      appId: "1:44020173560:web:fd444c25e66adb0fb3c90d"
+    };
+  
     const app = firebase.initializeApp(firebaseConfig);
   </script>
-
 </body>
 
 </html>
